@@ -14,8 +14,9 @@ class LazyFastqReader:
 
         while 1:
             line = self.f.readline()
-            if len(line) == 0: break
-            assert line.startswith('@')
+            if len(line) == 0:
+                break
+            assert line.startswith("@")
             id = line.strip()[1:].split(None, 1)[0]  # the header MUST be just 1 line
             if id in self.d:
                 raise Exception("Duplicate id {0}!!".format(id))
@@ -30,10 +31,10 @@ class LazyFastqReader:
         self.f.seek(self.d[k])
 
         sequence = self.f.readline().strip()
-        assert self.f.readline().startswith('+')
+        assert self.f.readline().startswith("+")
         qualstr = self.f.readline().strip()
-        quals = [ord(x)-33 for x in qualstr]
-        return SeqRecord(sequence, id=k, letter_annotations={'phred_quality': quals})
+        quals = [ord(x) - 33 for x in qualstr]
+        return SeqRecord(sequence, id=k, letter_annotations={"phred_quality": quals})
 
     def keys(self):
         return list(self.d.keys())
@@ -59,9 +60,12 @@ class LazyFastaReader:
 
         while 1:
             line = self.f.readline()
-            if len(line) == 0: break
-            if line.startswith('>'):
-                id = line.strip()[1:].split(None, 1)[0]  # the header MUST be just 1 line
+            if len(line) == 0:
+                break
+            if line.startswith(">"):
+                id = line.strip()[1:].split(None, 1)[
+                    0
+                ]  # the header MUST be just 1 line
                 if id in self.d:
                     raise Exception("Duplicate id {0}!!".format(id))
                 self.d[id] = self.f.tell()
@@ -70,9 +74,9 @@ class LazyFastaReader:
         if k not in self.d:
             raise Exception("key {0} not in dictionary!".format(k))
         self.f.seek(self.d[k])
-        content = ''
+        content = ""
         for line in self.f:
-            if line.startswith('>'):
+            if line.startswith(">"):
                 break
             content += line.strip()
         return SeqRecord(content, id=k)

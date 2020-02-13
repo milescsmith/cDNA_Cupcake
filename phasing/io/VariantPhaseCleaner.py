@@ -1,4 +1,4 @@
-__author__ = 'etseng@pacb.com'
+__author__ = "etseng@pacb.com"
 
 """
 ex:
@@ -32,7 +32,7 @@ def make_haplotype_counts(isoform_tally):
     :param isoform_tally: list of (isoform, dict of haplotype count), ex: {'PB.45.1': {0:10, 1:20}}
     :return: Counter of haplotype index --> total count (of FL reads)
     """
-    hap_count = Counter() # haplotype index --> total count
+    hap_count = Counter()  # haplotype index --> total count
     for tally in isoform_tally.values():
         for hap_index, count in tally.items():
             hap_count[hap_index] += count
@@ -46,16 +46,21 @@ def calc_hap_diff(haplotype_strings, cur_hap):
 
     :return: np.array of diffs against <cur_hap>
     """
-    return np.array([sum(cur_hap[i]!=s for i,s in enumerate(hap_str)) for hap_str in haplotype_strings])
+    return np.array(
+        [
+            sum(cur_hap[i] != s for i, s in enumerate(hap_str))
+            for hap_str in haplotype_strings
+        ]
+    )
 
 
 def get_hap_model(haplotype_strings):
     hap_len = len(haplotype_strings[0])
-    tally = [Counter() for pos in range(hap_len-1)]
+    tally = [Counter() for pos in range(hap_len - 1)]
     for s in haplotype_strings:
-        for pos in range(hap_len-1):
-            if s[pos]!='?' and s[pos+1]!='?':
-                tally[pos][(s[pos], s[pos+1])] += 1
+        for pos in range(hap_len - 1):
+            if s[pos] != "?" and s[pos + 1] != "?":
+                tally[pos][(s[pos], s[pos + 1])] += 1
     return tally
 
 
@@ -75,20 +80,20 @@ def infer_haplotypes_via_exhaustive_diploid_only(hap_obj, variants):
     :return: sum_of_diff array, hap_count_ordered (the counts are fake since not used later)
     """
     # sanity check that every position has exactly two possibilities
-    #for x in variants:
+    # for x in variants:
     #    if len(x)!=2: raise Exception, "variants must be diploid!"
 
     haplotype_strings = hap_obj.haplotypes
-    nonpartial_haps = [s for s in haplotype_strings if all(x!='?' for x in s)]
+    nonpartial_haps = [s for s in haplotype_strings if all(x != "?" for x in s)]
     nonpartial_haps_already_tried = set()
 
     if len(nonpartial_haps) == 0:
         return None, None
 
-    #is_list = False
-    #hap_len = len(haplotype_strings[0])
+    # is_list = False
+    # hap_len = len(haplotype_strings[0])
     #
-    #if len(nonpartial_haps) == 0: # special case! there are NO non-partial haplotype strings!
+    # if len(nonpartial_haps) == 0: # special case! there are NO non-partial haplotype strings!
     #    freq_model = get_hap_model(haplotype_strings)
     #    print freq_model
     #    nonpartial_haps = itertools.product(*variants)
@@ -97,8 +102,9 @@ def infer_haplotypes_via_exhaustive_diploid_only(hap_obj, variants):
     best_diff_arr, best_sum_of_diff = None, np.inf
     best_hap1, best_hap2 = None, None
     for hap1 in nonpartial_haps:
-        if hap1 in nonpartial_haps_already_tried: continue
-        #if is_list:
+        if hap1 in nonpartial_haps_already_tried:
+            continue
+        # if is_list:
         #    is_likely = True
         #    # see how likely hap1 is given the freq model
         #    for pos in xrange(hap_len-1):
@@ -112,13 +118,19 @@ def infer_haplotypes_via_exhaustive_diploid_only(hap_obj, variants):
         #    else:
         #        continue
         # hap2 is the other choice since it's diploid
-        hap2 = ''
+        hap2 = ""
         for i in range(len(variants)):
-            if hap1[i]==variants[i][0]: hap2 += variants[i][1]
-            else: hap2 += variants[i][0]
+            if hap1[i] == variants[i][0]:
+                hap2 += variants[i][1]
+            else:
+                hap2 += variants[i][0]
         # now calculate the sum diffs
-        diff_arr = np.array([calc_hap_diff(haplotype_strings, hap1),
-                             calc_hap_diff(haplotype_strings, hap2)])
+        diff_arr = np.array(
+            [
+                calc_hap_diff(haplotype_strings, hap1),
+                calc_hap_diff(haplotype_strings, hap2),
+            ]
+        )
         sum_of_diff = diff_arr.min(axis=0).sum()
         if sum_of_diff < best_sum_of_diff:
             best_diff_arr, best_sum_of_diff = diff_arr, sum_of_diff
@@ -128,10 +140,12 @@ def infer_haplotypes_via_exhaustive_diploid_only(hap_obj, variants):
 
     best_hap1_index, msg1 = hap_obj.match_or_add_haplotype(best_hap1)
     best_hap2_index, msg2 = hap_obj.match_or_add_haplotype(best_hap2)
-    return best_diff_arr, [(best_hap1_index,-1), (best_hap2_index,-2)]
+    return best_diff_arr, [(best_hap1_index, -1), (best_hap2_index, -2)]
 
 
-def infer_haplotypes_via_min_diff(haplotype_strings, hap_count, ploidy, max_diff, min_percent):
+def infer_haplotypes_via_min_diff(
+    haplotype_strings, hap_count, ploidy, max_diff, min_percent
+):
     """
     :param haplotype_strings: list of haplotype strings
     :param hap_count: Counter object of hap_index --> count
@@ -143,28 +157,36 @@ def infer_haplotypes_via_min_diff(haplotype_strings, hap_count, ploidy, max_diff
     4. ...repeat until sum of diffs gets worse, or ploidy reached, or the next haplotype is less than <min_percent> reads .
     """
     # we are to ignore all partial haps
-    partial_haps = [i for i in range(len(haplotype_strings)) if any(s=='?' for s in haplotype_strings[i])]
+    partial_haps = [
+        i
+        for i in range(len(haplotype_strings))
+        if any(s == "?" for s in haplotype_strings[i])
+    ]
     for k in partial_haps:
         del hap_count[k]
 
     if len(hap_count) == 0:
         return None, None
 
-    hap_count_ordered = hap_count.most_common() # now sorted in desc (hap_index, count)
-    hap_count_total = sum([count for hap_index,count in hap_count_ordered])
+    hap_count_ordered = hap_count.most_common()  # now sorted in desc (hap_index, count)
+    hap_count_total = sum([count for hap_index, count in hap_count_ordered])
     cur_hap = haplotype_strings[hap_count_ordered[0][0]]
     len_hap = len(cur_hap)
 
-    if len_hap < 2*max_diff:
+    if len_hap < 2 * max_diff:
         max_diff = 1
 
     diff_arr = np.array([calc_hap_diff(haplotype_strings, cur_hap)])
     sum_of_diff = diff_arr.sum()
-    #print sum_of_diff
+    # print sum_of_diff
     for cur_hap_i, cur_count in hap_count_ordered[1:ploidy]:
-        new_diff_arr = np.append(diff_arr, [calc_hap_diff(haplotype_strings, haplotype_strings[cur_hap_i])], axis=0)
+        new_diff_arr = np.append(
+            diff_arr,
+            [calc_hap_diff(haplotype_strings, haplotype_strings[cur_hap_i])],
+            axis=0,
+        )
         new_sum_of_diff = new_diff_arr.min(axis=0).sum()
-        #print new_sum_of_diff
+        # print new_sum_of_diff
         if cur_count < hap_count_total * min_percent:
             break
         if (sum_of_diff - new_sum_of_diff) < max_diff:
@@ -179,7 +201,9 @@ def infer_haplotypes_via_min_diff(haplotype_strings, hap_count, ploidy, max_diff
 def error_correct_haplotypes(hap_obj, isoform_tally, diff_arr, hap_count_ordered):
 
     # create new hap_obj and old_to_new_map dict
-    new_hap_obj = Haplotypes(hap_obj.hap_var_positions, hap_obj.ref_at_pos, hap_obj.count_of_vars_by_pos)
+    new_hap_obj = Haplotypes(
+        hap_obj.hap_var_positions, hap_obj.ref_at_pos, hap_obj.count_of_vars_by_pos
+    )
     old_to_new_map = {}
     for i, j in enumerate(diff_arr.argmin(axis=0)):
         # haplotype i maps to haplotype hap_count_ordered[j][0]
@@ -189,11 +213,14 @@ def error_correct_haplotypes(hap_obj, isoform_tally, diff_arr, hap_count_ordered
 
     # now create a new isoform_tally
     new_isoform_tally = {}
-    for k,v in isoform_tally.items():
+    for k, v in isoform_tally.items():
         new_isoform_tally[k] = Counter()
         for old_hap_index, count in v.items():
             if old_hap_index not in old_to_new_map:
-                print("Discarding: {0}".format(hap_obj.haplotypes[old_hap_index]), file=sys.stderr)
+                print(
+                    "Discarding: {0}".format(hap_obj.haplotypes[old_hap_index]),
+                    file=sys.stderr,
+                )
                 continue
             new_hap_index = old_to_new_map[old_hap_index]
             new_isoform_tally[k][new_hap_index] += count
@@ -337,6 +364,3 @@ def error_correct_haplotypes(hap_obj, isoform_tally, diff_arr, hap_count_ordered
 #             new_hap_index = old_to_new_map[old_hap_index]
 #             new_isoform_tally[k][new_hap_index] += count
 #     return old_to_new_map, new_hap_obj, new_isoform_tally
-
-
-

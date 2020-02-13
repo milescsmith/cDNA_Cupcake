@@ -1,4 +1,4 @@
-__author__ = 'etseng@pacb.com'
+__author__ = "etseng@pacb.com"
 
 #!/usr/bin/env python
 ###############################################################################
@@ -130,8 +130,11 @@ from pbtranscript.Utils import touch, real_ppath, mkdir, nfs_exists
 
 from cupcake2.ice2.IceFiles2 import IceFiles2
 from cupcake2.io.SeqSplitter import splitFaFq
-from cupcake2.tofu2.ToFuOptions2 import add_nfl_fa_argument, add_nfl_fq_argument, \
-    add_cluster_root_dir_as_positional_argument
+from cupcake2.tofu2.ToFuOptions2 import (
+    add_nfl_fa_argument,
+    add_nfl_fq_argument,
+    add_cluster_root_dir_as_positional_argument,
+)
 from cupcake2.ice2.__init__ import ICE_PARTIAL_PY
 
 
@@ -150,11 +153,13 @@ class IcePartialSplit2(object):
 
     """ice_partial split runner."""
 
-    desc = "Split input non-full-length reads into N (N < 100) chunks, " + \
-           "so that the chunked reads can be assigned later " + \
-           "using '%s i' in paraellel." % ICE_PARTIAL_PY
+    desc = (
+        "Split input non-full-length reads into N (N < 100) chunks, "
+        + "so that the chunked reads can be assigned later "
+        + "using '%s i' in paraellel." % ICE_PARTIAL_PY
+    )
 
-    prog = "%s split " % ICE_PARTIAL_PY # used by cmd_str and ice_partial.py
+    prog = "%s split " % ICE_PARTIAL_PY  # used by cmd_str and ice_partial.py
 
     def __init__(self, root_dir, nfl_fa, nfl_fq, N):
         self.root_dir = root_dir
@@ -170,26 +175,28 @@ class IcePartialSplit2(object):
 
     def cmd_str(self):
         """Return a cmd string"""
-        return self._cmd_str(root_dir=self.root_dir, nfl_fa=self.nfl_fa,
-                             nfl_fq=self.nfl_fq,
-                             N=self.N)
+        return self._cmd_str(
+            root_dir=self.root_dir, nfl_fa=self.nfl_fa, nfl_fq=self.nfl_fq, N=self.N
+        )
 
     def _cmd_str(self, root_dir, nfl_fa, nfl_fq, N):
         """Return a cmd string of ice_partial_split."""
-        cmd = self.prog + \
-            "{d} ".format(d=root_dir) + \
-            "{nfl_fa} ".format(nfl_fa=nfl_fa) + \
-            "{nfl_fq} ".format(nfl_fq=nfl_fq) + \
-            "{N} ".format(N=N)
+        cmd = (
+            self.prog
+            + "{d} ".format(d=root_dir)
+            + "{nfl_fa} ".format(nfl_fa=nfl_fa)
+            + "{nfl_fq} ".format(nfl_fq=nfl_fq)
+            + "{N} ".format(N=N)
+        )
         return cmd
 
     def validate_inputs(self):
         """
         Check whether root_dir exists, split nfl reads in nfl_fa into N chunks.
         """
-        return self._validate_inputs(root_dir=self.root_dir, nfl_fa=self.nfl_fa,
-                                     nfl_fq=self.nfl_fq,
-                                     N=self.N)
+        return self._validate_inputs(
+            root_dir=self.root_dir, nfl_fa=self.nfl_fa, nfl_fq=self.nfl_fq, N=self.N
+        )
 
     def _validate_inputs(self, root_dir, nfl_fa, nfl_fq, N):
         """
@@ -199,8 +206,9 @@ class IcePartialSplit2(object):
          nfl_dir,
          [i-th_chunk_nfl_fa for i in [0...N-1]])
         """
-        icef = IceFiles2(prog_name="ice_partial_split",
-                        root_dir=root_dir, no_log_f=False)
+        icef = IceFiles2(
+            prog_name="ice_partial_split", root_dir=root_dir, no_log_f=False
+        )
 
         nfl_dir = icef.nfl_dir
 
@@ -216,11 +224,15 @@ class IcePartialSplit2(object):
             errMsg = "Input file can not be splitted into %d chunks!" % N
 
         if not nfs_exists(nfl_fa):
-            errMsg = ("The input non-full-length reads fasta file " +
-                      "{f} does not exists. ".format(f=nfl_fa))
+            errMsg = (
+                "The input non-full-length reads fasta file "
+                + "{f} does not exists. ".format(f=nfl_fa)
+            )
         if not nfs_exists(nfl_fq):
-            errMsg = ("The input non-full-length reads fastq file " +
-                      "{f} does not exists. ".format(f=nfl_fq))
+            errMsg = (
+                "The input non-full-length reads fastq file "
+                + "{f} does not exists. ".format(f=nfl_fq)
+            )
         if len(errMsg) != 0:
             raise ValueError(errMsg)
 
@@ -237,12 +249,19 @@ class IcePartialSplit2(object):
         logging.debug("Total number of chunks: N={N}.".format(N=self.N))
 
         # Validate input files,
-        (num_reads, reads_per_split, nfl_dir, splitted_fas_todo, splitted_fqs_todo) = \
-            self.validate_inputs()
+        (
+            num_reads,
+            reads_per_split,
+            nfl_dir,
+            splitted_fas_todo,
+            splitted_fqs_todo,
+        ) = self.validate_inputs()
 
         logging.info("Total number of reads is {n}.".format(n=num_reads))
-        logging.info("Splitting nfl_fa into chunks each " +
-                     "containing {n} reads.".format(n=reads_per_split))
+        logging.info(
+            "Splitting nfl_fa into chunks each "
+            + "containing {n} reads.".format(n=reads_per_split)
+        )
 
         splitted_fas_done = splitFaFq(
             input_fa_or_fq=self.nfl_fa,
@@ -250,7 +269,8 @@ class IcePartialSplit2(object):
             out_dir=nfl_dir,
             out_format=IceFiles2.nfl_fa_format,
             is_fq=False,
-            reads_in_first_split=None)
+            reads_in_first_split=None,
+        )
 
         splitted_fqs_done = splitFaFq(
             input_fa_or_fq=self.nfl_fq,
@@ -258,7 +278,8 @@ class IcePartialSplit2(object):
             out_dir=nfl_dir,
             out_format=IceFiles2.nfl_fq_format,
             is_fq=True,
-            reads_in_first_split=None)
+            reads_in_first_split=None,
+        )
 
         logging.info("Splitted fastas are: " + "\n".join(splitted_fas_done))
         logging.info("Splitted fastqs are: " + "\n".join(splitted_fqs_done))

@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-__author__ = 'etseng@pacb.com'
+__author__ = "etseng@pacb.com"
 
 """
 After running collapse, combine with the cluster FL/nFL assignment to get abundance information.
@@ -38,26 +38,36 @@ import os, sys, re
 from collections import Counter
 from csv import DictReader, DictWriter
 
+
 def get_roi_len(seqid):
     # before isoseq3: <movie>/<zmw>/<start>_<end>_CCS
     # for isoseq3: <movie>/<zmw>/ccs
-    if seqid.endswith('/ccs'):
-        print("WARNING: isoseq3 format detected. Output `length` column will be `NA`.", file=sys.stderr)
+    if seqid.endswith("/ccs"):
+        print(
+            "WARNING: isoseq3 format detected. Output `length` column will be `NA`.",
+            file=sys.stderr,
+        )
         return "NA"
-    elif not seqid.endswith('_CCS'):
-        print("Sequence ID format must be <movie>/<zmw>/<start>_<end>_CCS or <movie>/<zmw>/ccs! Abort!", file=sys.stderr)
+    elif not seqid.endswith("_CCS"):
+        print(
+            "Sequence ID format must be <movie>/<zmw>/<start>_<end>_CCS or <movie>/<zmw>/ccs! Abort!",
+            file=sys.stderr,
+        )
         sys.exit(-1)
-    s, e, junk = seqid.split('/')[2].split('_')
-    return abs(int(s)-int(e))
+    s, e, junk = seqid.split("/")[2].split("_")
+    return abs(int(s) - int(e))
 
 
-
-cluster_rex_sa3 = re.compile('(i\d+_ICE_\S+\|c\d+)')
-cluster_rex_sa2 = re.compile('(i\d+[HL]Q_\S+|c\d+)')
+cluster_rex_sa3 = re.compile("(i\d+_ICE_\S+\|c\d+)")
+cluster_rex_sa2 = re.compile("(i\d+[HL]Q_\S+|c\d+)")
 # ex: cb100_c7,m54006_170206_215027/70189550/2661_56_CCS,FL
-cluster_rex_tofu2 = re.compile('(cb\d+_c\d+)')
-cluster_rex_isoseq3 = re.compile('(transcript/\d+)') # for isoseq3: transcript/0, transcript/1, etc
-cluster_rex_isoseq3_mapped = re.compile('\S+(transcript/\d+)') # for isoseq post SL mapping
+cluster_rex_tofu2 = re.compile("(cb\d+_c\d+)")
+cluster_rex_isoseq3 = re.compile(
+    "(transcript/\d+)"
+)  # for isoseq3: transcript/0, transcript/1, etc
+cluster_rex_isoseq3_mapped = re.compile(
+    "\S+(transcript/\d+)"
+)  # for isoseq post SL mapping
 
 
 def read_group_filename(group_filename, is_cid=True):
@@ -85,20 +95,21 @@ def read_group_filename(group_filename, is_cid=True):
     Return: dict of seq_or_ice_cluster --> collapsed cluster ID
           (ex: in IsoSeq3 it is 'transcript/0' --> 'PB.1.1')
     """
-    cid_info = {} # ex: i1 --> c123 --> PB.1.1, or c123 --> PB.1.1
+    cid_info = {}  # ex: i1 --> c123 --> PB.1.1, or c123 --> PB.1.1
 
     for line in open(group_filename):
-        pbid, members = line.strip().split('\t')
-        for cid in members.split(','):
+        pbid, members = line.strip().split("\t")
+        for cid in members.split(","):
             m = cluster_rex_isoseq3_mapped.match(cid)
-            if m is not None: # IsoSeq3 after mapping, strip it down to 'transcript/0'
+            if m is not None:  # IsoSeq3 after mapping, strip it down to 'transcript/0'
                 cid = m.group(1)
             else:
                 m = cluster_rex_isoseq3.match(cid)
                 if m is not None:
-                    pass # pass, nothing to do since the cid is correctly 'transcript/0'
+                    pass  # pass, nothing to do since the cid is correctly 'transcript/0'
                 else:
-                    if is_cid: cid = cid.split('/')[0]
+                    if is_cid:
+                        cid = cid.split("/")[0]
                     m = cluster_rex_tofu2.match(cid)
                     if m is not None:
                         cid = m.group(1)
@@ -107,36 +118,45 @@ def read_group_filename(group_filename, is_cid=True):
                         if m is not None:
                             cid = m.group(1)
                             # replace _HQ_ or _LQ_ with _ICE_ to be compatible with cluster_report.csv later
-                            cid = cid.replace('_HQ_', '_ICE_')
-                            cid = cid.replace('_LQ_', '_ICE_')
+                            cid = cid.replace("_HQ_", "_ICE_")
+                            cid = cid.replace("_LQ_", "_ICE_")
                         elif cluster_rex_sa3.match(cid) is not None:
-                            pass # nothing to do, ID is good
-                        elif cid.startswith('HQ_') or cid.startswith('LQ_'): # isoseq2
-                            cid = cid.split('|')[1].split('/')[0]  # cid = cb7607_c93041, for example
+                            pass  # nothing to do, ID is good
+                        elif cid.startswith("HQ_") or cid.startswith("LQ_"):  # isoseq2
+                            cid = cid.split("|")[1].split("/")[
+                                0
+                            ]  # cid = cb7607_c93041, for example
                         else:
-                            raise Exception("Unrecognized id format {0} in {1}!".format(cid, group_filename))
+                            raise Exception(
+                                "Unrecognized id format {0} in {1}!".format(
+                                    cid, group_filename
+                                )
+                            )
             cid_info[cid] = pbid
 
     return cid_info
 
-def output_read_count_IsoSeq_csv(cid_info, csv_filename, output_filename, output_mode='w'):
+
+def output_read_count_IsoSeq_csv(
+    cid_info, csv_filename, output_filename, output_mode="w"
+):
     """
     Turn into read_stats.txt format:
     id \t length \t is_fl \t stat \t pbid
     """
     mapped = {}  # nFL seq -> list of (sample_prefix, cluster) it belongs to
 
-    if output_mode == 'w':
-        f = open(output_filename, 'w')
+    if output_mode == "w":
+        f = open(output_filename, "w")
         f.write("id\tlength\tis_fl\tstat\tpbid\n")
-    elif output_mode == 'a':
-        f = open(output_filename, 'a')
+    elif output_mode == "a":
+        f = open(output_filename, "a")
     else:
         raise Exception("Output mode {0} not valid!".format(output_mode))
 
     unmapped_holder = set()
-    for r in DictReader(open(csv_filename), delimiter=','):
-        cid = str(r['cluster_id'])
+    for r in DictReader(open(csv_filename), delimiter=","):
+        cid = str(r["cluster_id"])
         m = cluster_rex_sa3.match(cid)
         if m is None:
             m = cluster_rex_sa2.match(cid)
@@ -145,78 +165,111 @@ def output_read_count_IsoSeq_csv(cid_info, csv_filename, output_filename, output
                 if m is None:
                     m = cluster_rex_isoseq3.match(cid)
                     if m is not None:
-                        cid = m.group(1) # make sure cid is transcript/0, transcript/1, without any prefix before 'transcript'
+                        cid = m.group(
+                            1
+                        )  # make sure cid is transcript/0, transcript/1, without any prefix before 'transcript'
                     else:
-                        raise Exception("cluster_id {0} is not a valid cluster ID!".format(cid))
+                        raise Exception(
+                            "cluster_id {0} is not a valid cluster ID!".format(cid)
+                        )
 
-        x = r['read_id']
+        x = r["read_id"]
         if cid in cid_info:
             # if is FL, must be unique
-            if r['read_type'] == 'FL':
-                pbid, stat = cid_info[cid], 'unique'
-                f.write("{id}\t{len}\t{is_fl}\t{stat}\t{pbid}\n".format(\
-                    id=x, len=get_roi_len(x), is_fl='Y', stat=stat, pbid=pbid))
-            else: # nonFL could be multi-mapped, must wait and see
-                assert r['read_type'] == 'NonFL'
+            if r["read_type"] == "FL":
+                pbid, stat = cid_info[cid], "unique"
+                f.write(
+                    "{id}\t{len}\t{is_fl}\t{stat}\t{pbid}\n".format(
+                        id=x, len=get_roi_len(x), is_fl="Y", stat=stat, pbid=pbid
+                    )
+                )
+            else:  # nonFL could be multi-mapped, must wait and see
+                assert r["read_type"] == "NonFL"
                 # is only potentially unmapped, add all (movie-restricted) members to unmapped holder
                 pbid = cid_info[cid]
-                if x not in mapped: mapped[x] = set()
+                if x not in mapped:
+                    mapped[x] = set()
                 mapped[x].add(pbid)
         else:
             # unmapped, could be either FL or nFL
             # if FL, can immediately write out since it only appears once in cluster_report.csv
-            if r['read_type'] == 'FL':
-                pbid, stat = 'NA', 'unmapped'
-                f.write("{id}\t{len}\t{is_fl}\t{stat}\t{pbid}\n".format(\
-                    id=x, len=get_roi_len(x), is_fl='Y', stat=stat, pbid=pbid))
-            else: # nonFL could be multi-mapped, so not sure it is truly unmapped, put in holder
+            if r["read_type"] == "FL":
+                pbid, stat = "NA", "unmapped"
+                f.write(
+                    "{id}\t{len}\t{is_fl}\t{stat}\t{pbid}\n".format(
+                        id=x, len=get_roi_len(x), is_fl="Y", stat=stat, pbid=pbid
+                    )
+                )
+            else:  # nonFL could be multi-mapped, so not sure it is truly unmapped, put in holder
                 unmapped_holder.add(x)
 
     # now we can go through the list of mapped/unmapped to see which are uniquely mapped which are not
     for seqid, pbids in mapped.items():
-        if len(pbids) == 1: # unique
-            stat = 'unique'
+        if len(pbids) == 1:  # unique
+            stat = "unique"
         else:
-            stat = 'ambiguous'
+            stat = "ambiguous"
         for pbid in pbids:
-            f.write("{id}\t{len}\t{is_fl}\t{stat}\t{pbid}\n".format(
-                id=seqid, len=get_roi_len(seqid), is_fl='N', stat=stat, pbid=pbid))
+            f.write(
+                "{id}\t{len}\t{is_fl}\t{stat}\t{pbid}\n".format(
+                    id=seqid, len=get_roi_len(seqid), is_fl="N", stat=stat, pbid=pbid
+                )
+            )
 
     unmapped_holder = unmapped_holder.difference(mapped)
-    pbid, stat = 'NA', 'unmapped'
+    pbid, stat = "NA", "unmapped"
     for x in unmapped_holder:
-        f.write("{id}\t{len}\t{is_fl}\t{stat}\t{pbid}\n".format(
-            id=x, len=get_roi_len(x), is_fl='N', stat=stat, pbid=pbid))
+        f.write(
+            "{id}\t{len}\t{is_fl}\t{stat}\t{pbid}\n".format(
+                id=x, len=get_roi_len(x), is_fl="N", stat=stat, pbid=pbid
+            )
+        )
 
     f.close()
 
 
-def make_abundance_file(read_count_filename, output_filename, given_total=None, restricted_movies=None, write_header_comments=True):
+def make_abundance_file(
+    read_count_filename,
+    output_filename,
+    given_total=None,
+    restricted_movies=None,
+    write_header_comments=True,
+):
     """
     If given_total is not None, use it instead of the total count based on <read_count_filename>
     """
-    tally = Counter() # pbid --> FL count
+    tally = Counter()  # pbid --> FL count
 
-    reader = DictReader(open(read_count_filename), delimiter='\t')
+    reader = DictReader(open(read_count_filename), delimiter="\t")
     for r in reader:
-        movie = r['id'].split('/')[0]
+        movie = r["id"].split("/")[0]
         if restricted_movies is None or movie in restricted_movies:
-            if r['is_fl']!='Y':
-                print("sequence {0} has `is_fl` field set to `{1}`. Ignoring this read.".format(r['id'], r['is_fl']), file=sys.stderr)
+            if r["is_fl"] != "Y":
+                print(
+                    "sequence {0} has `is_fl` field set to `{1}`. Ignoring this read.".format(
+                        r["id"], r["is_fl"]
+                    ),
+                    file=sys.stderr,
+                )
                 continue
-            if r['pbid']=='NA':
-                print("sequence {0} has `pbid` field set to `{1}`. Ignoring this read.".format(r['id'], r['pbid']), file=sys.stderr)
+            if r["pbid"] == "NA":
+                print(
+                    "sequence {0} has `pbid` field set to `{1}`. Ignoring this read.".format(
+                        r["id"], r["pbid"]
+                    ),
+                    file=sys.stderr,
+                )
                 continue
-            assert r['stat'] == 'unique'
-            tally[r['pbid']] += 1
+            assert r["stat"] == "unique"
+            tally[r["pbid"]] += 1
 
     if given_total is not None:
         use_total_fl = given_total
     else:
         use_total_fl = sum(tally.values())
 
-    COUNT_FIELDS = ['pbid', 'count_fl', 'norm_fl']
-    f = open(output_filename,'w')
+    COUNT_FIELDS = ["pbid", "count_fl", "norm_fl"]
+    f = open(output_filename, "w")
     if write_header_comments:
         f.write("#\n")
         f.write("# -----------------\n")
@@ -227,22 +280,22 @@ def make_abundance_file(read_count_filename, output_filename, given_total=None, 
         f.write("# Total Number of FL reads: {0}\n".format(use_total_fl))
         f.write("#\n")
 
-    writer = DictWriter(f, COUNT_FIELDS, delimiter='\t')
+    writer = DictWriter(f, COUNT_FIELDS, delimiter="\t")
     writer.writeheader()
 
     keys = list(tally.keys())
-    keys.sort(key=lambda x: list(map(int, x.split('.')[1:]))) # sort by PB.1, PB.2....
+    keys.sort(key=lambda x: list(map(int, x.split(".")[1:])))  # sort by PB.1, PB.2....
     for k in keys:
         count_fl = tally[k]
-        norm_fl  = count_fl*1./use_total_fl
-        rec = {'pbid': k, 'count_fl': count_fl, 'norm_fl': "{0:.4e}".format(norm_fl)}
+        norm_fl = count_fl * 1.0 / use_total_fl
+        rec = {"pbid": k, "count_fl": count_fl, "norm_fl": "{0:.4e}".format(norm_fl)}
         writer.writerow(rec)
     f.close()
 
 
-
-
-def get_abundance_post_collapse(collapse_prefix, cluster_report_csv, output_prefix, restricted_movies=None):
+def get_abundance_post_collapse(
+    collapse_prefix, cluster_report_csv, output_prefix, restricted_movies=None
+):
     """
 
     :param collapse_prefix: collapse prefix filename (must have .group.txt present)
@@ -257,22 +310,42 @@ def get_abundance_post_collapse(collapse_prefix, cluster_report_csv, output_pref
         sys.exit(-1)
 
     if not os.path.exists(cluster_report_csv):
-        print("File {0} does not exist. Abort!".format(cluster_report_csv), file=sys.stderr)
+        print(
+            "File {0} does not exist. Abort!".format(cluster_report_csv),
+            file=sys.stderr,
+        )
         sys.exit(-1)
 
     cid_info = read_group_filename(collapse_prefix + ".group.txt", is_cid=True)
 
-    output_read_count_IsoSeq_csv(cid_info, cluster_report_csv, output_prefix + '.read_stat.txt')
-    print("Read stat file written to", output_prefix + '.read_stat.txt', file=sys.stderr)
-    make_abundance_file(output_prefix + '.read_stat.txt', output_prefix + '.abundance.txt', restricted_movies=restricted_movies)
-    print("Abundance file written to", output_prefix + '.abundance.txt', file=sys.stderr)
+    output_read_count_IsoSeq_csv(
+        cid_info, cluster_report_csv, output_prefix + ".read_stat.txt"
+    )
+    print(
+        "Read stat file written to", output_prefix + ".read_stat.txt", file=sys.stderr
+    )
+    make_abundance_file(
+        output_prefix + ".read_stat.txt",
+        output_prefix + ".abundance.txt",
+        restricted_movies=restricted_movies,
+    )
+    print(
+        "Abundance file written to", output_prefix + ".abundance.txt", file=sys.stderr
+    )
 
 
 if __name__ == "__main__":
     from argparse import ArgumentParser
-    parser = ArgumentParser("Get abundance/read stat information after running collapse script. Works for Iso-Seq1, 2, and 3 output.")
-    parser.add_argument("collapse_prefix", help="Collapse prefix (must have .group.txt)")
+
+    parser = ArgumentParser(
+        "Get abundance/read stat information after running collapse script. Works for Iso-Seq1, 2, and 3 output."
+    )
+    parser.add_argument(
+        "collapse_prefix", help="Collapse prefix (must have .group.txt)"
+    )
     parser.add_argument("cluster_report", help="Cluster CSV report")
 
     args = parser.parse_args()
-    get_abundance_post_collapse(args.collapse_prefix, args.cluster_report, args.collapse_prefix)
+    get_abundance_post_collapse(
+        args.collapse_prefix, args.cluster_report, args.collapse_prefix
+    )

@@ -13,7 +13,7 @@ Several differences with the old IceInit:
 3. Dependencies to old pbtranscript/pbtranscript2 removed.
 
 """
-__author__ = 'etseng@pacb.com'
+__author__ = "etseng@pacb.com"
 
 
 import time
@@ -25,22 +25,21 @@ import cupcake.ice.pClique as pClique
 from cupcake2.ice2.AlignerRunners import run_minimap
 from cupcake2.ice2.IceUtils2 import minimap2_against_ref2
 
+
 class IceInit2(object):
     """Iterative clustering and error correction."""
-    def __init__(self, readsFa,
-                 ice_opts, sge_opts, run_uc=True):
+
+    def __init__(self, readsFa, ice_opts, sge_opts, run_uc=True):
 
         self.readsFa = readsFa
         self.ice_opts = ice_opts
         self.sge_opts = sge_opts
-
 
         self.ice_opts.detect_cDNA_size(readsFa)
 
         self.uc = None
         if run_uc:
             self.uc = self.init_cluster_by_clique()
-
 
     @classmethod
     def _findCliques(self, alignGraph, readsFa):
@@ -58,9 +57,9 @@ class IceInit2(object):
         Reads which are not included in any cliques will be added as cliques
         of size 1.
         """
-        uc = {}    # To keep cliques found
+        uc = {}  # To keep cliques found
         used = []  # nodes within any cliques
-        ind = 0    # index of clique to discover
+        ind = 0  # index of clique to discover
 
         deg = list(alignGraph.degree())
         # Sort tuples of (node, degree) by degree, descendingly
@@ -74,8 +73,7 @@ class IceInit2(object):
             subGraph = alignGraph.subgraph([node] + list(alignGraph.neighbors(node)))
             subNodes = list(subGraph.nodes())
             # Convert from networkx.Graph to a sparse matrix
-            S, H = pClique.convert_graph_connectivity_to_sparse(
-                subGraph, subNodes)
+            S, H = pClique.convert_graph_connectivity_to_sparse(subGraph, subNodes)
             # index of the 'node' in the sub-graph
             seed_i = subNodes.index(node)
             # Grasp a clique from subGraph, and return indices of clique nodes
@@ -85,12 +83,12 @@ class IceInit2(object):
                 c = [subNodes[i] for i in tQ]  # nodes in the clique
                 uc[ind] = c  # Add the clique to uc
                 ind += 1
-                used += c    # Add clique nodes to used
+                used += c  # Add clique nodes to used
                 # Remove clique nodes from alignGraph and continue
                 alignGraph.remove_nodes_from(c)
 
         # write each orphan as a singleton cluster
-        for r in SeqIO.parse(open(readsFa), 'fasta'):
+        for r in SeqIO.parse(open(readsFa), "fasta"):
             if r.id not in used:
                 uc[ind] = [r.id]
                 ind += 1
@@ -102,29 +100,31 @@ class IceInit2(object):
         edge_count = 0
         start_t = time.time()
         for r in minimap2_against_ref2(
-                sam_filename=align_filename,
-                query_len_dict=len_dict,
-                ref_len_dict=len_dict,
-                is_FL=True,
-                sID_starts_with_c=False,
-                ece_penalty=self.ice_opts.ece_penalty,
-                ece_min_len=self.ice_opts.ece_min_len,
-                same_strand_only=True,
-                max_missed_start=self.ice_opts.max_missed_start,
-                max_missed_end=self.ice_opts.max_missed_end,
-                full_missed_start=self.ice_opts.full_missed_start,
-                full_missed_end=self.ice_opts.full_missed_end):
+            sam_filename=align_filename,
+            query_len_dict=len_dict,
+            ref_len_dict=len_dict,
+            is_FL=True,
+            sID_starts_with_c=False,
+            ece_penalty=self.ice_opts.ece_penalty,
+            ece_min_len=self.ice_opts.ece_min_len,
+            same_strand_only=True,
+            max_missed_start=self.ice_opts.max_missed_start,
+            max_missed_end=self.ice_opts.max_missed_end,
+            full_missed_start=self.ice_opts.full_missed_start,
+            full_missed_end=self.ice_opts.full_missed_end,
+        ):
             if r.qID == r.cID:
                 continue  # self hit, ignore
             if r.ece_arr is not None:
                 alignGraph.add_edge(r.qID, r.cID)
                 edge_count += 1
 
-        logging.debug("total {0} edges added from {1}; took {2} sec".format(\
-            edge_count, align_filename, time.time() - start_t))
+        logging.debug(
+            "total {0} edges added from {1}; took {2} sec".format(
+                edge_count, align_filename, time.time() - start_t
+            )
+        )
         return alignGraph
-
-
 
     def init_cluster_by_clique(self):
         """
@@ -136,12 +136,13 @@ class IceInit2(object):
         """
 
         # run minimap2 of self vs self
-        align_filename = run_minimap(self.readsFa, self.readsFa, \
-                                     cpus=self.sge_opts.blasr_nproc, \
-                                     sam_output=True)
-        len_dict = dict((r.id, len(r.seq)) for r in SeqIO.parse(open(self.readsFa), 'fasta'))
+        align_filename = run_minimap(
+            self.readsFa, self.readsFa, cpus=self.sge_opts.blasr_nproc, sam_output=True
+        )
+        len_dict = dict(
+            (r.id, len(r.seq)) for r in SeqIO.parse(open(self.readsFa), "fasta")
+        )
         alignGraph = self.makeGraphFromMinimap2(align_filename, len_dict)
 
         uc = IceInit2._findCliques(alignGraph=alignGraph, readsFa=self.readsFa)
         return uc
-

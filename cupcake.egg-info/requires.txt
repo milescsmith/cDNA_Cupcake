@@ -1,0 +1,8 @@
+numpy
+biopython
+bx-python>=0.7.3
+numpy
+sklearn
+pysam
+gtfparse@ git+https://github.com/milescsmith/gtfparse
+pandas

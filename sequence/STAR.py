@@ -4,6 +4,7 @@
 Readers for STAR (spliced aligner) format reading
 """
 
+
 class STARJunctionRecord:
     """
     column 1: chromosome
@@ -16,13 +17,25 @@ class STARJunctionRecord:
     column 8: number of multi-mapping reads crossing the junction
     column 9: maximum spliced alignment overhang
     """
-    strand_dict = {0: 'NA', 1: '+', 2: '-'}
-    motif_dict = ['non_canonical', 'GTAG', 'CTAC', 'GCAG', 'CTGC', 'ATAC', 'GTAT']
 
-    def __init__(self, chrom, start, end, strand, motif, is_annotated, unique_count, multi_count, overhang):
+    strand_dict = {0: "NA", 1: "+", 2: "-"}
+    motif_dict = ["non_canonical", "GTAG", "CTAC", "GCAG", "CTGC", "ATAC", "GTAT"]
+
+    def __init__(
+        self,
+        chrom,
+        start,
+        end,
+        strand,
+        motif,
+        is_annotated,
+        unique_count,
+        multi_count,
+        overhang,
+    ):
         self.chrom = chrom
         self.start = start  # store as 0-based start
-        self.end = end      # store as 1-based end
+        self.end = end  # store as 1-based end
         self.strand = strand
         self.motif = motif
         self.is_annotated = is_annotated
@@ -36,35 +49,49 @@ class STARJunctionRecord:
         Motif: {m}
         Annotated: {a}
         Counts: {u} (unique), {n} (multi)
-        """.format(c=self.chrom, s=self.start+1, e=self.end, t=self.strand,
-                   m=self.motif, a=self.is_annotated, u=self.unique_count,
-                   n=self.multi_count)
+        """.format(
+            c=self.chrom,
+            s=self.start + 1,
+            e=self.end,
+            t=self.strand,
+            m=self.motif,
+            a=self.is_annotated,
+            u=self.unique_count,
+            n=self.multi_count,
+        )
 
     @staticmethod
     def process_line(line):
         raw = line.strip().split()
-        if len(raw)!=9:
-            raise Exception("Expected 9 columns for STAR junction file! Got {0} instead!".format(len(raw)))
+        if len(raw) != 9:
+            raise Exception(
+                "Expected 9 columns for STAR junction file! Got {0} instead!".format(
+                    len(raw)
+                )
+            )
 
         chrom = raw[0]
         start = int(raw[1])
         end = int(raw[2])
         strand = STARJunctionRecord.strand_dict[int(raw[3])]
 
-
-        return STARJunctionRecord(chrom=raw[0],
-                                  start=int(raw[1])-1,
-                                  end=int(raw[2]),
-                                  strand=STARJunctionRecord.strand_dict[int(raw[3])],
-                                  motif=STARJunctionRecord.motif_dict[int(raw[4])],
-                                  is_annotated=True if int(raw[5])==1 else False,
-                                  unique_count=int(raw[6]),
-                                  multi_count=int(raw[7]),
-                                  overhang=int(raw[8]))
+        return STARJunctionRecord(
+            chrom=raw[0],
+            start=int(raw[1]) - 1,
+            end=int(raw[2]),
+            strand=STARJunctionRecord.strand_dict[int(raw[3])],
+            motif=STARJunctionRecord.motif_dict[int(raw[4])],
+            is_annotated=True if int(raw[5]) == 1 else False,
+            unique_count=int(raw[6]),
+            multi_count=int(raw[7]),
+            overhang=int(raw[8]),
+        )
 
 
 class STARJunctionReader:
-    def __init__(self, filename,):
+    def __init__(
+        self, filename,
+    ):
         self.filename = filename
         self.f = open(filename)
 

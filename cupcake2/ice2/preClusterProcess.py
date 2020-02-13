@@ -1,4 +1,4 @@
-__author__ = 'etseng@pacb.com'
+__author__ = "etseng@pacb.com"
 
 
 import os, sys, pdb, subprocess
@@ -10,33 +10,37 @@ from Bio import SeqIO
 
 from cupcake2.ice2.preCluster import preClusterSet2
 
+
 def sanity_checking(pCS, orphans):
     # do some sanity checking
     # 1. all members should be uniquely in one S
     for cid in pCS.S:
         for x in pCS.S[cid].members:
-            assert pCS.seq_map[x]==cid
+            assert pCS.seq_map[x] == cid
             assert x not in orphans
     # 2. anything in tucked must not be in seq_map
     for x in pCS.tucked:
         assert x not in pCS.seq_map
         assert x not in orphans
 
+
 def sanity_checking2(pCS, orphans):
     for cid in pCS.S:
         for x in pCS.S[cid].members:
-            assert pCS.seq_map[x]==cid
+            assert pCS.seq_map[x] == cid
             assert x not in orphans
 
     for x in pCS.seq_map:
-        if pCS.seq_stat[x] == 'T':
+        if pCS.seq_stat[x] == "T":
             assert x not in orphans
             assert x not in pCS.seq_map
-        elif pCS.seq_stat[x] == 'M':
+        elif pCS.seq_stat[x] == "M":
             assert x not in orphans
 
 
-def process_self_align_into_seed(align_filename, seqids, reader_class, pCS=None, dun_use_partial=False):
+def process_self_align_into_seed(
+    align_filename, seqids, reader_class, pCS=None, dun_use_partial=False
+):
     """
     Ignore hits that are - strand or qID >= sID (self hit or already reported)
 
@@ -50,17 +54,19 @@ def process_self_align_into_seed(align_filename, seqids, reader_class, pCS=None,
     orphans = set(seqids)
     reader = reader_class(align_filename)
     for r in reader:
-        if r.qID >= r.sID or r.strand == '-': continue
+        if r.qID >= r.sID or r.strand == "-":
+            continue
         s = r.characterize(30, 0.01, 30, 0.01, 30, 0.05, min_identity=0.99)
-        if dun_use_partial and s == 'partial': continue
+        if dun_use_partial and s == "partial":
+            continue
 
-        if s == 'match':
+        if s == "match":
             pCS.add_seqid_match(r.qID, r.sID)
-        elif s == 'partial':
+        elif s == "partial":
             pCS.add_seqid_partial(r.qID, r.sID)
-        elif s == 'q_contained':
+        elif s == "q_contained":
             pCS.add_seqid_contained(r.qID, r.sID)
-        elif s == 's_contained':
+        elif s == "s_contained":
             pCS.add_seqid_contained(r.sID, r.qID)
         try:
             orphans.remove(r.qID)
@@ -70,14 +76,16 @@ def process_self_align_into_seed(align_filename, seqids, reader_class, pCS=None,
             orphans.remove(r.sID)
         except:
             pass
-        #sanity_checking(pCS, orphans)
+        # sanity_checking(pCS, orphans)
 
-
-    #sanity_checking(pCS, orphans)
+    # sanity_checking(pCS, orphans)
 
     return pCS, orphans
 
-def process_align_to_pCS(align_filename, seqids, pCS, reader_class, dun_use_partial=False):
+
+def process_align_to_pCS(
+    align_filename, seqids, pCS, reader_class, dun_use_partial=False
+):
     """
     Batch against {S}, so it is NOT self align! Only have to ignore - strand hits.
 
@@ -89,20 +97,22 @@ def process_align_to_pCS(align_filename, seqids, pCS, reader_class, dun_use_part
     """
     orphans = set(seqids)
     # ex: process batch1 against seed1.S.fasta
-    reader = reader_class(align_filename)#'batch1.fasta.S.f00001.minimap')
+    reader = reader_class(align_filename)  #'batch1.fasta.S.f00001.minimap')
     for r in reader:
-        if r.strand == '-': continue
+        if r.strand == "-":
+            continue
         s = r.characterize(30, 0.01, 30, 0.01, 30, 0.05, min_identity=0.99)
-        if dun_use_partial and s == 'partial': continue
+        if dun_use_partial and s == "partial":
+            continue
         # Liz note: currently, just add all to match because minimap sensitivity not enough to do "tuck" properly
-        if s == 'match':
+        if s == "match":
             pCS.add_seqid_match(r.qID, r.sID)
-        elif s == 'partial':
+        elif s == "partial":
             pCS.add_seqid_partial(r.qID, r.sID)
-        elif s == 'q_contained':
+        elif s == "q_contained":
             # sID must be in cluster, so just call pCS to handle the tucking
             pCS.add_seqid_contained(r.qID, r.sID)
-        elif s == 's_contained':
+        elif s == "s_contained":
             # sID must be in cluster
             pCS.add_seqid_contained(r.sID, r.qID)
         try:
@@ -113,7 +123,9 @@ def process_align_to_pCS(align_filename, seqids, pCS, reader_class, dun_use_part
     return pCS, orphans
 
 
-def process_align_to_orphan(align_filename, remaining, orphans, pCS, reader_class, dun_use_partial=False):
+def process_align_to_orphan(
+    align_filename, remaining, orphans, pCS, reader_class, dun_use_partial=False
+):
     """
     remaining of "batch" against orphans
 
@@ -126,16 +138,18 @@ def process_align_to_orphan(align_filename, remaining, orphans, pCS, reader_clas
     """
     reader = reader_class(align_filename)
     for r in reader:
-        if r.strand == '-': continue
+        if r.strand == "-":
+            continue
         s = r.characterize(30, 0.01, 30, 0.01, 30, 0.05, min_identity=0.99)
-        if dun_use_partial and s == 'partial': continue
-        if s == 'match':
+        if dun_use_partial and s == "partial":
+            continue
+        if s == "match":
             pCS.add_seqid_match(r.qID, r.sID)
-        elif s == 'partial':
+        elif s == "partial":
             pCS.add_seqid_partial(r.qID, r.sID)
-        elif s == 'q_contained':
+        elif s == "q_contained":
             pCS.add_seqid_contained(r.qID, r.sID)
-        elif s == 's_contained':
+        elif s == "s_contained":
             pCS.add_seqid_contained(r.sID, r.qID)
         try:
             orphans.remove(r.sID)

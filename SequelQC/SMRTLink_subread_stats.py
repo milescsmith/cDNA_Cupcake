@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-__author__ = 'etseng@pacb.com'
+__author__ = "etseng@pacb.com"
 
 
 """
@@ -12,6 +12,7 @@ Note: also "approximates" ZMW length by using last subread end
 import os, sys
 from collections import defaultdict
 from pbcore.io import SubreadSet
+
 
 def get_subread_ZMW_stats(subread_xml, report):
     """
@@ -27,13 +28,12 @@ def get_subread_ZMW_stats(subread_xml, report):
     ds = SubreadSet(subread_xml)
     for rr in ds.resourceReaders():
         for zmw, qStart, qEnd in zip(rr.holeNumber, rr.qStart, rr.qEnd):
-            subread_lens.append(qEnd-qStart)
+            subread_lens.append(qEnd - qStart)
             zmw_lens[zmw] = max(zmw_lens[zmw], qEnd)
 
-    report['numZMW'] = len(zmw_lens)
-    report['numSubread'] = len(subread_lens)
-    report['avgZMWlen'] = int(sum(zmw_lens.itervalues())*1./len(zmw_lens))
-    report['avgSubreadlen'] = int(sum(subread_lens)*1./len(subread_lens))
+    report["numZMW"] = len(zmw_lens)
+    report["numSubread"] = len(subread_lens)
+    report["avgZMWlen"] = int(sum(zmw_lens.itervalues()) * 1.0 / len(zmw_lens))
+    report["avgSubreadlen"] = int(sum(subread_lens) * 1.0 / len(subread_lens))
 
-    #return zmw_lens
-
+    # return zmw_lens

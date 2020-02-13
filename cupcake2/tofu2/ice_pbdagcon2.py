@@ -50,15 +50,18 @@ from pbcore.util.Process import backticks
 from pbtranscript.io import FastaRandomReader
 from pbtranscript.__init__ import get_version
 
-__author__ = 'etseng@pacificbiosciences.com'
+__author__ = "etseng@pacificbiosciences.com"
+
 
 class AlignGraphUtilError(Exception):
     """Align Group Util Error Class"""
+
     pass
 
 
-def choose_template_by_blasr(fasta_filename, out_filename, nproc=8,
-                             maxScore=-1000, min_number_reads=1):
+def choose_template_by_blasr(
+    fasta_filename, out_filename, nproc=8, maxScore=-1000, min_number_reads=1
+):
     """
     Choose the best template for gcon reference
     Pick the one that has the highest average hit identity to others
@@ -67,12 +70,14 @@ def choose_template_by_blasr(fasta_filename, out_filename, nproc=8,
     """
     fd = FastaRandomReader(fasta_filename)
 
-    cmd = "blasr --nproc {nproc} ".format(nproc=nproc) + \
-          "--maxScore {score} ".format(score=maxScore) + \
-          "--maxLCPLength 15 --bestn 10 --nCandidates 50 " + \
-          "-m 1 {fa} {fa} ".format(fa=fasta_filename) + \
-          "--out {out} ".format(out=out_filename) + \
-          "1>/dev/null 2>/dev/null"
+    cmd = (
+        "blasr --nproc {nproc} ".format(nproc=nproc)
+        + "--maxScore {score} ".format(score=maxScore)
+        + "--maxLCPLength 15 --bestn 10 --nCandidates 50 "
+        + "-m 1 {fa} {fa} ".format(fa=fasta_filename)
+        + "--out {out} ".format(out=out_filename)
+        + "1>/dev/null 2>/dev/null"
+    )
 
     out, code, msg = backticks(cmd)
     if code != 0:
@@ -89,7 +94,7 @@ def choose_template_by_blasr(fasta_filename, out_filename, nproc=8,
         for line in f:
             raw = line.strip().split()
             # qID gets an extra /0_length
-            qID, tID = raw[0][:raw[0].rfind('/')], raw[1]
+            qID, tID = raw[0][: raw[0].rfind("/")], raw[1]
             if qID == tID:
                 continue  # self-hit, ignore
             if raw[2] != raw[3]:
@@ -101,9 +106,12 @@ def choose_template_by_blasr(fasta_filename, out_filename, nproc=8,
     for k, v in scores.items():
         score_array.append((np.ceil(np.mean(v)), k))
     if len(score_array) < min_number_reads:
-        errMsg = "Not enough number of reads in " + \
-                 "choose_template_by_blasr {0} < {1}".format(
-                     len(score_array), min_number_reads)
+        errMsg = (
+            "Not enough number of reads in "
+            + "choose_template_by_blasr {0} < {1}".format(
+                len(score_array), min_number_reads
+            )
+        )
         raise AlignGraphUtilError(errMsg)
 
     score_array.sort(reverse=True)
@@ -114,7 +122,7 @@ def choose_template_by_blasr(fasta_filename, out_filename, nproc=8,
     best_mean, best_id = score_array[0]
     best_len = len(fd[best_id].sequence)
     for _mean, _id in score_array[1:]:
-        if abs(_mean-best_mean) > best_mean_std:
+        if abs(_mean - best_mean) > best_mean_std:
             break
         _len = len(fd[_id].sequence)
         if _len > best_len:
@@ -124,8 +132,7 @@ def choose_template_by_blasr(fasta_filename, out_filename, nproc=8,
     return fd[best_id]
 
 
-def make_aln_input_to_ref(fasta_filename, ref_filename,
-                          out_filename, nproc=8):
+def make_aln_input_to_ref(fasta_filename, ref_filename, out_filename, nproc=8):
     """
     Make blasr -m 5 output of input aligned to ref
 
@@ -134,21 +141,23 @@ def make_aln_input_to_ref(fasta_filename, ref_filename,
     # pbdagcon only takes -m 5 output
     tmp_out = "{out}.tmp".format(out=out_filename)
 
-    cmd = "blasr {infa} ".format(infa=fasta_filename) + \
-          "{ref} --bestn 1 ".format(ref=ref_filename) + \
-          "--nproc {nproc} ".format(nproc=nproc) + \
-          "-m 5 --out {out} ".format(out=tmp_out) + \
-          "1>/dev/null 2>/dev/null"
+    cmd = (
+        "blasr {infa} ".format(infa=fasta_filename)
+        + "{ref} --bestn 1 ".format(ref=ref_filename)
+        + "--nproc {nproc} ".format(nproc=nproc)
+        + "-m 5 --out {out} ".format(out=tmp_out)
+        + "1>/dev/null 2>/dev/null"
+    )
 
     out, code, msg = backticks(cmd)
     if code != 0:
-        errMsg = "Unable to align {infa} to {ref} in make_aln_input_to_ref".\
-            format(infa=fasta_filename, ref=ref_filename)
+        errMsg = "Unable to align {infa} to {ref} in make_aln_input_to_ref".format(
+            infa=fasta_filename, ref=ref_filename
+        )
         raise AlignGraphUtilError(errMsg)
 
     # trim away anything that is a self-hit or opp strand
-    with open(out_filename, 'w') as f, \
-            open(tmp_out, 'r') as h:
+    with open(out_filename, "w") as f, open(tmp_out, "r") as h:
         for line in h:
             raw = line.strip().split()
             # blasr -m 5 output format:
@@ -164,80 +173,89 @@ def make_aln_input_to_ref(fasta_filename, ref_filename,
     os.remove(tmp_out)
 
 
-def pbdagcon_wrapper(fasta_filename, output_prefix,
-                     consensus_name, nproc=8,
-                     maxScore=-1000, min_seq_len=300):
+def pbdagcon_wrapper(
+    fasta_filename,
+    output_prefix,
+    consensus_name,
+    nproc=8,
+    maxScore=-1000,
+    min_seq_len=300,
+):
     """
     (1) Find the best seed as reference
     (2) Align rest to seed
     (3) Call pbdagcon
     """
-    ref_filename = output_prefix + '_ref.fasta'
+    ref_filename = output_prefix + "_ref.fasta"
     try:
         out_filename_m1 = output_prefix + ".saln.m1"
-        ref = choose_template_by_blasr(fasta_filename=fasta_filename,
-                                       out_filename=out_filename_m1,
-                                       nproc=nproc, maxScore=maxScore)
+        ref = choose_template_by_blasr(
+            fasta_filename=fasta_filename,
+            out_filename=out_filename_m1,
+            nproc=nproc,
+            maxScore=maxScore,
+        )
         os.remove(out_filename_m1)
 
-        with open(ref_filename, 'w') as f:
+        with open(ref_filename, "w") as f:
             f.write(">{0}\n{1}\n".format(consensus_name, ref.sequence))
 
         # create alignment file
-        aln_filename = output_prefix + '.saln'
-        make_aln_input_to_ref(fasta_filename=fasta_filename,
-                              ref_filename=ref_filename,
-                              out_filename=aln_filename,
-                              nproc=nproc)
+        aln_filename = output_prefix + ".saln"
+        make_aln_input_to_ref(
+            fasta_filename=fasta_filename,
+            ref_filename=ref_filename,
+            out_filename=aln_filename,
+            nproc=nproc,
+        )
 
-        cons_filename = output_prefix + '.fasta'
-        tmp_cons_filename = output_prefix + '.fasta.tmp'
+        cons_filename = output_prefix + ".fasta"
+        tmp_cons_filename = output_prefix + ".fasta.tmp"
         # call pbdagcon
         cmd = "pbdagcon -t 0 -m {minlen} -c 1 -j {nproc} {aln} > {out}".format(
-            minlen=min_seq_len, nproc=nproc, aln=aln_filename,
-            out=tmp_cons_filename)
+            minlen=min_seq_len, nproc=nproc, aln=aln_filename, out=tmp_cons_filename
+        )
         cmd += " 2>/dev/null"
         out, code, msg = backticks(cmd)
         if code != 0:
             raise AlignGraphUtilError("Cannot run command: %s" % cmd)
 
-        with FastaReader(tmp_cons_filename) as reader, \
-            open(cons_filename, 'w') as writer:
+        with FastaReader(tmp_cons_filename) as reader, open(
+            cons_filename, "w"
+        ) as writer:
             for rec in reader:
                 name = rec.name.strip()
                 if "/" in name:
                     # change cid format from c{cid}/0_{len} to c{cid}
-                    name = name[:name.find('/')]
+                    name = name[: name.find("/")]
                 seq = rec.sequence.strip()
-                if not 'N' in seq: # Don't write if seq contains N
+                if not "N" in seq:  # Don't write if seq contains N
                     writer.write(">{0}\n{1}\n".format(name, seq))
         os.remove(tmp_cons_filename)
 
     except AlignGraphUtilError:
         # pick the first sequence as reference as a backup plan
         first_seq = next(FastaReader(fasta_filename).__iter__())
-        with open(ref_filename, 'w') as f:
-            f.write(">{0}_ref\n{1}\n".
-                    format(consensus_name, first_seq.sequence))
+        with open(ref_filename, "w") as f:
+            f.write(">{0}_ref\n{1}\n".format(consensus_name, first_seq.sequence))
     return 0
 
 
 def set_parser():
     """Set up and return argument parser."""
     parser = ArgumentParser()
-    parser.add_argument("input_fasta",
-                        help="Input fasta filename")
-    parser.add_argument("output_prefix",
-                        help="Output filename prefix (ex: g_consensus)")
-    parser.add_argument("consensus_id",
-                        help="Consensus sequence ID name (ex: consensus)")
-    parser.add_argument("--nproc",
-                        default=8, type=int,
-                        help="Number of processes")
-    parser.add_argument("--maxScore", default=-1000, type=int,
-                        help="blasr maxScore")
-    parser.add_argument("--version", "-v",
-                        action='version', version='%(prog)s ' + get_version())
+    parser.add_argument("input_fasta", help="Input fasta filename")
+    parser.add_argument(
+        "output_prefix", help="Output filename prefix (ex: g_consensus)"
+    )
+    parser.add_argument(
+        "consensus_id", help="Consensus sequence ID name (ex: consensus)"
+    )
+    parser.add_argument("--nproc", default=8, type=int, help="Number of processes")
+    parser.add_argument("--maxScore", default=-1000, type=int, help="blasr maxScore")
+    parser.add_argument(
+        "--version", "-v", action="version", version="%(prog)s " + get_version()
+    )
     return parser
 
 
@@ -248,8 +266,8 @@ def restore_args_with_whitespace(x):
         if len(y) == 0:
             y.append(xi)
         else:
-            if y[-1].endswith('\\'):
-                y[-1] = y[-1][0:-1] + ' ' + xi
+            if y[-1].endswith("\\"):
+                y[-1] = y[-1][0:-1] + " " + xi
             else:
                 y.append(xi)
     return y
@@ -260,10 +278,13 @@ def runConsensus(args_list_str):
     parser = set_parser()
     args_list = restore_args_with_whitespace(args_list_str.split())
     args = parser.parse_args(args_list)
-    return pbdagcon_wrapper(fasta_filename=args.input_fasta,
-                            output_prefix=args.output_prefix,
-                            consensus_name=args.consensus_id,
-                            nproc=args.nproc, maxScore=args.maxScore)
+    return pbdagcon_wrapper(
+        fasta_filename=args.input_fasta,
+        output_prefix=args.output_prefix,
+        consensus_name=args.consensus_id,
+        nproc=args.nproc,
+        maxScore=args.maxScore,
+    )
 
 
 if __name__ == "__main__":
