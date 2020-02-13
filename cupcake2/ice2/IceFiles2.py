@@ -1,4 +1,4 @@
-__author__ = 'etseng@pacb.com'
+__author__ = "etseng@pacb.com"
 
 
 """
@@ -16,16 +16,20 @@ from pbtranscript.Utils import real_ppath, now_str, mkdir
 
 from pbtranscript.ice.IceFiles import IceFiles
 
+
 class IceFiles2(IceFiles):
     nfl_fa_format = "input.split_{0:03d}.fasta"
     nfl_fq_format = "input.split_{0:03d}.fastq"
 
-
-    def __init__(self, prog_name, root_dir,
-                 subread_xml=None,
-                 no_log_f=False,
-                 tmp_dir=None,
-                 make_dirs=True):
+    def __init__(
+        self,
+        prog_name,
+        root_dir,
+        subread_xml=None,
+        no_log_f=False,
+        tmp_dir=None,
+        make_dirs=True,
+    ):
         """
         prog_name --- name of a sub-class
         root_dir --- root directory of the whole project. There will be
@@ -62,9 +66,8 @@ class IceFiles2(IceFiles):
 
         self.no_log_f = no_log_f
         if not no_log_f:
-            self.log_f = open(self.log_fn, 'w', 0)
+            self.log_f = open(self.log_fn, "w", 0)
             self.add_log(msg="{p} initialized.".format(p=self.prog_name))
-
 
     def nfl_fa_i(self, i):
         return op.join(self.nfl_dir, IceFiles2.nfl_fa_format.format(i))
@@ -74,7 +77,6 @@ class IceFiles2(IceFiles):
            $root_dir/output/map_noFL/input.split_{0:03d}.fastq
         """
         return op.join(self.nfl_dir, IceFiles2.nfl_fq_format.format(i))
-
 
     @property
     def arrowed_dir(self):
@@ -89,7 +91,7 @@ class IceFiles2(IceFiles):
     @property
     def prepare_arrow_files(self):
         """Return $root_dir/log/prepared_arrow_files.txt"""
-        return op.join(self.log_dir, 'prepared_arrow_files.txt')
+        return op.join(self.log_dir, "prepared_arrow_files.txt")
 
     def arrow_submission_file(self, i, total):
         return op.join(self.log_dir, "arrow_job_{0}of{1}.sh".format(i, total))
@@ -100,8 +102,7 @@ class IceFiles2(IceFiles):
 
     def _arrowed_bin_prefix(self, first, last):
         """Return $arrowed_dir/c{first}to{last}"""
-        return self.arrowed_dir + "/c{first}to{last}".format(
-            first=first, last=last)
+        return self.arrowed_dir + "/c{first}to{last}".format(first=first, last=last)
 
     def fq_of_arrowed_bin(self, first, last):
         """Return $_arrowed_bin_prefix.arrowed.fastq
@@ -119,27 +120,28 @@ class IceFiles2(IceFiles):
         Note: related methods include fq_of_arrowed_bin() and others,
               when changing one must remember to keep it consistent across.
         """
+
         def iter_script_to_get_fq(script_filename):
             for line in open(script_filename):
                 # line might be like:
                 # bash <arrow_dir>/c0to9.sh
                 sh_file = line.strip().split()[-1]
-                assert sh_file.endswith('.sh')
-                yield sh_file[:-3] + '.arrowed.fastq'
-
+                assert sh_file.endswith(".sh")
+                yield sh_file[:-3] + ".arrowed.fastq"
 
         sge_ids = []
-        submitted = {} # expected fq --> ("local" or SGE jobid, script used to get this)
+        submitted = (
+            {}
+        )  # expected fq --> ("local" or SGE jobid, script used to get this)
         for line in open(self.arrow_submission_run_file):
-            jobid, script = line.strip().split('\t')
+            jobid, script = line.strip().split("\t")
             # read the script to see which c<i>to<j>.sh files are associated with this
             for fq in iter_script_to_get_fq(script):
                 submitted[fq] = (jobid, script)
-            if jobid!='local':
+            if jobid != "local":
                 sge_ids.append(jobid)
 
         return sge_ids, submitted
-
 
     @property
     def pattern_of_expected_fq_files(self):
@@ -150,7 +152,7 @@ class IceFiles2(IceFiles):
         """
         File that will contain the list of .sh files that were incomplete and need to re-run.
         """
-        return op.join(self.log_dir, 'unfinished_arrow_files.txt')
+        return op.join(self.log_dir, "unfinished_arrow_files.txt")
 
     def raw_fa_of_cluster2(self, ref_file):
         """Return $cluster_dir/in.raw_with_partial.fasta, which
@@ -168,7 +170,6 @@ class IceFiles2(IceFiles):
         """Return $cluster_dir/out.bam, like sam_of_cluster(cid)."""
         return op.join(op.dirname(ref_file), "out.bam")
 
-
     def cluster_dir_for_reconstructed_ref(self, cid):
         """
         This cid is from ICE2 style: b<bin>_c<cid>.
@@ -178,4 +179,4 @@ class IceFiles2(IceFiles):
         if m is None:
             raise Exception("{0} is not a valid b<bin>_c<cid> format!".format(cid))
         _cid = int(m.group(2))
-        return op.join(self.tmp_dir, str(_cid/10000), cid)
+        return op.join(self.tmp_dir, str(_cid / 10000), cid)

@@ -1,4 +1,4 @@
-__author__ = 'etseng@pacb.com'
+__author__ = "etseng@pacb.com"
 
 """
 Class ICEIterative for iterative clustering and error correction.
@@ -15,21 +15,33 @@ from datetime import datetime
 from multiprocessing.pool import ThreadPool
 
 from pbtranscript.Utils import mknewdir, real_upath
-from pbtranscript.io import FastaRandomReader, \
-    BLASRM5Reader, LA4IceReader, DazzIDHandler
+from pbtranscript.io import (
+    FastaRandomReader,
+    BLASRM5Reader,
+    LA4IceReader,
+    DazzIDHandler,
+)
 from pbtranscript.io.ContigSetReaderWrapper import ContigSetReaderWrapper
 
 from pbtranscript.ice_daligner import DalignerRunner
-from pbtranscript.ice.IceUtils import sanity_check_sge, \
-    get_the_only_fasta_record, cid_with_annotation, \
-    set_probqv_from_fq, set_probqv_from_model
+from pbtranscript.ice.IceUtils import (
+    sanity_check_sge,
+    get_the_only_fasta_record,
+    cid_with_annotation,
+    set_probqv_from_fq,
+    set_probqv_from_model,
+)
 
 from cupcake2.tofu2.ice_pbdagcon2 import runConsensus
 from cupcake2.ice2.IceFiles2 import IceFiles2
 from cupcake2.ice2.IceInit2 import IceInit2
 
-from cupcake2.ice2.IceUtils2 import daligner_against_ref2, blasr_against_ref2, possible_merge2, \
-    sanity_check_gcon2
+from cupcake2.ice2.IceUtils2 import (
+    daligner_against_ref2,
+    blasr_against_ref2,
+    possible_merge2,
+    sanity_check_gcon2,
+)
 
 random.seed(0)
 
@@ -40,17 +52,25 @@ class IceIterative2(IceFiles2):
     Expects that new fasta files will be gradually added
     """
 
-    def __init__(self, fasta_filename,
-                 fastq_filename,
-                 fasta_filenames_to_add,
-                 fastq_filenames_to_add,
-                 all_fasta_filename,
-                 root_dir,
-                 ice_opts, sge_opts,
-                 uc=None, probQV=None,
-                 refs=None, d=None, is_FL=True, qv_prob_threshold=.03,
-                 output_pickle_file=None,
-                 tmp_dir=None):
+    def __init__(
+        self,
+        fasta_filename,
+        fastq_filename,
+        fasta_filenames_to_add,
+        fastq_filenames_to_add,
+        all_fasta_filename,
+        root_dir,
+        ice_opts,
+        sge_opts,
+        uc=None,
+        probQV=None,
+        refs=None,
+        d=None,
+        is_FL=True,
+        qv_prob_threshold=0.03,
+        output_pickle_file=None,
+        tmp_dir=None,
+    ):
         """
         fasta_filename --- the current fasta filename containing
             all the "active" reads (reads that are allowed to move
@@ -86,9 +106,9 @@ class IceIterative2(IceFiles2):
 
         tmp_dir --- directory to save temporary files.
         """
-        super(IceIterative2, self).__init__(prog_name="IceIterative2",
-                                           root_dir=root_dir,
-                                           tmp_dir=tmp_dir)
+        super(IceIterative2, self).__init__(
+            prog_name="IceIterative2", root_dir=root_dir, tmp_dir=tmp_dir
+        )
 
         self.fasta_filename = fasta_filename
         self.fastq_filename = fastq_filename
@@ -145,8 +165,12 @@ class IceIterative2(IceFiles2):
         # Set ice_opts.maxScore and low_cDNA_size and sensitive mode
         self.ice_opts.detect_cDNA_size(self.all_fasta_filename)
         # set min_match_len to (low_cDNA_size-max_missed_start-max_missed_end), rounded to lowest 100 bp
-        x = self.ice_opts.low_cDNA_size - self.ice_opts.max_missed_start - self.ice_opts.max_missed_end
-        self.ice_opts.min_match_len = max(50, (x/100)*100)
+        x = (
+            self.ice_opts.low_cDNA_size
+            - self.ice_opts.max_missed_start
+            - self.ice_opts.max_missed_end
+        )
+        self.ice_opts.min_match_len = max(50, (x / 100) * 100)
 
         self.qv_prob_threshold = qv_prob_threshold
 
@@ -160,20 +184,21 @@ class IceIterative2(IceFiles2):
         self.use_finer_qv = ice_opts.use_finer_qv
 
         if probQV is not None:
-            self.add_log("Loading probabilities and QVs from given probQV.",
-                         level=logging.INFO)
+            self.add_log(
+                "Loading probabilities and QVs from given probQV.", level=logging.INFO
+            )
             self.probQV = probQV
         else:
             if self.fastq_filename is not None:
                 self.probQV, msg = set_probqv_from_fq(
-                        fastq_filename=self.fastq_filename)
+                    fastq_filename=self.fastq_filename
+                )
             else:
                 self.probQV, msg = set_probqv_from_model()
             self.add_log(msg, level=logging.INFO)
 
         if uc is not None:
-            self.add_log("Loading initial clusters from uc.",
-                         level=logging.INFO)
+            self.add_log("Loading initial clusters from uc.", level=logging.INFO)
             self.uc = uc
         else:
             errMsg = "IceInit2.init_cluster_by_clique() should have been called."
@@ -182,23 +207,29 @@ class IceIterative2(IceFiles2):
 
         # only runs things in 'uc', so safe to run in init
         if refs is None:
-            self.add_log("Creating a reference dict using run_gcon_parallel.",
-                         level=logging.INFO)
+            self.add_log(
+                "Creating a reference dict using run_gcon_parallel.", level=logging.INFO
+            )
             self.run_gcon_parallel(list(self.uc.keys()))
         else:
-            self.add_log("loading references from a reference dict directly.",
-                         level=logging.INFO)
+            self.add_log(
+                "loading references from a reference dict directly.", level=logging.INFO
+            )
             self.refs = refs
 
         # probability dict, seqid --> cluster index i --> P(seq|C_i)
         if d is None:
-            self.add_log("Creating a prob dict using calc_cluster_prob.",
-                         level=logging.INFO)
+            self.add_log(
+                "Creating a prob dict using calc_cluster_prob.", level=logging.INFO
+            )
             self.init_d()
-            self.calc_cluster_prob(force_calc=True, use_blasr=(self.ice_opts.aligner_choice=='blasr'))
+            self.calc_cluster_prob(
+                force_calc=True, use_blasr=(self.ice_opts.aligner_choice == "blasr")
+            )
         else:
-            self.add_log("Loading probabilities from a prob dict directly.",
-                         level=logging.INFO)
+            self.add_log(
+                "Loading probabilities from a prob dict directly.", level=logging.INFO
+            )
             self.d = d
 
         self.removed_qids = set()
@@ -245,14 +276,14 @@ class IceIterative2(IceFiles2):
         """Given a Fasta file path/*.fasta, return
            $self.out_dir/upto_*.fasta.pickle
         """
-        fn = fa.split('/')[-1]
+        fn = fa.split("/")[-1]
         return op.join(self.out_dir, fn + ".pickle")
 
     def uptoConsensusFa(self, fa):
         """Given a Fasta file: path_to_fa/*.fasta, return
            $self.out_dir/upto_*.fasta.consensus.fasta
         """
-        fn = fa.split('/')[-1]
+        fn = fa.split("/")[-1]
         return op.join(self.out_dir, fn + ".consensus.fasta")
 
     def orphanFa(self, prefix):
@@ -295,10 +326,10 @@ class IceIterative2(IceFiles2):
         a = None
         with open(pickle_filename) as h:
             a = pickle.load(h)
-        all_fasta_filename = a['all_fasta_filename']
+        all_fasta_filename = a["all_fasta_filename"]
         # need to make current.fasta!!!
-        newids = a['newids']
-        with open(a['fasta_filename'], 'w') as f:
+        newids = a["newids"]
+        with open(a["fasta_filename"], "w") as f:
             with ContigSetReaderWrapper(all_fasta_filename) as cs:
                 for r in cs:
                     rid = r.name.split()[0]
@@ -306,36 +337,37 @@ class IceIterative2(IceFiles2):
                         f.write(">{0}\n{1}\n".format(rid, r.sequence))
 
         obj = IceIterative2(
-            fasta_filename=a['fasta_filename'],
+            fasta_filename=a["fasta_filename"],
             fastq_filename=None,
-            fasta_filenames_to_add=a['fasta_filenames_to_add'],
-            fastq_filenames_to_add=a['fastq_filenames_to_add'],
+            fasta_filenames_to_add=a["fasta_filenames_to_add"],
+            fastq_filenames_to_add=a["fastq_filenames_to_add"],
             all_fasta_filename=all_fasta_filename,
-            root_dir=a['root_dir'],
-            ice_opts=a['ice_opts'],
-            sge_opts=a['sge_opts'],
-            uc=a['uc'],
+            root_dir=a["root_dir"],
+            ice_opts=a["ice_opts"],
+            sge_opts=a["sge_opts"],
+            uc=a["uc"],
             probQV=probQV,
-            refs=a['refs'],
-            d=a['d'],
+            refs=a["refs"],
+            d=a["d"],
             is_FL=True,
-            qv_prob_threshold=a['qv_prob_threshold'])
-        obj.changes = a['changes']
+            qv_prob_threshold=a["qv_prob_threshold"],
+        )
+        obj.changes = a["changes"]
         return obj
-
 
     def write_final_consensus(self):
         """
         Write output to final.consensus.fasta
         Write output to final.consensus.fasta.sa -> no longer needed, replaced by daligner
         """
-        msg = "Writing final consensus isoforms to " + \
-              "{f}, and its dazz DB.".format(f=self.final_consensus_fa)
+        msg = "Writing final consensus isoforms to " + "{f}, and its dazz DB.".format(
+            f=self.final_consensus_fa
+        )
         self.add_log(msg, level=logging.INFO)
 
         self.write_consensus(fasta_filename=self.final_consensus_fa)
 
-        DazzIDHandler(self.final_consensus_fa, converted=False) # make dazz db.
+        DazzIDHandler(self.final_consensus_fa, converted=False)  # make dazz db.
 
     def write_consensus(self, fasta_filename):
         """
@@ -343,20 +375,19 @@ class IceIterative2(IceFiles2):
         Sequence ID format
         >c<cid>/abundance/length
         """
-        with open(fasta_filename, 'w') as f:
+        with open(fasta_filename, "w") as f:
             for cid, filename in self.refs.items():
                 assert cid in self.uc
-                #r = SeqIO.read(open(filename), 'fasta')
+                # r = SeqIO.read(open(filename), 'fasta')
                 rs = []
                 with ContigSetReaderWrapper(filename) as cs:
                     rs.extend([x for x in cs])
                 assert len(rs) == 1
                 r = rs[0]
-                newid = "c{cid}/{ab}/{le}".format(cid=cid,
-                                                  ab=len(self.uc[cid]),
-                                                  le=len(r.sequence))
-                f.write(">{0}\n{1}\n".format(cid_with_annotation(newid),
-                                             r.sequence))
+                newid = "c{cid}/{ab}/{le}".format(
+                    cid=cid, ab=len(self.uc[cid]), le=len(r.sequence)
+                )
+                f.write(">{0}\n{1}\n".format(cid_with_annotation(newid), r.sequence))
 
     def write_final_pickle(self):
         """Write the final pickle file."""
@@ -369,22 +400,23 @@ class IceIterative2(IceFiles2):
 
     def write_pickle(self, pickle_filename):
         """Write an instance of IceIterative to a pickle file."""
-        with open(pickle_filename, 'w') as f:
-            d = {'uc': self.uc,
-                 'd': self.d,
-                 'refs': self.refs,
-                 'fasta_filename': self.fasta_filename,
-                 'fasta_filenames_to_add': self.fasta_filenames_to_add,
-                 'all_fasta_filename': self.all_fasta_filename,
-                 'root_dir': self.root_dir,
-                 'newids': self.newids,
-                 'changes': self.changes,
-                 'qv_prob_threshold': self.qv_prob_threshold}
+        with open(pickle_filename, "w") as f:
+            d = {
+                "uc": self.uc,
+                "d": self.d,
+                "refs": self.refs,
+                "fasta_filename": self.fasta_filename,
+                "fasta_filenames_to_add": self.fasta_filenames_to_add,
+                "all_fasta_filename": self.all_fasta_filename,
+                "root_dir": self.root_dir,
+                "newids": self.newids,
+                "changes": self.changes,
+                "qv_prob_threshold": self.qv_prob_threshold,
+            }
             if pickle_filename.endswith(".json"):
                 f.write(json.dumps(d))
             else:
-                d.update({'ice_opts': self.ice_opts,
-                          'sge_opts': self.sge_opts})
+                d.update({"ice_opts": self.ice_opts, "sge_opts": self.sge_opts})
                 pickle.dump(d, f)
 
     def make_new_cluster(self):
@@ -419,7 +451,7 @@ class IceIterative2(IceFiles2):
         del self.refs[from_i]
 
         dirname = self.cluster_dir(from_i)
-        #op.join(self.tmp_dir, str(from_i/10000), 'c'+str(from_i))
+        # op.join(self.tmp_dir, str(from_i/10000), 'c'+str(from_i))
 
         shutil.rmtree(dirname)
         if from_i in self.changes:
@@ -454,30 +486,31 @@ class IceIterative2(IceFiles2):
         # TODO: handle failed qsub jobs separately
         while len(self.unrun_cids) > 0 and self.iterNum <= 100:
             msg = "NEED to run gcon for {n} clusters: {cid}.".format(
-                n=len(self.unrun_cids), cid=",".format(self.unrun_cids))
+                n=len(self.unrun_cids), cid=",".format(self.unrun_cids)
+            )
             self.add_log(msg)
             _cids = list(self.unrun_cids)
             self.unrun_cids = []
             self.run_gcon_parallel_helper(_cids)
-        self.add_log("Total time for run_gcon_parallel is {0}.".format(datetime.now()-time0))
+        self.add_log(
+            "Total time for run_gcon_parallel is {0}.".format(datetime.now() - time0)
+        )
 
     def gconJobFN(self, iterNum, gid):
         """Return file name of gcon job with in the iterNum-th iteration,
         while id=gid, e.g. scripts/$iterNum/gcon_job_1.sh
         """
-        return op.join(self.script_dir,
-                       str(iterNum),
-                       "gcon_job_{gid}.sh".format(gid=gid))
+        return op.join(
+            self.script_dir, str(iterNum), "gcon_job_{gid}.sh".format(gid=gid)
+        )
 
     def elogFN(self, iterNum, scriptFN):
         """return elog for scriptFN, e.g., log/0/script.elog"""
-        return op.join(self.log_dir, str(iterNum),
-                       op.basename(scriptFN) + str(".elog"))
+        return op.join(self.log_dir, str(iterNum), op.basename(scriptFN) + str(".elog"))
 
     def ologFN(self, iterNum, scriptFN):
         """return elog for scriptFN, e.g., log/0/script.olog"""
-        return op.join(self.log_dir, str(iterNum),
-                       op.basename(scriptFN) + str(".elog"))
+        return op.join(self.log_dir, str(iterNum), op.basename(scriptFN) + str(".elog"))
 
     def run_gcon_parallel_helper(self, cids):
         """
@@ -489,7 +522,7 @@ class IceIterative2(IceFiles2):
         (2) run gcon on <cid> only if the size > 2
         """
         # calculate effective chunk size
-        #effective_cids = filter(lambda cid: len(self.uc[cid])>2, cids)
+        # effective_cids = filter(lambda cid: len(self.uc[cid])>2, cids)
 
         # Create $root_dir/scripts/$iterNum/, e.g, clusterOut/scripts/0
         mknewdir(op.join(self.script_dir, str(self.iterNum)))
@@ -506,9 +539,9 @@ class IceIterative2(IceFiles2):
         if count_jobs > 0:
             # ToDo: distribute jobs evenly (must look ahead at cluster sizes)
             numgconJobs = int(math.ceil(count_jobs / float(chunk_size)))
-            #(count_jobs/chunk_size) + (count_jobs%chunk_size>0)
+            # (count_jobs/chunk_size) + (count_jobs%chunk_size>0)
             for job_i in range(numgconJobs):
-                f = open(self.gconJobFN(self.iterNum, job_i), 'w')
+                f = open(self.gconJobFN(self.iterNum, job_i), "w")
                 # e.g. "scripts/$iterNum/gcon_job_{0}.sh"
                 f.write("#!/bin/bash\n")
                 job_sh_dict[job_i] = f
@@ -528,13 +561,15 @@ class IceIterative2(IceFiles2):
                 pass
             else:
                 job_i = effective_i / chunk_size
-                argstr = " {infa} ".format(infa=real_upath(in_fa_filename)) + \
-                         " {cdir}/g_consensus".\
-                         format(cdir=real_upath(self.cluster_dir(cid))) + \
-                         " c{i}".format(i=cid) + \
-                         " --nproc {nproc}".\
-                         format(nproc=self.sge_opts.gcon_nproc) + \
-                         " --maxScore {s}\n".format(s=self.ice_opts.maxScore)
+                argstr = (
+                    " {infa} ".format(infa=real_upath(in_fa_filename))
+                    + " {cdir}/g_consensus".format(
+                        cdir=real_upath(self.cluster_dir(cid))
+                    )
+                    + " c{i}".format(i=cid)
+                    + " --nproc {nproc}".format(nproc=self.sge_opts.gcon_nproc)
+                    + " --maxScore {s}\n".format(s=self.ice_opts.maxScore)
+                )
 
                 cmd = "{script} ".format(script=self.gcon_py) + argstr
                 job_sh_dict[job_i].write(cmd)
@@ -546,50 +581,55 @@ class IceIterative2(IceFiles2):
         if effective_i > 0:
             self.add_log("use_sge = {0}".format(self.use_sge))
             if self.use_sge is True:
-                job_list = ''
+                job_list = ""
                 for job_i, f in job_sh_dict.items():
                     f.close()
                     jid = "ice_iterative_{unique_id}_{it}_{j}".format(
-                        unique_id=self.sge_opts.unique_id,
-                        it=self.iterNum, j=job_i)
+                        unique_id=self.sge_opts.unique_id, it=self.iterNum, j=job_i
+                    )
                     elog = self.elogFN(self.iterNum, f.name)
                     olog = self.ologFN(self.iterNum, f.name)
 
-                    cmd = "qsub -pe smp {nproc} ".\
-                        format(nproc=self.sge_opts.gcon_nproc) + \
-                          " -S /bin/bash -V -cwd " + \
-                          "-e {elog} ".format(elog=real_upath(elog)) + \
-                          "-o {olog} ".format(olog=real_upath(olog)) + \
-                          "-N {jid} ".format(jid=jid) + \
-                          "{fn}".format(fn=real_upath(f.name))
+                    cmd = (
+                        "qsub -pe smp {nproc} ".format(nproc=self.sge_opts.gcon_nproc)
+                        + " -S /bin/bash -V -cwd "
+                        + "-e {elog} ".format(elog=real_upath(elog))
+                        + "-o {olog} ".format(olog=real_upath(olog))
+                        + "-N {jid} ".format(jid=jid)
+                        + "{fn}".format(fn=real_upath(f.name))
+                    )
                     self.qsub_cmd_and_log(cmd)
-                    job_list += jid + ','
+                    job_list += jid + ","
 
-                with open(self.gconDoneJobFN(self.iterNum), 'w') as f:
-                    f.write("touch {alohaFN}\n".format(
-                        alohaFN=real_upath(self.alohaFN(self.iterNum))))
+                with open(self.gconDoneJobFN(self.iterNum), "w") as f:
+                    f.write(
+                        "touch {alohaFN}\n".format(
+                            alohaFN=real_upath(self.alohaFN(self.iterNum))
+                        )
+                    )
                 msg = "waiting for gcon jobs to finish"
                 self.add_log(msg)
-                elog = self.elogFN(self.iterNum,
-                                   self.gconDoneJobFN(self.iterNum))
-                olog = self.ologFN(self.iterNum,
-                                   self.gconDoneJobFN(self.iterNum))
-                cmd = "qsub -sync y -pe smp 1 -S /bin/bash -V -cwd " + \
-                      "-e {elog} ".format(elog=real_upath(elog)) + \
-                      "-o {olog} ".format(olog=real_upath(olog)) + \
-                      "-hold_jid {jl} ".format(jl=job_list[:-1]) + \
-                      "-N qcon_done_{r} ".format(r=self.sge_opts.unique_id) + \
-                      "{donesh}".format(donesh=real_upath(self.gconDoneJobFN(self.iterNum)))
+                elog = self.elogFN(self.iterNum, self.gconDoneJobFN(self.iterNum))
+                olog = self.ologFN(self.iterNum, self.gconDoneJobFN(self.iterNum))
+                cmd = (
+                    "qsub -sync y -pe smp 1 -S /bin/bash -V -cwd "
+                    + "-e {elog} ".format(elog=real_upath(elog))
+                    + "-o {olog} ".format(olog=real_upath(olog))
+                    + "-hold_jid {jl} ".format(jl=job_list[:-1])
+                    + "-N qcon_done_{r} ".format(r=self.sge_opts.unique_id)
+                    + "{donesh}".format(
+                        donesh=real_upath(self.gconDoneJobFN(self.iterNum))
+                    )
+                )
                 self.qsub_cmd_and_log(cmd)
             else:
                 for job_i, f in job_sh_dict.items():
                     f.close()
 
-                msg = "Adding {n} ice_pbdagcon jobs to thread pool.".\
-                    format(n=len(jobs))
+                msg = "Adding {n} ice_pbdagcon jobs to thread pool.".format(n=len(jobs))
                 self.add_log(msg, level=logging.INFO)
                 time_1 = datetime.now()
-                #for job in jobs:
+                # for job in jobs:
                 #    msg = "Adding a ice_pbdagcon job thread: " + \
                 #          self.gcon_py + job
                 #    self.add_log(msg)
@@ -605,7 +645,7 @@ class IceIterative2(IceFiles2):
                     #     threading.Thread or
                     #     multiprocessing.pool.ThreadPool
                     # num local process is split between blasr_nproc
-                    num_processes = max(1, self.blasr_nproc/self.sge_opts.gcon_nproc)
+                    num_processes = max(1, self.blasr_nproc / self.sge_opts.gcon_nproc)
                     pool = ThreadPool(processes=num_processes)
                     rets = pool.map(runConsensus, jobs)
                     pool.close()
@@ -617,22 +657,24 @@ class IceIterative2(IceFiles2):
                             self.add_log(errMsg, level=logging.ERROR)
                             raise RuntimeError(errMsg)
                 time_2 = datetime.now()
-                msg = "Total time for {n} pbdagcon jobs is {t}.".\
-                      format(n=len(jobs), t=time_2 - time_1)
+                msg = "Total time for {n} pbdagcon jobs is {t}.".format(
+                    n=len(jobs), t=time_2 - time_1
+                )
                 self.add_log(msg, level=logging.INFO)
 
         time_1 = datetime.now()
-        #msg = "Choosing ref files for {n} clusters.".format(n=len(cids))
-        #self.add_log(msg, level=logging.INFO)
+        # msg = "Choosing ref files for {n} clusters.".format(n=len(cids))
+        # self.add_log(msg, level=logging.INFO)
         for cid in cids:
             self.refs[cid] = self.choose_ref_file(cid)
-            #msg = "Choosing ref file for {cid} = {f}".format(
+            # msg = "Choosing ref file for {cid} = {f}".format(
             #    cid=cid, f=self.refs[cid])
-            #self.add_log(msg)
+            # self.add_log(msg)
 
         time_2 = datetime.now()
-        msg = "Total time for choosing {n} ref files is {t}.".\
-            format(n=len(cids), t=time_2 - time_1)
+        msg = "Total time for choosing {n} ref files is {t}.".format(
+            n=len(cids), t=time_2 - time_1
+        )
         self.add_log(msg, level=logging.INFO)
 
         self.iterNum += 1
@@ -655,16 +697,20 @@ class IceIterative2(IceFiles2):
         elif len(self.uc[cid]) > 3:
             self.add_log("Neither {0} nor {1} exists!.".format(cons, cons_ref))
             # should have run but did not, count as must re-run!!!
-            self.add_log("{cid} has {n} reads, but no consensus, must rerun.".
-                         format(cid=cid, n=len(self.uc[cid])))
+            self.add_log(
+                "{cid} has {n} reads, but no consensus, must rerun.".format(
+                    cid=cid, n=len(self.uc[cid])
+                )
+            )
             self.unrun_cids.append(cid)
             return None
         else:  # pick the 1st sequence
             # self.add_log("Picking up the very first sequence as reference.")
             rname = self.first_seq_fa_of_cluster(cid)
-            with open(rname, 'w') as h:
-                h.write(">c{0}\n{1}\n".
-                        format(cid, self.seq_dict[self.uc[cid][0]].sequence))
+            with open(rname, "w") as h:
+                h.write(
+                    ">c{0}\n{1}\n".format(cid, self.seq_dict[self.uc[cid][0]].sequence)
+                )
             return rname
 
     def clean_prob_for_cids(self, cids):
@@ -701,16 +747,18 @@ class IceIterative2(IceFiles2):
         for cid in cids:
             n = len(self.uc[cid])
             for qid in self.uc[cid]:
-                if (n < min_cluster_size or
-                        cid not in self.d[qid] or
-                        self.d[qid][cid] != max(self.d[qid].values())):
-                    msg = "Final round: remove {0} (from {1}) because {2}".\
-                        format(qid, cid, self.d[qid])
+                if (
+                    n < min_cluster_size
+                    or cid not in self.d[qid]
+                    or self.d[qid][cid] != max(self.d[qid].values())
+                ):
+                    msg = "Final round: remove {0} (from {1}) because {2}".format(
+                        qid, cid, self.d[qid]
+                    )
                     self.add_log(msg)
                     del self.d[qid]
                     self.remove_from_cluster(qid, cid)
-                    if (cid in self.uc and
-                            len(self.uc[cid]) < self.rerun_gcon_size):
+                    if cid in self.uc and len(self.uc[cid]) < self.rerun_gcon_size:
                         self.changes.add(cid)
                     self.removed_qids.add(qid)
         self.run_gcon_parallel(self.changes)
@@ -721,15 +769,16 @@ class IceIterative2(IceFiles2):
         If write_all is True, write all subreads. Otherwise, only write
         a random subsample of num=self.dagcon_in_fasta_subsample reads.
         """
-        #in_filename = op.join('./tmp/', str(cid/10000), 'c'+str(cid), 'in.fasta')
+        # in_filename = op.join('./tmp/', str(cid/10000), 'c'+str(cid), 'in.fasta')
         in_filename = op.join(self.clusterInFa(cid))
         seqids = self.uc[cid]
         if not write_all:
-            seqids = random.sample(seqids, min(self.dagcon_in_fa_subsample, len(seqids)))
-        with open(in_filename, 'w') as f:
+            seqids = random.sample(
+                seqids, min(self.dagcon_in_fa_subsample, len(seqids))
+            )
+        with open(in_filename, "w") as f:
             for seqid in seqids:
-                f.write(">{0}\n{1}\n".format(seqid,
-                                             self.seq_dict[seqid].sequence))
+                f.write(">{0}\n{1}\n".format(seqid, self.seq_dict[seqid].sequence))
         return in_filename
 
     def add_seq_to_cluster(self):
@@ -806,65 +855,79 @@ class IceIterative2(IceFiles2):
         if len(_todo) == 0:
             return
 
-        with open(self.refConsensusFa, 'w') as f:
+        with open(self.refConsensusFa, "w") as f:
             for cid in _todo:
                 rs = []
                 with ContigSetReaderWrapper(self.refs[cid]) as cs:
                     rs.extend([r for r in cs])
                 assert len(rs) == 1
                 r = rs[0]
-                f.write(">{0}\n{1}\n".format(r.name.split()[0],
-                                             r.sequence))
+                f.write(">{0}\n{1}\n".format(r.name.split()[0], r.sequence))
 
         output_dir = op.dirname(self.refConsensusFa)
         runner = None
         try:
             if use_blasr:
                 raise RuntimeError("DALIGNER deprecated.")
-            runner = DalignerRunner(query_filename=real_upath(self.fasta_filename),
-                                    target_filename=real_upath(self.refConsensusFa),
-                                    query_converted=False, target_converted=False,
-                                    is_FL=False, same_strand_only=True,
-                                    use_sge=False, sge_opts=None, cpus=4)
-            runner.run(min_match_len=self.ice_opts.min_match_len,
-                       output_dir=output_dir,
-                       sensitive_mode=self.ice_opts.sensitive_mode)
+            runner = DalignerRunner(
+                query_filename=real_upath(self.fasta_filename),
+                target_filename=real_upath(self.refConsensusFa),
+                query_converted=False,
+                target_converted=False,
+                is_FL=False,
+                same_strand_only=True,
+                use_sge=False,
+                sge_opts=None,
+                cpus=4,
+            )
+            runner.run(
+                min_match_len=self.ice_opts.min_match_len,
+                output_dir=output_dir,
+                sensitive_mode=self.ice_opts.sensitive_mode,
+            )
         except RuntimeError:
             use_blasr = True
             saFN = self.refConsensusFa + ".sa"
-            cmd = "sawriter {sa} {fa} -blt 8 -welter".\
-                format(sa=real_upath(saFN), fa=real_upath(self.refConsensusFa))
-            self.add_log("Creating a suffix array for ref_consensus.fasta.",
-                         level=logging.INFO)
+            cmd = "sawriter {sa} {fa} -blt 8 -welter".format(
+                sa=real_upath(saFN), fa=real_upath(self.refConsensusFa)
+            )
+            self.add_log(
+                "Creating a suffix array for ref_consensus.fasta.", level=logging.INFO
+            )
             description = "Failed to create suffix array."
 
             time_1 = datetime.now()
             self.run_cmd_and_log(cmd=cmd, description=description)
             time_2 = datetime.now()
-            msg = "Total time for creating a saffix array for " + \
-                  "ref_consensus is {t}".format(t=time_2 - time_1)
+            msg = (
+                "Total time for creating a saffix array for "
+                + "ref_consensus is {t}".format(t=time_2 - time_1)
+            )
             self.add_log(msg, level=logging.INFO)
             blasrFN = self.refConsensusFa + ".blasr"
             if op.exists(blasrFN):
                 os.remove(blasrFN)
 
-            cmd = "blasr {qfa} ".format(qfa=real_upath(self.fasta_filename)) + \
-                  "{tfa} ".format(tfa=real_upath(self.refConsensusFa)) + \
-                  "-m 5 --bestn 100 --nCandidates 200 --maxLCPLength 15 " + \
-                  "--nproc {n} ".format(n=self.blasr_nproc) + \
-                  "--minAlnLength {m} ".format(m=self.ice_opts.min_match_len) + \
-                  "--maxScore {s} ".format(s=self.ice_opts.maxScore) + \
-                  "--sa {sa} ".format(sa=real_upath(saFN)) + \
-                  "--out {o} ".format(o=real_upath(blasrFN)) + \
-                  "1>/dev/null 2>/dev/null"
+            cmd = (
+                "blasr {qfa} ".format(qfa=real_upath(self.fasta_filename))
+                + "{tfa} ".format(tfa=real_upath(self.refConsensusFa))
+                + "-m 5 --bestn 100 --nCandidates 200 --maxLCPLength 15 "
+                + "--nproc {n} ".format(n=self.blasr_nproc)
+                + "--minAlnLength {m} ".format(m=self.ice_opts.min_match_len)
+                + "--maxScore {s} ".format(s=self.ice_opts.maxScore)
+                + "--sa {sa} ".format(sa=real_upath(saFN))
+                + "--out {o} ".format(o=real_upath(blasrFN))
+                + "1>/dev/null 2>/dev/null"
+            )
             msg = "Calling blasr to align input fasta file to ref_consensus"
             self.add_log(msg, level=logging.INFO)
 
             time_3 = datetime.now()
             self.run_cmd_and_log(cmd)
             time_4 = datetime.now()
-            msg = "Total time for aligning input fasta to ref_consensus is {t}".\
-                  format(t=time_4 - time_3)
+            msg = "Total time for aligning input fasta to ref_consensus is {t}".format(
+                t=time_4 - time_3
+            )
             self.add_log(msg, level=logging.INFO)
 
         msg = "Cleaning prob for {n} reads".format(n=len(_todo))
@@ -873,8 +936,9 @@ class IceIterative2(IceFiles2):
         time_5 = datetime.now()
         self.clean_prob_for_cids(_todo)
         time_6 = datetime.now()
-        msg = "Total time for cleaning probs for {n} clusters is {t}".\
-              format(n=len(_todo), t=time_6 - time_5)
+        msg = "Total time for cleaning probs for {n} clusters is {t}".format(
+            n=len(_todo), t=time_6 - time_5
+        )
         self.add_log(msg, level=logging.INFO)
 
         time_7 = datetime.now()
@@ -900,27 +964,32 @@ class IceIterative2(IceFiles2):
         """
         # Liz: is_FL is set to False in "daligner_against_ref" until LA4Ice -E is fixed
         for la4ice_filename in runner.la4ice_filenames:
-            for hit in daligner_against_ref2(query_dazz_handler=runner.query_dazz_handler,
-                                            target_dazz_handler=runner.target_dazz_handler,
-                                            la4ice_filename=la4ice_filename,
-                                            is_FL=False, sID_starts_with_c=True,
-                                            qver_get_func=self.probQV.get_smoothed,
-                                            qvmean_get_func=self.probQV.get_mean,
-                                            qv_prob_threshold=self.qv_prob_threshold,
-                                            ece_penalty=self.ice_opts.ece_penalty, ece_min_len=self.ice_opts.ece_min_len,
-                                            same_strand_only=True, no_qv_or_aln_checking=False,
-                                            max_missed_start=self.ice_opts.max_missed_start,
-                                            max_missed_end=self.ice_opts.max_missed_end,
-                                            full_missed_start=self.ice_opts.full_missed_start,
-                                            full_missed_end=self.ice_opts.full_missed_end):
+            for hit in daligner_against_ref2(
+                query_dazz_handler=runner.query_dazz_handler,
+                target_dazz_handler=runner.target_dazz_handler,
+                la4ice_filename=la4ice_filename,
+                is_FL=False,
+                sID_starts_with_c=True,
+                qver_get_func=self.probQV.get_smoothed,
+                qvmean_get_func=self.probQV.get_mean,
+                qv_prob_threshold=self.qv_prob_threshold,
+                ece_penalty=self.ice_opts.ece_penalty,
+                ece_min_len=self.ice_opts.ece_min_len,
+                same_strand_only=True,
+                no_qv_or_aln_checking=False,
+                max_missed_start=self.ice_opts.max_missed_start,
+                max_missed_end=self.ice_opts.max_missed_end,
+                full_missed_start=self.ice_opts.full_missed_start,
+                full_missed_end=self.ice_opts.full_missed_end,
+            ):
                 if hit.qID not in self.d:
                     self.d[hit.qID] = {}
                 if hit.fakecigar is not None:
-                    #self.add_log("[Liz] fakecigar string is {0}".format(hit.fakecigar))
+                    # self.add_log("[Liz] fakecigar string is {0}".format(hit.fakecigar))
                     self.d[hit.qID][hit.cID] = self.probQV.calc_prob_from_aln(
-                        hit.qID, hit.qStart, hit.qEnd, hit.fakecigar)
-                    #self.add_log("[Liz] {0}-{1}:{2}".format(hit.qID, hit.cID,self.d[hit.qID][hit.cID]))
-
+                        hit.qID, hit.qStart, hit.qEnd, hit.fakecigar
+                    )
+                    # self.add_log("[Liz] {0}-{1}:{2}".format(hit.qID, hit.cID,self.d[hit.qID][hit.cID]))
 
     def g(self, output_filename):
         """
@@ -933,24 +1002,27 @@ class IceIterative2(IceFiles2):
         """
         # for qID, cID, qStart, qEnd, _missed_q, _missed_t, fakecigar, _ece_arr
         for hit in blasr_against_ref2(
-                output_filename=output_filename,
-                is_FL=self.is_FL, sID_starts_with_c=True,
-                qver_get_func=self.probQV.get_smoothed,
-                qvmean_get_func=self.probQV.get_mean,
-                qv_prob_threshold=self.qv_prob_threshold,
-                ece_penalty=self.ice_opts.ece_penalty,
-                ece_min_len=self.ice_opts.ece_min_len,
-                max_missed_start=self.ice_opts.max_missed_start,
-                max_missed_end=self.ice_opts.max_missed_end,
-                full_missed_start=self.ice_opts.full_missed_start,
-                full_missed_end=self.ice_opts.full_missed_end):
+            output_filename=output_filename,
+            is_FL=self.is_FL,
+            sID_starts_with_c=True,
+            qver_get_func=self.probQV.get_smoothed,
+            qvmean_get_func=self.probQV.get_mean,
+            qv_prob_threshold=self.qv_prob_threshold,
+            ece_penalty=self.ice_opts.ece_penalty,
+            ece_min_len=self.ice_opts.ece_min_len,
+            max_missed_start=self.ice_opts.max_missed_start,
+            max_missed_end=self.ice_opts.max_missed_end,
+            full_missed_start=self.ice_opts.full_missed_start,
+            full_missed_end=self.ice_opts.full_missed_end,
+        ):
 
             if hit.qID not in self.d:
                 self.d[hit.qID] = {}
 
             if hit.fakecigar is not None:
                 self.d[hit.qID][hit.cID] = self.probQV.calc_prob_from_aln(
-                    hit.qID, hit.qStart, hit.qEnd, hit.fakecigar)
+                    hit.qID, hit.qStart, hit.qEnd, hit.fakecigar
+                )
 
     def run_til_end(self, max_iter=99):
         """
@@ -965,16 +1037,18 @@ class IceIterative2(IceFiles2):
         iter_count = 1
         while no_change_count < 10 and iter_count <= max_iter:
             self.add_log("", level=logging.INFO)
-            self.add_log("run_til_end iteration {n}, global iteration {m}".
-                         format(n=iter_count - 1, m=self.global_count),
-                         level=logging.INFO)
+            self.add_log(
+                "run_til_end iteration {n}, global iteration {m}".format(
+                    n=iter_count - 1, m=self.global_count
+                ),
+                level=logging.INFO,
+            )
             time_0 = datetime.now()
             orphans = self.onemove()
             if len(orphans) > 0:
-                with open(self.tmpOrphanFa, 'w') as f:
+                with open(self.tmpOrphanFa, "w") as f:
                     for sid in orphans:
-                        f.write(">{0}\n{1}\n".
-                                format(sid, self.seq_dict[sid].sequence))
+                        f.write(">{0}\n{1}\n".format(sid, self.seq_dict[sid].sequence))
                 try:
                     # remove tmp.orphan.fasta.self.blasr
                     os.remove(self.selfBlasrFN(self.tmpOrphanFa))
@@ -983,24 +1057,31 @@ class IceIterative2(IceFiles2):
 
                 self.add_log("Clustering orphan reads and adding them to uc.")
                 time_1 = datetime.now()
-                iceinit = IceInit2(readsFa=self.tmpOrphanFa,
-                                  qver_get_func=self.probQV.get_smoothed,
-                                  qvmean_get_func=self.probQV.get_mean,
-                                  ice_opts=self.ice_opts,
-                                  sge_opts=self.sge_opts)
+                iceinit = IceInit2(
+                    readsFa=self.tmpOrphanFa,
+                    qver_get_func=self.probQV.get_smoothed,
+                    qvmean_get_func=self.probQV.get_mean,
+                    ice_opts=self.ice_opts,
+                    sge_opts=self.sge_opts,
+                )
 
                 uc = iceinit.uc
                 self.add_uc(uc)
                 time_2 = datetime.now()
-                msg = "Total time for clustering orphan reads and adding " + \
-                      "new clusters is {t}.".format(t=time_2 - time_1)
+                msg = (
+                    "Total time for clustering orphan reads and adding "
+                    + "new clusters is {t}.".format(t=time_2 - time_1)
+                )
                 self.add_log(msg, level=logging.INFO)
 
             time_3 = datetime.now()
-            self.add_log("Total time for run_til_end iteration " +
-                         "{n}, global iteration {m} is {t}.".
-                         format(n=iter_count - 1, m=self.global_count,
-                                t=time_3 - time_0), level=logging.INFO)
+            self.add_log(
+                "Total time for run_til_end iteration "
+                + "{n}, global iteration {m} is {t}.".format(
+                    n=iter_count - 1, m=self.global_count, t=time_3 - time_0
+                ),
+                level=logging.INFO,
+            )
             iter_count += 1
             self.global_count += 1
 
@@ -1008,8 +1089,9 @@ class IceIterative2(IceFiles2):
             current_gcon_seq_in_changes = {}
             for cid in self.changes:
                 if cid in self.refs:
-                    current_gcon_seq_in_changes[cid] = \
-                        get_the_only_fasta_record(self.refs[cid]).sequence
+                    current_gcon_seq_in_changes[cid] = get_the_only_fasta_record(
+                        self.refs[cid]
+                    ).sequence
 
             self.run_gcon_parallel(self.changes)
             # remove from self.changes ones that did not change
@@ -1018,17 +1100,22 @@ class IceIterative2(IceFiles2):
                 if cid in current_gcon_seq_in_changes:
                     seq = get_the_only_fasta_record(self.refs[cid]).sequence
                     if seq == current_gcon_seq_in_changes[cid]:
-                        msg = "REMOVING " + str(cid) + \
-                              " from changes because no gcon change"
+                        msg = (
+                            "REMOVING "
+                            + str(cid)
+                            + " from changes because no gcon change"
+                        )
                         self.add_log(msg)
                         self.changes.remove(cid)
-            self.calc_cluster_prob(force_calc=False, use_blasr=(self.ice_opts.aligner_choice=='blasr'))
+            self.calc_cluster_prob(
+                force_calc=False, use_blasr=(self.ice_opts.aligner_choice == "blasr")
+            )
             self.freeze_d()
             # see if there are more moves possible
             if self.no_moves_possible():
                 self.add_log("No more moves possible. Done!")
                 break
-            no_change_count += (len(self.changes) == 0)
+            no_change_count += len(self.changes) == 0
 
     def onemove(self):
         """
@@ -1055,10 +1142,13 @@ class IceIterative2(IceFiles2):
                 best_i, best_i_prob = x[0][0], x[0][1]
                 if best_i != qid_to_cid[qID]:
                     # moving assignment from old_i to best_i
-                    msg = "best for {0} is {1},{2} (currently: {3}, {4})".\
-                        format(qID, best_i, best_i_prob, old_i,
-                               (self.d[qID][old_i] if old_i in self.d[qID]
-                                else 'None'))
+                    msg = "best for {0} is {1},{2} (currently: {3}, {4})".format(
+                        qID,
+                        best_i,
+                        best_i_prob,
+                        old_i,
+                        (self.d[qID][old_i] if old_i in self.d[qID] else "None"),
+                    )
                     self.add_log(msg)
 
                     # move qID to best_i
@@ -1081,14 +1171,14 @@ class IceIterative2(IceFiles2):
                     # (to match criterion used in run_gcon_parallel)
                     # --------------------------
                     if len(self.uc[old_i]) <= 2:
-                        #x = filter(lambda (a, b): a != old_i, x)
+                        # x = filter(lambda (a, b): a != old_i, x)
                         x = [y for y in x if y[0] != old_i]
-                        if len(x) > 0 and \
-                                random.random() <= self.random_prob:
+                        if len(x) > 0 and random.random() <= self.random_prob:
                             # right now hard-code to 30% prob
                             best_i, best_i_prob = x[0][0], x[0][1]
-                            msg = "randomly moving {0} from {1} to {2}".\
-                                format(qID, old_i, best_i)
+                            msg = "randomly moving {0} from {1} to {2}".format(
+                                qID, old_i, best_i
+                            )
                             self.add_log(msg)
 
                             self.uc[best_i].append(qID)
@@ -1100,19 +1190,20 @@ class IceIterative2(IceFiles2):
 
     def add_new_batch(self, batch_fasta, batch_fastq):
         """Add a new batch of sequences to clusters."""
-        msg = "Adding a new batch of fasta reads {f} to clusters.".\
-              format(f=batch_fasta)
+        msg = "Adding a new batch of fasta reads {f} to clusters.".format(f=batch_fasta)
         self.add_log(msg, level=logging.INFO)
 
         # sanity check
         if not op.exists(batch_fasta):
-            errMsg = "Adding a new batch file {b} which does not exist.".\
-                format(b=batch_fasta)
+            errMsg = "Adding a new batch file {b} which does not exist.".format(
+                b=batch_fasta
+            )
             self.add_log(errMsg, level=logging.ERROR)
             raise ValueError(errMsg)
         if not op.exists(batch_fastq):
-            errMsg = "Adding a new batch file {b} which does not exist.".\
-                format(b=batch_fastq)
+            errMsg = "Adding a new batch file {b} which does not exist.".format(
+                b=batch_fastq
+            )
             self.add_log(errMsg, level=logging.ERROR)
             raise ValueError(errMsg)
 
@@ -1121,9 +1212,12 @@ class IceIterative2(IceFiles2):
             for r in cs:
                 rid = r.name.split()[0]
                 if r.name.split()[0] in self.d:
-                    errMsg = "new batch file {b} contains a read {r} ".\
-                        format(b=batch_fasta, r=rid) + \
-                        " of an existing cluster."
+                    errMsg = (
+                        "new batch file {b} contains a read {r} ".format(
+                            b=batch_fasta, r=rid
+                        )
+                        + " of an existing cluster."
+                    )
                     self.add_log(errMsg, level=logging.ERROR)
                     raise ValueError(errMsg)
 
@@ -1153,12 +1247,13 @@ class IceIterative2(IceFiles2):
         # latest fasta file is changed to
         # {new batch} + {any id that was removed from final round}
         self.fasta_filename = self.currentFa  # "current.fasta"
-        cmd = "cp {bat} {cur}".format(bat=real_upath(batch_fasta),
-                                      cur=real_upath(self.fasta_filename))
+        cmd = "cp {bat} {cur}".format(
+            bat=real_upath(batch_fasta), cur=real_upath(self.fasta_filename)
+        )
         self.run_cmd_and_log(cmd)
 
         # Append qids removed from last round to current.fasta
-        with open(self.fasta_filename, 'a') as f:
+        with open(self.fasta_filename, "a") as f:
             for qid in self.removed_qids:
                 f.write(">{0}\n{1}\n".format(qid, self.seq_dict[qid].sequence))
 
@@ -1178,11 +1273,13 @@ class IceIterative2(IceFiles2):
         self.probQV.add_seqs_from_fastq(batch_fastq, smooth=True)
         # only ids from new batch are not already in probQV
 
-        self.calc_cluster_prob(force_calc=True, use_blasr=(self.ice_opts.aligner_choice=='blasr'))
+        self.calc_cluster_prob(
+            force_calc=True, use_blasr=(self.ice_opts.aligner_choice == "blasr")
+        )
         orphans = self.add_seq_to_cluster()
 
         ofa = self.orphanFa(self.fasta_filename)
-        with open(ofa, 'w') as f:
+        with open(ofa, "w") as f:
             for sid in orphans:
                 f.write(">{0}\n{1}\n".format(sid, self.seq_dict[sid].sequence))
 
@@ -1190,11 +1287,13 @@ class IceIterative2(IceFiles2):
         if op.exists(self.selfBlasrFN(ofa)):
             os.remove(self.selfBlasrFN(ofa))
 
-        iceinit = IceInit2(readsFa=ofa,
-                          qver_get_func=self.probQV.get_smoothed,
-                          qvmean_get_func=self.probQV.get_mean,
-                          ice_opts=self.ice_opts,
-                          sge_opts=self.sge_opts)
+        iceinit = IceInit2(
+            readsFa=ofa,
+            qver_get_func=self.probQV.get_smoothed,
+            qvmean_get_func=self.probQV.get_mean,
+            ice_opts=self.ice_opts,
+            sge_opts=self.sge_opts,
+        )
         uc = iceinit.uc
         self.add_uc(uc)
 
@@ -1207,20 +1306,22 @@ class IceIterative2(IceFiles2):
         # now fasta file contains:
         # {new batch} + {any id removed from final round} + {active ids}
         # which is consistent with self.newids and self.probQV
-        with open(self.fasta_filename, 'a') as f:
+        with open(self.fasta_filename, "a") as f:
             for sid in active_ids:
-                f.write(">{0}\n{1}\n".format(sid,
-                                             self.seq_dict[sid].sequence))
+                f.write(">{0}\n{1}\n".format(sid, self.seq_dict[sid].sequence))
         self.newids.update(active_ids)
 
         # sanity check!
         self.ensure_probQV_newid_consistency()
 
         # update prob for self.newids VS {all changed clusters}
-        self.calc_cluster_prob(force_calc=False, use_blasr=(self.ice_opts.aligner_choice=='blasr'))
+        self.calc_cluster_prob(
+            force_calc=False, use_blasr=(self.ice_opts.aligner_choice == "blasr")
+        )
         # self.freeze_d()
-        msg = "Finished to add a new batch of fasta reads {f} to clusters.".\
-              format(f=batch_fasta)
+        msg = "Finished to add a new batch of fasta reads {f} to clusters.".format(
+            f=batch_fasta
+        )
         self.add_log(msg, level=logging.INFO)
 
     def ensure_probQV_newid_consistency(self):
@@ -1233,13 +1334,13 @@ class IceIterative2(IceFiles2):
                 rid = r.name.split()[0]
                 if rid not in self.newids:
                     self.newids.add(rid)
-                    #has_err = False
+                    # has_err = False
                     msg = "{0} should be in newids but not. Add it!".format(rid)
                     self.add_log(msg)
                 try:
-                    self.probQV.get_smoothed(qID=rid, qvname='DeletionQV')
+                    self.probQV.get_smoothed(qID=rid, qvname="DeletionQV")
                 except KeyError:
-                    #has_err = False
+                    # has_err = False
                     self.probQV.add_ids_from_fasta(newids=[rid])
                     msg = "{0} should be in probQV but not. Add it!".format(rid)
                     self.add_log(msg)
@@ -1259,13 +1360,14 @@ class IceIterative2(IceFiles2):
                 for x in members:
                     assert x not in _membership
                     _membership[x] = cid
-                if (cid not in self.refs or
-                        len(self.refs[cid]) == 0):
+                if cid not in self.refs or len(self.refs[cid]) == 0:
                     print("ref for {0} does not exist!".format(cid))
                 elif check_dir_lambda(cid):  # or random.random() <= .01:
                     self.add_log("Randomly checking {cid}".format(cid=cid))
-                    seqids = set(line.strip()[1:].split()[0] for line in
-                                 os.popen("grep \">\" " + self.clusterInFa(cid)))
+                    seqids = set(
+                        line.strip()[1:].split()[0]
+                        for line in os.popen('grep ">" ' + self.clusterInFa(cid))
+                    )
                     assert seqids == set(members)
                     assert op.exists(self.refs[cid])
             for x in self.d:
@@ -1293,13 +1395,15 @@ class IceIterative2(IceFiles2):
                 consensusFa=self.tmpConsensusFa,
                 pickleFN=self.tmpPickleFN,
                 max_iter=3,
-                use_blasr=(self.ice_opts.aligner_choice=='blasr'))
+                use_blasr=(self.ice_opts.aligner_choice == "blasr"),
+            )
             if self.ice_opts.targeted_isoseq:
                 self.run_post_ICE_merging(
                     consensusFa=self.tmpConsensusFa,
                     pickleFN=self.tmpPickleFN,
                     max_iter=6,
-                    use_blasr=True)
+                    use_blasr=True,
+                )
             # out_prefix='output/tmp',
             self.add_new_batch(f, fq)
             self.check_cluster_sanity()
@@ -1320,18 +1424,26 @@ class IceIterative2(IceFiles2):
         consensus_filename = consensusFa
         pickle_filename = pickleFN
         # this is just back up for debugging purpose
-        self.add_log("run_post_ICE_merging called with max_iter={0}, using_blasr={1}".format(max_iter, use_blasr))
+        self.add_log(
+            "run_post_ICE_merging called with max_iter={0}, using_blasr={1}".format(
+                max_iter, use_blasr
+            )
+        )
         for _i in range(max_iter):
             self.add_log("Before merging: {0} clusters".format(len(self.uc)))
-            self.add_log("Running post-iterative-merging iteration {n}".
-                         format(n=_i), level=logging.INFO)
+            self.add_log(
+                "Running post-iterative-merging iteration {n}".format(n=_i),
+                level=logging.INFO,
+            )
             self.changes = set()
-            #self.add_log("Writing pickle file: " + pickle_filename)
+            # self.add_log("Writing pickle file: " + pickle_filename)
             self.write_pickle(pickle_filename)
-            #self.add_log("Writing consensus file: " + consensus_filename)
+            # self.add_log("Writing consensus file: " + consensus_filename)
             self.write_consensus(consensus_filename)
 
-            iters = self.find_mergeable_consensus(consensus_filename, use_blasr=use_blasr)
+            iters = self.find_mergeable_consensus(
+                consensus_filename, use_blasr=use_blasr
+            )
 
             self.old_rec = {}
             self.new_rec = {}
@@ -1343,7 +1455,9 @@ class IceIterative2(IceFiles2):
                 self.add_log("No more merges, break!")
                 break
             self.run_gcon_parallel(self.changes)
-            self.calc_cluster_prob(force_calc=False, use_blasr=(self.ice_opts.aligner_choice=='blasr'))
+            self.calc_cluster_prob(
+                force_calc=False, use_blasr=(self.ice_opts.aligner_choice == "blasr")
+            )
             self.freeze_d()
 
             self.add_log("After merging: {0} clusters".format(len(self.uc)))
@@ -1355,26 +1469,37 @@ class IceIterative2(IceFiles2):
         """
         if not use_blasr:
             output_dir = os.path.dirname(fasta_filename)
-            runner = DalignerRunner(query_filename=real_upath(fasta_filename),
-                                    target_filename=real_upath(fasta_filename),
-                                    is_FL=False, same_strand_only=True,
-                                    query_converted=False, target_converted=False,
-                                    use_sge=False, sge_opts=None, cpus=4)
+            runner = DalignerRunner(
+                query_filename=real_upath(fasta_filename),
+                target_filename=real_upath(fasta_filename),
+                is_FL=False,
+                same_strand_only=True,
+                query_converted=False,
+                target_converted=False,
+                use_sge=False,
+                sge_opts=None,
+                cpus=4,
+            )
             # run this locally
-            runner.run(min_match_len=self.ice_opts.min_match_len,
-                       output_dir=output_dir,
-                       sensitive_mode=self.ice_opts.sensitive_mode)
+            runner.run(
+                min_match_len=self.ice_opts.min_match_len,
+                output_dir=output_dir,
+                sensitive_mode=self.ice_opts.sensitive_mode,
+            )
 
             for la4ice_filename in runner.la4ice_filenames:
                 for r in LA4IceReader(la4ice_filename):
                     r.qID = runner.query_dazz_handler[r.qID]
                     r.sID = runner.query_dazz_handler[r.sID]
-                    if possible_merge2(r=r, ece_penalty=self.ice_opts.ece_penalty,
-                                      ece_min_len=self.ice_opts.ece_min_len,
-                                      max_missed_start=self.ice_opts.max_missed_start,
-                                      max_missed_end=self.ice_opts.max_missed_end,
-                                      full_missed_start=self.ice_opts.full_missed_start,
-                                      full_missed_end=self.ice_opts.full_missed_end):
+                    if possible_merge2(
+                        r=r,
+                        ece_penalty=self.ice_opts.ece_penalty,
+                        ece_min_len=self.ice_opts.ece_min_len,
+                        max_missed_start=self.ice_opts.max_missed_start,
+                        max_missed_end=self.ice_opts.max_missed_end,
+                        full_missed_start=self.ice_opts.full_missed_start,
+                        full_missed_end=self.ice_opts.full_missed_end,
+                    ):
                         yield r
 
             runner.clean_run()
@@ -1383,25 +1508,30 @@ class IceIterative2(IceFiles2):
             out = self.selfBlasrFN(fasta_filename)
             if op.exists(out):  # clean out the blasr file from the last run
                 os.remove(out)
-            cmd = "blasr {i} {i} ".format(i=real_upath(fasta_filename)) + \
-                  "--bestn 20 --nCandidates 100 --minPctIdentity 95 --maxLCPLength 15 -m 5 " + \
-                  "--minAlnLength {m} ".format(m=self.ice_opts.min_match_len) + \
-                  "--maxScore {s} ".format(s=self.ice_opts.maxScore) + \
-                  "--nproc {cpu} ".format(cpu=self.blasr_nproc) + \
-                  "--out {o} ".format(o=real_upath(out)) + \
-                  "1>/dev/null 2>/dev/null"
+            cmd = (
+                "blasr {i} {i} ".format(i=real_upath(fasta_filename))
+                + "--bestn 20 --nCandidates 100 --minPctIdentity 95 --maxLCPLength 15 -m 5 "
+                + "--minAlnLength {m} ".format(m=self.ice_opts.min_match_len)
+                + "--maxScore {s} ".format(s=self.ice_opts.maxScore)
+                + "--nproc {cpu} ".format(cpu=self.blasr_nproc)
+                + "--out {o} ".format(o=real_upath(out))
+                + "1>/dev/null 2>/dev/null"
+            )
             self.add_log("Calling blasr to self align " + fasta_filename)
             self.run_cmd_and_log(cmd)
 
             for r in BLASRM5Reader(out):
                 # Liz note: don't use the more lenient max_missed_start/max_missed_end,
                 #            which can cause actual isoform diffs in the first/last huge chunks to be ignored
-                if possible_merge2(r=r, ece_penalty=self.ice_opts.ece_penalty,
+                if possible_merge2(
+                    r=r,
+                    ece_penalty=self.ice_opts.ece_penalty,
                     ece_min_len=self.ice_opts.ece_min_len,
                     max_missed_start=self.ice_opts.max_missed_start,
                     max_missed_end=self.ice_opts.max_missed_end,
                     full_missed_start=self.ice_opts.full_missed_start,
-                    full_missed_end=self.ice_opts.full_missed_end):
+                    full_missed_end=self.ice_opts.full_missed_end,
+                ):
                     yield r
 
     def do_icec_merge_nogcon(self, r):
@@ -1411,40 +1541,50 @@ class IceIterative2(IceFiles2):
         add k to changes, adn return k.
         Delay gcon till later (as k is in self.changes).
         """
-        #self.add_log("do_icec_merge_nogcon")
+        # self.add_log("do_icec_merge_nogcon")
         # qID: c0/7/3942
         # sID: c1/8/3941
-        i = int(r.qID.split('/')[0][1:])
-        j = int(r.sID.split('/')[0][1:])
+        i = int(r.qID.split("/")[0][1:])
+        j = int(r.sID.split("/")[0][1:])
         if i == j:
             return None
 
         # -------- NEW VERSION ------------------
         if i in self.old_rec:
-            if j in self.old_rec: # both i, j in old_rec
+            if j in self.old_rec:  # both i, j in old_rec
                 # nothing to do -- in daligner it's possible to get duplicate entries...?
                 # even if they do end up conflicting, we would just ignore as well
                 pass
-            else: # i in old_rec, j is new, add j to k
+            else:  # i in old_rec, j is new, add j to k
                 k = self.old_rec[i]
-                self.add_log("case 1: Merging clusters {0} and {1} --> {2}".format(i, j, k))
+                self.add_log(
+                    "case 1: Merging clusters {0} and {1} --> {2}".format(i, j, k)
+                )
                 self.uc[k] += self.uc[j]
                 self.delete_cluster(j)
-                self.freeze_d([k])  # k is already in self.changes, and i is already deleted
+                self.freeze_d(
+                    [k]
+                )  # k is already in self.changes, and i is already deleted
                 self.old_rec[j] = k
                 return k
         else:
-            if j in self.old_rec: # i is new, but j is old, add i to k
+            if j in self.old_rec:  # i is new, but j is old, add i to k
                 k = self.old_rec[j]
-                self.add_log("case 2: Merging clusters {0} and {1} --> {2}".format(i, j, k))
+                self.add_log(
+                    "case 2: Merging clusters {0} and {1} --> {2}".format(i, j, k)
+                )
                 self.uc[k] += self.uc[i]
                 self.delete_cluster(i)
-                self.freeze_d([k])  # k is already in self.changes, and j is already deleted
+                self.freeze_d(
+                    [k]
+                )  # k is already in self.changes, and j is already deleted
                 self.old_rec[i] = k
                 return k
-            else: # both new, make new k <-- i + j
+            else:  # both new, make new k <-- i + j
                 k = self.make_new_cluster()
-                self.add_log("case 3: Merging clusters {0} and {1} --> {2}".format(i, j, k))
+                self.add_log(
+                    "case 3: Merging clusters {0} and {1} --> {2}".format(i, j, k)
+                )
                 self.uc[k] = self.uc[i] + self.uc[j]
                 self.delete_cluster(i)
                 self.delete_cluster(j)
@@ -1499,17 +1639,21 @@ class IceIterative2(IceFiles2):
 
         msg = "Merging clusters."
         self.add_log(msg, level=logging.INFO)
-        self.run_post_ICE_merging(consensusFa=self.tmpConsensusFa,
-                                  pickleFN=self.tmpPickleFN,
-                                  max_iter=3,
-                                  use_blasr=(self.ice_opts.aligner_choice=='blasr'))
+        self.run_post_ICE_merging(
+            consensusFa=self.tmpConsensusFa,
+            pickleFN=self.tmpPickleFN,
+            max_iter=3,
+            use_blasr=(self.ice_opts.aligner_choice == "blasr"),
+        )
 
         # run extra rounds using BLASR
         if self.ice_opts.targeted_isoseq:
-            self.run_post_ICE_merging(consensusFa=self.tmpConsensusFa,
-                                      pickleFN=self.tmpPickleFN,
-                                      max_iter=3,
-                                      use_blasr=True)
+            self.run_post_ICE_merging(
+                consensusFa=self.tmpConsensusFa,
+                pickleFN=self.tmpPickleFN,
+                max_iter=3,
+                use_blasr=True,
+            )
 
         msg = "Finalize clusters."
         self.add_log(msg, level=logging.INFO)
@@ -1518,19 +1662,21 @@ class IceIterative2(IceFiles2):
         # is low.
         self.random_prob = 0.01
 
-        self.newids = set() # set to empty so freeze_d() will do the right thing
+        self.newids = set()  # set to empty so freeze_d() will do the right thing
 
         for _i in range(3):
-            self.add_log("run_for_new_batch iteration {n}".format(n=_i),
-                         level=logging.INFO)
+            self.add_log(
+                "run_for_new_batch iteration {n}".format(n=_i), level=logging.INFO
+            )
             self.run_for_new_batch()
             sizes.append(len(self.uc))
 
         msg = "Cluster size history: {sizes}".format(
-            sizes=', '.join([str(s) for s in sizes]))
+            sizes=", ".join([str(s) for s in sizes])
+        )
         self.add_log(msg, level=logging.INFO)
 
-       # Write final pickle
+        # Write final pickle
         self.write_final_pickle()
 
         # write final consensus.fasta and final_consensus.fasta.sa

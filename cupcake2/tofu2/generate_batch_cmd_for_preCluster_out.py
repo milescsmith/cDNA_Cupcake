@@ -1,4 +1,3 @@
-
 import os, sys
 from csv import DictReader
 from Bio import SeqIO
@@ -25,16 +24,19 @@ def fa2fq(input):
     Copy of fa2fq from sequence/
     """
     try:
-        assert input.lower().endswith('.fasta') or input.lower().endswith('.fa')
+        assert input.lower().endswith(".fasta") or input.lower().endswith(".fa")
     except AssertionError:
-        print("Input {0} does not end with .fasta or .fa! Abort".format(input), file=sys.stderr)
+        print(
+            "Input {0} does not end with .fasta or .fa! Abort".format(input),
+            file=sys.stderr,
+        )
         sys.exit(-1)
-    output = input[:input.rfind('.')] + '.fastq'
+    output = input[: input.rfind(".")] + ".fastq"
 
-    f = open(output, 'w')
-    for r in SeqIO.parse(open(input),'fasta'):
-        r.letter_annotations['phred_quality'] = [60]*len(r.seq)
-        SeqIO.write(r, f, 'fastq')
+    f = open(output, "w")
+    for r in SeqIO.parse(open(input), "fasta"):
+        r.letter_annotations["phred_quality"] = [60] * len(r.seq)
+        SeqIO.write(r, f, "fastq")
     f.close()
 
     print("Output written to", f.name, file=sys.stderr)
@@ -47,24 +49,29 @@ def preprocess_flnc_split_if_necessary(dirname, flnc_size, flnc_split=20000):
     If it is bigger than <flnc_split> sequences, than split and return the splits
     """
     if flnc_size <= flnc_split:
-        fa_files = [os.path.join(dirname, 'isoseq_flnc.fasta')]
+        fa_files = [os.path.join(dirname, "isoseq_flnc.fasta")]
     else:
-        fa_files = splitFaFq(os.path.join(dirname, 'isoseq_flnc.fasta'),
-                  reads_per_split=flnc_split,
-                  out_dir=dirname,
-                  out_format="input_split{0:03d}.fasta",
-                  is_fq=False,
-                  reads_in_first_split=flnc_split/2)
+        fa_files = splitFaFq(
+            os.path.join(dirname, "isoseq_flnc.fasta"),
+            reads_per_split=flnc_split,
+            out_dir=dirname,
+            out_format="input_split{0:03d}.fasta",
+            is_fq=False,
+            reads_in_first_split=flnc_split / 2,
+        )
     # convert all fasta to fastq
     fq_files = [fa2fq(x) for x in fa_files]
-    return [os.path.basename(x) for x in fa_files], [os.path.basename(x) for x in fq_files]
+    return (
+        [os.path.basename(x) for x in fa_files],
+        [os.path.basename(x) for x in fq_files],
+    )
 
 
 def generate_batch_cmds(csv_filename, dirname, cmd_filename, cpus):
-    #, nfl_filename, tucked_filename, subread_xml, cpus):
-    cmd_f = open(cmd_filename, 'w')
-    for r in DictReader(open(csv_filename), delimiter=','):
-        cid = r['cluster']
+    # , nfl_filename, tucked_filename, subread_xml, cpus):
+    cmd_f = open(cmd_filename, "w")
+    for r in DictReader(open(csv_filename), delimiter=","):
+        cid = r["cluster"]
         d2 = os.path.join(dirname, cid)
         if not os.path.exists(d2):
             print("Directory {0} does not exist! Abort!".format(d2), file=sys.stderr)
@@ -72,43 +79,64 @@ def generate_batch_cmds(csv_filename, dirname, cmd_filename, cpus):
 
         cmd_f.write("cd {0}\n".format(real_upath(d2)))
 
-        fa_files, fq_files = preprocess_flnc_split_if_necessary(d2, int(r['size']), flnc_split=20000)
+        fa_files, fq_files = preprocess_flnc_split_if_necessary(
+            d2, int(r["size"]), flnc_split=20000
+        )
 
-        ice2_aligner = 'blasr' if int(r['size']) <= 20000 else 'daligner'
+        ice2_aligner = "blasr" if int(r["size"]) <= 20000 else "daligner"
 
-        cmd_f.write("run_IceInit2.py {fa} init.uc.pickle --aligner_choice=blasr --cpus={c}\n".format(c=cpus, fa=fa_files[0]))
-        cmd_f.write("run_IceIterative2.py {fas} {fqs} isoseq_flnc.fasta . ".format(fas=",".join(fa_files), fqs=",".join(fq_files)) + \
-                    "--init_uc_pickle=init.uc.pickle --aligner_choice={aln} ".format(aln=ice2_aligner) + \
-                    "--blasr_nproc {c} --gcon_nproc {c2}\n".format(c=cpus, c2=min(cpus, 4)))
-#        cmd_f.write("run_IcePartial2.py all {nfl},{tucked} ".format(nfl=nfl_filename, tucked=tucked_filename) + \
-#                    "output/final.consensus.fasta nfl.pickle " + \
-#                    "--root_dir . --aligner_choice=blasr --cpus={c}\n".format(c=cpus))
-#        cmd_f.write("run_IceArrow2.py all --subread_xml {s} ".format(s=subread_xml) + \
-#                    "--blasr_nproc {c} --arrow_nproc {c} .\n".format(c=cpus))
+        cmd_f.write(
+            "run_IceInit2.py {fa} init.uc.pickle --aligner_choice=blasr --cpus={c}\n".format(
+                c=cpus, fa=fa_files[0]
+            )
+        )
+        cmd_f.write(
+            "run_IceIterative2.py {fas} {fqs} isoseq_flnc.fasta . ".format(
+                fas=",".join(fa_files), fqs=",".join(fq_files)
+            )
+            + "--init_uc_pickle=init.uc.pickle --aligner_choice={aln} ".format(
+                aln=ice2_aligner
+            )
+            + "--blasr_nproc {c} --gcon_nproc {c2}\n".format(c=cpus, c2=min(cpus, 4))
+        )
+    #        cmd_f.write("run_IcePartial2.py all {nfl},{tucked} ".format(nfl=nfl_filename, tucked=tucked_filename) + \
+    #                    "output/final.consensus.fasta nfl.pickle " + \
+    #                    "--root_dir . --aligner_choice=blasr --cpus={c}\n".format(c=cpus))
+    #        cmd_f.write("run_IceArrow2.py all --subread_xml {s} ".format(s=subread_xml) + \
+    #                    "--blasr_nproc {c} --arrow_nproc {c} .\n".format(c=cpus))
 
     cmd_f.close()
-
-
-
-
 
 
 if __name__ == "__main__":
     from argparse import ArgumentParser
 
-    parser = ArgumentParser("Generate batch commands for running IceInit2->IceIterative2 for each preCluster output bin")
-    parser.add_argument("precluster_csv", help="Cluster CSV file (ex: preCluster.cluster_info.csv)")
-    parser.add_argument("precluster_dir", help="preCluster out directory (ex: preCluster_out/)")
-    #parser.add_argument("nfl_filename", help="nFL filename (ex: isoseq_nfl.fasta)")
-    #parser.add_argument("tucked_filename", help="tucked filename (ex: preCluster_out.tucked.fasta)")
-    #parser.add_argument("subread_xml", help="Subread XML")
-    parser.add_argument("--cpus", default=20, type=int, help="Number of CPUs (default: 20)")
-    parser.add_argument("--cmd_filename", default='cmds', help="Output command filename (default: cmds)")
+    parser = ArgumentParser(
+        "Generate batch commands for running IceInit2->IceIterative2 for each preCluster output bin"
+    )
+    parser.add_argument(
+        "precluster_csv", help="Cluster CSV file (ex: preCluster.cluster_info.csv)"
+    )
+    parser.add_argument(
+        "precluster_dir", help="preCluster out directory (ex: preCluster_out/)"
+    )
+    # parser.add_argument("nfl_filename", help="nFL filename (ex: isoseq_nfl.fasta)")
+    # parser.add_argument("tucked_filename", help="tucked filename (ex: preCluster_out.tucked.fasta)")
+    # parser.add_argument("subread_xml", help="Subread XML")
+    parser.add_argument(
+        "--cpus", default=20, type=int, help="Number of CPUs (default: 20)"
+    )
+    parser.add_argument(
+        "--cmd_filename", default="cmds", help="Output command filename (default: cmds)"
+    )
     args = parser.parse_args()
 
-    generate_batch_cmds(args.precluster_csv, real_upath(args.precluster_dir),
-                        args.cmd_filename,
-                        #real_upath(args.nfl_filename),
-                        #real_upath(args.tucked_filename),
-                        #real_upath(args.subread_xml),
-                        args.cpus)
+    generate_batch_cmds(
+        args.precluster_csv,
+        real_upath(args.precluster_dir),
+        args.cmd_filename,
+        # real_upath(args.nfl_filename),
+        # real_upath(args.tucked_filename),
+        # real_upath(args.subread_xml),
+        args.cpus,
+    )

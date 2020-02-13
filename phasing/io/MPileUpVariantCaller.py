@@ -1,4 +1,3 @@
-
 """
 Call variant based on a list of SAMMPileUpRecord where list[i] is the record of i-th position
 
@@ -10,8 +9,11 @@ import os, sys
 import scipy.stats as stats
 from collections import Counter
 
+
 class MPileUPVariant(object):
-    def __init__(self, record_list, min_cov, err_sub, expected_strand, pval_cutoff=0.01):
+    def __init__(
+        self, record_list, min_cov, err_sub, expected_strand, pval_cutoff=0.01
+    ):
         """
         :param record_list: list of SAMMPileUpRecord
         :param min_cov: minimum coverage to call variant
@@ -29,34 +31,44 @@ class MPileUPVariant(object):
         self.positions_to_call = self.get_positions_to_call()
 
         # must first call positions to call, then prep records, then number of tests
-        self.number_of_tests = sum(self.record_by_pos[pos].clean_type for pos in self.positions_to_call)
+        self.number_of_tests = sum(
+            self.record_by_pos[pos].clean_type for pos in self.positions_to_call
+        )
 
-        self.variant = {} # position --> in sorted order, (base, count)
-        self.ref_base = {} # position --> ref base
+        self.variant = {}  # position --> in sorted order, (base, count)
+        self.ref_base = {}  # position --> ref base
 
         self.call_variant()
-
 
     def is_in_or_near_HP(self, pos, hp_size=4):
         """
         We define a HP region as stretches of 4 or more same nucleotides
         :return: True/False for in/hear HP region
         """
+
         def find_hp_region_size(cur):
-            if cur not in self.record_by_pos: return 0
-            end = cur+1
-            while end in self.record_by_pos and self.record_by_pos[end].ref == self.record_by_pos[cur].ref:
+            if cur not in self.record_by_pos:
+                return 0
+            end = cur + 1
+            while (
+                end in self.record_by_pos
+                and self.record_by_pos[end].ref == self.record_by_pos[cur].ref
+            ):
                 end += 1
-            start = cur-1
-            while start in self.record_by_pos and self.record_by_pos[start].ref == self.record_by_pos[cur].ref:
+            start = cur - 1
+            while (
+                start in self.record_by_pos
+                and self.record_by_pos[start].ref == self.record_by_pos[cur].ref
+            ):
                 start -= 1
             # hp region is from start+1 to end
-            return end-(start+1)
+            return end - (start + 1)
 
-        return (find_hp_region_size(pos) >= hp_size) or \
-               (find_hp_region_size(pos-1) >= hp_size) or \
-               (find_hp_region_size(pos+1) >= hp_size)
-
+        return (
+            (find_hp_region_size(pos) >= hp_size)
+            or (find_hp_region_size(pos - 1) >= hp_size)
+            or (find_hp_region_size(pos + 1) >= hp_size)
+        )
 
     def get_positions_to_call(self):
         """
@@ -68,13 +80,20 @@ class MPileUPVariant(object):
         """
         positions_to_call = []
         for pos in self.record_by_pos:
-            if self.record_by_pos[pos].clean_type < 2: continue # only one base at this position, skip
-            elif self.record_by_pos[pos].clean_cov < self.min_cov: continue # insufficient cov, skip
+            if self.record_by_pos[pos].clean_type < 2:
+                continue  # only one base at this position, skip
+            elif self.record_by_pos[pos].clean_cov < self.min_cov:
+                continue  # insufficient cov, skip
             else:
                 # find the first and second most freq base in the "non-clean" counts
                 m = self.record_by_pos[pos].clean_counts.most_common()
                 # ex: m = [('a', 10), ('-ct', 20), ('+t', 10)]
-                if m[0][0][0]in ('+','-') or m[1][0][0] in ('+','-') or self.is_in_or_near_HP(pos): continue
+                if (
+                    m[0][0][0] in ("+", "-")
+                    or m[1][0][0] in ("+", "-")
+                    or self.is_in_or_near_HP(pos)
+                ):
+                    continue
                 else:
                     positions_to_call.append(pos)
         return positions_to_call
@@ -94,10 +113,10 @@ class MPileUPVariant(object):
         """
         for pos in self.record_by_pos:
             r = self.record_by_pos[pos]
-            if self.expected_strand == '+':
-                bases = 'ATCG'
+            if self.expected_strand == "+":
+                bases = "ATCG"
             else:
-                bases = 'atcg'
+                bases = "atcg"
 
             r.clean_counts = Counter(r.counts)
             keys = list(r.counts.keys())
@@ -130,19 +149,19 @@ class MPileUPVariant(object):
             r = self.record_by_pos[pos]
             alt_variant = []
             for base, count in r.clean_counts.most_common()[1:]:
-                assert not base.startswith('+') and not base.startswith('-') # clean counts should NOT have indels
+                assert not base.startswith("+") and not base.startswith(
+                    "-"
+                )  # clean counts should NOT have indels
                 exp = r.clean_cov * self.err_sub
-                odds, pval = stats.fisher_exact([[count, r.clean_cov-count], [exp, r.clean_cov-exp]], alternative='greater')
+                odds, pval = stats.fisher_exact(
+                    [[count, r.clean_cov - count], [exp, r.clean_cov - exp]],
+                    alternative="greater",
+                )
                 pval *= self.number_of_tests
-                if pval < self.pval_cutoff: # store variant if below cutoff
+                if pval < self.pval_cutoff:  # store variant if below cutoff
                     alt_variant.append((base, count))
-            if len(alt_variant) > 0: # only record this variant if there's at least two haps
+            if (
+                len(alt_variant) > 0
+            ):  # only record this variant if there's at least two haps
                 self.variant[pos] = [r.clean_counts.most_common()[0]] + alt_variant
                 self.ref_base[pos] = r.ref
-
-
-
-
-
-
-

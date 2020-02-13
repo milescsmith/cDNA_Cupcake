@@ -1,4 +1,3 @@
-
 import logging
 import sys
 import os.path as op
@@ -10,7 +9,6 @@ from cupcake2.ice2.__init__ import ICE_ARROW_PY
 
 from pbtranscript.ice.IceQuiver import IceQuiver
 from pbtranscript.Utils import cat_files, nfs_exists
-
 
 
 def add_ice_quiver_merge_arguments(parser):
@@ -26,11 +24,13 @@ class IceQuiverMerge(object):
 
     """Merge all quiver polished isoforms done by N IceQuiverI jobs."""
 
-    desc = "Unpolished isoforms were divided into N chunks and " + \
-           "polished using Quiver or Arrow separately. Now collect all " + \
-           "submitted polishing jobs from " + \
-           "root_dir/log/submitted_quiver_jobs.{i}of{N}.txt " + \
-           "(i=0,...,N-1) to root_dir/log/submitted_quiver_jobs.txt"
+    desc = (
+        "Unpolished isoforms were divided into N chunks and "
+        + "polished using Quiver or Arrow separately. Now collect all "
+        + "submitted polishing jobs from "
+        + "root_dir/log/submitted_quiver_jobs.{i}of{N}.txt "
+        + "(i=0,...,N-1) to root_dir/log/submitted_quiver_jobs.txt"
+    )
 
     prog = "%s merge" % ICE_ARROW_PY
 
@@ -53,25 +53,35 @@ class IceQuiverMerge(object):
 
     def run(self):
         """Run"""
-        iceq = IceQuiver(root_dir=self.root_dir, bas_fofn=None,
-                         fasta_fofn=None, sge_opts=None,
-                         prog_name="ice_quiver_merge")
+        iceq = IceQuiver(
+            root_dir=self.root_dir,
+            bas_fofn=None,
+            fasta_fofn=None,
+            sge_opts=None,
+            prog_name="ice_quiver_merge",
+        )
 
         iceq.add_log(self.cmd_str())
         iceq.add_log("root_dir: {d}.".format(d=self.root_dir))
         iceq.add_log("Total number of chunks: N = {N}.".format(N=self.N))
 
-        src = [iceq.submitted_quiver_jobs_log_of_chunk_i(i=i, num_chunks=self.N)
-               for i in range(0, self.N)]
+        src = [
+            iceq.submitted_quiver_jobs_log_of_chunk_i(i=i, num_chunks=self.N)
+            for i in range(0, self.N)
+        ]
         for f in src:
             if not nfs_exists(f):
-                raise IOError("Log {f} ".format(f=f) +
-                              "of submitted quiver jobs does not exist.")
+                raise IOError(
+                    "Log {f} ".format(f=f) + "of submitted quiver jobs does not exist."
+                )
 
         dst = iceq.submitted_quiver_jobs_log
 
-        iceq.add_log("Collecting submitted quiver jobs from:\n{src}\nto {dst}.".
-                     format(src="\n".join(src), dst=dst))
+        iceq.add_log(
+            "Collecting submitted quiver jobs from:\n{src}\nto {dst}.".format(
+                src="\n".join(src), dst=dst
+            )
+        )
 
         cat_files(src=src, dst=dst)
 
@@ -92,8 +102,9 @@ class IceQuiverMergeRunner(PBToolRunner):
 
     def run(self):
         """Run"""
-        logging.info("Running {f} v{v}.".format(f=op.basename(__file__),
-                                                v=get_version()))
+        logging.info(
+            "Running {f} v{v}.".format(f=op.basename(__file__), v=get_version())
+        )
         cmd_str = ""
         try:
             args = self.args
@@ -101,8 +112,9 @@ class IceQuiverMergeRunner(PBToolRunner):
             cmd_str = iceqm.cmd_str()
             iceqm.run()
         except:
-            logging.exception("Exiting {cmd_str} with return code 1.".
-                              format(cmd_str=cmd_str))
+            logging.exception(
+                "Exiting {cmd_str} with return code 1.".format(cmd_str=cmd_str)
+            )
             return 1
         return 0
 
@@ -111,6 +123,7 @@ def main():
     """Main function."""
     runner = IceQuiverMergeRunner()
     return runner.start()
+
 
 if __name__ == "__main__":
     sys.exit(main())
