@@ -25,6 +25,7 @@ setup(
     include_dirs=[np.get_include()],
     zip_safe=False,
     packages=[
+        "annotation",
         "cupcake",
         "cupcake.io",
         "cupcake.ice",
@@ -43,6 +44,11 @@ setup(
         l.strip() for l in Path("requirements.txt").read_text("utf-8").splitlines()
     ],
     scripts=[
+        "annotation/alignment_stats_from_sam.py",
+        "annotation/make_file_for_subsampling_from_collapsed.py",
+        "annotation/parse_matchAnnot.py",
+        "annotation/subsample_with_category.py",
+        "annotation/subsample.py",
         "cupcake/tofu/collapse_isoforms_by_sam.py",
         "cupcake/tofu/get_abundance_post_collapse.py",
         "cupcake/tofu/filter_by_count.py",
