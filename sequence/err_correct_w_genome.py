@@ -5,8 +5,8 @@ __version__ = "1.0"
 import os, sys
 from Bio.Seq import Seq
 from Bio import SeqIO
-import coordinate_mapper as sp
-import BioReaders
+from . import coordinate_mapper as sp
+from . import BioReaders
 
 
 ###### MODIFY FILENAME BELOW #######
