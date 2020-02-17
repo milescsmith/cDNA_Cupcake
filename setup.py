@@ -5,7 +5,7 @@ from Cython.Build import cythonize
 from pathlib import Path
 
 __author__ = "etseng@pacb.com"
-version = "10.0.1"
+version = "10.0.3"
 
 ext_modules = [
     Extension(
@@ -38,6 +38,7 @@ setup(
         "cupcake2.tofu2",
         "phasing",
         "phasing.io",
+        "sequence",
     ],
     setup_requires=["numpy", "cython"],
     install_requires=[
