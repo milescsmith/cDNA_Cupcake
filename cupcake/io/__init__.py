@@ -1,11 +1,11 @@
 __author__ = "etseng@pacb.com"
 
-from . import (
-    BED,
-    BioReaders,
-    GFF,
-    SeqReaders,
-)
+# from . import (
+#     BED,
+#     BioReaders,
+#     GFF,
+#     SeqReaders,
+# )
 
 from .BED import (
     SimpleBED,

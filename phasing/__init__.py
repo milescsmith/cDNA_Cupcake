@@ -1,9 +1,9 @@
 __author__ = "etseng@pacb.com"
 
-from . import (
-    io,
-    utils,
-)
+# from . import (
+#     io,
+#     utils,
+# )
 
 from .create_fake_genome import make_fake_genome
 
