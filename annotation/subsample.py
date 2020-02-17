@@ -1,8 +1,8 @@
 #!/usr/bin/env python
-import os, sys, random
 import math
-from csv import DictReader
+import random
 from collections import defaultdict
+from csv import DictReader
 
 
 def get_counts(count_filename, min_fl_count=2, key="id", min_len=None, max_len=None):

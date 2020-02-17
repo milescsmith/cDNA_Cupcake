@@ -23,8 +23,17 @@ Report #2. For each junction:
   (6) acceptor sequence ("AG")
   (7) closest known donor site (NA if no ref)
 """
+import bisect
+import sys
+from collections import defaultdict
+from csv import DictWriter
 
-fieldnames_report1 = [
+from Bio import SeqIO
+
+from cupcake.io.BioReaders import GMAPSAMReader
+from cupcake.io.GFF import collapseGFFReader
+
+FIELDNAMES_REPORT1 = [
     "seqid",
     "coverage",
     "identity",
@@ -33,7 +42,7 @@ fieldnames_report1 = [
     "num_del",
     "num_exons",
 ]
-fieldnames_report2 = [
+FIELDNAMES_REPORT2 = [
     "seqid",
     "donor_pos",
     "donor_seq",
@@ -42,15 +51,6 @@ fieldnames_report2 = [
     "acceptor_seq",
     "acceptor_dist",
 ]
-
-import os, re, sys, bisect
-from collections import defaultdict
-from csv import DictWriter
-from Bio import SeqIO
-from bx.intervals import IntervalTree
-from cupcake.io.GFF import collapseGFFReader
-from cupcake.io.BioReaders import GMAPSAMReader
-
 
 def type_fa_or_fq(file):
     file = file.upper()
@@ -142,17 +142,16 @@ def get_donor_acceptor(genome_d, chrom, strand, pos1, pos2):
 def evaluate_alignment_sam(
     input_fa_or_fq, sam_filename, genome_d, output_prefix, junction_info=None
 ):
-
     h1 = open(output_prefix + ".alignment_report.txt", "w")
     h2 = open(output_prefix + ".junction_report.txt", "w")
 
-    w1 = DictWriter(h1, fieldnames=fieldnames_report1)
-    w2 = DictWriter(h2, fieldnames=fieldnames_report2)
+    w1 = DictWriter(h1, fieldnames=FIELDNAMES_REPORT1)
+    w2 = DictWriter(h2, fieldnames=FIELDNAMES_REPORT2)
     w1.writeheader()
     w2.writeheader()
 
-    # fieldnames_report1 = ['seqid', 'coverage', 'identity', 'num_sub', 'num_ins', 'num_del', 'num_exons']
-    # fieldnames_report2 = ['seqid', 'donor_pos', 'donor_seq', 'donor_dist', 'acceptor_pos', 'acceptor_seq', 'acceptor_dist']
+    # FIELDNAMES_REPORT1 = ['seqid', 'coverage', 'identity', 'num_sub', 'num_ins', 'num_del', 'num_exons']
+    # FIELDNAMES_REPORT2 = ['seqid', 'donor_pos', 'donor_seq', 'donor_dist', 'acceptor_pos', 'acceptor_seq', 'acceptor_dist']
 
     query_len_dict = dict(
         (r.id, len(r.seq))

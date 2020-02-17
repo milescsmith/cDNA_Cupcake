@@ -1,6 +1,8 @@
 #!/usr/bin/env python
-import os, sys
+import os
+import sys
 from csv import DictReader
+
 from Bio import SeqIO
 
 

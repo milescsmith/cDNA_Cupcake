@@ -6,3 +6,6 @@ sklearn
 pysam
 gtfparse @ git+https://github.com/milescsmith/gtfparse
 pandas
+pyvcf
+networkx
+cython

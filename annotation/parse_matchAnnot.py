@@ -1,6 +1,7 @@
 #!/usr/bin/env python
-import os, sys
+import sys
 from collections import defaultdict
+
 from Bio import SeqIO
 
 
@@ -13,7 +14,6 @@ def type_fa_or_fq(file):
 
 
 def parse_matchAnnot(fa_or_fq, filename, not_pbid=False, parse_FL_coverage=False):
-
     pbids = []
     fl_cov = {}  # only used if parse_FL_coverage is True
     for r in SeqIO.parse(open(fa_or_fq), type_fa_or_fq(fa_or_fq)):

@@ -1,13 +1,12 @@
-from setuptools import setup, Extension, find_packages
-import sys
+from pathlib import Path
 import numpy as np
 from Cython.Build import cythonize
-from pathlib import Path
+from setuptools import setup, Extension
 
 __author__ = "etseng@pacb.com"
-version = "10.0.3"
+VERSION = "10.0.4"
 
-ext_modules = [
+EXT_MODULES = [
     Extension(
         "cupcake.tofu.branch.intersection_unique",
         ["cupcake/tofu/branch/intersection_unique.pyx"],
@@ -18,10 +17,10 @@ ext_modules = [
 
 setup(
     name="cupcake",
-    version=version,
+    version=VERSION,
     author="Elizabeth Tseng",
     author_email="etseng@pacb.com",
-    ext_modules=cythonize(ext_modules),
+    ext_modules=cythonize(EXT_MODULES),
     include_dirs=[np.get_include()],
     zip_safe=False,
     packages=[
