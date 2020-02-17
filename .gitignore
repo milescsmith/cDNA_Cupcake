@@ -6,3 +6,4 @@ build/*
 cupcake/tofu/branch/*
 .vscode/settings.json
 **/.DS_Store
+cupcake.egg-info/
