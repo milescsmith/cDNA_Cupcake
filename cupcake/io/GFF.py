@@ -399,6 +399,8 @@ class gmapRecord:
         self.cds_exons = []
         self.scores = []
 
+        #pdb.set_trace()
+        self.geneid = None
         # handle gene ids specially for PB.X.Y and PBfusion.X.Y
         if geneid is not None:
             self.geneid = geneid
@@ -475,13 +477,28 @@ class gmapGFFReader(object):
             ):  # first non-# seen or EOF
                 self.f.seek(cur)
                 break
-
+        self.sanity_format_check()
+        
     def __iter__(self):
         return self
 
     def __next__(self):
         return self.read()
 
+    def sanity_format_check(self):
+        """
+        GFF3 formats are supposed to be tab-delimited and 9 required fields
+        https://learn.gencore.bio.nyu.edu/ngs-file-formats/gff3-format/
+        """
+        cur = self.f.tell()
+        raw = self.f.readline().strip().split('\t')
+        if len(raw) != 9:
+            print("ERROR:Sanity checking {0} is GFF3 format: expected 9 tab-delimited fields but saw {1}! Abort!".format(\
+                self.filename, len(raw)))
+            sys.exit(-1)
+        self.f.seek(cur)
+
+            
     def read(self):
         """
         GFF files
@@ -680,14 +697,17 @@ class collapseGFFReader(gmapGFFReader):
         chr = raw[0]
         strand = raw[6]
         seqid = None
-        for stuff in raw[8].split(";"):
-            a, b = stuff.strip().split()
-            if a == "transcript_id":
-                seqid = b[1:-1]
-                break
+        geneid = None
+        for stuff in raw[8].split(';'):
+            if len(stuff.strip()) > 0:
+                a, b = stuff.strip().split()
+                if a == 'transcript_id':
+                    seqid = b[1:-1]
+                if a == 'gene_id':
+                    geneid = b[1:-1]
 
-        rec = gmapRecord(chr, coverage=None, identity=None, strand=strand, seqid=seqid)
-
+        rec = gmapRecord(chr, coverage=None, identity=None, strand=strand, seqid=seqid, geneid=geneid)
+        
         while True:
             cur = self.f.tell()
             line = self.f.readline().strip()
