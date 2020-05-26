@@ -716,15 +716,15 @@ if __name__ == "__main__":
     parser.add_argument("config_file")
     parser.add_argument(
         "field_to_use",
-        choices=["norm_fl", "count_fl"],
-        default="count_fl",
+        choices=['norm_fl', 'count_fl'],
+        default='count_fl',
         help="Which count field to use for chained sample (default: count_fl)",
     )
     parser.add_argument(
         "--fuzzy_junction",
-        default=5,
+        default=0,
         type=int,
-        help="Max allowed distance in junction to be considered identical (default: 5 bp)",
+        help="Max allowed distance in junction to be considered identical (default: 0 bp)",
     )
     parser.add_argument(
         "--dun-merge-5-shorter",
@@ -736,8 +736,8 @@ if __name__ == "__main__":
     parser.add_argument(
         "--max_3_diff",
         type=int,
-        default=100,
-        help="Maximum 3' difference allowed (default: 100bp)",
+        default=30,
+        help="Maximum 3' difference allowed (default: 30bp)",
     )
     parser.add_argument(
         "--cpus",
