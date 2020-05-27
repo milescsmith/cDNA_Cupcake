@@ -2,6 +2,7 @@
 __author__ = "etseng@pacb.com"
 import sys
 
+
 """
 Faithful copy of cupcake.io.BED.py
 
@@ -127,7 +128,7 @@ class LazyBEDPointReader(SimpleBEDReader):
                 self.pos_d[chrom][i] = cur
                 if debug:
                     print(
-                        "**** Hashing {0}:{1}....".format(chrom, start), file=sys.stdout
+                        "**** Hashing {}:{}....".format(chrom, start), file=sys.stdout
                     )
 
     def get_pos(self, chrom, pos):
@@ -143,7 +144,9 @@ class LazyBEDPointReader(SimpleBEDReader):
             cur = self.f.tell()
             line = self.f.readline()
             if self.f.tell() == cur:
-                return "NA"  # raise Exception, "EOF reached and {0}:{1} not seen!".format(chrom, pos)
+                return (
+                    "NA"  # raise Exception("EOF reached and {chrom}:{pos} not seen!")
+                )
 
             raw = line.strip().split("\t")
             _chrom, start, end = (
@@ -153,7 +156,9 @@ class LazyBEDPointReader(SimpleBEDReader):
             )
 
             if _chrom != chrom or start > pos:
-                return "NA"  # raise Exception, "End of chrom reached and {0}:{1} not seen!".format(chrom, pos)
+                return (
+                    "NA"  # raise Exception("EOF reached and {chrom}:{pos} not seen!")
+                )
 
             if start == pos:
                 return raw[3]

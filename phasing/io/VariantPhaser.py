@@ -3,12 +3,14 @@ __author__ = "etseng@pacb.com"
 import pdb
 from collections import defaultdict, namedtuple
 from csv import DictReader
-import vcf
-from Bio.Seq import Seq
-from Bio import SeqIO
-from cupcake.io.BioReaders import GMAPSAMReader
-from .coordinate_mapper import get_base_to_base_mapping_from_sam
 
+from Bio import SeqIO
+from Bio.Seq import Seq
+
+import vcf
+from cupcake.io.BioReaders import GMAPSAMReader
+
+from .coordinate_mapper import get_base_to_base_mapping_from_sam
 
 __VCF_EXAMPLE__ = """
 ##fileformat=VCFv4.2
@@ -58,9 +60,9 @@ class VariantPhaser(object):
         # later, when we are matchin back to transcript seq, need to watch for strand!
         for pos, vars in vc.variant.items():
             self.accepted_vars_by_pos[pos] = [_base.upper() for _base, _count in vars]
-            self.count_of_vars_by_pos[pos] = dict(
-                (_base.upper(), _count) for _base, _count in vars
-            )
+            self.count_of_vars_by_pos[pos] = {
+                _base.upper(): _count for _base, _count in vars
+            }
 
         self.accepted_pos = list(self.accepted_vars_by_pos.keys())
         self.accepted_pos.sort()
@@ -94,21 +96,21 @@ class VariantPhaser(object):
         for r in GMAPSAMReader(
             sam_filename,
             True,
-            query_len_dict=dict((k, len(seq_dict[k].seq)) for k in seq_dict),
+            query_len_dict={k: len(seq_dict[k].seq) for k in seq_dict},
         ):
             if r.sID == "*":
-                f_log.write("Ignore {0} because: unmapped.\n".format(r.qID))
+                f_log.write("Ignore {} because: unmapped.\n".format(r.qID))
                 continue
             if r.flag.strand != self.vc.expected_strand:
                 f_log.write(
-                    "Ignore {0} because: strand is {1}.\n".format(r.qID, r.flag.strand)
+                    "Ignore {} because: strand is {}.\n".format(r.qID, r.flag.strand)
                 )
                 continue  # ignore
             if not partial_ok and (
                 r.sStart > self.min_var_pos or r.sEnd < self.max_var_pos
             ):
                 f_log.write(
-                    "Ignore {0} because: aln too short, from {1}-{2}.\n".format(
+                    "Ignore {} because: aln too short, from {}-{}.\n".format(
                         r.qID, r.sStart + 1, r.sEnd
                     )
                 )
@@ -118,15 +120,13 @@ class VariantPhaser(object):
                 r, str(seq_dict[r.qID].seq).upper(), partial_ok
             )
             if i is None:  # read is rejected for reason listed in <msg>
-                f_log.write("Ignore {0} because: {1}.\n".format(r.qID, msg))
+                f_log.write("Ignore {} because: {}.\n".format(r.qID, msg))
                 continue
             else:
                 f_log.write(
-                    "{0} phased: haplotype {1}={2}\n".format(
-                        r.qID, i, self.haplotypes[i]
-                    )
+                    "{} phased: haplotype {}={}\n".format(r.qID, i, self.haplotypes[i])
                 )
-                print("{0} has haplotype {1}:{2}".format(r.qID, i, self.haplotypes[i]))
+                print("{} has haplotype {}:{}".format(r.qID, i, self.haplotypes[i]))
                 self.seq_hap_info[r.qID] = i
 
     def match_haplotype(self, r, s, partial_ok=False):
@@ -146,7 +146,7 @@ class VariantPhaser(object):
         m = get_base_to_base_mapping_from_sam(
             r.segments, r.cigar, r.qStart, r.qEnd, r.flag.strand
         )
-        ref_m = dict((v, k) for k, v in m.items())
+        ref_m = {v: k for k, v in m.items()}
 
         # go through each variant
         # <hap> to represent the concatenated string of all variant positions for this seq
@@ -160,7 +160,7 @@ class VariantPhaser(object):
                 ):  # read does not cover one of the SNP positions, so use "?"
                     hap += "?"
                 else:
-                    return None, "Does not have base at ref_pos {0}.\n".format(ref_pos)
+                    return None, "Does not have base at ref_pos {}.\n".format(ref_pos)
             else:
                 base = s[ref_m[ref_pos]]
                 if (
@@ -181,9 +181,7 @@ class VariantPhaser(object):
             if impute_i is None:
                 return (
                     None,
-                    "Seq {0} contained non-called variant. Impute failed.\n".format(
-                        hap
-                    ),
+                    "Seq {} contained non-called variant. Impute failed.\n".format(hap),
                 )
             else:
                 return impute_i, "IMPUTED"
@@ -408,13 +406,13 @@ class Haplotypes(object):
         # second line: haplotype, list of sorted isoforms
         # third line onwards: haplotype and assoc count
         f_human = open(output_prefix + ".human_readable.txt", "w")
-        f_human.write("Associated VCF file: {0}.vcf\n".format(output_prefix))
+        f_human.write("Associated VCF file: {}.vcf\n".format(output_prefix))
         f_human.write("haplotype\t{samples}\n".format(samples="\t".join(name_isoforms)))
         for hap_index, hap_str in enumerate(self.haplotypes):
             f_human.write(hap_str)
             for _iso in name_isoforms:
                 if hap_index in isoform_tally[_iso]:
-                    f_human.write("\t{0}".format(isoform_tally[_iso][hap_index]))
+                    f_human.write("\t{}".format(isoform_tally[_iso][hap_index]))
                 else:
                     f_human.write("\t0")
             f_human.write("\n")
@@ -435,7 +433,7 @@ class Haplotypes(object):
             ref_chr, ref_pos = fake_map[pos]
             total_count = sum(self.count_of_vars_by_pos[pos].values())
             alt_freq = [
-                "{0:.2f}".format(self.count_of_vars_by_pos[pos][b] * 1.0 / total_count)
+                "{:.2f}".format(self.count_of_vars_by_pos[pos][b] * 1.0 / total_count)
                 for b in self.alt_at_pos[pos]
             ]
             rec = vcf.model._Record(

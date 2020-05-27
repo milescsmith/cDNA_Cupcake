@@ -65,7 +65,7 @@ class STARJunctionRecord:
         raw = line.strip().split()
         if len(raw) != 9:
             raise Exception(
-                "Expected 9 columns for STAR junction file! Got {0} instead!".format(
+                "Expected 9 columns for STAR junction file! Got {} instead!".format(
                     len(raw)
                 )
             )
@@ -89,9 +89,7 @@ class STARJunctionRecord:
 
 
 class STARJunctionReader:
-    def __init__(
-        self, filename,
-    ):
+    def __init__(self, filename):
         self.filename = filename
         self.f = open(filename)
 

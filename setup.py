@@ -1,19 +1,21 @@
 from pathlib import Path
+
 import numpy as np
+from setuptools import Extension, setup
+
 from Cython.Build import cythonize
-from setuptools import setup, Extension
 
 __author__ = "etseng@pacb.com"
 version = "12.0.0"
 
 ext_modules = [
-                Extension("cupcake.tofu.branch.intersection_unique",
-                    ["cupcake/tofu/branch/intersection_unique.pyx"]),
-                Extension("cupcake.tofu.branch.c_branch",
-                         ["cupcake/tofu/branch/c_branch.pyx"]),
-                Extension("cupcake.ice.find_ECE",
-                    ["cupcake/ice/find_ECE.pyx"]),
-              ]
+    Extension(
+        "cupcake.tofu.branch.intersection_unique",
+        ["cupcake/tofu/branch/intersection_unique.pyx"],
+    ),
+    Extension("cupcake.tofu.branch.c_branch", ["cupcake/tofu/branch/c_branch.pyx"]),
+    Extension("cupcake.ice.find_ECE", ["cupcake/ice/find_ECE.pyx"]),
+]
 
 EXT_MODULES = [
     Extension(

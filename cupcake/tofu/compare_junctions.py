@@ -23,9 +23,9 @@ def compare_junctions(
     <internal_fuzzy_max_dist> allows for very small amounts of diff between internal exons
     useful for chimeric & slightly bad mappings
     """
-    #assert internal_fuzzy_max_dist >= 0
-    #assert max_5_diff >= 0
-    #assert max_3_diff >= 0
+    # assert internal_fuzzy_max_dist >= 0
+    # assert max_5_diff >= 0
+    # assert max_3_diff >= 0
     strand = r1.strand
     found_overlap = False
     # super/partial --- i > 0, j = 0

@@ -1,8 +1,11 @@
 #!/usr/bin/env python
-import os, sys
-from csv import DictReader, DictWriter
+import os
+import sys
 from collections import Counter, defaultdict
+from csv import DictReader, DictWriter
+
 from Bio.Seq import Seq
+
 
 def read_dropseq_clean_report(report_filename):
     """
@@ -30,17 +33,19 @@ def read_dropseq_clean_report(report_filename):
     f = open(report_filename)
     while True:
         cur_pos = f.tell()
-        if not f.readline().startswith('#'): break
+        if not f.readline().startswith("#"):
+            break
     f.seek(cur_pos)
 
     bc_repair_dict = {}
-    reader = DictReader(f, delimiter='\t')
+    reader = DictReader(f, delimiter="\t")
     for r in reader:
-        if r['repaired']=='TRUE':
-            seq_from = Seq(r['neighbor_barcode']).reverse_complement()
-            seq_to   = Seq(r['intended_barcode']).reverse_complement()
+        if r["repaired"] == "TRUE":
+            seq_from = Seq(r["neighbor_barcode"]).reverse_complement()
+            seq_to = Seq(r["intended_barcode"]).reverse_complement()
             bc_repair_dict[seq_from] = seq_to
     return bc_repair_dict
+
 
 def read_dropseq_synthesis_report(report_filename, bc_repair_dict=None):
     """
@@ -55,19 +60,21 @@ _UMIs   related_median_UMIs     intended_TBias  related_median_TBias
     f = open(report_filename)
     while True:
         cur_pos = f.tell()
-        if not f.readline().startswith('#'): break
+        if not f.readline().startswith("#"):
+            break
     f.seek(cur_pos)
 
     if bc_repair_dict is None:
         bc_repair_dict = {}
-    reader = DictReader(f, delimiter='\t')
+    reader = DictReader(f, delimiter="\t")
     for r in reader:
-        if r['intended_sequence']!='NA':
-            seq_to   = Seq(r['intended_sequence']).reverse_complement()
-            for s in r['related_sequences'].split(':'):
+        if r["intended_sequence"] != "NA":
+            seq_to = Seq(r["intended_sequence"]).reverse_complement()
+            for s in r["related_sequences"].split(":"):
                 seq_from = Seq(s).reverse_complement()
                 bc_repair_dict[seq_from] = seq_to
     return bc_repair_dict
+
 
 def edit_distance(seq1, seq2):
     assert len(seq1) == len(seq2)
@@ -108,9 +115,15 @@ def error_correct_BC_or_UMI(records, key, threshold=1):
     return merge_map
 
 
-def main(csv_filename, output_filename, shortread_bc={}, only_top_ranked=False, bc_repair_dict=None):
+def main(
+    csv_filename,
+    output_filename,
+    shortread_bc={},
+    only_top_ranked=False,
+    bc_repair_dict=None,
+):
 
-    reader = DictReader(open(csv_filename), delimiter='\t')
+    reader = DictReader(open(csv_filename), delimiter="\t")
 
     FIELDS = reader.fieldnames + ["BC_ed", "UMI_ed", "BC_match", "BC_top_rank"]
     f = open(output_filename, "w")
@@ -125,21 +138,21 @@ def main(csv_filename, output_filename, shortread_bc={}, only_top_ranked=False, 
     for gene in recs_by_gene:
         recs_by_bc = defaultdict(lambda: [])
 
-        if bc_repair_dict is not None: # has DropSeq BC cleaning report! Just use it!
+        if bc_repair_dict is not None:  # has DropSeq BC cleaning report! Just use it!
             for r in recs_by_gene[gene]:
-                if r['BC'] in bc_repair_dict:
-                    r['BC_ed'] = bc_repair_dict[r['BC']]
+                if r["BC"] in bc_repair_dict:
+                    r["BC_ed"] = bc_repair_dict[r["BC"]]
                 else:
-                    r['BC_ed'] = r['BC']
-                recs_by_bc[r['BC']].append(r)
+                    r["BC_ed"] = r["BC"]
+                recs_by_bc[r["BC"]].append(r)
         else:
-            bc_merge_map = error_correct_BC_or_UMI(recs_by_gene[gene], 'BC')
+            bc_merge_map = error_correct_BC_or_UMI(recs_by_gene[gene], "BC")
             for r in recs_by_gene[gene]:
-                if r['BC'] in bc_merge_map:
-                    r['BC_ed'] = bc_merge_map[r['BC']]
+                if r["BC"] in bc_merge_map:
+                    r["BC_ed"] = bc_merge_map[r["BC"]]
                 else:
-                    r['BC_ed'] = r['BC']
-                recs_by_bc[r['BC']].append(r)
+                    r["BC_ed"] = r["BC"]
+                recs_by_bc[r["BC"]].append(r)
         # now error correct by UMI
         for bc in recs_by_bc:
             umi_merge_map = error_correct_BC_or_UMI(recs_by_bc[bc], "UMI")
@@ -168,10 +181,23 @@ if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument("input_csv", help="Input CSV")
     parser.add_argument("output_csv", help="Output CSV")
-    parser.add_argument("--bc_rank_file", help="(Optional) cell barcode rank file from short read data")
-    parser.add_argument("--only_top_ranked", action="store_true", default=False, help="(Optional) only output those that are top-ranked. Must have --bc_rank_file.")
-    parser.add_argument("--dropseq_clean_report", help="Output from running DetectBeadSubstitutionErrors in DropSeq cookbook (ex: star_gene_exon_tagged_clean_substitution.bam_report.txt)")
-    parser.add_argument("--dropseq_synthesis_report", help="Output from running DetectBeadSynthesisErrors in DropSeq cookbook (ex: star_gene_exon_tagged_clean_substitution_clean2.bam_report.txt)")
+    parser.add_argument(
+        "--bc_rank_file", help="(Optional) cell barcode rank file from short read data"
+    )
+    parser.add_argument(
+        "--only_top_ranked",
+        action="store_true",
+        default=False,
+        help="(Optional) only output those that are top-ranked. Must have --bc_rank_file.",
+    )
+    parser.add_argument(
+        "--dropseq_clean_report",
+        help="Output from running DetectBeadSubstitutionErrors in DropSeq cookbook (ex: star_gene_exon_tagged_clean_substitution.bam_report.txt)",
+    )
+    parser.add_argument(
+        "--dropseq_synthesis_report",
+        help="Output from running DetectBeadSynthesisErrors in DropSeq cookbook (ex: star_gene_exon_tagged_clean_substitution_clean2.bam_report.txt)",
+    )
 
     args = parser.parse_args()
 
@@ -192,6 +218,14 @@ if __name__ == "__main__":
     if args.dropseq_clean_report is not None:
         bc_repair_dict = read_dropseq_clean_report(args.dropseq_clean_report)
     if args.dropseq_synthesis_report is not None:
-        bc_repair_dict = read_dropseq_synthesis_report(args.dropseq_synthesis_report, bc_repair_dict)
+        bc_repair_dict = read_dropseq_synthesis_report(
+            args.dropseq_synthesis_report, bc_repair_dict
+        )
 
-    main(args.input_csv, args.output_csv, shortread_bc, args.only_top_ranked, bc_repair_dict)
+    main(
+        args.input_csv,
+        args.output_csv,
+        shortread_bc,
+        args.only_top_ranked,
+        bc_repair_dict,
+    )

@@ -2,9 +2,12 @@
 __author__ = "etseng@pacb.com"
 __version__ = "1.2"
 
-import os, sys, subprocess
-from csv import DictReader
+import os
+import subprocess
+import sys
 from collections import defaultdict
+from csv import DictReader
+
 import SIRVvalidate_smrtlink_isoseq as smrtlink
 
 GENCODE_GTF = "/home/UNIXHOME/etseng/share/gencode/gencode.v29.annotation.gtf"
@@ -93,36 +96,36 @@ def collapse_to_hg38(
         )
 
     if subprocess.check_call(cmd, shell=True) != 0:
-        raise Exception, "ERROR CMD:", cmd
+        raise Exception(f"ERROR CMD: {cmd}")
 
     cmd = "sort -k 3,3 -k 4,4n {hq}.sam > {hq}.sorted.sam".format(hq=hq_fastq)
     if subprocess.check_call(cmd, shell=True) != 0:
-        raise Exception, "ERROR CMD:", cmd
+        raise Exception(f"ERROR CMD: {cmd}")
 
     cmd = "collapse_isoforms_by_sam.py --input {hq} --fq -s {hq}.sorted.sam -c 0.99 -i 0.95 \
     --max_fuzzy_junction=5 --dun-merge-5-shorter -o {hq}.no5merge".format(
         hq=hq_fastq
     )
     if subprocess.check_call(cmd, shell=True) != 0:
-        raise Exception, "ERROR CMD:", cmd
+        raise Exception(f"ERROR CMD: {cmd}")
 
     ### make_abundance_from_CSV
     collapse_prefix = hq_fastq + ".no5merge.collapsed"
     cmd = "get_abundance_post_collapse.py " + collapse_prefix + " cluster_report.csv"
     if subprocess.check_call(cmd, shell=True) != 0:
-        raise Exception, "ERROR CMD:", cmd
+        raise Exception(f"ERROR CMD: {cmd}")
 
-    cmd = "filter_by_count.py {0} --dun_use_group_count --min_count={1}".format(
+    cmd = "filter_by_count.py {} --dun_use_group_count --min_count={}".format(
         collapse_prefix, min_count
     )
     if subprocess.check_call(cmd, shell=True) != 0:
-        raise Exception, "ERROR CMD:", cmd
+        raise Exception(f"ERROR CMD: {cmd}")
 
-    cmd = "filter_away_subset.py {0}.min_fl_{1}".format(collapse_prefix, min_count)
+    cmd = "filter_away_subset.py {}.min_fl_{}".format(collapse_prefix, min_count)
     if subprocess.check_call(cmd, shell=True) != 0:
-        raise Exception, "ERROR CMD:", cmd
+        raise Exception(f"ERROR CMD: {cmd}")
 
-    rep = collapse_prefix + ".min_fl_{0}.filtered".format(min_count)
+    rep = collapse_prefix + ".min_fl_{}.filtered".format(min_count)
 
     if aligner_choice == "gmap":
         ref = "hg19" if use_hg19_instead else "hg38"
@@ -140,13 +143,13 @@ def collapse_to_hg38(
         )
 
     if subprocess.check_call(cmd, shell=True) != 0:
-        raise Exception, "ERROR CMD:", cmd
+        raise Exception(f"ERROR CMD: {cmd}")
 
     cmd = "sort -k 3,3 -k 4,4n {rep}.rep.fq.sam > {rep}.rep.fq.sorted.sam".format(
         rep=rep
     )
     if subprocess.check_call(cmd, shell=True) != 0:
-        raise Exception, "ERROR CMD:", cmd
+        raise Exception(f"ERROR CMD: {cmd}")
 
     os.symlink(rep + ".abundance.txt", "touse.count.txt")
     os.symlink(rep + ".gff", "touse.gff")
@@ -186,14 +189,14 @@ def validate_with_Gencode(out_dir, eval_dir, use_hg19_instead=False):
     )
 
     if subprocess.check_call(cmd, shell=True) != 0:
-        raise Exception, "ERROR CMD:", cmd
+        raise Exception(f"ERROR CMD: {cmd}")
 
     cmd = "python {sqanti_filter} touse.rep_classification.txt touse.rep.renamed.fasta touse.rep.renamed_corrected.sam".format(
         sqanti_filter=SQANTI_FILTER
     )
 
     if subprocess.check_call(cmd, shell=True) != 0:
-        raise Exception, "ERROR CMD:", cmd
+        raise Exception(f"ERROR CMD: {cmd}")
 
     os.chdir(cur_dir)
 

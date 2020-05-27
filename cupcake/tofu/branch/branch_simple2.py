@@ -1,6 +1,9 @@
-import os, sys
+import os
 import pdb
+import sys
+
 import numpy as np
+from Bio import SeqIO
 
 import cupcake.io.BioReaders as BioReaders
 import cupcake.tofu.branch.c_branch as c_branch
@@ -8,7 +11,6 @@ from bx.intervals.cluster import ClusterTree
 
 # from cupcake.tofu.branch.intersection_unique import IntervalTreeUnique, Interval, IntervalNodeUnique
 
-from Bio import SeqIO
 
 INTINF = 999999
 
@@ -56,12 +58,12 @@ class BranchSimple:
         self.max_3_diff = max_3_diff
 
         self.transfrag_filename = transfrag_filename
-        self.transfrag_len_dict = dict(
-            (r.id.split()[0], len(r.seq))
+        self.transfrag_len_dict = {
+            r.id.split()[0]: len(r.seq)
             for r in SeqIO.parse(
                 open(transfrag_filename), "fastq" if is_fq else "fasta"
             )
-        )
+        }
 
         self.cov_threshold = cov_threshold  # only output GTF records if >= this many GMAP records support it (this must be if I'm running non-clustered fasta on GMAP)
 
@@ -108,9 +110,7 @@ class BranchSimple:
             records = [next(quality_alignments)]
             max_end = records[0].sEnd
         except StopIteration:
-            print(
-                "No valid records from {0}!".format(gmap_sam_filename), file=sys.stderr
-            )
+            print(f"No valid records from {gmap_sam_filename}!", file=sys.stderr)
             return
         # go through remainder of alignments and group by subject ID
         for r in quality_alignments:
@@ -136,17 +136,13 @@ class BranchSimple:
         """
         for r in gmap_sam_reader:
             if r.sID == "*":
-                ignored_fout.write("{0}\tUnmapped.\n".format(r.qID))
+                ignored_fout.write(f"{r.qID}\tUnmapped.\n")
             elif r.qCoverage < self.min_aln_coverage:
-                ignored_fout.write(
-                    "{0}\tCoverage {1:.3f} too low.\n".format(r.qID, r.qCoverage)
-                )
+                ignored_fout.write(f"{r.qID}\tCoverage {r.qCoverage:.3f} too low.\n")
             elif r.identity < self.min_aln_identity:
-                ignored_fout.write(
-                    "{0}\tIdentity {1:.3f} too low.\n".format(r.qID, r.identity)
-                )
+                ignored_fout.write(f"{r.qID}\tIdentity {r.identity:.3f} too low.\n")
             elif any((e - s == 0) for s, e in r.segments):
-                ignored_fout.write("{0}\t0bp exons.\n".format(r.qID))
+                ignored_fout.write(f"{r.qID}\t0bp exons.\n")
             else:
                 yield r
 
@@ -342,7 +338,7 @@ class BranchSimple:
         Given a set of records
         (1) process them by running through parse_transfrag2contig
         (2) call exons by exon_finding
-        (3) go through each record, get the list of "nodes" they corresspond to
+        (3) go through each record, get the list of "nodes" they correspond to
         (4) collapse identical records (53mergeing)
 
         Write out to GTF format
@@ -354,7 +350,7 @@ class BranchSimple:
 
         p = []
         self.exons.traverse(p.append)
-        node_d = dict((x.interval.value, x) for x in p)
+        node_d = {x.interval.value: x for x in p}
         mat_size = max(x.interval.value for x in p) + 1
         result = []
         for r in records:
@@ -372,9 +368,7 @@ class BranchSimple:
         )
 
         print(
-            "merged {0} down to {1} transcripts".format(
-                len(result), len(result_merged)
-            ),
+            f"merged {len(result)} down to {len(result_merged)} transcripts",
             file=sys.stderr,
         )
 
@@ -391,20 +385,10 @@ class BranchSimple:
             self.isoform_index += 1
             segments = [node_d[x] for x in m.nonzero()[1]]
             f_group.write(
-                "{p}.{i}.{j}\t{ids}\n".format(
-                    ids=ids, i=self.cuff_index, j=self.isoform_index, p=gene_prefix
-                )
+                f"{gene_prefix}.{self.cuff_index}.{self.isoform_index}\t{ids}\n"
             )
             f_out.write(
-                '{chr}\tPacBio\ttranscript\t{s}\t{e}\t.\t{strand}\t.\tgene_id "{p}.{i}"; transcript_id "{p}.{i}.{j}";\n'.format(
-                    chr=self.chrom,
-                    s=segments[0].start + 1,
-                    e=segments[-1].end,
-                    i=self.cuff_index,
-                    p=gene_prefix,
-                    j=self.isoform_index,
-                    strand=self.strand,
-                )
+                f'{self.chrom}\tPacBio\ttranscript\t{segments[0].start + 1}\t{segments[-1].end}\t.\t{self.strand}\t.\tgene_id "{gene_prefix}.{self.cuff_index}"; transcript_id "{gene_prefix}.{self.cuff_index}.{self.isoform_index}";\n'
             )
 
             i = 0
@@ -412,27 +396,11 @@ class BranchSimple:
             for j in range(1, len(segments)):
                 if segments[j].start != segments[j - 1].end:
                     f_out.write(
-                        '{chr}\tPacBio\texon\t{s}\t{e}\t.\t{strand}\t.\tgene_id "{p}.{i}"; transcript_id "{p}.{i}.{j}";\n'.format(
-                            chr=self.chrom,
-                            s=segments[i].start + 1,
-                            e=segments[j - 1].end,
-                            p=gene_prefix,
-                            i=self.cuff_index,
-                            j=self.isoform_index,
-                            strand=self.strand,
-                        )
+                        f'{self.chrom}\tPacBio\texon\t{segments[i].start + 1}\t{segments[j - 1].end}\t.\t{self.strand}\t.\tgene_id "{gene_prefix}.{self.cuff_index}"; transcript_id "{gene_prefix}.{self.cuff_index}.{self.isoform_index}";\n'
                     )
                     i = j
             f_out.write(
-                '{chr}\tPacBio\texon\t{s}\t{e}\t.\t{strand}\t.\tgene_id "{p}.{i}"; transcript_id "{p}.{i}.{j}";\n'.format(
-                    chr=self.chrom,
-                    s=segments[i].start + 1,
-                    e=segments[j].end,
-                    p=gene_prefix,
-                    i=self.cuff_index,
-                    j=self.isoform_index,
-                    strand=self.strand,
-                )
+                f'{self.chrom}\tPacBio\texon\t{segments[i].start + 1}\t{segments[j].end}\t.\t{self.strand}\t.\tgene_id "{gene_prefix}.{self.cuff_index}"; transcript_id "{gene_prefix}.{self.cuff_index}.{self.isoform_index}";\n'
             )
 
         self.cuff_index += 1

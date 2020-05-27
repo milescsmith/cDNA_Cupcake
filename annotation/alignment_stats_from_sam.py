@@ -52,6 +52,7 @@ FIELDNAMES_REPORT2 = [
     "acceptor_dist",
 ]
 
+
 def type_fa_or_fq(file):
     file = file.upper()
     if file.endswith(".FA") or file.endswith(".FASTA"):
@@ -153,10 +154,10 @@ def evaluate_alignment_sam(
     # FIELDNAMES_REPORT1 = ['seqid', 'coverage', 'identity', 'num_sub', 'num_ins', 'num_del', 'num_exons']
     # FIELDNAMES_REPORT2 = ['seqid', 'donor_pos', 'donor_seq', 'donor_dist', 'acceptor_pos', 'acceptor_seq', 'acceptor_dist']
 
-    query_len_dict = dict(
-        (r.id, len(r.seq))
+    query_len_dict = {
+        r.id: len(r.seq)
         for r in SeqIO.parse(open(input_fa_or_fq), type_fa_or_fq(input_fa_or_fq))
-    )
+    }
     for r in GMAPSAMReader(sam_filename, True, query_len_dict=query_len_dict):
         if r.sID == "*":  # unaligned
             rec1 = {
@@ -190,13 +191,11 @@ def evaluate_alignment_sam(
                 r.segments[i + 1].start,
             )
             if r.flag.strand == "+":
-                rec2["donor_pos"] = "{0}:+:{1}".format(r.sID, r.segments[i].end - 1)
-                rec2["acceptor_pos"] = "{0}:+:{1}".format(
-                    r.sID, r.segments[i + 1].start
-                )
+                rec2["donor_pos"] = "{}:+:{}".format(r.sID, r.segments[i].end - 1)
+                rec2["acceptor_pos"] = "{}:+:{}".format(r.sID, r.segments[i + 1].start)
             else:
-                rec2["donor_pos"] = "{0}:-:{1}".format(r.sID, r.segments[i + 1].start)
-                rec2["acceptor_pos"] = "{0}:-:{1}".format(r.sID, r.segments[i].end - 1)
+                rec2["donor_pos"] = "{}:-:{}".format(r.sID, r.segments[i + 1].start)
+                rec2["acceptor_pos"] = "{}:-:{}".format(r.sID, r.segments[i].end - 1)
             rec2["donor_seq"] = seq1
             rec2["acceptor_seq"] = seq2
             if junction_info is not None:
@@ -228,12 +227,12 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # read genome
-    print("Reading genome {0}...".format(args.genome_filename), file=sys.stderr)
+    print("Reading genome {}...".format(args.genome_filename), file=sys.stderr)
     genome_d = SeqIO.to_dict(SeqIO.parse(open(args.genome_filename), "fasta"))
 
     # read gff
     if args.gff is not None:
-        print("Reading annotation {0}...".format(args.gff), file=sys.stderr)
+        print("Reading annotation {}...".format(args.gff), file=sys.stderr)
         junction_info = read_annotation_for_junction_info(args.gff)
     else:
         junction_info = None
