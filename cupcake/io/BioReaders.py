@@ -3,7 +3,8 @@ Should always be faithful duplicate of sequence/BioReaders.py
 Duplicated here for tofu installation. This one is called via cupcake.io.BioReaders.
 """
 
-import re, sys
+import re
+import sys
 from collections import namedtuple
 
 Interval = namedtuple("Interval", ["start", "end"])
@@ -40,15 +41,15 @@ class SimpleSAMReader:
 
 
 class SimpleSAMRecord:
-    cigar_rex = re.compile("(\d+)([MIDSHN])")
+    cigar_rex = re.compile(r"(\d+)([MIDSHN])")
     SAMflag = namedtuple("SAMflag", ["is_paired", "strand", "PE_read_num"])
 
     def __init__(self, record_line):
         """
         Simple bare bones version: only has
-        
+
         qID, sID, sStart, sEnd, qStart, qEnd, cigar
-        
+
         Simplified assumptions:
         -- must be end-to-end alignment (so qStart always 0)
         -- must be unspliced (no 'N' in cigar string)
@@ -101,7 +102,7 @@ class SimpleSAMRecord:
         """
         cur_end = start
         q_aln_len = 0
-        for (num, type) in re.findall("(\d+)(\S)", cigar):
+        for (num, type) in re.findall(r"(\d+)(\S)", cigar):
             num = int(num)
             if type == "I":
                 q_aln_len += num
@@ -200,7 +201,7 @@ class SAMRecord:
         qStart-qEnd: {qs}-{qe}
         segments: {seg}
         flag: {f}
-        
+
         coverage (of query): {qcov}
         coverage (of subject): {scov}
         alignment identity: {iden}
@@ -243,7 +244,7 @@ class SAMRecord:
             XS: 1-based qStart, XE: 1-based qEnd, XQ: query length, NM: number of non-matches
 
         ignore_XQ should be False for BLASR/pbalign.py's SAM, True for GMAP's SAM
-        
+
         0. qID
         1. flag
         2. sID
@@ -320,7 +321,7 @@ class SAMRecord:
         self.num_del = 0
         self.num_ins = 0
         self.num_mat_or_sub = 0
-        for (num, type) in re.findall("(\d+)(\S)", cigar):
+        for (num, type) in re.findall(r"(\d+)(\S)", cigar):
             num = int(num)
             if type == "H" or type == "S":
                 if first_thing:
@@ -340,7 +341,7 @@ class SAMRecord:
                 cur_start = cur_end + num
                 cur_end = cur_start
             else:
-                raise Exception("Unrecognized cigar character {0}!".format(type))
+                raise Exception("Unrecognized cigar character {}!".format(type))
             first_thing = False
         if cur_start != cur_end:
             segments.append(Interval(cur_start, cur_end))
@@ -416,7 +417,7 @@ class GMAPSAMRecord(SAMRecord):
         """
         SAM files from pbalign.py have following optional fields:
             XS: 1-based qStart, XE: 1-based qEnd, XQ: query length, NM: number of non-matches
-    
+
         0. qID
         1. flag
         2. sID
@@ -479,6 +480,6 @@ class GMAPSAMRecord(SAMRecord):
                 self.qLen = query_len_dict[self.qID]
             except KeyError:  # HACK for blasr's extended qID
                 raise Exception(
-                    "Unable to find qID {0} in the input fasta/fastq!".format(self.qID)
+                    f"Unable to find qID {self.qID} in the input fasta/fastq!"
                 )
             self.qCoverage = (self.qEnd - self.qStart) * 1.0 / self.qLen

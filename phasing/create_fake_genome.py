@@ -1,10 +1,14 @@
 #!/usr/bin/env python
 __author__ = "etseng@pacb.com"
 
-import os, sys, re
-from bx.intervals.cluster import ClusterTree
-import cupcake.io.GFF as GFF
+import os
+import re
+import sys
+
 from Bio import SeqIO
+
+import cupcake.io.GFF as GFF
+from bx.intervals.cluster import ClusterTree
 
 """
 Given a GFF file and selected loci (ex: PB.45),
@@ -27,12 +31,12 @@ def make_fake_genome(
     genome_d=None,
 ):
     if genome_d is None:
-        print("Reading genome file {0}...".format(genome_filename), file=sys.stderr)
+        print("Reading genome file {}...".format(genome_filename), file=sys.stderr)
         d = SeqIO.to_dict(SeqIO.parse(open(genome_filename), "fasta"))
     else:
         d = genome_d
 
-    print("Reading GFF file {0}...".format(gff_filename), file=sys.stderr)
+    print("Reading GFF file {}...".format(gff_filename), file=sys.stderr)
     good = []
     reader = GFF.collapseGFFReader(gff_filename)
     for r in reader:
@@ -42,12 +46,12 @@ def make_fake_genome(
             and (ref_start <= r.start < r.end <= ref_end)
             and len(r.ref_exons) > 1
         ):
-            print("Adding {0} to fake genome.".format(r.seqid), file=sys.stderr)
+            print("Adding {} to fake genome.".format(r.seqid), file=sys.stderr)
             good.append(r)
 
     if len(good) == 0:
         print(
-            "Did not find any transcripts strictly within {0}:{1}-{2} on strand {3}. Abort!".format(
+            "Did not find any transcripts strictly within {}:{}-{} on strand {}. Abort!".format(
                 ref_chr, ref_start, ref_end, ref_strand
             ),
             file=sys.stderr,
@@ -79,7 +83,7 @@ def make_fake_genome(
         i = 0
         for a, b in regions:
             for j in range(a, b):
-                f.write("{0},{1},{2}\n".format(i, ref_chr, j))
+                f.write("{},{},{}\n".format(i, ref_chr, j))
                 i += 1
 
         with open(output_prefix + ".pbids.txt", "w") as f:
@@ -109,11 +113,11 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    rex = re.compile("(\S+):(\d+)-(\d+)")
+    rex = re.compile(r"(\S+):(\d+)-(\d+)")
     m = rex.match(args.locus)
     if m is None:
         print(
-            "{0} is not a defined chr location! Abort.".format(args.locus),
+            "{} is not a defined chr location! Abort.".format(args.locus),
             file=sys.stderr,
         )
         sys.exit(-1)
@@ -124,13 +128,13 @@ if __name__ == "__main__":
 
     if not os.path.exists(args.genome_filename):
         print(
-            "Genome file {0} does not exist! Abort.".format(args.genome_filename),
+            "Genome file {} does not exist! Abort.".format(args.genome_filename),
             file=sys.stderr,
         )
         sys.exit(-1)
     if not os.path.exists(args.gff_filename):
         print(
-            "GFF {0} does not exist! Abort.".format(args.gff_filename), file=sys.stderr
+            "GFF {} does not exist! Abort.".format(args.gff_filename), file=sys.stderr
         )
         sys.exit(-1)
 

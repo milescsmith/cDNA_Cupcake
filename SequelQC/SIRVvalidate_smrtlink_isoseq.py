@@ -2,11 +2,13 @@
 __author__ = "etseng@pacb.com"
 __version__ = "2.0"
 
-import os, sys, subprocess
-from csv import DictReader
+import os
+import subprocess
+import sys
 from collections import defaultdict
-from Bio import SeqIO
+from csv import DictReader
 
+from Bio import SeqIO
 
 GMAP_BIN = "/home/UNIXHOME/etseng/bin/gmap"
 GMAP_DB = "/home/UNIXHOME/etseng/share/gmap_db_new/"
@@ -144,29 +146,29 @@ def link_files(src_dir, out_dir):
     class_csv4 = os.path.join(os.path.abspath(src_dir), "outputs", "flnc.report.csv")
 
     if os.path.exists(hq_fastq):
-        print >>sys.stderr, "Detecting IsoSeq1 task directories..."
+        print("Detecting IsoSeq1 task directories...", file=sys.stderr)
         os.symlink(hq_fastq, os.path.join(out_dir, "hq_isoforms.fastq"))
         os.symlink(cluster_csv, os.path.join(out_dir, "cluster_report.csv"))
         isoseq_version = "1"
     elif os.path.exists(hq_fastq2):
-        print >>sys.stderr, "Detecting IsoSeq2 task directories..."
+        print("Detecting IsoSeq2 task directories...", file=sys.stderr)
         os.symlink(hq_fastq2, os.path.join(out_dir, "hq_isoforms.fastq"))
         os.symlink(cluster_csv2, os.path.join(out_dir, "cluster_report.csv"))
         isoseq_version = "2"
     elif os.path.exists(hq_fastq3):
-        print >>sys.stderr, "Detecting IsoSeq3 task directories..."
+        print("Detecting IsoSeq3 task directories...", file=sys.stderr)
         os.symlink(hq_fastq3, os.path.join(out_dir, "hq_isoforms.fastq"))
         os.symlink(cluster_csv3, os.path.join(out_dir, "cluster_report.csv"))
         os.symlink(class_csv3, os.path.join(out_dir, "classify_report.csv"))
         isoseq_version = "3"
     elif os.path.exists(hq_fastq4):
-        print >>sys.stderr, "Detecting IsoSeq3 cromwell directories..."
+        print("Detecting IsoSeq3 cromwell directories...", file=sys.stderr)
         os.symlink(hq_fastq4, os.path.join(out_dir, "hq_isoforms.fastq"))
         os.symlink(cluster_csv4, os.path.join(out_dir, "cluster_report.csv"))
         os.symlink(class_csv4, os.path.join(out_dir, "classify_report.csv"))
         isoseq_version = "3"
     else:
-        raise Exception, "No recognizable Iso-Seq1, 2, 3 directory!"
+        raise Exception("No recognizable Iso-Seq1, 2, 3 directory!")
     # else:
     #     print >> sys.stderr, "Detecting IsoSeq3 task directories..."
     #     assert rename_isoseq3_hq(src_dir) == 'hq_isoforms.fastq'
@@ -201,7 +203,7 @@ def link_files(src_dir, out_dir):
 #         elif isoseq_version=='2' or isoseq_version=='3':  # currently version 2 and 3 are hacked to same format
 #             pre,cid = r['cluster_id'].split('_')
 #         else:
-#             raise Exception, "Unrecorgnized isoseq version {0}!".format(isoseq_version)
+#             raise Exception(f"Unrecorgnized isoseq version {isoseq_version}!")
 #         # current version of SMRTLink does not provide nFL information =____=
 #         if r['read_type']=='FL':
 #             fl_ass[(pre,cid)].add(r['read_id'])
@@ -222,7 +224,7 @@ def link_files(src_dir, out_dir):
 #                 # ex: HQ_polishOFF|cb5925_c32246/f3p0/1332
 #                 pre, cid = m.split('|')[1].split('/')[0].split('_')
 #             else:
-#                 raise Exception, "Unrecorgnized isoseq version {0}!".format(isoseq_version)
+#                 raise Exception(f"Unrecorgnized isoseq version {isoseq_version}!")
 #             total += len(fl_ass[(pre,cid)])
 #         f.write("{0}\t{1}\n".format(pbid, total))
 #     f.close()
@@ -230,7 +232,10 @@ def link_files(src_dir, out_dir):
 
 def sanity_check_script_dependencies():
     if os.system("chain_samples.py -h > /dev/null") != 0:
-        print >>sys.stderr, "chain_samples.py required in PATH! Please install Cupcake ToFU!"
+        print(
+            "chain_samples.py required in PATH! Please install Cupcake ToFU!",
+            file=sys.stderr,
+        )
         sys.exit(-1)
 
 
@@ -255,34 +260,34 @@ def collapse_to_SIRV(
         )
 
     if subprocess.check_call(cmd, shell=True) != 0:
-        raise Exception, "ERROR CMD:", cmd
+        raise Exception(f"ERROR CMD: {cmd}")
 
     cmd = "sort -k 3,3 -k 4,4n {hq}.sam > {hq}.sorted.sam".format(hq=hq_fastq)
     if subprocess.check_call(cmd, shell=True) != 0:
-        raise Exception, "ERROR CMD:", cmd
+        raise Exception(f"ERROR CMD: {cmd}")
 
     cmd = "collapse_isoforms_by_sam.py --input {hq} --fq -s {hq}.sorted.sam -c 0.99 -i 0.95 \
     --max_fuzzy_junction=5 --dun-merge-5-shorter -o {hq}.no5merge".format(
         hq=hq_fastq
     )
     if subprocess.check_call(cmd, shell=True) != 0:
-        raise Exception, "ERROR CMD:", cmd
+        raise Exception(f"ERROR CMD: {cmd}")
 
     ### make_abundance_from_CSV
     collapse_prefix = hq_fastq + ".no5merge.collapsed"
     cmd = "get_abundance_post_collapse.py " + collapse_prefix + " cluster_report.csv"
     if subprocess.check_call(cmd, shell=True) != 0:
-        raise Exception, "ERROR CMD:", cmd
+        raise Exception(f"ERROR CMD: {cmd}")
 
-    cmd = "filter_by_count.py {0} --dun_use_group_count --min_count={1}".format(
+    cmd = "filter_by_count.py {} --dun_use_group_count --min_count={}".format(
         collapse_prefix, min_count
     )
     if subprocess.check_call(cmd, shell=True) != 0:
-        raise Exception, "ERROR CMD:", cmd
+        raise Exception(f"ERROR CMD: {cmd}")
 
-    cmd = "filter_away_subset.py {0}.min_fl_{1}".format(collapse_prefix, min_count)
+    cmd = "filter_away_subset.py {}.min_fl_{}".format(collapse_prefix, min_count)
     if subprocess.check_call(cmd, shell=True) != 0:
-        raise Exception, "ERROR CMD:", cmd
+        raise Exception(f"ERROR CMD: {cmd}")
 
     os.symlink(
         collapse_prefix + ".min_fl_" + str(min_count) + ".filtered.abundance.txt",
@@ -317,7 +322,7 @@ def validate_with_SIRV(out_dir, eval_dir):
 
     cmd = "chain_samples.py sample.config count_fl --fuzzy_junction=5"
     if subprocess.check_call(cmd, shell=True) != 0:
-        raise Exception, "ERROR CMD:", cmd
+        raise Exception(f"ERROR CMD: {cmd}")
 
     os.chdir(cur_dir)
 
@@ -341,14 +346,14 @@ def eval_result(eval_dir, src_dir, min_count):
             tally[r["SIRV"]].append(r["test"])
 
     with open("SIRV_evaluation_summary.txt", "w") as f:
-        f.write("Source Directory: {0}\n".format(src_dir))
-        f.write("Evaluation Directory: {0}\n".format(eval_dir))
-        f.write("Minimum FL Count cutoff: {0}\n".format(min_count))
+        f.write("Source Directory: {}\n".format(src_dir))
+        f.write("Evaluation Directory: {}\n".format(eval_dir))
+        f.write("Minimum FL Count cutoff: {}\n".format(min_count))
         f.write("\n")
         f.write("====================================\n")
-        f.write("TP: {0}\n".format(len(tally)))
-        f.write("FN: {0}\n".format(len(FNs)))
-        f.write("FP: {0}\n".format(len(FPs)))
+        f.write("TP: {}\n".format(len(tally)))
+        f.write("FN: {}\n".format(len(FNs)))
+        f.write("FP: {}\n".format(len(FPs)))
         f.write("====================================\n")
 
 
