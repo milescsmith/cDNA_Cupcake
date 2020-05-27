@@ -1,7 +1,8 @@
 __author__ = "etseng@pacb.com"
 
-import os.path as op
 import logging
+import os.path as op
+
 import numpy as np
 from Bio import SeqIO
 
@@ -34,15 +35,15 @@ class SgeOptions2(object):
 
     def __str__(self):
         return (
-            "unqiueID={i}\n".format(i=self.unique_id)
-            + "use_sge={u}\n".format(u=self.use_sge)
-            + "max_sge_jobs={j}\n".format(j=self.max_sge_jobs)
-            + "sge_queue={q}\n".format(q=self.sge_queue)
-            + "sge_env_name={s}\n".format(s=self.sge_env_name)
-            + "qsub_extra={e}\n".format(e=self.qsub_extra)
-            + "blasr_nproc={n}\n".format(n=self.blasr_nproc)
-            + "gcon_nproc={n}\n".format(n=self.gcon_nproc)
-            + "arrow_nproc={t}\n".format(t=self.arrow_nproc)
+            f"unqiueID={self.unique_id}\n"
+            f"use_sge={self.use_sge}\n"
+            f"max_sge_jobs={self.max_sge_jobs}\n"
+            f"sge_queue={self.sge_queue}\n"
+            f"sge_env_name={self.sge_env_name}\n"
+            f"qsub_extra={self.qsub_extra}\n"
+            f"blasr_nproc={self.blasr_nproc}\n"
+            f"gcon_nproc={self.gcon_nproc}\n"
+            f"arrow_nproc={self.arrow_nproc}\n"
         )
 
     def qsub_cmd(
@@ -77,23 +78,23 @@ class SgeOptions2(object):
             ret += "-q {q} ".format(q=self.sge_queue)
 
         if self.qsub_extra != "":
-            ret += "{e} ".format(e=self.qsub_extra)
+            ret += f"{self.qsub_extra} "
 
         if jobid is not None:
-            ret += "-N {j} ".format(j=jobid)
+            ret += f"-N {jobid} "
 
         if wait_before_exit is True:
             ret += "-sync y "
 
         if depend_on_jobs is not None:
-            ret += "-hold_jid {jids} ".format(jids=",".join(depend_on_jobs))
+            ret += f"-hold_jid {','.join(depend_on_jobs)} "
 
-        ret += "-e {e} -o {o} ".format(e=elog, o=olog)
+        ret += f"-e {elog} -o {olog} "
 
         if not is_script:
             ret += "-b y "
 
-        ret += "{script}".format(script=script)
+        ret += f"{script}"
         return ret
 
     def cmd_str(
@@ -109,7 +110,7 @@ class SgeOptions2(object):
         cmd = ""
         if self.use_sge is True:
             cmd += "--use_sge "
-            cmd += "--max_sge_jobs={n} ".format(n=self.max_sge_jobs)
+            cmd += f"--max_sge_jobs={self.max_sge_jobs} "
             cmd += "--unique_id={n} ".format(n=self.unique_id)
         if show_blasr_nproc is True and self.blasr_nproc is not None:
             cmd += "--blasr_nproc={n} ".format(n=self.blasr_nproc)
@@ -118,11 +119,11 @@ class SgeOptions2(object):
         if show_arrow_nproc is True and self.arrow_nproc is not None:
             cmd += "--arrow_nproc={n} ".format(n=self.arrow_nproc)
         if show_sge_env_name is True:
-            cmd += "--sge_env_name={0}".format(self.sge_env_name)
+            cmd += "--sge_env_name={}".format(self.sge_env_name)
         if show_sge_queue is True and self.sge_queue is not None:
-            cmd += "--sge_queue={0}".format(self.sge_queue)
+            cmd += "--sge_queue={}".format(self.sge_queue)
         if show_qsub_extra and self.qsub_extra != "":
-            cmd += "--qsub_extra={0}".format(self.qsub_extra)
+            cmd += "--qsub_extra={}".format(self.qsub_extra)
         return cmd
 
 
@@ -316,8 +317,8 @@ class IceOptions2(object):
             + "ece_penalty={ep}\n".format(ep=self.ece_penalty)
             + "ece_min_len={eml}\n".format(eml=self.ece_min_len)
             + "bestn={bsn}\n".format(bsn=self.bestn)
-            + "max_missed_start={0}\n".format(self.max_missed_start)
-            + "max_missed_end={0}\n".format(self.max_missed_end)
+            + "max_missed_start={}\n".format(self.max_missed_start)
+            + "max_missed_end={}\n".format(self.max_missed_end)
             + "quiver={quiver}\n".format(quiver=self.quiver)
             + "targeted_isoseq={t}\n".format(t=self.targeted_isoseq)
             + "flnc_reads_per_split={n}\n".format(n=self.flnc_reads_per_split)

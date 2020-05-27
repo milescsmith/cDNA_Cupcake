@@ -17,12 +17,14 @@ we have:
 start with assumption of 2 allele:
 how do we find the center
 """
-import os, sys
 import itertools
-import numpy as np
+import os
+import sys
+from collections import Counter
 
 import networkx as nx
-from collections import Counter
+import numpy as np
+
 from phasing.io.VariantPhaser import Haplotypes
 
 
@@ -81,7 +83,7 @@ def infer_haplotypes_via_exhaustive_diploid_only(hap_obj, variants):
     """
     # sanity check that every position has exactly two possibilities
     # for x in variants:
-    #    if len(x)!=2: raise Exception, "variants must be diploid!"
+    #    if len(x)!=2: raise Exception("variants must be diploid!")
 
     haplotype_strings = hap_obj.haplotypes
     nonpartial_haps = [s for s in haplotype_strings if all(x != "?" for x in s)]
@@ -218,7 +220,7 @@ def error_correct_haplotypes(hap_obj, isoform_tally, diff_arr, hap_count_ordered
         for old_hap_index, count in v.items():
             if old_hap_index not in old_to_new_map:
                 print(
-                    "Discarding: {0}".format(hap_obj.haplotypes[old_hap_index]),
+                    "Discarding: {}".format(hap_obj.haplotypes[old_hap_index]),
                     file=sys.stderr,
                 )
                 continue

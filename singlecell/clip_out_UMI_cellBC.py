@@ -1,18 +1,23 @@
 #!/usr/bin/env python
-import os, sys
-from Bio.Seq import Seq
-from csv import DictReader, DictWriter
-import pysam
+import os
 import pdb
+import sys
+from csv import DictReader, DictWriter
+
+from Bio.Seq import Seq
+
+import pysam
+
 
 def iter_cigar_string(cigar_string):
     num = cigar_string[0]
     for s in cigar_string[1:]:
         if str.isalpha(s):
             yield int(num), s
-            num = ''
+            num = ""
         else:
             num += s
+
 
 def find_Aend(seq, min_a_len=8):
     """
@@ -54,8 +59,16 @@ def find_Gstart(seq, min_g_len=3):
         return -1, -1
 
 
-
-def clip_out(bam_filename, umi_len, bc_len, output_prefix, UMI_type, shortread_bc={}, tso_len=0, g5_clip_seq=None):
+def clip_out(
+    bam_filename,
+    umi_len,
+    bc_len,
+    output_prefix,
+    UMI_type,
+    shortread_bc={},
+    tso_len=0,
+    g5_clip_seq=None,
+):
     """
     :param bam_filename: BAM of post-LIMA (primer-trimmed) CCS sequences
     :param UMI_type: either 'A3' or 'G5' or 'G5-10X'
@@ -74,10 +87,10 @@ def clip_out(bam_filename, umi_len, bc_len, output_prefix, UMI_type, shortread_b
     --------
     5' primer -- UMI -- [RT primer] --- transcript --- 3' primer
     """
-    assert UMI_type in ('A3', 'G5', 'G5-10X', 'G5-clip')
+    assert UMI_type in ("A3", "G5", "G5-10X", "G5-clip")
     umi_bc_len = umi_len + bc_len
 
-    if UMI_type == 'G5-clip':
+    if UMI_type == "G5-clip":
         try:
             import parasail
         except ImportError:
@@ -86,11 +99,21 @@ def clip_out(bam_filename, umi_len, bc_len, output_prefix, UMI_type, shortread_b
         para_mat = parasail.matrix_create("ACGT", 2, -5)
         para_search_len = umi_len + len(g5_clip_seq) + 10
 
-    FIELDS = ['id', 'clip_len', 'extra', 'UMI', 'BC', 'BC_rev', 'BC_match', 'BC_top_rank']
-    if tso_len > 0: FIELDS += ['TSO']
+    FIELDS = [
+        "id",
+        "clip_len",
+        "extra",
+        "UMI",
+        "BC",
+        "BC_rev",
+        "BC_match",
+        "BC_top_rank",
+    ]
+    if tso_len > 0:
+        FIELDS += ["TSO"]
 
-    f1 = open(output_prefix + '.trimmed.csv', 'w')
-    writer1 = DictWriter(f1, FIELDS, delimiter='\t')
+    f1 = open(output_prefix + ".trimmed.csv", "w")
+    writer1 = DictWriter(f1, FIELDS, delimiter="\t")
     writer1.writeheader()
 
     reader = pysam.AlignmentFile(bam_filename, "rb", check_sq=False)
@@ -230,12 +253,10 @@ def clip_out(bam_filename, umi_len, bc_len, output_prefix, UMI_type, shortread_b
                 d["tags"] = new_tags
                 x = pysam.AlignedSegment.from_dict(d, r.header)
                 f2.write(x)
-        elif UMI_type == 'G5-clip':
-            o1 = parasail.sg_qx_trace(d['seq'][:para_search_len],
-                                               g5_clip_seq,
-                                               10,
-                                               3,
-                                               para_mat)
+        elif UMI_type == "G5-clip":
+            o1 = parasail.sg_qx_trace(
+                d["seq"][:para_search_len], g5_clip_seq, 10, 3, para_mat
+            )
 
             #  'tags': ['bx:B:i,22,20',
             #   ...
@@ -244,55 +265,63 @@ def clip_out(bam_filename, umi_len, bc_len, output_prefix, UMI_type, shortread_b
             #   'bl:Z:CCCGCGTGGCCTCCTGAATTAT',
             #   'bt:Z:CATTGCCACTGTCTTCTGCT',
             #   'RG:Z:70de1488/0--1']}
-            c_num, c_type = next(iter_cigar_string(str(o1.cigar.decode, 'utf-8')))
-            if c_type == 'I': # this is the (extra) + UMI
-                seq2 = d['seq'][:c_num]
-                seq_extra = 'NA'
+            c_num, c_type = next(iter_cigar_string(str(o1.cigar.decode, "utf-8")))
+            if c_type == "I":  # this is the (extra) + UMI
+                seq2 = d["seq"][:c_num]
+                seq_extra = "NA"
                 diff = len(seq2) - umi_len
-                if diff < 0: # we need to get a few more bases from the primers
-                    tag_dict = dict(x.split(':', 1) for x in d['tags'])
+                if diff < 0:  # we need to get a few more bases from the primers
+                    tag_dict = dict(x.split(":", 1) for x in d["tags"])
                     try:
-                        if tag_dict['bc'] == 'B:S,0,1': # + strand
-                            assert tag_dict['bl'].startswith('Z:')
-                            Fseq = tag_dict['bl'][2:]  # trimming away the Z:
-                        elif tag_dict['bc'] == 'B:S,1,0': # - strand
-                            assert tag_dict['bt'].startswith('Z:')
-                            Fseq = str(Seq(tag_dict['bt'][2:]).reverse_complement())
-                        seq2 = Fseq[diff:] + seq2 # rescue bases from the trimmed F primer
+                        if tag_dict["bc"] == "B:S,0,1":  # + strand
+                            assert tag_dict["bl"].startswith("Z:")
+                            Fseq = tag_dict["bl"][2:]  # trimming away the Z:
+                        elif tag_dict["bc"] == "B:S,1,0":  # - strand
+                            assert tag_dict["bt"].startswith("Z:")
+                            Fseq = str(Seq(tag_dict["bt"][2:]).reverse_complement())
+                        seq2 = (
+                            Fseq[diff:] + seq2
+                        )  # rescue bases from the trimmed F primer
                     except KeyError:
-                        pass # just silently not do anything and output the shorter UMI
-                        #print("WARNING: older version of lima output, lacking 'bc' tag. Ignoring read {0}...".format(r.qname))
+                        pass  # just silently not do anything and output the shorter UMI
+                        # print("WARNING: older version of lima output, lacking 'bc' tag. Ignoring read {0}...".format(r.qname))
                 elif diff > 0:  # there's extras
                     seq_extra = seq2[:diff]
                     seq2 = seq2[diff:]
 
-                rec = {'id': r.qname,
-                       'clip_len': len(seq2),
-                       'extra': seq_extra,
-                       'UMI': seq2,
-                       'BC': 'NA',  # Brendan's current design has only UMI, no BC
-                       'BC_rev': 'NA',
-                       'BC_match': 'NA',
-                       'BC_top_rank': 'NA'}
+                rec = {
+                    "id": r.qname,
+                    "clip_len": len(seq2),
+                    "extra": seq_extra,
+                    "UMI": seq2,
+                    "BC": "NA",  # Brendan's current design has only UMI, no BC
+                    "BC_rev": "NA",
+                    "BC_match": "NA",
+                    "BC_top_rank": "NA",
+                }
                 writer1.writerow(rec)
 
                 # subset the sequence to remove the UMI (but keep the G5 clip seq)
-                d['seq'] = d['seq'][c_num:]
-                d['qual'] = d['qual'][c_num:]
-                assert len(d['seq'])==len(d['qual'])
+                d["seq"] = d["seq"][c_num:]
+                d["qual"] = d["qual"][c_num:]
+                assert len(d["seq"]) == len(d["qual"])
                 new_tags = []
-                for tag in d['tags']:
-                    if tag.startswith('zs:B'):  # defunct CCS tag, don't use
+                for tag in d["tags"]:
+                    if tag.startswith("zs:B"):  # defunct CCS tag, don't use
                         pass
-                    elif tag.startswith('dq:i:') or tag.startswith('iq:i:') or tag.startswith('sq:i:'):
-                        tag = tag[:5] + tag[5+c_num:]
+                    elif (
+                        tag.startswith("dq:i:")
+                        or tag.startswith("iq:i:")
+                        or tag.startswith("sq:i:")
+                    ):
+                        tag = tag[:5] + tag[5 + c_num :]
                         new_tags.append(tag)
                     else:
                         new_tags.append(tag)
-                d['tags'] = new_tags
+                d["tags"] = new_tags
                 x = pysam.AlignedSegment.from_dict(d, r.header)
                 f2.write(x)
-        elif UMI_type == 'G5-10X':
+        elif UMI_type == "G5-10X":
             # need to first invert the sequence so polyA is at the end
             d["seq"] = str(Seq(d["seq"]).reverse_complement())
             d["qual"] = d["qual"][::-1]
@@ -381,11 +410,20 @@ if __name__ == "__main__":
     parser.add_argument("output_prefix", help="Output prefix")
     parser.add_argument("-u", "--umi_len", type=int, help="Length of UMI")
     parser.add_argument("-b", "--bc_len", type=int, help="Length of cell barcode")
-    parser.add_argument("-t", "--tso_len", type=int, default=0, help="Length of TSO (for G5-10X only)")
-    parser.add_argument("--umi_type", choices=['A3', 'G5', 'G5-10X', 'G5-clip'], help="Location of the UMI")
-    parser.add_argument('--g5_clip_seq', help="Sequence before UMI for G5-clip (for G5-clip only)")
-    parser.add_argument("--bc_rank_file", help="(Optional) cell barcode rank file from short read data")
-
+    parser.add_argument(
+        "-t", "--tso_len", type=int, default=0, help="Length of TSO (for G5-10X only)"
+    )
+    parser.add_argument(
+        "--umi_type",
+        choices=["A3", "G5", "G5-10X", "G5-clip"],
+        help="Location of the UMI",
+    )
+    parser.add_argument(
+        "--g5_clip_seq", help="Sequence before UMI for G5-clip (for G5-clip only)"
+    )
+    parser.add_argument(
+        "--bc_rank_file", help="(Optional) cell barcode rank file from short read data"
+    )
 
     args = parser.parse_args()
 
@@ -404,6 +442,15 @@ if __name__ == "__main__":
     if args.bc_rank_file is not None:
         reader = DictReader(open(args.bc_rank_file), delimiter="\t")
         for r in reader:
-            shortread_bc[r['cell_barcode']] = r['top_ranked']
+            shortread_bc[r["cell_barcode"]] = r["top_ranked"]
 
-    clip_out(args.bam_filename, args.umi_len, args.bc_len, args.output_prefix, args.umi_type, shortread_bc, args.tso_len, args.g5_clip_seq)
+    clip_out(
+        args.bam_filename,
+        args.umi_len,
+        args.bc_len,
+        args.output_prefix,
+        args.umi_type,
+        shortread_bc,
+        args.tso_len,
+        args.g5_clip_seq,
+    )

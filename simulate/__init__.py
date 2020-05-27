@@ -1,5 +1,1 @@
-from .simulate import (
-    throwdice,
-    sim_start,
-    sim_seq
-)
+from .simulate import sim_seq, sim_start, throwdice

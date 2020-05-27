@@ -2,7 +2,9 @@
 
 __version__ = "1.0"
 
-import os, sys
+import os
+import sys
+
 import numpy as np
 from Bio import SeqIO
 
@@ -25,7 +27,7 @@ def get_seq_stats(file, binwidth):
         lens.append(len(r.seq))
     f.close()
 
-    print("{0} sequences".format(len(lens)))
+    print("{} sequences".format(len(lens)))
     print("min:", min(lens))
     print("max:", max(lens))
     print("avg:", sum(lens) * 1.0 / len(lens))
@@ -33,16 +35,16 @@ def get_seq_stats(file, binwidth):
     # print by 1 kb bins
     print("Length Breakdown by kb range:")
 
-    _max = (max(lens)//binwidth)+1
+    _max = (max(lens) // binwidth) + 1
     bin = [0] * _max
     for x in lens:
-         bin[x//binwidth] += 1
+        bin[x // binwidth] += 1
 
     for i in range(0, _max):
         if binwidth == 1000:
-            print("{0}-{1} kb: {2}".format(i, i + 1, bin[i]))
+            print("{}-{} kb: {}".format(i, i + 1, bin[i]))
         else:
-            print("{0}-{1}: {2}".format(i * binwidth, (i + 1) * binwidth, bin[i]))
+            print("{}-{}: {}".format(i * binwidth, (i + 1) * binwidth, bin[i]))
 
     print("5-95% percentile:", np.percentile(lens, 5), np.percentile(lens, 95))
 

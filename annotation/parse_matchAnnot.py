@@ -24,8 +24,9 @@ def parse_matchAnnot(fa_or_fq, filename, not_pbid=False, parse_FL_coverage=False
                 cov = int(r.description.split("full_length_coverage=")[1].split(";")[0])
                 fl_cov[_id] = cov
             except:
-                print >>sys.stderr, "WARNING: Unable to extract `full_length_coverage=` from {0}. Mark as NA.".format(
-                    r.description
+                print(
+                    f"WARNING: Unable to extract `full_length_coverage=` from {r.description}. Mark as NA.",
+                    file=sys.stderr,
                 )
                 fl_cov[_id] = "NA"
 
@@ -54,21 +55,17 @@ def parse_matchAnnot(fa_or_fq, filename, not_pbid=False, parse_FL_coverage=False
             pbpre = pbid
         else:
             pbpre = pbid.split(".")[1]
-        _cov_text = "\t{0}".format(fl_cov[pbid]) if parse_FL_coverage else ""
+        _cov_text = "\t{}".format(fl_cov[pbid]) if parse_FL_coverage else ""
         if pbid not in match:
-            f.write("{0}\t{1}\tNA\tNA\tNA{2}\n".format(pbid, pbpre, _cov_text))
+            f.write("{}\t{}\tNA\tNA\tNA{}\n".format(pbid, pbpre, _cov_text))
         else:
             gene, isoform, score = match[pbid]
             if gene is None:
-                f.write("{0}\t{1}\tNA\tNA\tNA{2}\n".format(pbid, pbpre, _cov_text))
+                f.write(f"{pid}\t{pbpre}\tNA\tNA\tNA{_cov_text}\n")
             else:
-                f.write(
-                    "{0}\t{1}\t{2}\t{3}\t{4}{5}\n".format(
-                        pbid, pbpre, isoform, gene, score, _cov_text
-                    )
-                )
+                f.write(f"{pbid}\t{pbpre}\t{isoform}\t{gene}\t{score}{_cov_text}\n")
     f.close()
-    print >>sys.stderr, "Output written to:", f.name
+    print(f"Output written to: {f.name}", file=sys.stderr)
 
 
 if __name__ == "__main__":

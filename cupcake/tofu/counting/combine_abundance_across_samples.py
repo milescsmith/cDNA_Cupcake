@@ -1,17 +1,22 @@
 __author__ = "etseng@pacb.com"
 
 
-import os, sys, re, time
+import os
 import pdb
-from csv import DictWriter
-from Bio import SeqIO
+import re
+import sys
+import time
 from collections import defaultdict, namedtuple
-from cupcake.tofu import compare_junctions
-from cupcake.io import GFF
+from csv import DictWriter
+
+from Bio import SeqIO
+
 from bx.intervals import IntervalTree
 from bx.intervals.cluster import ClusterTree
+from cupcake.io import GFF
+from cupcake.tofu import compare_junctions
 
-seqid_rex = re.compile("(\S+\\.\d+)\\.(\d+)")
+seqid_rex = re.compile("(\\S+\\.\\d+)\\.(\\d+)")
 
 MatchRecord = namedtuple(
     "MatchRecord", ["ref_id", "addon_id", "rec", "members", "seqrec"]
@@ -25,18 +30,19 @@ def find_representative_in_iso_list(records):
     """
     rep = records[0]
     for r in records[1:]:
-        if len(rep.ref_exons) < len(r.ref_exons) or (rep.end-rep.start) < (r.end-r.start):
+        if len(rep.ref_exons) < len(r.ref_exons) or (rep.end - rep.start) < (
+            r.end - r.start
+        ):
             rep = r
     return rep
+
 
 def sanity_check_seqids(seqids):
     for seqid in seqids:
         m = seqid_rex.match(seqid)
         if m is None:
             print(
-                "Expected ID format (ex: PB.1.2) not followed by {0}! Abort!".format(
-                    seqid
-                ),
+                f"Expected ID format (ex: PB.1.2) not followed by {seqid}! Abort!",
                 file=sys.stderr,
             )
             sys.exit(-1)
@@ -94,7 +100,7 @@ def write_reclist_to_gff_n_info(
                 )
                 pb_i += 1
                 for pb_j, recs_index in enumerate(_indices):
-                    pbid = "PB.{0}.{1}".format(pb_i, pb_j + 1)
+                    pbid = "PB.{}.{}".format(pb_i, pb_j + 1)
                     match_rec = rec_list[recs_index]
                     new_group_info[pbid] = match_rec.members
                     match_rec.rec.seqid = pbid
@@ -106,9 +112,7 @@ def write_reclist_to_gff_n_info(
                             addon_name: match_rec.addon_id,
                         }
                     )
-                    f_group.write(
-                        "{0}\t{1}\n".format(pbid, ",".join(match_rec.members))
-                    )
+                    f_group.write("{}\t{}\n".format(pbid, ",".join(match_rec.members)))
                     if use_fq:
                         match_rec.seqrec.id = pbid
                         match_rec.seqrec.description = ""
@@ -143,7 +147,7 @@ class MegaPBTree(object):
         self.internal_fuzzy_max_dist = internal_fuzzy_max_dist
         self.max_3_diff = max_3_diff
         self.allow_5merge = allow_5merge
-        self.record_d = dict((r.seqid, r) for r in GFF.collapseGFFReader(gff_filename))
+        self.record_d = {r.seqid: r for r in GFF.collapseGFFReader(gff_filename)}
         # sanity_check_seqids(self.record_d.keys()) # sanity check all IDs look like PB.1.2
         self.tree = defaultdict(
             lambda: {"+": IntervalTree(), "-": IntervalTree()}
@@ -195,7 +199,7 @@ class MegaPBTree(object):
         If exact match (every exon junction) or 5' truncated (allow_5merge is True), YIELD the matching GMAPRecord(s)
         *NOTE/UPDATE*: could have multiple matches! )
         """
-        #if r.chr=='chr17' and r.start > 39604000:
+        # if r.chr=='chr17' and r.start > 39604000:
         #    pdb.set_trace()
         matches = self.tree[r.chr][r.strand].find(r.start, r.end)
         for r2 in matches:
@@ -205,9 +209,9 @@ class MegaPBTree(object):
             n2 = len(r2.segments)
 
             three_end_is_match = (
-                self.max_3_diff is None 
-                or (r.strand == '+' and abs(r.end - r2.end) <= self.max_3_diff)
-                or (r.strand == '-' and abs(r.start - r2.start) <= self.max_3_diff)
+                self.max_3_diff is None
+                or (r.strand == "+" and abs(r.end - r2.end) <= self.max_3_diff)
+                or (r.strand == "-" and abs(r.start - r2.start) <= self.max_3_diff)
             )
 
             last_junction_match = False
@@ -220,18 +224,34 @@ class MegaPBTree(object):
                 if n2 == 1:
                     last_junction_match = False
                 else:
-                    if r.strand == '+':
+                    if r.strand == "+":
                         last_junction_match = (
-                            abs(r.segments[-1].start - r2.segments[-1].start) <= self.internal_fuzzy_max_dist) and \
-                                              (abs(r.segments[0].end-r2.segments[0].end) <= self.internal_fuzzy_max_dist)
+                            abs(r.segments[-1].start - r2.segments[-1].start)
+                            <= self.internal_fuzzy_max_dist
+                        ) and (
+                            abs(r.segments[0].end - r2.segments[0].end)
+                            <= self.internal_fuzzy_max_dist
+                        )
                     else:
-                        last_junction_match = (abs(r.segments[0].end-r2.segments[0].end) <= self.internal_fuzzy_max_dist) and \
-                                              (abs(r.segments[1].start-r2.segments[1].start) <= self.internal_fuzzy_max_dist)
+                        last_junction_match = (
+                            abs(r.segments[0].end - r2.segments[0].end)
+                            <= self.internal_fuzzy_max_dist
+                        ) and (
+                            abs(r.segments[1].start - r2.segments[1].start)
+                            <= self.internal_fuzzy_max_dist
+                        )
 
-            if compare_junctions.compare_junctions(r, r2, internal_fuzzy_max_dist=self.internal_fuzzy_max_dist) == 'exact': # is a match!
+            if (
+                compare_junctions.compare_junctions(
+                    r, r2, internal_fuzzy_max_dist=self.internal_fuzzy_max_dist
+                )
+                == "exact"
+            ):  # is a match!
                 if three_end_is_match:
                     yield r2
-            elif self.allow_5merge: # check if the shorter one is a subset of the longer one
+            elif (
+                self.allow_5merge
+            ):  # check if the shorter one is a subset of the longer one
                 if len(r.segments) > len(r2.segments):
                     a, b = r, r2
                 else:
@@ -249,21 +269,27 @@ class MegaPBTree(object):
                     if three_end_is_match and last_junction_match:
                         yield r2
 
-
-    def add_sample(self, gff_filename, group_filename, sample_prefix, output_prefix, fastq_filename=None):
-        combined = [] # list of (<matches to r2 or None>, r2)
+    def add_sample(
+        self,
+        gff_filename,
+        group_filename,
+        sample_prefix,
+        output_prefix,
+        fastq_filename=None,
+    ):
+        combined = []  # list of (<matches to r2 or None>, r2)
         unmatched_recs = set(self.record_d.keys())
 
         for r in GFF.collapseGFFReader(gff_filename):
             match_rec_list = [r for r in self.match_record_to_tree(r)]
             if len(match_rec_list) > 0:  # found match(es)! put longer of r1/r2 in
-                #if len(match_rec_list) > 1: pdb.set_trace()  #DEBUG
+                # if len(match_rec_list) > 1: pdb.set_trace()  #DEBUG
                 combined.append((match_rec_list, r))
                 for match_rec in match_rec_list:
                     try:
                         unmatched_recs.remove(match_rec.seqid)
                     except KeyError:
-                        pass # already deleted, OK, this can happen
+                        pass  # already deleted, OK, this can happen
             else:  # r is not present in current tree
                 combined.append((None, r))
         # put whatever is left from the tree in
@@ -271,8 +297,10 @@ class MegaPBTree(object):
             combined.append(([self.record_d[seqid]], None))
 
         # create a ClusterTree to re-calc the loci/transcripts
-        final_tree = defaultdict(lambda: {'+': ClusterTree(0, 0), '-':ClusterTree(0, 0)})
-        for i,(r1s,r2) in enumerate(combined):
+        final_tree = defaultdict(
+            lambda: {"+": ClusterTree(0, 0), "-": ClusterTree(0, 0)}
+        )
+        for i, (r1s, r2) in enumerate(combined):
             if r1s is None:
                 final_tree[r2.chr][r2.strand].insert(r2.start, r2.end, i)
             else:
@@ -315,24 +343,43 @@ class MegaPBTree(object):
         for r1s, r2 in rec_list:
             if r2 is None:
                 for r1 in r1s:
-                    new_rec_list.append(MatchRecord(ref_id=r1.seqid, addon_id="NA", rec=r1, members=self.group_info[r1.seqid],
-                                                    seqrec=self.fastq_dict[r1.seqid] if use_fq else None))
+                    new_rec_list.append(
+                        MatchRecord(
+                            ref_id=r1.seqid,
+                            addon_id="NA",
+                            rec=r1,
+                            members=self.group_info[r1.seqid],
+                            seqrec=self.fastq_dict[r1.seqid] if use_fq else None,
+                        )
+                    )
             elif r1s is None:
-                new_rec_list.append(MatchRecord(ref_id="NA", addon_id=r2.seqid, rec=r2, members=group_info2[r2.seqid],
-                                                seqrec=fastq_dict2[r2.seqid] if use_fq else None))
+                new_rec_list.append(
+                    MatchRecord(
+                        ref_id="NA",
+                        addon_id=r2.seqid,
+                        rec=r2,
+                        members=group_info2[r2.seqid],
+                        seqrec=fastq_dict2[r2.seqid] if use_fq else None,
+                    )
+                )
             else:
                 for r1 in r1s:
-                    if len(r1s)>1: print("matching {0} to {1}".format(r1, r2), file=sys.stderr)
+                    if len(r1s) > 1:
+                        print("matching {} to {}".format(r1, r2), file=sys.stderr)
                     rep = find_representative_in_iso_list([r1, r2])
-                    new_rec_list.append(MatchRecord(ref_id=r1.seqid,
-                                                    addon_id=r2.seqid,
-                                                    rec=rep,
-                                                    members=self.group_info[r1.seqid]+group_info2[r2.seqid],
-                                                    seqrec=self.fastq_dict[rep.seqid] if use_fq else None))
-                #rep = find_representative_in_iso_list(r1s + [r2])
-                #all_members = group_info2[r2.seqid]
-                #for r1 in r1s: all_members += self.group_info[r1.seqid]
-                #new_rec_list.append(MatchRecord(ref_id=",".join(r1.seqid for r1 in r1s),
+                    new_rec_list.append(
+                        MatchRecord(
+                            ref_id=r1.seqid,
+                            addon_id=r2.seqid,
+                            rec=rep,
+                            members=self.group_info[r1.seqid] + group_info2[r2.seqid],
+                            seqrec=self.fastq_dict[rep.seqid] if use_fq else None,
+                        )
+                    )
+                # rep = find_representative_in_iso_list(r1s + [r2])
+                # all_members = group_info2[r2.seqid]
+                # for r1 in r1s: all_members += self.group_info[r1.seqid]
+                # new_rec_list.append(MatchRecord(ref_id=",".join(r1.seqid for r1 in r1s),
                 #                                addon_id=r2.seqid,
                 #                                rec=rep,
                 #                                members=all_members,
@@ -371,10 +418,10 @@ class MegaPBTreeFusion(MegaPBTree):
         self.fusion_max_dist = fusion_max_dist
 
         # ex: PBfusion.1 -> [PBfusion.1.1, PBfusion.1.2]
-        self.record_d_fusion = dict(
-            (fusion_id, records)
+        self.record_d_fusion = {
+            fusion_id: records
             for fusion_id, records in GFF.collapseGFFFusionReader(gff_filename)
-        )
+        }
 
     def junction_match_check_5(self, r1, r2):
         if r1.strand == "+":
@@ -565,7 +612,7 @@ class MegaPBTreeFusion(MegaPBTree):
         f_out = open(output_prefix + ".gff", "w")
         f_group = open(output_prefix + ".group.txt", "w")
         f_mgroup = open(output_prefix + ".mega_info.txt", "w")
-        f_mgroup.write("pbid\t{0}\t{1}\n".format(self.self_prefix, sample_prefix2))
+        f_mgroup.write("pbid\t{}\t{}\n".format(self.self_prefix, sample_prefix2))
         fusion_index = 0
         chroms = list(cluster_tree.keys())
         chroms.sort()

@@ -2,9 +2,12 @@
 __author__ = "etseng@pacb.com"
 __version__ = "1.2"
 
-import os, sys, subprocess
-from csv import DictReader
+import os
+import subprocess
+import sys
 from collections import defaultdict
+from csv import DictReader
+
 import SIRVvalidate_smrtlink_isoseq as smrtlink
 
 """
@@ -52,16 +55,16 @@ def make_abundance_from_Sequel_cluster_csv(cluster_csv, collapse_prefix):
             for fl_read_id in fl_ass[(pre, cid)]:
                 raw = fl_read_id.split("/")[-1].split("_")
                 _len = abs(int(raw[0]) - int(raw[1]))
-                f2.write("{0}\t{1}\tY\tunique\t{2}\n".format(fl_read_id, _len, pbid))
+                f2.write("{}\t{}\tY\tunique\t{}\n".format(fl_read_id, _len, pbid))
                 all_fl_read_ids.remove(fl_read_id)
-        f.write("{0}\t{1}\n".format(pbid, total))
+        f.write("{}\t{}\n".format(pbid, total))
     f.close()
 
     # write the unassigned FL to read_stat.txt
     for fl_read_id in all_fl_read_ids:
         raw = fl_read_id.split("/")[-1].split("_")
         _len = abs(int(raw[0]) - int(raw[1]))
-        f2.write("{0}\t{1}\tY\tNA\tNA\n".format(fl_read_id, _len))
+        f2.write("{}\t{}\tY\tNA\tNA\n".format(fl_read_id, _len))
     f2.close()
 
 
@@ -82,18 +85,18 @@ def collapse_to_mm10(
         )
 
     if subprocess.check_call(cmd, shell=True) != 0:
-        raise Exception, "ERROR CMD:", cmd
+        raise Exception(f"ERROR CMD: {cmd}")
 
     cmd = "sort -k 3,3 -k 4,4n {hq}.sam > {hq}.sorted.sam".format(hq=hq_fastq)
     if subprocess.check_call(cmd, shell=True) != 0:
-        raise Exception, "ERROR CMD:", cmd
+        raise Exception(f"ERROR CMD: {cmd}")
 
     cmd = "collapse_isoforms_by_sam.py --input {hq} --fq -s {hq}.sorted.sam -c 0.99 -i 0.95 \
     --max_fuzzy_junction=5 --dun-merge-5-shorter -o {hq}.no5merge".format(
         hq=hq_fastq
     )
     if subprocess.check_call(cmd, shell=True) != 0:
-        raise Exception, "ERROR CMD:", cmd
+        raise Exception(f"ERROR CMD: {cmd}")
 
     ### make_abundance_from_CSV
     collapse_prefix = hq_fastq + ".no5merge.collapsed"
@@ -101,15 +104,15 @@ def collapse_to_mm10(
         cluster_csv, collapse_prefix, isoseq_version
     )
 
-    cmd = "filter_by_count.py {0} --min_count={1}".format(collapse_prefix, min_count)
+    cmd = "filter_by_count.py {} --min_count={}".format(collapse_prefix, min_count)
     if subprocess.check_call(cmd, shell=True) != 0:
-        raise Exception, "ERROR CMD:", cmd
+        raise Exception(f"ERROR CMD: {cmd}")
 
-    cmd = "filter_away_subset.py {0}.min_fl_{1}".format(collapse_prefix, min_count)
+    cmd = "filter_away_subset.py {}.min_fl_{}".format(collapse_prefix, min_count)
     if subprocess.check_call(cmd, shell=True) != 0:
-        raise Exception, "ERROR CMD:", cmd
+        raise Exception(f"ERROR CMD: {cmd}")
 
-    rep = collapse_prefix + ".min_fl_{0}.filtered".format(min_count)
+    rep = collapse_prefix + ".min_fl_{}.filtered".format(min_count)
 
     if aligner_choice == "gmap":
         cmd = "{gmap} -D {gmap_db} -d mm10 -f samse -n 0 -t {cpus} -z sense_force {rep}.rep.fq  > {rep}.rep.fq.sam 2> {rep}.rep.fq.sam.log".format(
@@ -121,13 +124,13 @@ def collapse_to_mm10(
         )
 
     if subprocess.check_call(cmd, shell=True) != 0:
-        raise Exception, "ERROR CMD:", cmd
+        raise Exception(f"ERROR CMD: {cmd}")
 
     cmd = "sort -k 3,3 -k 4,4n {rep}.rep.fq.sam > {rep}.rep.fq.sorted.sam".format(
         rep=rep
     )
     if subprocess.check_call(cmd, shell=True) != 0:
-        raise Exception, "ERROR CMD:", cmd
+        raise Exception(f"ERROR CMD: {cmd}")
 
     os.symlink(rep + ".abundance.txt", "touse.count.txt")
     os.symlink(rep + ".gff", "touse.gff")
@@ -160,11 +163,11 @@ def validate_with_Gencode(out_dir, eval_dir):
         GENCODE_GTF, "touse.rep.fq.sorted.sam"
     )
     if subprocess.check_call(cmd, shell=True) != 0:
-        raise Exception, "ERROR CMD:", cmd
+        raise Exception(f"ERROR CMD: {cmd}")
 
     cmd = "parse_matchAnnot.py touse.rep.fq touse.rep.fq.sorted.sam.matchAnnot.txt"
     if subprocess.check_call(cmd, shell=True) != 0:
-        raise Exception, "ERROR CMD:", cmd
+        raise Exception(f"ERROR CMD: {cmd}")
 
     os.chdir(cur_dir)
 
@@ -188,14 +191,14 @@ def eval_result(eval_dir, src_dir, min_count):
             tally[r["SIRV"]].append(r["test"])
 
     with open("SIRV_evaluation_summary.txt", "w") as f:
-        f.write("Source Directory: {0}\n".format(src_dir))
-        f.write("Evaluation Directory: {0}\n".format(eval_dir))
-        f.write("Minimum FL Count cutoff: {0}\n".format(min_count))
+        f.write("Source Directory: {}\n".format(src_dir))
+        f.write("Evaluation Directory: {}\n".format(eval_dir))
+        f.write("Minimum FL Count cutoff: {}\n".format(min_count))
         f.write("\n")
         f.write("====================================\n")
-        f.write("TP: {0}\n".format(len(tally)))
-        f.write("FN: {0}\n".format(len(FNs)))
-        f.write("FP: {0}\n".format(len(FPs)))
+        f.write("TP: {}\n".format(len(tally)))
+        f.write("FN: {}\n".format(len(FNs)))
+        f.write("FP: {}\n".format(len(FPs)))
         f.write("====================================\n")
 
 
