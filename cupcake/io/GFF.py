@@ -98,7 +98,7 @@ class GTF:
         return pp
 
     def find(self, chr, start0, end1):
-        return list(set(self.genome[chr].find(start0, end1)))
+        return list({self.genome[chr].find(start0, end1)})
 
 
 class polyAGFF(GTF):
@@ -1151,7 +1151,7 @@ def eval_pasa(gtf, pasa_filename, gmap_report_filename):
     )
 
     refid_missed = list(
-        set(x["refID"] for x in DictReader(open(gmap_report_filename), delimiter="\t"))
+        {x["refID"] for x in DictReader(open(gmap_report_filename), delimiter="\t")}
     )
 
     for rec in pasaGFFReader(pasa_filename):

@@ -491,7 +491,7 @@ def fusion_main(
             if len(line) == 0:
                 break
             pbid1, groups1 = line.strip().split("\t")
-            group = set(groups1.split(","))
+            group = {groups1.split(",")}
             while True:
                 cur_pos = f.tell()
                 line = f.readline().strip()
