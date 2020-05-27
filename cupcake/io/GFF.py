@@ -1,10 +1,11 @@
-import os, re, sys
+import os
 import pdb
-from bx.intervals.intersection import Interval
-from bx.intervals.intersection import IntervalNode
-from bx.intervals.intersection import IntervalTree
+import re
+import sys
 from collections import defaultdict
 from csv import DictReader
+
+from bx.intervals.intersection import Interval, IntervalNode, IntervalTree
 
 
 class GTF:
@@ -29,12 +30,12 @@ class GTF:
         (0) chr
         (1) annotation source
         (2) type: gene|transcript|CDS|exon|UTR
-        (3) 1-based start 
+        (3) 1-based start
         (4) 1-based end
         (5) ignore
         (6) strand: +|-
         (7) phase
-        (8) extra stuff (gene ID, transcript ID...) 
+        (8) extra stuff (gene ID, transcript ID...)
         """
         for line in open(filename):
             if line.startswith("#"):
@@ -161,7 +162,7 @@ class ucscGTF(GTF):
     4) end (1-based)
     5) score
     6) strand
-    7) frame 
+    7) frame
     8) group
     """
 
@@ -295,7 +296,7 @@ class Coords(GTF):
             ith = 0
 
             if tID in self.transcript:
-                print("duplicate tID {0} seen, ignore!".format(tID), file=sys.stderr)
+                print("duplicate tID {} seen, ignore!".format(tID), file=sys.stderr)
                 continue
 
             self.transcript_info[tID] = {"chr": chr}
@@ -349,7 +350,7 @@ class btabReader:
         (11)-(12) blank
         (13) ith-seq
         (14) ith-exon
-        
+
         start-end will be flipped if start > end !!!
         """
         cur = self.f.tell()
@@ -377,7 +378,7 @@ class btabBlockReader(btabReader):
         return recs[:-1]
 
 
-pbid_rex = re.compile("(PB\.\d+|PBfusion\.\d+)(\.\d+){0,1}")
+pbid_rex = re.compile(r"(PB\.\d+|PBfusion\.\d+)(\.\d+){0,1}")
 
 
 class gmapRecord:
@@ -385,7 +386,7 @@ class gmapRecord:
         """
         Record keeping for GMAP output:
         chr, coverage, identity, seqid, exons
-        
+
         exons --- list of Interval, 0-based start, 1-based end
         """
         assert strand == "+" or strand == "-"
@@ -399,7 +400,7 @@ class gmapRecord:
         self.cds_exons = []
         self.scores = []
 
-        #pdb.set_trace()
+        # pdb.set_trace()
         self.geneid = None
         # handle gene ids specially for PB.X.Y and PBfusion.X.Y
         if geneid is not None:
@@ -478,7 +479,7 @@ class gmapGFFReader(object):
                 self.f.seek(cur)
                 break
         self.sanity_format_check()
-        
+
     def __iter__(self):
         return self
 
@@ -491,14 +492,16 @@ class gmapGFFReader(object):
         https://learn.gencore.bio.nyu.edu/ngs-file-formats/gff3-format/
         """
         cur = self.f.tell()
-        raw = self.f.readline().strip().split('\t')
+        raw = self.f.readline().strip().split("\t")
         if len(raw) != 9:
-            print("ERROR:Sanity checking {0} is GFF3 format: expected 9 tab-delimited fields but saw {1}! Abort!".format(\
-                self.filename, len(raw)))
+            print(
+                "ERROR:Sanity checking {} is GFF3 format: expected 9 tab-delimited fields but saw {}! Abort!".format(
+                    self.filename, len(raw)
+                )
+            )
             sys.exit(-1)
         self.f.seek(cur)
 
-            
     def read(self):
         """
         GFF files
@@ -510,8 +513,8 @@ class gmapGFFReader(object):
         (5) score (I think it's similarity for GMAP)
         (6) strand: +|-
         (7) phase
-        (8) extra stuff (gene ID, transcript ID...) 
-        
+        (8) extra stuff (gene ID, transcript ID...)
+
         For gmap output, a series is delimited by '###' line
         """
         cur = self.f.tell()
@@ -568,7 +571,7 @@ class gmapGFFReader(object):
                     rec.add_exon(rstart1 - 1, rend1, sstart1 - 1, send1, rstrand, score)
                 except AssertionError:
                     print(
-                        "{0} has non-colinear exons!".format(rec.seqid), file=sys.stderr
+                        "{} has non-colinear exons!".format(rec.seqid), file=sys.stderr
                     )
                     while True:
                         line = self.f.readline().strip()
@@ -588,7 +591,7 @@ class gmapGFFReader(object):
                         )
                         cds_seq_end = send1
             else:
-                raise Exception("Not supposed to see type {0} here!!".format(type))
+                raise Exception("Not supposed to see type {} here!!".format(type))
 
         return rec
 
@@ -683,7 +686,7 @@ class collapseGFFReader(gmapGFFReader):
         7) frame (always .)
         8) blurb
 
-        ex: 
+        ex:
         chr1    PacBio  transcript      897326  901092  .       +       .       gene_id "PB.1"; transcript_id "PB.1.1";
         chr1    PacBio  exon    897326  897427  .       +       .       gene_id "PB.1"; transcript_id "PB.1.1";
         """
@@ -698,16 +701,18 @@ class collapseGFFReader(gmapGFFReader):
         strand = raw[6]
         seqid = None
         geneid = None
-        for stuff in raw[8].split(';'):
+        for stuff in raw[8].split(";"):
             if len(stuff.strip()) > 0:
                 a, b = stuff.strip().split()
-                if a == 'transcript_id':
+                if a == "transcript_id":
                     seqid = b[1:-1]
-                if a == 'gene_id':
+                if a == "gene_id":
                     geneid = b[1:-1]
 
-        rec = gmapRecord(chr, coverage=None, identity=None, strand=strand, seqid=seqid, geneid=geneid)
-        
+        rec = gmapRecord(
+            chr, coverage=None, identity=None, strand=strand, seqid=seqid, geneid=geneid
+        )
+
         while True:
             cur = self.f.tell()
             line = self.f.readline().strip()
@@ -726,7 +731,7 @@ class collapseGFFReader(gmapGFFReader):
         raise Exception("Should not reach here!")
 
 
-fusion_seqid_rex = re.compile("(\S+\\.\d+)\\.(\d+)")
+fusion_seqid_rex = re.compile("(\\S+\\.\\d+)\\.(\\d+)")
 
 
 class collapseGFFFusionReader(collapseGFFReader):
@@ -760,9 +765,9 @@ class ucscGFFReader(gmapGFFReader):
         4) end (1-based)
         5) score
         6) strand
-        7) frame 
+        7) frame
         8) group
-        
+
         A series is delimited by '###' line
         """
         cur = self.f.tell()
@@ -802,12 +807,12 @@ def GFFReader(filename):
     elif program == "PASA":
         return pasaGFFReader(filename)
     else:
-        raise Exception("{0} is not a recognizable GFF program".format(program))
+        raise Exception("{} is not a recognizable GFF program".format(program))
 
 
 def write_fancyGeneformat(f, r):
     for exon in r.ref_exons:
-        f.write("{0} exon {1} {2}\n".format(r.seqid, exon.start + 1, exon.end + 1))
+        f.write("{} exon {} {}\n".format(r.seqid, exon.start + 1, exon.end + 1))
 
 
 def write_GFF_UCSCformat(f, r):
@@ -820,9 +825,9 @@ def write_GFF_UCSCformat(f, r):
     4) end (1-based)
     5) score
     6) strand
-    7) frame 
+    7) frame
     8) group
-    
+
     r should be gmapRecord object
     """
     ref_exons = r.ref_exons
@@ -1036,9 +1041,7 @@ def main(gtf):
         path = btab_reclist_to_interval_list(r)
         info = match_transcript(gtf, r[0]["chr"], path)
         if info["matchedExons"] is None:
-            print(
-                "Did not find a match for {0}!".format(r[0]["seqid"]), file=sys.stderr
-            )
+            print("Did not find a match for {}!".format(r[0]["seqid"]), file=sys.stderr)
             continue
         for i, j in info["matchedExons"]:
             transcript_tally[info["tID"]][i] += 1
@@ -1058,7 +1061,7 @@ def main_pasa(gtf):
 
         info = match_transcript(gtf, chr, path)
         if info["matchedExons"] is None:
-            print("Did not find a match for {0}!".format(tID), file=sys.stderr)
+            print("Did not find a match for {}!".format(tID), file=sys.stderr)
             continue
         for i, j in info["matchedExons"]:
             pasa_tally[info["tID"]][i] += 1
@@ -1068,15 +1071,15 @@ def main_pasa(gtf):
 def eval_gmap(gtf, gmap_filename, input_filename):
     """
     Expected seqID format: m000000_000000_00000_cSIMULATED_s0_p0/0/0_1250 or p0/1395/ccs
-    
-    Input: 
+
+    Input:
     gtf --- GTF/Coords object as ground truth transcripts
     gmap_filename --- gmap output in .gff format
     input_filename --- input fasta to gmap (to identify unmapped seqs)
-    
+
     Output: <output_prefix> is just <gmap_filename>
     <output_prefix>.bad --- list of seqids that had no GMAP output or did not match a transcript
-    <output_prefix>.report --- 
+    <output_prefix>.report ---
       <seqid>, <seqlen>, <seqMatchStart>, <seqMatchEnd>, <transcript/gene ID>, <category:full|5missX|3missY|skipped>, <matchedExons>
     """
     from Bio import SeqIO
@@ -1089,19 +1092,19 @@ def eval_gmap(gtf, gmap_filename, input_filename):
         "seqID\tseqLen\tchr\tstrand\tseqMatchStart0\tseqMatchEnd1\trefID\tcategory\tmatches\tboundary\n"
     )
 
-    seqlen_dict = dict(
-        (r.id, len(r.seq))
+    seqlen_dict = {
+        r.id: len(r.seq)
         for r in SeqIO.parse(
             open(input_filename),
             "fastq" if input_filename.endswith(".fastq") else "fasta",
         )
-    )
+    }
     seqid_missed = seqlen_dict.keys()
 
     for rec in gmapGFFReader(gmap_filename):
         chr = rec.chr
         seqid = rec.seqid
-        print("seqid: {0}".format(seqid))
+        print("seqid: {}".format(seqid))
         seqlen = seqlen_dict[seqid]
         try:
             seqid_missed.remove(seqid)
@@ -1110,7 +1113,7 @@ def eval_gmap(gtf, gmap_filename, input_filename):
         info = match_transcript(gtf, chr, rec.ref_exons)
         info["strand"] = rec.strand
         if info["matchedExons"] is None:
-            fbad.write("{0}\tBAD\n".format(seqid))
+            fbad.write("{}\tBAD\n".format(seqid))
         else:
             fgood.write(
                 "{seqid}\t{seqlen}\t{chr}\t{strand}\t{smstart0}\t{smend1}\t{refID}\t{cat}\t{mat}\t{bound}\n".format(
@@ -1130,16 +1133,16 @@ def eval_gmap(gtf, gmap_filename, input_filename):
             )
 
     for seqid in seqid_missed:
-        fbad.write("{0}\tMISSED\n".format(seqid))
+        fbad.write("{}\tMISSED\n".format(seqid))
     fbad.close()
     fgood.close()
 
 
 def eval_pasa(gtf, pasa_filename, gmap_report_filename):
     """
-    
+
     Output:
-    <gID> <tID> <number of exons> <refID> <category> <matches> 
+    <gID> <tID> <number of exons> <refID> <category> <matches>
 
     """
     output_prefix = pasa_filename
@@ -1151,7 +1154,7 @@ def eval_pasa(gtf, pasa_filename, gmap_report_filename):
     )
 
     refid_missed = list(
-        set(x["refID"] for x in DictReader(open(gmap_report_filename), delimiter="\t"))
+        {x["refID"] for x in DictReader(open(gmap_report_filename), delimiter="\t")}
     )
 
     for rec in pasaGFFReader(pasa_filename):
@@ -1171,7 +1174,7 @@ def eval_pasa(gtf, pasa_filename, gmap_report_filename):
             pass
         refLen = sum(x.end - x.start for x in gtf.get_exons(info["tID"]))
         if info["matchedExons"] is None:
-            fbad.write("{0}\tBAD\n".format(tid))
+            fbad.write("{}\tBAD\n".format(tid))
         else:
             fgood.write("{gid}\t{tid}\t".format(gid=gid, tid=tid))
             fgood.write("{chr}\t{strand}\t".format(chr=rec.chr, strand=rec.strand))
@@ -1194,7 +1197,7 @@ def eval_pasa(gtf, pasa_filename, gmap_report_filename):
             )
 
     for refid in refid_missed:
-        fbad.write("{0}\tMISSED\n".format(refid))
+        fbad.write("{}\tMISSED\n".format(refid))
     fbad.close()
     fgood.close()
 
@@ -1203,8 +1206,8 @@ def make_exon_report(gtf, gmap_report_filename):
     """
     Output for each exon:
     <tID>   <exon number 0-based>  <length>  <coverage>
-    
-    Output will be written to .exon_report   
+
+    Output will be written to .exon_report
     """
     coverage = defaultdict(lambda: defaultdict(lambda: 0))  # tID --> ith-exon --> count
     for r in DictReader(open(gmap_report_filename), delimiter="\t"):
@@ -1217,7 +1220,7 @@ def make_exon_report(gtf, gmap_report_filename):
         path = gtf.get_exons(tID)
         for ith, exon in enumerate(path):
             f.write(
-                "{0}\t{1}\t{2}\t{3}\n".format(
+                "{}\t{}\t{}\t{}\n".format(
                     tID, ith, exon.end - exon.start, coverage[tID][ith]
                 )
             )

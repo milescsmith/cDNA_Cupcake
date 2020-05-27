@@ -1,12 +1,18 @@
 __author__ = "etseng@pacb.com"
 
+import glob
+
 #!/usr/bin/env python
-import os, sys, glob, shutil
+import os
 import pdb
-from multiprocessing import Process
+import shutil
+import sys
+from collections import OrderedDict, defaultdict
 from csv import DictReader, DictWriter
-from collections import defaultdict, OrderedDict
+from multiprocessing import Process
+
 from Bio import SeqIO
+
 from bx.intervals.cluster import ClusterTree
 from cupcake.io import GFF
 from cupcake.tofu.counting import combine_abundance_across_samples as sp
@@ -20,7 +26,7 @@ def sample_sanity_check(
     :return: raise Exception if sanity check failed
     """
     print(
-        "Sanity checking. Retrieving PBIDs from {0},{1},{2}...".format(
+        "Sanity checking. Retrieving PBIDs from {},{},{}...".format(
             group_filename, gff_filename, count_filename
         ),
         file=sys.stderr,
@@ -86,7 +92,7 @@ def read_config(filename):
                 name, path = line.strip()[len("tmpSAMPLE=") :].split(";")
                 if name.startswith("tmp_"):
                     print(
-                        "Sample names are not allowed to start with tmp_! Please change {0} to something else.".format(
+                        "Sample names are not allowed to start with tmp_! Please change {} to something else.".format(
                             name
                         ),
                         file=sys.stderr,
@@ -99,7 +105,7 @@ def read_config(filename):
                 name, path = line.strip()[len("SAMPLE=") :].split(";")
                 if name.startswith("tmp_"):
                     print(
-                        "Sample names are not allowed to start with tmp_! Please change {0} to something else.".format(
+                        "Sample names are not allowed to start with tmp_! Please change {} to something else.".format(
                             name
                         ),
                         file=sys.stderr,
@@ -118,19 +124,19 @@ def read_config(filename):
 
     if group_filename is None:
         raise Exception(
-            "Expected GROUP_FILENAME= but not in config file {0}! Abort.".format(
+            "Expected GROUP_FILENAME= but not in config file {}! Abort.".format(
                 filename
             )
         )
     if count_filename is None:
         raise Exception(
-            "Expected COUNT_FILENAME= but not in config file {0}! Abort.".format(
+            "Expected COUNT_FILENAME= but not in config file {}! Abort.".format(
                 filename
             )
         )
     if gff_filename is None:
         raise Exception(
-            "Expected GFF_FILENAME= but not in config file {0}! Abort.".format(filename)
+            "Expected GFF_FILENAME= but not in config file {}! Abort.".format(filename)
         )
 
     if len(sample_names) == 0:
@@ -202,7 +208,7 @@ def chain_split_file(
                 for cur in _indices:
                     GFF.write_collapseGFF_format(f_gff, recs[cur])
                     f_group.write(
-                        "{0}\t{1}\n".format(
+                        "{}\t{}\n".format(
                             recs[cur].seqid, ",".join(addon_group_info[recs[cur].seqid])
                         )
                     )
@@ -307,7 +313,7 @@ def combine_split_chained_results(
             or not os.path.exists(group_file)
         ):
             print(
-                "Expects to see {0},{1},{2} but one or more files are missing! Abort!".format(
+                "Expects to see {},{},{} but one or more files are missing! Abort!".format(
                     gff_file, mega_file, group_file
                 ),
                 file=sys.stderr,
@@ -318,12 +324,12 @@ def combine_split_chained_results(
     use_fq = False
     if ref_fq is not None and addon_fq is not None:
         use_fq = True
-        ref_fq_dict = dict(
-            (r.id.split("|")[0], r) for r in SeqIO.parse(open(ref_fq), "fastq")
-        )
-        addon_fq_dict = dict(
-            (r.id.split("|")[0], r) for r in SeqIO.parse(open(addon_fq), "fastq")
-        )
+        ref_fq_dict = {
+            r.id.split("|")[0]: r for r in SeqIO.parse(open(ref_fq), "fastq")
+        }
+        addon_fq_dict = {
+            r.id.split("|")[0]: r for r in SeqIO.parse(open(addon_fq), "fastq")
+        }
 
     mega_info = {}  # ref id -> list of matching query_id, or empty list
     split_unmatched = set()
@@ -340,8 +346,8 @@ def combine_split_chained_results(
 
     # make a rec list of matches of (ref_id, addon_id, representative record, combined group info) where rec_ref or ref_addon could be None, but not both
     rec_list = []
-    d_ref = dict((r.seqid, r) for r in GFF.collapseGFFReader(ref_gff))
-    d_addon = dict((r.seqid, r) for r in GFF.collapseGFFReader(addon_gff))
+    d_ref = {r.seqid: r for r in GFF.collapseGFFReader(ref_gff)}
+    d_addon = {r.seqid: r for r in GFF.collapseGFFReader(addon_gff)}
 
     ref_group_info = sp.MegaPBTree.read_group(ref_group, None)
     addon_group_info = sp.MegaPBTree.read_group(addon_group, None)
@@ -716,8 +722,8 @@ if __name__ == "__main__":
     parser.add_argument("config_file")
     parser.add_argument(
         "field_to_use",
-        choices=['norm_fl', 'count_fl'],
-        default='count_fl',
+        choices=["norm_fl", "count_fl"],
+        default="count_fl",
         help="Which count field to use for chained sample (default: count_fl)",
     )
     parser.add_argument(

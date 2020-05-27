@@ -24,8 +24,10 @@ acgn   mismatch on - strand
 $ end of read
 """
 
-import os, sys, re
+import os
 import pdb
+import re
+import sys
 from collections import Counter
 
 
@@ -77,7 +79,7 @@ class MPileUpRecord(object):
                 "$",
             )
 
-        rex = re.compile("(\d+)")
+        rex = re.compile(r"(\d+)")
 
         def read_indel(start_index):
             m = rex.search(self.readBase, start_index)
@@ -133,7 +135,7 @@ class MPileUpRecord(object):
                 self.counts["+" + self.readBase[start:end]] += 1
                 i = end
             else:
-                raise Exception("Unknown {0} in readBase!".format(b))
+                raise Exception("Unknown {} in readBase!".format(b))
 
         assert self.cov == sanity_counter or (self.readBase == "*" and self.cov == 0)
         # set nCov which is cov provided by non-indel non-skipped bases
@@ -191,7 +193,7 @@ class MPileUpReader(object):
         else:
             raise Exception(
                 "Expected to have 7 cols in mpileup record \
-            but saw only {0}, abort! Line was: {1}".format(
+            but saw only {}, abort! Line was: {}".format(
                     len(raw), line
                 )
             )

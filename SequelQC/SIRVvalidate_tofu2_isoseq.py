@@ -2,9 +2,12 @@
 __author__ = "etseng@pacb.com"
 __version__ = "2.0"
 
-import os, sys, subprocess, shutil
-from csv import DictReader
+import os
+import shutil
+import subprocess
+import sys
 from collections import defaultdict
+from csv import DictReader
 
 import SIRVvalidate_smrtlink_isoseq as smrtlink_sirv
 
@@ -37,8 +40,8 @@ def link_files(src_dir, out_dir):
     o_fq = os.path.join(out_dir, "hq_isoforms.fastq")
     o_csv = os.path.join(out_dir, "cluster_report.csv")
     if os.path.exists(out_dir):
-        assert len(os.popen("diff {0} {1}".format(hq_fastq, o_fq)).read().strip()) == 0
-        print >>sys.stderr, "Re-using data in {0}....".format(out_dir)
+        assert len(os.popen(f"diff {hq_fastq} {o_fq}").read().strip()) == 0
+        print(f"Re-using data in {out_dir}....", file=sys.stderr)
     else:
         os.makedirs(out_dir)
         os.symlink(hq_fastq, o_fq)
@@ -84,13 +87,16 @@ def make_abundance_from_Sequel_cluster_csv(cluster_csv, collapse_prefix):
             total_nfl += len(fl_ass[cid]) + len(
                 filter(lambda x: nfl_hit_count[x] == 1, nfl_ass[cid])
             )
-        f.write("{0}\t{1}\t{2}\n".format(pbid, total_fl, total_nfl))
+        f.write("{}\t{}\t{}\n".format(pbid, total_fl, total_nfl))
     f.close()
 
 
 def sanity_check_script_dependencies():
     if os.system("chain_samples.py -h > /dev/null") != 0:
-        print >>sys.stderr, "chain_samples.py required in PATH! Please install Cupcake ToFU!"
+        print(
+            "chain_samples.py required in PATH! Please install Cupcake ToFU!",
+            file=sys.stderr,
+        )
         sys.exit(-1)
 
 
@@ -118,33 +124,33 @@ def collapse_to_SIRV(out_dir, hq_fastq, cluster_csv, min_count, aligner_choice):
                 cpus=GMAP_CPUS, ref=SIRV_GENOME, hq=hq_fastq
             )
         else:
-            raise Exception, "Unrecognized aligner choice: {0}!".format(aligner_choice)
+            raise Exception(f"Unrecognized aligner choice: {aligner_choice}!")
 
         if subprocess.check_call(cmd, shell=True) != 0:
-            raise Exception, "ERROR CMD:", cmd
+            raise Exception(f"ERROR CMD: {cmd}")
 
     cmd = "sort -k 3,3 -k 4,4n {hq}.sam > {hq}.sorted.sam".format(hq=hq_fastq)
     if subprocess.check_call(cmd, shell=True) != 0:
-        raise Exception, "ERROR CMD:", cmd
+        raise Exception(f"ERROR CMD: {cmd}")
 
     cmd = "collapse_isoforms_by_sam.py --input {hq} --fq -s {hq}.sorted.sam -c 0.99 -i 0.95 \
     --max_fuzzy_junction=5 --dun-merge-5-shorter -o {hq}.no5merge".format(
         hq=hq_fastq
     )
     if subprocess.check_call(cmd, shell=True) != 0:
-        raise Exception, "ERROR CMD:", cmd
+        raise Exception(f"ERROR CMD: {cmd}")
 
     ### make_abundance_from_CSV
     collapse_prefix = hq_fastq + ".no5merge.collapsed"
     make_abundance_from_Sequel_cluster_csv(cluster_csv, collapse_prefix)
 
-    cmd = "filter_by_count.py {0} --min_count={1}".format(collapse_prefix, min_count)
+    cmd = "filter_by_count.py {} --min_count={}".format(collapse_prefix, min_count)
     if subprocess.check_call(cmd, shell=True) != 0:
-        raise Exception, "ERROR CMD:", cmd
+        raise Exception(f"ERROR CMD: {cmd}")
 
-    cmd = "filter_away_subset.py {0}.min_fl_{1}".format(collapse_prefix, min_count)
+    cmd = "filter_away_subset.py {}.min_fl_{}".format(collapse_prefix, min_count)
     if subprocess.check_call(cmd, shell=True) != 0:
-        raise Exception, "ERROR CMD:", cmd
+        raise Exception(f"ERROR CMD: {cmd}")
 
     os.symlink(
         collapse_prefix + ".min_fl_" + str(min_count) + ".filtered.abundance.txt",
@@ -181,7 +187,7 @@ def validate_with_SIRV(out_dir, eval_dir):
 
     cmd = "chain_samples.py sample.config count_fl --fuzzy_junction=5"
     if subprocess.check_call(cmd, shell=True) != 0:
-        raise Exception, "ERROR CMD:", cmd
+        raise Exception(f"ERROR CMD: {cmd}")
 
     os.chdir(cur_dir)
 
@@ -205,14 +211,14 @@ def eval_result(eval_dir, src_dir, min_count):
             tally[r["SIRV"]].append(r["test"])
 
     with open("SIRV_evaluation_summary.txt", "w") as f:
-        f.write("Source Directory: {0}\n".format(src_dir))
-        f.write("Evaluation Directory: {0}\n".format(eval_dir))
-        f.write("Minimum FL Count cutoff: {0}\n".format(min_count))
+        f.write("Source Directory: {}\n".format(src_dir))
+        f.write("Evaluation Directory: {}\n".format(eval_dir))
+        f.write("Minimum FL Count cutoff: {}\n".format(min_count))
         f.write("\n")
         f.write("====================================\n")
-        f.write("TP: {0}\n".format(len(tally)))
-        f.write("FN: {0}\n".format(len(FNs)))
-        f.write("FP: {0}\n".format(len(FPs)))
+        f.write("TP: {}\n".format(len(tally)))
+        f.write("FN: {}\n".format(len(FNs)))
+        f.write("FP: {}\n".format(len(FPs)))
         f.write("====================================\n")
 
 

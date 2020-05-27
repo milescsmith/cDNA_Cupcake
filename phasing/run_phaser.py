@@ -4,17 +4,19 @@ __author__ = "etseng@pacb.com"
 
 import os
 import sys
+from argparse import ArgumentParser
+
+from Bio import SeqIO
+
+import phasing.io.MPileUpVariantCaller as VC
+import phasing.io.SAMMPileUpReader as sp
+from phasing.io import VariantPhaseCleaner, VariantPhaser
 
 try:
     import vcf
 except ImportError:
     print("Cannot import vcf! Please install pyvcf!", file=sys.stderr)
     sys.exit(-1)
-from Bio import SeqIO
-import phasing.io.SAMMPileUpReader as sp
-import phasing.io.MPileUpVariantCaller as VC
-from phasing.io import VariantPhaser
-from phasing.io import VariantPhaseCleaner
 
 MIN_COVERAGE = 10  # minimum number of FL reads for a gene to do SNP calling and phasing
 ERR_SUB = 0.005
@@ -23,7 +25,6 @@ MIN_PERC_ALLOWED = 0.25  # minimum percent of total count for an allele
 PVAL_CUTOFF = 0.01
 MIN_AF_AT_ENDS = 0.10  # minimum minor allele frequency for SNPs at ends, which tend to have unreliable alignments
 
-from argparse import ArgumentParser
 
 parser = ArgumentParser()
 parser.add_argument("fastx_filename", help="Input FLNC fasta or fastq")
@@ -86,14 +87,12 @@ pp.haplotypes
 pp.haplotypes.get_haplotype_vcf_assignment()
 
 # (3) phase isoforms
-seqids = set(
-    [
-        r.id
-        for r in SeqIO.parse(
-            open(args.fastx_filename), VariantPhaser.type_fa_or_fq(args.fastx_filename)
-        )
-    ]
-)
+seqids = {
+    r.id
+    for r in SeqIO.parse(
+        open(args.fastx_filename), VariantPhaser.type_fa_or_fq(args.fastx_filename)
+    )
+}
 isoform_tally = VariantPhaser.phase_isoforms(args.read_stat, seqids, pp)
 if len(isoform_tally) == 0:
     os.system("touch {out}.NO_HAPS_FOUND".format(out=args.output_prefix))
@@ -142,7 +141,7 @@ with open(args.output_prefix + ".cleaned.hap_info.txt", "w") as f:
     f.write("id,hap_preclean,hap_postclean\n")
     for seqid, old_i in pp.seq_hap_info.items():
         f.write(
-            "{0},{1},{2}\n".format(
+            "{},{},{}\n".format(
                 seqid, pp.haplotypes.haplotypes[old_i], new_hap.haplotypes[m[old_i]]
             )
         )
