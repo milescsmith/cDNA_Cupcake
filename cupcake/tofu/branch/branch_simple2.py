@@ -135,16 +135,17 @@ class BranchSimple:
         (4) has 0-bp exons (damn you minimap2)
         """
         for r in gmap_sam_reader:
-            if r.sID == "*":
-                ignored_fout.write(f"{r.qID}\tUnmapped.\n")
-            elif r.qCoverage < self.min_aln_coverage:
-                ignored_fout.write(f"{r.qID}\tCoverage {r.qCoverage:.3f} too low.\n")
-            elif r.identity < self.min_aln_identity:
-                ignored_fout.write(f"{r.qID}\tIdentity {r.identity:.3f} too low.\n")
-            elif any((e - s == 0) for s, e in r.segments):
-                ignored_fout.write(f"{r.qID}\t0bp exons.\n")
-            else:
-                yield r
+            if r is not None:
+                if r.sID == "*":
+                    ignored_fout.write(f"{r.qID}\tUnmapped.\n")
+                elif r.qCoverage < self.min_aln_coverage:
+                    ignored_fout.write(f"{r.qID}\tCoverage {r.qCoverage:.3f} too low.\n")
+                elif r.identity < self.min_aln_identity:
+                    ignored_fout.write(f"{r.qID}\tIdentity {r.identity:.3f} too low.\n")
+                elif any((e - s == 0) for s, e in r.segments):
+                    ignored_fout.write(f"{r.qID}\t0bp exons.\n")
+                else:
+                    yield r
 
     def parse_transfrag2contig(self, gmap_sam_records, skip_5_exon_alt=True):
         """
