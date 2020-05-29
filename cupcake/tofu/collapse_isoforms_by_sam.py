@@ -196,13 +196,11 @@ def main(args):
 
     ### sanity check that input file and input SAM exists
     if not os.path.exists(args.input):
-        print(
-            "Input file {0} does not exist. Abort.".format(args.input), file=sys.stderr
-        )
+        print(f"Input file {args.input} does not exist. Abort.", file=sys.stderr)
         sys.exit(-1)
 
     if not os.path.exists(args.sam):
-        print("SAM file {0} does not exist. Abort.".format(args.sam), file=sys.stderr)
+        print(f"SAM file {args.sam} does not exist. Abort.", file=sys.stderr)
         sys.exit(-1)
 
     # check for duplicate IDs
@@ -287,11 +285,9 @@ def main(args):
             bad_gff_filename=f_bad.name,
         )
 
-    print("Ignored IDs written to: {0}".format(ignored_fout.name), file=sys.stdout)
+    print(f"Ignored IDs written to: {ignored_fout.name}", file=sys.stdout)
     print(
-        "Output written to: {0}\n{1}\n{2}\n{3}\n".format(
-            f_good.name, f_txt.name, outfile, args
-        ),
+        f"Output written to: {f_good.name}\n{f_txt.name}\n{outfile}\n{args}\n",
         file=sys.stdout,
     )
 

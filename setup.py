@@ -6,7 +6,7 @@ from setuptools import Extension, setup
 from Cython.Build import cythonize
 
 __author__ = "etseng@pacb.com"
-version = "12.0.0"
+VERSION = "12.0.0"
 
 ext_modules = [
     Extension(
