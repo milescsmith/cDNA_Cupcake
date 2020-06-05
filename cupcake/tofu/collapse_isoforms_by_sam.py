@@ -25,7 +25,7 @@ from Bio import SeqIO
 
 from cupcake.tofu.utils import check_ids_unique
 from cupcake.tofu.branch import branch_simple2
-from cupcake.tofu import compare_junctions
+from cupcake.tofu.compare_junctions import compare_junctions
 from cupcake.io import GFF
 
 
@@ -142,7 +142,7 @@ def collapse_fuzzy_junctions(
         r.segments = r.ref_exons
         for r2 in recs[r.chr][r.strand].find(r.start, r.end):
             r2.segments = r2.ref_exons
-            m = compare_junctions.compare_junctions(
+            m = compare_junctions(
                 r,
                 r2,
                 internal_fuzzy_max_dist=internal_fuzzy_max_dist,
