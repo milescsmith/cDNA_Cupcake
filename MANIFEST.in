@@ -1,0 +1,20 @@
+include *.md
+include *.txt
+include *.yaml
+include Dockerfile
+recursive-include cdna_cupcake *.R
+recursive-include cdna_cupcake *.Rhistory
+recursive-include cdna_cupcake *.config
+recursive-include cdna_cupcake *.csv
+recursive-include cdna_cupcake *.fastq
+recursive-include cdna_cupcake *.fq
+recursive-include cdna_cupcake *.gff
+recursive-include cdna_cupcake *.gz
+recursive-include cdna_cupcake *.png
+recursive-include cdna_cupcake *.py_log
+recursive-include cdna_cupcake *.pyx
+recursive-include cdna_cupcake *.sam
+recursive-include cdna_cupcake *.sh
+recursive-include cdna_cupcake *.swp
+recursive-include cdna_cupcake *.txt
+recursive-include cdna_cupcake *.unfuzzy
