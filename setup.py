@@ -6,7 +6,7 @@ from setuptools import Extension, setup
 from Cython.Build import cythonize
 
 __author__ = "etseng@pacb.com"
-version = "12.0.0"
+__version__ = "12.0.0"
 
 ext_modules = [
     Extension(
@@ -28,7 +28,7 @@ EXT_MODULES = [
 
 setup(
     name="cupcake",
-    version=VERSION,
+    version=__version__,
     author="Elizabeth Tseng",
     author_email="etseng@pacb.com",
     ext_modules=cythonize(EXT_MODULES),
@@ -79,5 +79,11 @@ setup(
         "cupcake2/tofu2/picking_up_ice2.py",
         "phasing/create_fake_genome.py",
         "phasing/run_phaser.py",
+        "sequence/sam_to_bam.py",
+        "sequence/err_correct_w_genome.py",
+        "sequence/sam_to_gff3.py",
+        "sequence/STAR.py",
+        "sequence/BED.py",
+        "sequence/coordinate_mapper.py",
     ],
 )
