@@ -9,3 +9,4 @@ cupcake/tofu/branch/*
 .idea
 cupcake.egg-info/*
 cupcake.egg-info/
+**/*.swp

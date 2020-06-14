@@ -4,12 +4,12 @@
 {
     "distutils": {
         "depends": [],
-        "name": "cupcake.ice.find_ECE",
+        "name": "cdna_cupcake.cupcake.ice.find_ECE",
         "sources": [
-            "cupcake/ice/find_ECE.pyx"
+            "cdna_cupcake/cupcake/ice/find_ECE.pyx"
         ]
     },
-    "module_name": "cupcake.ice.find_ECE"
+    "module_name": "cdna_cupcake.cupcake.ice.find_ECE"
 }
 END: Cython Metadata */
 
@@ -611,8 +611,8 @@ static CYTHON_INLINE float __PYX_NAN() {
   #endif
 #endif
 
-#define __PYX_HAVE__cupcake__ice__find_ECE
-#define __PYX_HAVE_API__cupcake__ice__find_ECE
+#define __PYX_HAVE__cdna_cupcake__cupcake__ice__find_ECE
+#define __PYX_HAVE_API__cdna_cupcake__cupcake__ice__find_ECE
 /* Early includes */
 #include <string.h>
 #include <stdlib.h>
@@ -824,7 +824,7 @@ static const char *__pyx_filename;
 
 
 static const char *__pyx_f[] = {
-  "cupcake/ice/find_ECE.pyx",
+  "cdna_cupcake/cupcake/ice/find_ECE.pyx",
 };
 
 /*--- Type declarations ---*/
@@ -1172,14 +1172,14 @@ static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
 /* Module declarations from 'libc.stdlib' */
 
-/* Module declarations from 'cupcake.ice.find_ECE' */
-static CYTHON_INLINE double __pyx_f_7cupcake_3ice_8find_ECE_double_min(double, double); /*proto*/
-static CYTHON_INLINE double __pyx_f_7cupcake_3ice_8find_ECE_double_max(double, double); /*proto*/
-#define __Pyx_MODULE_NAME "cupcake.ice.find_ECE"
-extern int __pyx_module_is_main_cupcake__ice__find_ECE;
-int __pyx_module_is_main_cupcake__ice__find_ECE = 0;
+/* Module declarations from 'cdna_cupcake.cupcake.ice.find_ECE' */
+static CYTHON_INLINE double __pyx_f_12cdna_cupcake_7cupcake_3ice_8find_ECE_double_min(double, double); /*proto*/
+static CYTHON_INLINE double __pyx_f_12cdna_cupcake_7cupcake_3ice_8find_ECE_double_max(double, double); /*proto*/
+#define __Pyx_MODULE_NAME "cdna_cupcake.cupcake.ice.find_ECE"
+extern int __pyx_module_is_main_cdna_cupcake__cupcake__ice__find_ECE;
+int __pyx_module_is_main_cdna_cupcake__cupcake__ice__find_ECE = 0;
 
-/* Implementation of 'cupcake.ice.find_ECE' */
+/* Implementation of 'cdna_cupcake.cupcake.ice.find_ECE' */
 static PyObject *__pyx_builtin_range;
 static const char __pyx_k_L[] = "L";
 static const char __pyx_k_X[] = "X";
@@ -1205,10 +1205,10 @@ static const char __pyx_k_min_ece_length[] = "min_ece_length";
 static const char __pyx_k_Test_not_passed[] = "Test not passed.";
 static const char __pyx_k_etseng_pacb_com[] = "etseng@pacb.com";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
-static const char __pyx_k_cupcake_ice_find_ECE[] = "cupcake.ice.find_ECE";
 static const char __pyx_k_0111011111011011101101[] = "0111011111011011101101";
-static const char __pyx_k_cupcake_ice_find_ECE_pyx[] = "cupcake/ice/find_ECE.pyx";
 static const char __pyx_k_give_up_as_soon_one_found[] = "give_up_as_soon_one_found";
+static const char __pyx_k_cdna_cupcake_cupcake_ice_find_EC[] = "cdna_cupcake/cupcake/ice/find_ECE.pyx";
+static const char __pyx_k_cdna_cupcake_cupcake_ice_find_EC_2[] = "cdna_cupcake.cupcake.ice.find_ECE";
 static PyObject *__pyx_kp_s_0111011111011011101101;
 static PyObject *__pyx_n_s_L;
 static PyObject *__pyx_kp_s_Test_not_passed;
@@ -1217,9 +1217,9 @@ static PyObject *__pyx_n_s_X;
 static PyObject *__pyx_n_s_Y;
 static PyObject *__pyx_n_s_author;
 static PyObject *__pyx_n_s_bests;
+static PyObject *__pyx_kp_s_cdna_cupcake_cupcake_ice_find_EC;
+static PyObject *__pyx_n_s_cdna_cupcake_cupcake_ice_find_EC_2;
 static PyObject *__pyx_n_s_cline_in_traceback;
-static PyObject *__pyx_n_s_cupcake_ice_find_ECE;
-static PyObject *__pyx_kp_s_cupcake_ice_find_ECE_pyx;
 static PyObject *__pyx_n_s_end;
 static PyObject *__pyx_kp_s_etseng_pacb_com;
 static PyObject *__pyx_n_s_file;
@@ -1237,8 +1237,8 @@ static PyObject *__pyx_n_s_s;
 static PyObject *__pyx_n_s_test;
 static PyObject *__pyx_n_s_test_2;
 static PyObject *__pyx_n_s_x;
-static PyObject *__pyx_pf_7cupcake_3ice_8find_ECE_findECE(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_s, int __pyx_v_L, int __pyx_v_min_ece_length, PyObject *__pyx_v_give_up_as_soon_one_found); /* proto */
-static PyObject *__pyx_pf_7cupcake_3ice_8find_ECE_2test(CYTHON_UNUSED PyObject *__pyx_self); /* proto */
+static PyObject *__pyx_pf_12cdna_cupcake_7cupcake_3ice_8find_ECE_findECE(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_s, int __pyx_v_L, int __pyx_v_min_ece_length, PyObject *__pyx_v_give_up_as_soon_one_found); /* proto */
+static PyObject *__pyx_pf_12cdna_cupcake_7cupcake_3ice_8find_ECE_2test(CYTHON_UNUSED PyObject *__pyx_self); /* proto */
 static PyObject *__pyx_int_0;
 static PyObject *__pyx_int_1;
 static PyObject *__pyx_int_2;
@@ -1256,7 +1256,7 @@ static PyObject *__pyx_codeobj__5;
 static PyObject *__pyx_codeobj__7;
 /* Late includes */
 
-/* "cupcake/ice/find_ECE.pyx":5
+/* "cdna_cupcake/cupcake/ice/find_ECE.pyx":5
  * from libc.stdlib cimport malloc, free
  *
  * cdef inline double double_min(double a, double b): return a if a <= b else b             # <<<<<<<<<<<<<<
@@ -1264,7 +1264,7 @@ static PyObject *__pyx_codeobj__7;
  *
  */
 
-static CYTHON_INLINE double __pyx_f_7cupcake_3ice_8find_ECE_double_min(double __pyx_v_a, double __pyx_v_b) {
+static CYTHON_INLINE double __pyx_f_12cdna_cupcake_7cupcake_3ice_8find_ECE_double_min(double __pyx_v_a, double __pyx_v_b) {
   double __pyx_r;
   __Pyx_RefNannyDeclarations
   double __pyx_t_1;
@@ -1283,7 +1283,7 @@ static CYTHON_INLINE double __pyx_f_7cupcake_3ice_8find_ECE_double_min(double __
   return __pyx_r;
 }
 
-/* "cupcake/ice/find_ECE.pyx":6
+/* "cdna_cupcake/cupcake/ice/find_ECE.pyx":6
  *
  * cdef inline double double_min(double a, double b): return a if a <= b else b
  * cdef inline double double_max(double a, double b): return a if a >= b else b             # <<<<<<<<<<<<<<
@@ -1291,7 +1291,7 @@ static CYTHON_INLINE double __pyx_f_7cupcake_3ice_8find_ECE_double_min(double __
  * def findECE(list s, int L, int min_ece_length, give_up_as_soon_one_found=False):
  */
 
-static CYTHON_INLINE double __pyx_f_7cupcake_3ice_8find_ECE_double_max(double __pyx_v_a, double __pyx_v_b) {
+static CYTHON_INLINE double __pyx_f_12cdna_cupcake_7cupcake_3ice_8find_ECE_double_max(double __pyx_v_a, double __pyx_v_b) {
   double __pyx_r;
   __Pyx_RefNannyDeclarations
   double __pyx_t_1;
@@ -1310,7 +1310,7 @@ static CYTHON_INLINE double __pyx_f_7cupcake_3ice_8find_ECE_double_max(double __
   return __pyx_r;
 }
 
-/* "cupcake/ice/find_ECE.pyx":8
+/* "cdna_cupcake/cupcake/ice/find_ECE.pyx":8
  * cdef inline double double_max(double a, double b): return a if a >= b else b
  *
  * def findECE(list s, int L, int min_ece_length, give_up_as_soon_one_found=False):             # <<<<<<<<<<<<<<
@@ -1319,10 +1319,10 @@ static CYTHON_INLINE double __pyx_f_7cupcake_3ice_8find_ECE_double_max(double __
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_7cupcake_3ice_8find_ECE_1findECE(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_7cupcake_3ice_8find_ECE_findECE[] = "\n    s           --- the vector containing the -1 and +4s\n    L           --- just the length of s\n    min_ece_length --- the minimum ece length\n\n    NOTE: s[0] should be 0, the extra 0 we need for the ECE alg\n          so the real data should start from s[1], s[2]....\n\n    Returns all valid ECEs (>= min_ece_length) in s, which could be overlapping\n    Call remove_overlapping_bests afterwards to process overlapping ECEs\n    ";
-static PyMethodDef __pyx_mdef_7cupcake_3ice_8find_ECE_1findECE = {"findECE", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_7cupcake_3ice_8find_ECE_1findECE, METH_VARARGS|METH_KEYWORDS, __pyx_doc_7cupcake_3ice_8find_ECE_findECE};
-static PyObject *__pyx_pw_7cupcake_3ice_8find_ECE_1findECE(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_12cdna_cupcake_7cupcake_3ice_8find_ECE_1findECE(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_12cdna_cupcake_7cupcake_3ice_8find_ECE_findECE[] = "\n    s           --- the vector containing the -1 and +4s\n    L           --- just the length of s\n    min_ece_length --- the minimum ece length\n\n    NOTE: s[0] should be 0, the extra 0 we need for the ECE alg\n          so the real data should start from s[1], s[2]....\n\n    Returns all valid ECEs (>= min_ece_length) in s, which could be overlapping\n    Call remove_overlapping_bests afterwards to process overlapping ECEs\n    ";
+static PyMethodDef __pyx_mdef_12cdna_cupcake_7cupcake_3ice_8find_ECE_1findECE = {"findECE", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_12cdna_cupcake_7cupcake_3ice_8find_ECE_1findECE, METH_VARARGS|METH_KEYWORDS, __pyx_doc_12cdna_cupcake_7cupcake_3ice_8find_ECE_findECE};
+static PyObject *__pyx_pw_12cdna_cupcake_7cupcake_3ice_8find_ECE_1findECE(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_s = 0;
   int __pyx_v_L;
   int __pyx_v_min_ece_length;
@@ -1399,12 +1399,12 @@ static PyObject *__pyx_pw_7cupcake_3ice_8find_ECE_1findECE(PyObject *__pyx_self,
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("findECE", 0, 3, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 8, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("cupcake.ice.find_ECE.findECE", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cdna_cupcake.cupcake.ice.find_ECE.findECE", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
   if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_s), (&PyList_Type), 1, "s", 1))) __PYX_ERR(0, 8, __pyx_L1_error)
-  __pyx_r = __pyx_pf_7cupcake_3ice_8find_ECE_findECE(__pyx_self, __pyx_v_s, __pyx_v_L, __pyx_v_min_ece_length, __pyx_v_give_up_as_soon_one_found);
+  __pyx_r = __pyx_pf_12cdna_cupcake_7cupcake_3ice_8find_ECE_findECE(__pyx_self, __pyx_v_s, __pyx_v_L, __pyx_v_min_ece_length, __pyx_v_give_up_as_soon_one_found);
 
   /* function exit code */
   goto __pyx_L0;
@@ -1415,7 +1415,7 @@ static PyObject *__pyx_pw_7cupcake_3ice_8find_ECE_1findECE(PyObject *__pyx_self,
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7cupcake_3ice_8find_ECE_findECE(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_s, int __pyx_v_L, int __pyx_v_min_ece_length, PyObject *__pyx_v_give_up_as_soon_one_found) {
+static PyObject *__pyx_pf_12cdna_cupcake_7cupcake_3ice_8find_ECE_findECE(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_s, int __pyx_v_L, int __pyx_v_min_ece_length, PyObject *__pyx_v_give_up_as_soon_one_found) {
   PyObject *__pyx_v_bests = NULL;
   int __pyx_v_i;
   int __pyx_v_j;
@@ -1440,7 +1440,7 @@ static PyObject *__pyx_pf_7cupcake_3ice_8find_ECE_findECE(CYTHON_UNUSED PyObject
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("findECE", 0);
 
-  /* "cupcake/ice/find_ECE.pyx":20
+  /* "cdna_cupcake/cupcake/ice/find_ECE.pyx":20
  *     Call remove_overlapping_bests afterwards to process overlapping ECEs
  *     """
  *     assert len(s) == L and s[0] == 0             # <<<<<<<<<<<<<<
@@ -1480,7 +1480,7 @@ static PyObject *__pyx_pf_7cupcake_3ice_8find_ECE_findECE(CYTHON_UNUSED PyObject
   }
   #endif
 
-  /* "cupcake/ice/find_ECE.pyx":22
+  /* "cdna_cupcake/cupcake/ice/find_ECE.pyx":22
  *     assert len(s) == L and s[0] == 0
  *
  *     bests = []             # <<<<<<<<<<<<<<
@@ -1492,7 +1492,7 @@ static PyObject *__pyx_pf_7cupcake_3ice_8find_ECE_findECE(CYTHON_UNUSED PyObject
   __pyx_v_bests = ((PyObject*)__pyx_t_5);
   __pyx_t_5 = 0;
 
-  /* "cupcake/ice/find_ECE.pyx":24
+  /* "cdna_cupcake/cupcake/ice/find_ECE.pyx":24
  *     bests = []
  *     cdef int i, j
  *     cdef double *r = <double *>malloc(L * sizeof(double)) # r[i] = sum(s[0], s[1]...s[i])             # <<<<<<<<<<<<<<
@@ -1501,7 +1501,7 @@ static PyObject *__pyx_pf_7cupcake_3ice_8find_ECE_findECE(CYTHON_UNUSED PyObject
  */
   __pyx_v_r = ((double *)malloc((__pyx_v_L * (sizeof(double)))));
 
-  /* "cupcake/ice/find_ECE.pyx":25
+  /* "cdna_cupcake/cupcake/ice/find_ECE.pyx":25
  *     cdef int i, j
  *     cdef double *r = <double *>malloc(L * sizeof(double)) # r[i] = sum(s[0], s[1]...s[i])
  *     cdef double *X = <double *>malloc(L * sizeof(double)) # X[i] = min(r[0], r[1]...r[i])             # <<<<<<<<<<<<<<
@@ -1510,7 +1510,7 @@ static PyObject *__pyx_pf_7cupcake_3ice_8find_ECE_findECE(CYTHON_UNUSED PyObject
  */
   __pyx_v_X = ((double *)malloc((__pyx_v_L * (sizeof(double)))));
 
-  /* "cupcake/ice/find_ECE.pyx":26
+  /* "cdna_cupcake/cupcake/ice/find_ECE.pyx":26
  *     cdef double *r = <double *>malloc(L * sizeof(double)) # r[i] = sum(s[0], s[1]...s[i])
  *     cdef double *X = <double *>malloc(L * sizeof(double)) # X[i] = min(r[0], r[1]...r[i])
  *     cdef double *Y = <double *>malloc(L * sizeof(double)) # Y[i] = max(r[i], r[i+1]...)             # <<<<<<<<<<<<<<
@@ -1519,7 +1519,7 @@ static PyObject *__pyx_pf_7cupcake_3ice_8find_ECE_findECE(CYTHON_UNUSED PyObject
  */
   __pyx_v_Y = ((double *)malloc((__pyx_v_L * (sizeof(double)))));
 
-  /* "cupcake/ice/find_ECE.pyx":28
+  /* "cdna_cupcake/cupcake/ice/find_ECE.pyx":28
  *     cdef double *Y = <double *>malloc(L * sizeof(double)) # Y[i] = max(r[i], r[i+1]...)
  *
  *     r[0] = 0             # <<<<<<<<<<<<<<
@@ -1528,7 +1528,7 @@ static PyObject *__pyx_pf_7cupcake_3ice_8find_ECE_findECE(CYTHON_UNUSED PyObject
  */
   (__pyx_v_r[0]) = 0.0;
 
-  /* "cupcake/ice/find_ECE.pyx":29
+  /* "cdna_cupcake/cupcake/ice/find_ECE.pyx":29
  *
  *     r[0] = 0
  *     for i in range(1, L):             # <<<<<<<<<<<<<<
@@ -1540,7 +1540,7 @@ static PyObject *__pyx_pf_7cupcake_3ice_8find_ECE_findECE(CYTHON_UNUSED PyObject
   for (__pyx_t_8 = 1; __pyx_t_8 < __pyx_t_7; __pyx_t_8+=1) {
     __pyx_v_i = __pyx_t_8;
 
-    /* "cupcake/ice/find_ECE.pyx":30
+    /* "cdna_cupcake/cupcake/ice/find_ECE.pyx":30
  *     r[0] = 0
  *     for i in range(1, L):
  *         r[i] = r[i-1] + s[i]             # <<<<<<<<<<<<<<
@@ -1564,7 +1564,7 @@ static PyObject *__pyx_pf_7cupcake_3ice_8find_ECE_findECE(CYTHON_UNUSED PyObject
     (__pyx_v_r[__pyx_v_i]) = __pyx_t_10;
   }
 
-  /* "cupcake/ice/find_ECE.pyx":32
+  /* "cdna_cupcake/cupcake/ice/find_ECE.pyx":32
  *         r[i] = r[i-1] + s[i]
  *
  *     X[0] = 0             # <<<<<<<<<<<<<<
@@ -1573,7 +1573,7 @@ static PyObject *__pyx_pf_7cupcake_3ice_8find_ECE_findECE(CYTHON_UNUSED PyObject
  */
   (__pyx_v_X[0]) = 0.0;
 
-  /* "cupcake/ice/find_ECE.pyx":33
+  /* "cdna_cupcake/cupcake/ice/find_ECE.pyx":33
  *
  *     X[0] = 0
  *     for i in range(1, L):             # <<<<<<<<<<<<<<
@@ -1585,17 +1585,17 @@ static PyObject *__pyx_pf_7cupcake_3ice_8find_ECE_findECE(CYTHON_UNUSED PyObject
   for (__pyx_t_8 = 1; __pyx_t_8 < __pyx_t_7; __pyx_t_8+=1) {
     __pyx_v_i = __pyx_t_8;
 
-    /* "cupcake/ice/find_ECE.pyx":34
+    /* "cdna_cupcake/cupcake/ice/find_ECE.pyx":34
  *     X[0] = 0
  *     for i in range(1, L):
  *         X[i] = double_min(X[i-1], r[i])             # <<<<<<<<<<<<<<
  *
  *     Y[L-1] = r[L-1]
  */
-    (__pyx_v_X[__pyx_v_i]) = __pyx_f_7cupcake_3ice_8find_ECE_double_min((__pyx_v_X[(__pyx_v_i - 1)]), (__pyx_v_r[__pyx_v_i]));
+    (__pyx_v_X[__pyx_v_i]) = __pyx_f_12cdna_cupcake_7cupcake_3ice_8find_ECE_double_min((__pyx_v_X[(__pyx_v_i - 1)]), (__pyx_v_r[__pyx_v_i]));
   }
 
-  /* "cupcake/ice/find_ECE.pyx":36
+  /* "cdna_cupcake/cupcake/ice/find_ECE.pyx":36
  *         X[i] = double_min(X[i-1], r[i])
  *
  *     Y[L-1] = r[L-1]             # <<<<<<<<<<<<<<
@@ -1604,7 +1604,7 @@ static PyObject *__pyx_pf_7cupcake_3ice_8find_ECE_findECE(CYTHON_UNUSED PyObject
  */
   (__pyx_v_Y[(__pyx_v_L - 1)]) = (__pyx_v_r[(__pyx_v_L - 1)]);
 
-  /* "cupcake/ice/find_ECE.pyx":37
+  /* "cdna_cupcake/cupcake/ice/find_ECE.pyx":37
  *
  *     Y[L-1] = r[L-1]
  *     for i in range(L-2, -1, -1):             # <<<<<<<<<<<<<<
@@ -1614,17 +1614,17 @@ static PyObject *__pyx_pf_7cupcake_3ice_8find_ECE_findECE(CYTHON_UNUSED PyObject
   for (__pyx_t_6 = (__pyx_v_L - 2); __pyx_t_6 > -1; __pyx_t_6-=1) {
     __pyx_v_i = __pyx_t_6;
 
-    /* "cupcake/ice/find_ECE.pyx":38
+    /* "cdna_cupcake/cupcake/ice/find_ECE.pyx":38
  *     Y[L-1] = r[L-1]
  *     for i in range(L-2, -1, -1):
  *         Y[i] = double_max(Y[i+1], r[i])             # <<<<<<<<<<<<<<
  *
  *     i = j = 0
  */
-    (__pyx_v_Y[__pyx_v_i]) = __pyx_f_7cupcake_3ice_8find_ECE_double_max((__pyx_v_Y[(__pyx_v_i + 1)]), (__pyx_v_r[__pyx_v_i]));
+    (__pyx_v_Y[__pyx_v_i]) = __pyx_f_12cdna_cupcake_7cupcake_3ice_8find_ECE_double_max((__pyx_v_Y[(__pyx_v_i + 1)]), (__pyx_v_r[__pyx_v_i]));
   }
 
-  /* "cupcake/ice/find_ECE.pyx":40
+  /* "cdna_cupcake/cupcake/ice/find_ECE.pyx":40
  *         Y[i] = double_max(Y[i+1], r[i])
  *
  *     i = j = 0             # <<<<<<<<<<<<<<
@@ -1634,7 +1634,7 @@ static PyObject *__pyx_pf_7cupcake_3ice_8find_ECE_findECE(CYTHON_UNUSED PyObject
   __pyx_v_i = 0;
   __pyx_v_j = 0;
 
-  /* "cupcake/ice/find_ECE.pyx":41
+  /* "cdna_cupcake/cupcake/ice/find_ECE.pyx":41
  *
  *     i = j = 0
  *     while j < L:             # <<<<<<<<<<<<<<
@@ -1645,7 +1645,7 @@ static PyObject *__pyx_pf_7cupcake_3ice_8find_ECE_findECE(CYTHON_UNUSED PyObject
     __pyx_t_1 = ((__pyx_v_j < __pyx_v_L) != 0);
     if (!__pyx_t_1) break;
 
-    /* "cupcake/ice/find_ECE.pyx":42
+    /* "cdna_cupcake/cupcake/ice/find_ECE.pyx":42
  *     i = j = 0
  *     while j < L:
  *         if j == L-1 or Y[j+1] < X[i]:             # <<<<<<<<<<<<<<
@@ -1663,7 +1663,7 @@ static PyObject *__pyx_pf_7cupcake_3ice_8find_ECE_findECE(CYTHON_UNUSED PyObject
     __pyx_L14_bool_binop_done:;
     if (__pyx_t_1) {
 
-      /* "cupcake/ice/find_ECE.pyx":43
+      /* "cdna_cupcake/cupcake/ice/find_ECE.pyx":43
  *     while j < L:
  *         if j == L-1 or Y[j+1] < X[i]:
  *             if j - i >= min_ece_length:             # <<<<<<<<<<<<<<
@@ -1673,7 +1673,7 @@ static PyObject *__pyx_pf_7cupcake_3ice_8find_ECE_findECE(CYTHON_UNUSED PyObject
       __pyx_t_1 = (((__pyx_v_j - __pyx_v_i) >= __pyx_v_min_ece_length) != 0);
       if (__pyx_t_1) {
 
-        /* "cupcake/ice/find_ECE.pyx":44
+        /* "cdna_cupcake/cupcake/ice/find_ECE.pyx":44
  *         if j == L-1 or Y[j+1] < X[i]:
  *             if j - i >= min_ece_length:
  *                 if give_up_as_soon_one_found:             # <<<<<<<<<<<<<<
@@ -1683,7 +1683,7 @@ static PyObject *__pyx_pf_7cupcake_3ice_8find_ECE_findECE(CYTHON_UNUSED PyObject
         __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_give_up_as_soon_one_found); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 44, __pyx_L1_error)
         if (__pyx_t_1) {
 
-          /* "cupcake/ice/find_ECE.pyx":45
+          /* "cdna_cupcake/cupcake/ice/find_ECE.pyx":45
  *             if j - i >= min_ece_length:
  *                 if give_up_as_soon_one_found:
  *                     free(r)             # <<<<<<<<<<<<<<
@@ -1692,7 +1692,7 @@ static PyObject *__pyx_pf_7cupcake_3ice_8find_ECE_findECE(CYTHON_UNUSED PyObject
  */
           free(__pyx_v_r);
 
-          /* "cupcake/ice/find_ECE.pyx":46
+          /* "cdna_cupcake/cupcake/ice/find_ECE.pyx":46
  *                 if give_up_as_soon_one_found:
  *                     free(r)
  *                     free(X)             # <<<<<<<<<<<<<<
@@ -1701,7 +1701,7 @@ static PyObject *__pyx_pf_7cupcake_3ice_8find_ECE_findECE(CYTHON_UNUSED PyObject
  */
           free(__pyx_v_X);
 
-          /* "cupcake/ice/find_ECE.pyx":47
+          /* "cdna_cupcake/cupcake/ice/find_ECE.pyx":47
  *                     free(r)
  *                     free(X)
  *                     free(Y)             # <<<<<<<<<<<<<<
@@ -1710,7 +1710,7 @@ static PyObject *__pyx_pf_7cupcake_3ice_8find_ECE_findECE(CYTHON_UNUSED PyObject
  */
           free(__pyx_v_Y);
 
-          /* "cupcake/ice/find_ECE.pyx":48
+          /* "cdna_cupcake/cupcake/ice/find_ECE.pyx":48
  *                     free(X)
  *                     free(Y)
  *                     return [(i+1, j)]             # <<<<<<<<<<<<<<
@@ -1739,7 +1739,7 @@ static PyObject *__pyx_pf_7cupcake_3ice_8find_ECE_findECE(CYTHON_UNUSED PyObject
           __pyx_t_4 = 0;
           goto __pyx_L0;
 
-          /* "cupcake/ice/find_ECE.pyx":44
+          /* "cdna_cupcake/cupcake/ice/find_ECE.pyx":44
  *         if j == L-1 or Y[j+1] < X[i]:
  *             if j - i >= min_ece_length:
  *                 if give_up_as_soon_one_found:             # <<<<<<<<<<<<<<
@@ -1748,7 +1748,7 @@ static PyObject *__pyx_pf_7cupcake_3ice_8find_ECE_findECE(CYTHON_UNUSED PyObject
  */
         }
 
-        /* "cupcake/ice/find_ECE.pyx":49
+        /* "cdna_cupcake/cupcake/ice/find_ECE.pyx":49
  *                     free(Y)
  *                     return [(i+1, j)]
  *                 else: bests.append((i+1, j))             # <<<<<<<<<<<<<<
@@ -1772,7 +1772,7 @@ static PyObject *__pyx_pf_7cupcake_3ice_8find_ECE_findECE(CYTHON_UNUSED PyObject
           __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
         }
 
-        /* "cupcake/ice/find_ECE.pyx":43
+        /* "cdna_cupcake/cupcake/ice/find_ECE.pyx":43
  *     while j < L:
  *         if j == L-1 or Y[j+1] < X[i]:
  *             if j - i >= min_ece_length:             # <<<<<<<<<<<<<<
@@ -1781,7 +1781,7 @@ static PyObject *__pyx_pf_7cupcake_3ice_8find_ECE_findECE(CYTHON_UNUSED PyObject
  */
       }
 
-      /* "cupcake/ice/find_ECE.pyx":50
+      /* "cdna_cupcake/cupcake/ice/find_ECE.pyx":50
  *                     return [(i+1, j)]
  *                 else: bests.append((i+1, j))
  *             j += 1             # <<<<<<<<<<<<<<
@@ -1790,7 +1790,7 @@ static PyObject *__pyx_pf_7cupcake_3ice_8find_ECE_findECE(CYTHON_UNUSED PyObject
  */
       __pyx_v_j = (__pyx_v_j + 1);
 
-      /* "cupcake/ice/find_ECE.pyx":51
+      /* "cdna_cupcake/cupcake/ice/find_ECE.pyx":51
  *                 else: bests.append((i+1, j))
  *             j += 1
  *             while j < L and i < L and Y[j] < X[i]:             # <<<<<<<<<<<<<<
@@ -1815,7 +1815,7 @@ static PyObject *__pyx_pf_7cupcake_3ice_8find_ECE_findECE(CYTHON_UNUSED PyObject
         __pyx_L20_bool_binop_done:;
         if (!__pyx_t_1) break;
 
-        /* "cupcake/ice/find_ECE.pyx":52
+        /* "cdna_cupcake/cupcake/ice/find_ECE.pyx":52
  *             j += 1
  *             while j < L and i < L and Y[j] < X[i]:
  *                 i += 1             # <<<<<<<<<<<<<<
@@ -1825,7 +1825,7 @@ static PyObject *__pyx_pf_7cupcake_3ice_8find_ECE_findECE(CYTHON_UNUSED PyObject
         __pyx_v_i = (__pyx_v_i + 1);
       }
 
-      /* "cupcake/ice/find_ECE.pyx":42
+      /* "cdna_cupcake/cupcake/ice/find_ECE.pyx":42
  *     i = j = 0
  *     while j < L:
  *         if j == L-1 or Y[j+1] < X[i]:             # <<<<<<<<<<<<<<
@@ -1835,7 +1835,7 @@ static PyObject *__pyx_pf_7cupcake_3ice_8find_ECE_findECE(CYTHON_UNUSED PyObject
       goto __pyx_L13;
     }
 
-    /* "cupcake/ice/find_ECE.pyx":54
+    /* "cdna_cupcake/cupcake/ice/find_ECE.pyx":54
  *                 i += 1
  *         else:
  *             j += 1             # <<<<<<<<<<<<<<
@@ -1848,7 +1848,7 @@ static PyObject *__pyx_pf_7cupcake_3ice_8find_ECE_findECE(CYTHON_UNUSED PyObject
     __pyx_L13:;
   }
 
-  /* "cupcake/ice/find_ECE.pyx":56
+  /* "cdna_cupcake/cupcake/ice/find_ECE.pyx":56
  *             j += 1
  *
  *     free(r)             # <<<<<<<<<<<<<<
@@ -1857,7 +1857,7 @@ static PyObject *__pyx_pf_7cupcake_3ice_8find_ECE_findECE(CYTHON_UNUSED PyObject
  */
   free(__pyx_v_r);
 
-  /* "cupcake/ice/find_ECE.pyx":57
+  /* "cdna_cupcake/cupcake/ice/find_ECE.pyx":57
  *
  *     free(r)
  *     free(X)             # <<<<<<<<<<<<<<
@@ -1866,7 +1866,7 @@ static PyObject *__pyx_pf_7cupcake_3ice_8find_ECE_findECE(CYTHON_UNUSED PyObject
  */
   free(__pyx_v_X);
 
-  /* "cupcake/ice/find_ECE.pyx":58
+  /* "cdna_cupcake/cupcake/ice/find_ECE.pyx":58
  *     free(r)
  *     free(X)
  *     free(Y)             # <<<<<<<<<<<<<<
@@ -1875,7 +1875,7 @@ static PyObject *__pyx_pf_7cupcake_3ice_8find_ECE_findECE(CYTHON_UNUSED PyObject
  */
   free(__pyx_v_Y);
 
-  /* "cupcake/ice/find_ECE.pyx":60
+  /* "cdna_cupcake/cupcake/ice/find_ECE.pyx":60
  *     free(Y)
  *
  *     return bests             # <<<<<<<<<<<<<<
@@ -1887,7 +1887,7 @@ static PyObject *__pyx_pf_7cupcake_3ice_8find_ECE_findECE(CYTHON_UNUSED PyObject
   __pyx_r = __pyx_v_bests;
   goto __pyx_L0;
 
-  /* "cupcake/ice/find_ECE.pyx":8
+  /* "cdna_cupcake/cupcake/ice/find_ECE.pyx":8
  * cdef inline double double_max(double a, double b): return a if a >= b else b
  *
  * def findECE(list s, int L, int min_ece_length, give_up_as_soon_one_found=False):             # <<<<<<<<<<<<<<
@@ -1900,7 +1900,7 @@ static PyObject *__pyx_pf_7cupcake_3ice_8find_ECE_findECE(CYTHON_UNUSED PyObject
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_9);
-  __Pyx_AddTraceback("cupcake.ice.find_ECE.findECE", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cdna_cupcake.cupcake.ice.find_ECE.findECE", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_bests);
@@ -1909,7 +1909,7 @@ static PyObject *__pyx_pf_7cupcake_3ice_8find_ECE_findECE(CYTHON_UNUSED PyObject
   return __pyx_r;
 }
 
-/* "cupcake/ice/find_ECE.pyx":62
+/* "cdna_cupcake/cupcake/ice/find_ECE.pyx":62
  *     return bests
  *
  * def test():             # <<<<<<<<<<<<<<
@@ -1918,20 +1918,20 @@ static PyObject *__pyx_pf_7cupcake_3ice_8find_ECE_findECE(CYTHON_UNUSED PyObject
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_7cupcake_3ice_8find_ECE_3test(PyObject *__pyx_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyMethodDef __pyx_mdef_7cupcake_3ice_8find_ECE_3test = {"test", (PyCFunction)__pyx_pw_7cupcake_3ice_8find_ECE_3test, METH_NOARGS, 0};
-static PyObject *__pyx_pw_7cupcake_3ice_8find_ECE_3test(PyObject *__pyx_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_12cdna_cupcake_7cupcake_3ice_8find_ECE_3test(PyObject *__pyx_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyMethodDef __pyx_mdef_12cdna_cupcake_7cupcake_3ice_8find_ECE_3test = {"test", (PyCFunction)__pyx_pw_12cdna_cupcake_7cupcake_3ice_8find_ECE_3test, METH_NOARGS, 0};
+static PyObject *__pyx_pw_12cdna_cupcake_7cupcake_3ice_8find_ECE_3test(PyObject *__pyx_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("test (wrapper)", 0);
-  __pyx_r = __pyx_pf_7cupcake_3ice_8find_ECE_2test(__pyx_self);
+  __pyx_r = __pyx_pf_12cdna_cupcake_7cupcake_3ice_8find_ECE_2test(__pyx_self);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7cupcake_3ice_8find_ECE_2test(CYTHON_UNUSED PyObject *__pyx_self) {
+static PyObject *__pyx_pf_12cdna_cupcake_7cupcake_3ice_8find_ECE_2test(CYTHON_UNUSED PyObject *__pyx_self) {
   PyObject *__pyx_v_s = NULL;
   PyObject *__pyx_v_x = NULL;
   PyObject *__pyx_r = NULL;
@@ -1950,7 +1950,7 @@ static PyObject *__pyx_pf_7cupcake_3ice_8find_ECE_2test(CYTHON_UNUSED PyObject *
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("test", 0);
 
-  /* "cupcake/ice/find_ECE.pyx":63
+  /* "cdna_cupcake/cupcake/ice/find_ECE.pyx":63
  *
  * def test():
  *     s = [+1 if int(x)==1 else -4 for x in list('0111011111011011101101')]             # <<<<<<<<<<<<<<
@@ -1994,7 +1994,7 @@ static PyObject *__pyx_pf_7cupcake_3ice_8find_ECE_2test(CYTHON_UNUSED PyObject *
   __pyx_v_s = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "cupcake/ice/find_ECE.pyx":64
+  /* "cdna_cupcake/cupcake/ice/find_ECE.pyx":64
  * def test():
  *     s = [+1 if int(x)==1 else -4 for x in list('0111011111011011101101')]
  *     if findECE([0]+s, len(s)+1, 10) == [(1, 10), (2, 17), (6, 20)]:             # <<<<<<<<<<<<<<
@@ -2084,7 +2084,7 @@ static PyObject *__pyx_pf_7cupcake_3ice_8find_ECE_2test(CYTHON_UNUSED PyObject *
   __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
   if (__pyx_t_7) {
 
-    /* "cupcake/ice/find_ECE.pyx":65
+    /* "cdna_cupcake/cupcake/ice/find_ECE.pyx":65
  *     s = [+1 if int(x)==1 else -4 for x in list('0111011111011011101101')]
  *     if findECE([0]+s, len(s)+1, 10) == [(1, 10), (2, 17), (6, 20)]:
  *         print("Test passed.")             # <<<<<<<<<<<<<<
@@ -2093,7 +2093,7 @@ static PyObject *__pyx_pf_7cupcake_3ice_8find_ECE_2test(CYTHON_UNUSED PyObject *
  */
     if (__Pyx_PrintOne(0, __pyx_kp_s_Test_passed) < 0) __PYX_ERR(0, 65, __pyx_L1_error)
 
-    /* "cupcake/ice/find_ECE.pyx":64
+    /* "cdna_cupcake/cupcake/ice/find_ECE.pyx":64
  * def test():
  *     s = [+1 if int(x)==1 else -4 for x in list('0111011111011011101101')]
  *     if findECE([0]+s, len(s)+1, 10) == [(1, 10), (2, 17), (6, 20)]:             # <<<<<<<<<<<<<<
@@ -2103,19 +2103,17 @@ static PyObject *__pyx_pf_7cupcake_3ice_8find_ECE_2test(CYTHON_UNUSED PyObject *
     goto __pyx_L5;
   }
 
-  /* "cupcake/ice/find_ECE.pyx":67
+  /* "cdna_cupcake/cupcake/ice/find_ECE.pyx":67
  *         print("Test passed.")
  *     else:
  *         print("Test not passed.")             # <<<<<<<<<<<<<<
- *
- *
  */
   /*else*/ {
     if (__Pyx_PrintOne(0, __pyx_kp_s_Test_not_passed) < 0) __PYX_ERR(0, 67, __pyx_L1_error)
   }
   __pyx_L5:;
 
-  /* "cupcake/ice/find_ECE.pyx":62
+  /* "cdna_cupcake/cupcake/ice/find_ECE.pyx":62
  *     return bests
  *
  * def test():             # <<<<<<<<<<<<<<
@@ -2133,7 +2131,7 @@ static PyObject *__pyx_pf_7cupcake_3ice_8find_ECE_2test(CYTHON_UNUSED PyObject *
   __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_6);
   __Pyx_XDECREF(__pyx_t_9);
-  __Pyx_AddTraceback("cupcake.ice.find_ECE.test", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cdna_cupcake.cupcake.ice.find_ECE.test", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_s);
@@ -2197,9 +2195,9 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_Y, __pyx_k_Y, sizeof(__pyx_k_Y), 0, 0, 1, 1},
   {&__pyx_n_s_author, __pyx_k_author, sizeof(__pyx_k_author), 0, 0, 1, 1},
   {&__pyx_n_s_bests, __pyx_k_bests, sizeof(__pyx_k_bests), 0, 0, 1, 1},
+  {&__pyx_kp_s_cdna_cupcake_cupcake_ice_find_EC, __pyx_k_cdna_cupcake_cupcake_ice_find_EC, sizeof(__pyx_k_cdna_cupcake_cupcake_ice_find_EC), 0, 0, 1, 0},
+  {&__pyx_n_s_cdna_cupcake_cupcake_ice_find_EC_2, __pyx_k_cdna_cupcake_cupcake_ice_find_EC_2, sizeof(__pyx_k_cdna_cupcake_cupcake_ice_find_EC_2), 0, 0, 1, 1},
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
-  {&__pyx_n_s_cupcake_ice_find_ECE, __pyx_k_cupcake_ice_find_ECE, sizeof(__pyx_k_cupcake_ice_find_ECE), 0, 0, 1, 1},
-  {&__pyx_kp_s_cupcake_ice_find_ECE_pyx, __pyx_k_cupcake_ice_find_ECE_pyx, sizeof(__pyx_k_cupcake_ice_find_ECE_pyx), 0, 0, 1, 0},
   {&__pyx_n_s_end, __pyx_k_end, sizeof(__pyx_k_end), 0, 0, 1, 1},
   {&__pyx_kp_s_etseng_pacb_com, __pyx_k_etseng_pacb_com, sizeof(__pyx_k_etseng_pacb_com), 0, 0, 1, 0},
   {&__pyx_n_s_file, __pyx_k_file, sizeof(__pyx_k_file), 0, 0, 1, 1},
@@ -2230,7 +2228,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "cupcake/ice/find_ECE.pyx":64
+  /* "cdna_cupcake/cupcake/ice/find_ECE.pyx":64
  * def test():
  *     s = [+1 if int(x)==1 else -4 for x in list('0111011111011011101101')]
  *     if findECE([0]+s, len(s)+1, 10) == [(1, 10), (2, 17), (6, 20)]:             # <<<<<<<<<<<<<<
@@ -2247,7 +2245,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__3);
   __Pyx_GIVEREF(__pyx_tuple__3);
 
-  /* "cupcake/ice/find_ECE.pyx":8
+  /* "cdna_cupcake/cupcake/ice/find_ECE.pyx":8
  * cdef inline double double_max(double a, double b): return a if a >= b else b
  *
  * def findECE(list s, int L, int min_ece_length, give_up_as_soon_one_found=False):             # <<<<<<<<<<<<<<
@@ -2257,9 +2255,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__4 = PyTuple_Pack(10, __pyx_n_s_s, __pyx_n_s_L, __pyx_n_s_min_ece_length, __pyx_n_s_give_up_as_soon_one_found, __pyx_n_s_bests, __pyx_n_s_i, __pyx_n_s_j, __pyx_n_s_r, __pyx_n_s_X, __pyx_n_s_Y); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(0, 8, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__4);
   __Pyx_GIVEREF(__pyx_tuple__4);
-  __pyx_codeobj__5 = (PyObject*)__Pyx_PyCode_New(4, 0, 10, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__4, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cupcake_ice_find_ECE_pyx, __pyx_n_s_findECE, 8, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__5)) __PYX_ERR(0, 8, __pyx_L1_error)
+  __pyx_codeobj__5 = (PyObject*)__Pyx_PyCode_New(4, 0, 10, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__4, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cdna_cupcake_cupcake_ice_find_EC, __pyx_n_s_findECE, 8, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__5)) __PYX_ERR(0, 8, __pyx_L1_error)
 
-  /* "cupcake/ice/find_ECE.pyx":62
+  /* "cdna_cupcake/cupcake/ice/find_ECE.pyx":62
  *     return bests
  *
  * def test():             # <<<<<<<<<<<<<<
@@ -2269,7 +2267,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__6 = PyTuple_Pack(2, __pyx_n_s_s, __pyx_n_s_x); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(0, 62, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__6);
   __Pyx_GIVEREF(__pyx_tuple__6);
-  __pyx_codeobj__7 = (PyObject*)__Pyx_PyCode_New(0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__6, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cupcake_ice_find_ECE_pyx, __pyx_n_s_test, 62, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__7)) __PYX_ERR(0, 62, __pyx_L1_error)
+  __pyx_codeobj__7 = (PyObject*)__Pyx_PyCode_New(0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__6, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cdna_cupcake_cupcake_ice_find_EC, __pyx_n_s_test, 62, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__7)) __PYX_ERR(0, 62, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -2530,14 +2528,14 @@ if (!__Pyx_RefNanny) {
   #if PY_MAJOR_VERSION < 3 && (__PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT)
   if (__Pyx_init_sys_getdefaultencoding_params() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
-  if (__pyx_module_is_main_cupcake__ice__find_ECE) {
+  if (__pyx_module_is_main_cdna_cupcake__cupcake__ice__find_ECE) {
     if (PyObject_SetAttr(__pyx_m, __pyx_n_s_name, __pyx_n_s_main) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   }
   #if PY_MAJOR_VERSION >= 3
   {
     PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(0, 1, __pyx_L1_error)
-    if (!PyDict_GetItemString(modules, "cupcake.ice.find_ECE")) {
-      if (unlikely(PyDict_SetItemString(modules, "cupcake.ice.find_ECE", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
+    if (!PyDict_GetItemString(modules, "cdna_cupcake.cupcake.ice.find_ECE")) {
+      if (unlikely(PyDict_SetItemString(modules, "cdna_cupcake.cupcake.ice.find_ECE", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
     }
   }
   #endif
@@ -2558,38 +2556,38 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "cupcake/ice/find_ECE.pyx":1
+  /* "cdna_cupcake/cupcake/ice/find_ECE.pyx":1
  * __author__ = 'etseng@pacb.com'             # <<<<<<<<<<<<<<
  *
  * from libc.stdlib cimport malloc, free
  */
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_author, __pyx_kp_s_etseng_pacb_com) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
 
-  /* "cupcake/ice/find_ECE.pyx":8
+  /* "cdna_cupcake/cupcake/ice/find_ECE.pyx":8
  * cdef inline double double_max(double a, double b): return a if a >= b else b
  *
  * def findECE(list s, int L, int min_ece_length, give_up_as_soon_one_found=False):             # <<<<<<<<<<<<<<
  *     """
  *     s           --- the vector containing the -1 and +4s
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7cupcake_3ice_8find_ECE_1findECE, NULL, __pyx_n_s_cupcake_ice_find_ECE); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 8, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_12cdna_cupcake_7cupcake_3ice_8find_ECE_1findECE, NULL, __pyx_n_s_cdna_cupcake_cupcake_ice_find_EC_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 8, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_findECE, __pyx_t_1) < 0) __PYX_ERR(0, 8, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "cupcake/ice/find_ECE.pyx":62
+  /* "cdna_cupcake/cupcake/ice/find_ECE.pyx":62
  *     return bests
  *
  * def test():             # <<<<<<<<<<<<<<
  *     s = [+1 if int(x)==1 else -4 for x in list('0111011111011011101101')]
  *     if findECE([0]+s, len(s)+1, 10) == [(1, 10), (2, 17), (6, 20)]:
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7cupcake_3ice_8find_ECE_3test, NULL, __pyx_n_s_cupcake_ice_find_ECE); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 62, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_12cdna_cupcake_7cupcake_3ice_8find_ECE_3test, NULL, __pyx_n_s_cdna_cupcake_cupcake_ice_find_EC_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 62, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_1) < 0) __PYX_ERR(0, 62, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "cupcake/ice/find_ECE.pyx":1
+  /* "cdna_cupcake/cupcake/ice/find_ECE.pyx":1
  * __author__ = 'etseng@pacb.com'             # <<<<<<<<<<<<<<
  *
  * from libc.stdlib cimport malloc, free
@@ -2606,11 +2604,11 @@ if (!__Pyx_RefNanny) {
   __Pyx_XDECREF(__pyx_t_1);
   if (__pyx_m) {
     if (__pyx_d) {
-      __Pyx_AddTraceback("init cupcake.ice.find_ECE", __pyx_clineno, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("init cdna_cupcake.cupcake.ice.find_ECE", __pyx_clineno, __pyx_lineno, __pyx_filename);
     }
     Py_CLEAR(__pyx_m);
   } else if (!PyErr_Occurred()) {
-    PyErr_SetString(PyExc_ImportError, "init cupcake.ice.find_ECE");
+    PyErr_SetString(PyExc_ImportError, "init cdna_cupcake.cupcake.ice.find_ECE");
   }
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
