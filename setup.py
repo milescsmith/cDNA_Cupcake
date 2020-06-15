@@ -8,23 +8,23 @@ from Cython.Build import cythonize
 __author__ = "etseng@pacb.com"
 version = "12.1.2"
 
-ext_modules = [
-    Extension(
-        " = cupcake.cupcake.tofu.branch.intersection_unique",
-        ["cdna_cupcake/cupcake/tofu/branch/intersection_unique.pyx"],
-    ),
-    Extension(
-        "cupcake.cupcake.tofu.branch.c_branch",
-        ["cdna_cupcake/cupcake/tofu/branch/c_branch.pyx"],
-    ),
-    Extension(
-        "cupcake.cupcake.ice.find_ECE", ["cdna_cupcake/cupcake/ice/find_ECE.pyx"]
-    ),
-]
+# ext_modules = [
+#     Extension(
+#         " = cupcake.cupcake.tofu.branch.intersection_unique",
+#         ["cdna_cupcake/cupcake/tofu/branch/intersection_unique.pyx"],
+#     ),
+#     Extension(
+#         "cupcake.cupcake.tofu.branch.c_branch",
+#         ["cdna_cupcake/cupcake/tofu/branch/c_branch.pyx"],
+#     ),
+#     Extension(
+#         "cupcake.cupcake.ice.find_ECE", ["cdna_cupcake/cupcake/ice/find_ECE.pyx"]
+#     ),
+# ]
 
 EXT_MODULES = [
     Extension(
-        " = cupcake.cupcake.tofu.branch.intersection_unique",
+        "cupcake.cupcake.tofu.branch.intersection_unique",
         ["cdna_cupcake/cupcake/tofu/branch/intersection_unique.pyx"],
     ),
     Extension(
