@@ -6,7 +6,6 @@ from setuptools import Extension, setup, find_packages
 from Cython.Build import cythonize
 
 __author__ = "etseng@pacb.com"
-version = "12.1.2"
 
 # why is this defined twice?  commenting out until I figure out why
 # ext_modules = [
@@ -37,7 +36,7 @@ EXT_MODULES = [
 
 setup(
     name="cupcake",
-    version=version,
+    version="12.2.0",
     author="Elizabeth Tseng",
     author_email="etseng@pacb.com",
     description="Miscellaneous collection of Python and R scripts for processing Iso-Seq data",
