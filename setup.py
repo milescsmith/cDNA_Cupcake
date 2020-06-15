@@ -6,7 +6,7 @@ from setuptools import Extension, setup, find_packages
 from Cython.Build import cythonize
 
 __author__ = "etseng@pacb.com"
-version = "12.1.0"
+version = "12.1.1"
 
 ext_modules = [
     Extension(
@@ -62,23 +62,10 @@ setup(
         "Topic :: Scientific/Engineering :: Bio-Informatics",
     ],
     keywords=["isoseq", "rnaseq", "pacbio", "long reads"],
-    packages=find_packages(),
-    # [
-    #     "annotation",
-    #     "cupcake",
-    #     "cupcake.io",
-    #     "cupcake.ice",
-    #     "cupcake.tofu",
-    #     "cupcake.tofu.branch",
-    #     "cupcake.tofu.counting",
-    #     "cupcake2",
-    #     "cupcake2.io",
-    #     "cupcake2.ice2",
-    #     "cupcake2.tofu2",
-    #     "phasing",
-    #     "phasing.io",
-    #     "sequence",
-    # ],
+    packages=find_packages(include=["cdna_cupcake", "cdna_cupcake.*"]),
+    package_dir={"cdna_cupcake": "cdna_cupcake"},
+    package_data={"": ["cupcake/test_data/*.*",]},
+    include_package_data=True,
     setup_requires=["numpy", "cython"],
     install_requires=[
         l.strip() for l in Path("requirements.txt").read_text("utf-8").splitlines()
@@ -108,7 +95,7 @@ setup(
             "run_IceArrow2 = cdna_cupcake.cupcake2.tofu2.run_IceArrow2:main",
             "SeqSplitter = cdna_cupcake.cupcake2.io.SeqSplitter:main",
             "picking_up_ice2 = cdna_cupcake.cupcake2.tofu2.picking_up_ice2:main",
-            "make_fake_genome = cdna_cupcake.phasing.create_fake_genome",
+            "make_fake_genome = cdna_cupcake.phasing.create_fake_genome:main",
             # " = cdna_cupcake.phasing.run_phaser",
             # " = cdna_cupcake.sequence.sam_to_bam",
             # " = cdna_cupcake.sequence.err_correct_w_genome",
@@ -116,6 +103,6 @@ setup(
             # " = cdna_cupcake.sequence.STAR",
             # " = cdna_cupcake.sequence.BED",
             # " = cdna_cupcake.sequence.coordinate_mapper",
-        ]
+        ],
     },
 )

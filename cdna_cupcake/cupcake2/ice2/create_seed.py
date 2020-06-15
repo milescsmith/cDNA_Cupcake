@@ -2,8 +2,8 @@ __author__ = "lachesis"
 
 import os, sys
 from Bio import SeqIO
-from cupcake.io.SeqReaders import LazyFastaReader
-from cupcake2.io.FileIO import write_seqids_to_fasta
+from cdna_cupcake.cupcake.io.SeqReaders import LazyFastaReader
+from cdna_cupcake.cupcake2.io.FileIO import write_seqids_to_fasta
 
 input = "isoseq_flnc.fasta"
 

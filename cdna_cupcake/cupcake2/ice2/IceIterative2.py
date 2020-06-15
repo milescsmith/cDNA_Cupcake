@@ -32,11 +32,11 @@ from pbtranscript.ice.IceUtils import (
     set_probqv_from_model,
 )
 
-from cupcake2.tofu2.ice_pbdagcon2 import runConsensus
-from cupcake2.ice2.IceFiles2 import IceFiles2
-from cupcake2.ice2.IceInit2 import IceInit2
+from cdna_cupcake.cupcake2.tofu2.ice_pbdagcon2 import runConsensus
+from cdna_cupcake.cupcake2.ice2.IceFiles2 import IceFiles2
+from cdna_cupcake.cupcake2.ice2.IceInit2 import IceInit2
 
-from cupcake2.ice2.IceUtils2 import (
+from cdna_cupcake.cupcake2.ice2.IceUtils2 import (
     daligner_against_ref2,
     blasr_against_ref2,
     possible_merge2,

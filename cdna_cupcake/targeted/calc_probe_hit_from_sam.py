@@ -21,7 +21,7 @@ except ImportError:
         file=sys.stderr,
     )
 
-from cupcake.io.GFF import collapseGFFReader
+from cdna_cupcake.cupcake.io.GFF import collapseGFFReader
 
 
 def get_probe_hit(tree, gene_info, r, is_gtf=False):

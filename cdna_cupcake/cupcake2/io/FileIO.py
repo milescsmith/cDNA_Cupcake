@@ -1,7 +1,7 @@
 __author__ = "etseng@pacb.com"
 
 import random
-from cupcake.io.SeqReaders import LazyFastaReader
+from cdna_cupcake.cupcake.io.SeqReaders import LazyFastaReader
 
 
 def write_select_seqs_to_fasta(fasta_filename, seqids, output_filename, mode="w"):

@@ -26,7 +26,7 @@ Outputs:
 import os, sys, re
 from csv import DictReader, DictWriter
 from collections import Counter, defaultdict
-from cupcake.io.GFF import write_collapseGFF_format, collapseGFFReader
+from cdna_cupcake.cupcake.io.GFF import write_collapseGFF_format, collapseGFFReader
 from Bio import SeqIO
 
 CORRECTED_CSV_FILELDS = [
