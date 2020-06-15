@@ -1,7 +1,7 @@
 __author__ = "etseng@pacb.com"
 
-from cupcake2.io.minimapIO import MiniReader
-from cupcake2.ice2.preCluster import preClusterSet
+from cdna_cupcake.cupcake2.io.minimapIO import MiniReader
+from cdna_cupcake.cupcake2.ice2.preCluster import preClusterSet
 
 NUM_SEED = 20000
 NUM_INCOMING_SEQS = 1000000

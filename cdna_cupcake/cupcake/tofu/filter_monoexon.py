@@ -18,7 +18,7 @@ from csv import DictReader, DictWriter
 
 from Bio import SeqIO
 
-from cupcake.io import GFF
+from cdna_cupcake.cupcake.io import GFF
 
 
 def sanity_check_collapse_input(input_prefix):

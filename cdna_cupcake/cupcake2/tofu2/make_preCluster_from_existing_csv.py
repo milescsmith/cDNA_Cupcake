@@ -12,9 +12,9 @@ stat --- can be (cid) or "orphan"
 import os, sys
 from csv import DictReader
 
-from cupcake.io.SeqReaders import LazyFastaReader
-from cupcake2.ice2.preCluster import preClusterSet2, preCluster
-from cupcake2.tofu2.run_preCluster import detect_PCR_chimeras
+from cdna_cupcake.cupcake.io.SeqReaders import LazyFastaReader
+from cdna_cupcake.cupcake2.ice2.preCluster import preClusterSet2, preCluster
+from cdna_cupcake.cupcake2.tofu2.run_preCluster import detect_PCR_chimeras
 import cupcake2.io.FileIO as FileIO
 
 

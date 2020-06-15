@@ -1,7 +1,7 @@
 import os, re, sys, subprocess
 import numpy as np
-from cupcake.io.BioReaders import GMAPSAMReader
-from cupcake.ice.find_ECE import findECE
+from cdna_cupcake.cupcake.io.BioReaders import GMAPSAMReader
+from cdna_cupcake.cupcake.ice.find_ECE import findECE
 
 gcon2_py = "ice_pbdagcon2.py"
 

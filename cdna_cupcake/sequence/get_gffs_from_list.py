@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import os, sys
-from cupcake.io import GFF
+from cdna_cupcake.cupcake.io import GFF
 
 
 def get_gff_from_list(gff_filename, listfile, partial_ok=False):

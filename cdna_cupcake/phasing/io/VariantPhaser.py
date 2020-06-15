@@ -8,7 +8,7 @@ from Bio import SeqIO
 from Bio.Seq import Seq
 
 import vcf
-from cupcake.io.BioReaders import GMAPSAMReader
+from cdna_cupcake.cupcake.io.BioReaders import GMAPSAMReader
 
 from .coordinate_mapper import get_base_to_base_mapping_from_sam
 

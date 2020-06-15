@@ -128,14 +128,14 @@ from pbtranscript.__init__ import get_version
 from pbtranscript.ice.IceUtils import num_reads_in_fasta
 from pbtranscript.Utils import touch, real_ppath, mkdir, nfs_exists
 
-from cupcake2.ice2.IceFiles2 import IceFiles2
-from cupcake2.io.SeqSplitter import splitFaFq
-from cupcake2.tofu2.ToFuOptions2 import (
+from cdna_cupcake.cupcake2.ice2.IceFiles2 import IceFiles2
+from cdna_cupcake.cupcake2.io.SeqSplitter import splitFaFq
+from cdna_cupcake.cupcake2.tofu2.ToFuOptions2 import (
     add_nfl_fa_argument,
     add_nfl_fq_argument,
     add_cluster_root_dir_as_positional_argument,
 )
-from cupcake2.ice2.__init__ import ICE_PARTIAL_PY
+from cdna_cupcake.cupcake2.ice2.__init__ import ICE_PARTIAL_PY
 
 
 def add_ice_partial_split_arguments(parser):

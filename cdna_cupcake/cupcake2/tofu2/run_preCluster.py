@@ -2,9 +2,9 @@ import os, sys, pdb, subprocess, glob
 from pickle import dump
 from Bio import SeqIO
 
-from cupcake2.io.minimapIO import MiniReader
-from cupcake.io.SeqReaders import LazyFastaReader
-from cupcake2.tofu2.create_seed import create_seed_n_batch_files
+from cdna_cupcake.cupcake2.io.minimapIO import MiniReader
+from cdna_cupcake.cupcake.io.SeqReaders import LazyFastaReader
+from cdna_cupcake.cupcake2.tofu2.create_seed import create_seed_n_batch_files
 import cupcake2.ice2.preClusterProcess as sp
 import cupcake2.ice2.AlignerRunners as ar
 import cupcake2.io.FileIO as FileIO

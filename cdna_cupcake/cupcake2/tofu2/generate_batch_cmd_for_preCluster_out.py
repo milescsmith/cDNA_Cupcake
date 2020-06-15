@@ -2,7 +2,7 @@ import os, sys
 from csv import DictReader
 from Bio import SeqIO
 from pbtranscript.Utils import real_upath
-from cupcake2.io.SeqSplitter import splitFaFq
+from cdna_cupcake.cupcake2.io.SeqSplitter import splitFaFq
 
 """
 USAGE:
