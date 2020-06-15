@@ -10,29 +10,29 @@ version = "12.1.2"
 
 ext_modules = [
     Extension(
-        " = cdna_cupcake.cupcake.tofu.branch.intersection_unique",
+        " = cupcake.cupcake.tofu.branch.intersection_unique",
         ["cdna_cupcake/cupcake/tofu/branch/intersection_unique.pyx"],
     ),
     Extension(
-        "cdna_cupcake.cupcake.tofu.branch.c_branch",
+        "cupcake.cupcake.tofu.branch.c_branch",
         ["cdna_cupcake/cupcake/tofu/branch/c_branch.pyx"],
     ),
     Extension(
-        "cdna_cupcake.cupcake.ice.find_ECE", ["cdna_cupcake/cupcake/ice/find_ECE.pyx"]
+        "cupcake.cupcake.ice.find_ECE", ["cdna_cupcake/cupcake/ice/find_ECE.pyx"]
     ),
 ]
 
 EXT_MODULES = [
     Extension(
-        " = cdna_cupcake.cupcake.tofu.branch.intersection_unique",
+        " = cupcake.cupcake.tofu.branch.intersection_unique",
         ["cdna_cupcake/cupcake/tofu/branch/intersection_unique.pyx"],
     ),
     Extension(
-        "cdna_cupcake.cupcake.tofu.branch.c_branch",
+        "cupcake.cupcake.tofu.branch.c_branch",
         ["cdna_cupcake/cupcake/tofu/branch/c_branch.pyx"],
     ),
     Extension(
-        "cdna_cupcake.cupcake.ice.find_ECE", ["cdna_cupcake/cupcake/ice/find_ECE.pyx"]
+        "cupcake.cupcake.ice.find_ECE", ["cdna_cupcake/cupcake/ice/find_ECE.pyx"]
     ),
 ]
 
@@ -62,9 +62,9 @@ setup(
         "Topic :: Scientific/Engineering :: Bio-Informatics",
     ],
     keywords=["isoseq", "rnaseq", "pacbio", "long reads"],
-    packages=find_packages(include=["cdna_cupcake", "cdna_cupcake.*"]),
-    package_dir={"cdna_cupcake": "cdna_cupcake"},
-    package_data={"": ["cupcake/test_data/*.*",]},
+    packages=find_packages(include=["cupcake", "cupcake.*"]),
+    package_dir={"cupcake": "cdna_cupcake"},
+    package_data={"": ["cupcake/cupcake/test_data/*.*",]},
     include_package_data=True,
     setup_requires=["numpy", "cython"],
     install_requires=[
@@ -74,35 +74,35 @@ setup(
     entry_points={
         "console_scripts": [
             "evaluate_alignment_sam = annotation.alignment_stats_from_sam.evaluate_alignment_sam:evaluate_alignment_sam",
-            "make_file_for_subsample = cdna_cupcake.annotation.make_file_for_subsampling_from_collapsed:make_file_for_subsample",
-            "parse_matchAnnot = cdna_cupcake.annotation.parse_matchAnnot:parse_matchAnnot",
-            "subsample_with_category = cdna_cupcake.annotation.subsample_with_category:subsample",
-            "subsample = cdna_cupcake.annotation.subsample:subsample",
-            "collapse_isoforms_by_sam = cdna_cupcake.cupcake.tofu.collapse_isoforms_by_sam:main",
-            "get_abundance_post_collapse = cdna_cupcake.cupcake.tofu.get_abundance_post_collapse:get_abundance_post_collapse",
-            "filter_by_count = cdna_cupcake.cupcake.tofu.filter_by_count:filter_by_count",
-            "filter_away_subset = cdna_cupcake.cupcake.tofu.filter_away_subset:main",
-            "fusion_finder = cdna_cupcake.cupcake.tofu.fusion_finder:fusion_main",
-            "chain_samples = cdna_cupcake.cupcake.tofu.counting.chain_samples:chain_samples_multithread",
-            "chain_fusion_samples = cdna_cupcake.cupcake.tofu.counting.chain_fusion_samples:chain_fusion_samples",
-            "summarize_junctions = cdna_cupcake.cupcake.tofu.counting.summarize_sample_GFF_junctions:summarize_junctions",
-            "scrub_sample_GFFs = cdna_cupcake.cupcake.tofu.counting.scrub_sample_GFF_junctions:scrub_sample_GFFs",
-            "run_Consensus = cdna_cupcake.cupcake2.tofu2.ice_pbdagcon2:runConsensus",
-            "run_preCluster = cdna_cupcake.cupcake2.tofu2.run_preCluster:main",
-            "run_IceInit2 = cdna_cupcake.cupcake2.tofu2.run_IceInit2:run_IceInit2",
-            "run_IceIterative2 = cdna_cupcake.cupcake2.tofu2.run_IceIterative2:run_IceIterative2",
-            "run_IcePartial2 = cdna_cupcake.cupcake2.tofu2.run_IcePartial2:main",
-            "run_IceArrow2 = cdna_cupcake.cupcake2.tofu2.run_IceArrow2:main",
-            "SeqSplitter = cdna_cupcake.cupcake2.io.SeqSplitter:main",
-            "picking_up_ice2 = cdna_cupcake.cupcake2.tofu2.picking_up_ice2:main",
-            "make_fake_genome = cdna_cupcake.phasing.create_fake_genome:main",
-            # " = cdna_cupcake.phasing.run_phaser",
-            # " = cdna_cupcake.sequence.sam_to_bam",
-            # " = cdna_cupcake.sequence.err_correct_w_genome",
-            # " = cdna_cupcake.sequence.sam_to_gff3",
-            # " = cdna_cupcake.sequence.STAR",
-            # " = cdna_cupcake.sequence.BED",
-            # " = cdna_cupcake.sequence.coordinate_mapper",
+            "make_file_for_subsample = cupcake.annotation.make_file_for_subsampling_from_collapsed:make_file_for_subsample",
+            "parse_matchAnnot = cupcake.annotation.parse_matchAnnot:parse_matchAnnot",
+            "subsample_with_category = cupcake.annotation.subsample_with_category:subsample",
+            "subsample = cupcake.annotation.subsample:subsample",
+            "collapse_isoforms_by_sam = cupcake.cupcake.tofu.collapse_isoforms_by_sam:main",
+            "get_abundance_post_collapse = cupcake.cupcake.tofu.get_abundance_post_collapse:get_abundance_post_collapse",
+            "filter_by_count = cupcake.cupcake.tofu.filter_by_count:filter_by_count",
+            "filter_away_subset = cupcake.cupcake.tofu.filter_away_subset:main",
+            "fusion_finder = cupcake.cupcake.tofu.fusion_finder:fusion_main",
+            "chain_samples = cupcake.cupcake.tofu.counting.chain_samples:chain_samples_multithread",
+            "chain_fusion_samples = cupcake.cupcake.tofu.counting.chain_fusion_samples:chain_fusion_samples",
+            "summarize_junctions = cupcake.cupcake.tofu.counting.summarize_sample_GFF_junctions:summarize_junctions",
+            "scrub_sample_GFFs = cupcake.cupcake.tofu.counting.scrub_sample_GFF_junctions:scrub_sample_GFFs",
+            "run_Consensus = cupcake.cupcake2.tofu2.ice_pbdagcon2:runConsensus",
+            "run_preCluster = cupcake.cupcake2.tofu2.run_preCluster:main",
+            "run_IceInit2 = cupcake.cupcake2.tofu2.run_IceInit2:run_IceInit2",
+            "run_IceIterative2 = cupcake.cupcake2.tofu2.run_IceIterative2:run_IceIterative2",
+            "run_IcePartial2 = cupcake.cupcake2.tofu2.run_IcePartial2:main",
+            "run_IceArrow2 = cupcake.cupcake2.tofu2.run_IceArrow2:main",
+            "SeqSplitter = cupcake.cupcake2.io.SeqSplitter:main",
+            "picking_up_ice2 = cupcake.cupcake2.tofu2.picking_up_ice2:main",
+            "make_fake_genome = cupcake.phasing.create_fake_genome:main",
+            # " = cupcake.phasing.run_phaser",
+            # " = cupcake.sequence.sam_to_bam",
+            # " = cupcake.sequence.err_correct_w_genome",
+            # " = cupcake.sequence.sam_to_gff3",
+            # " = cupcake.sequence.STAR",
+            # " = cupcake.sequence.BED",
+            # " = cupcake.sequence.coordinate_mapper",
         ],
     },
 )
