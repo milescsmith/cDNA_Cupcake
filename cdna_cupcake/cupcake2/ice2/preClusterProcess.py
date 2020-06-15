@@ -8,7 +8,7 @@ from functools import partial
 import networkx as nx
 from Bio import SeqIO
 
-from cupcake2.ice2.preCluster import preClusterSet2
+from cupcake.cupcake2.ice2.preCluster import preClusterSet2
 
 
 def sanity_checking(pCS, orphans):

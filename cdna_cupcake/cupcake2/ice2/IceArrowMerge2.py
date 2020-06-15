@@ -4,8 +4,10 @@ import os.path as op
 from pbcore.util.ToolRunner import PBToolRunner
 from pbtranscript.__init__ import get_version
 
-from cupcake2.tofu2.ToFuOptions2 import add_cluster_root_dir_as_positional_argument
-from cupcake2.ice2.__init__ import ICE_ARROW_PY
+from cupcake.cupcake2.tofu2.ToFuOptions2 import (
+    add_cluster_root_dir_as_positional_argument,
+)
+from cupcake.cupcake2.ice2.__init__ import ICE_ARROW_PY
 
 from pbtranscript.ice.IceQuiver import IceQuiver
 from pbtranscript.Utils import cat_files, nfs_exists

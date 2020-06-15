@@ -6,7 +6,7 @@ Replicate of key methods from ICE related to alignment evaluation and ECE
 
 import pdb
 import numpy as np
-from cupcake.ice.find_ECE import findECE
+from cupcake.cupcake.ice.find_ECE import findECE
 
 
 def get_ece_arr_from_alignment(record):

@@ -9,11 +9,17 @@ from pbcore.util.ToolRunner import PBMultiToolRunner
 from pbtranscript.__init__ import get_version
 
 
-from cupcake2.tofu2.ClusterOptions2 import SgeOptions2, IceArrowHQLQOptions2
+from cupcake.cupcake2.tofu2.ClusterOptions2 import (
+    SgeOptions2,
+    IceArrowHQLQOptions2,
+)
 
-from cupcake2.ice2.IceArrowAll2 import IceArrowAll2, add_ice_arrow_all_arguments
+from cupcake.cupcake2.ice2.IceArrowAll2 import (
+    IceArrowAll2,
+    add_ice_arrow_all_arguments,
+)
 
-from cupcake2.ice2.IceArrowPostProcess2 import (
+from cupcake.cupcake2.ice2.IceArrowPostProcess2 import (
     IceArrowPostProcess2,
     add_ice_arrow_postprocess_arguments,
 )

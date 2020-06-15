@@ -9,7 +9,7 @@ import cupcake.io.BioReaders as BioReaders
 import cupcake.tofu.branch.c_branch as c_branch
 from bx.intervals.cluster import ClusterTree
 
-# from cupcake.tofu.branch.intersection_unique import IntervalTreeUnique, Interval, IntervalNodeUnique
+# from cupcake.cupcake.tofu.branch.intersection_unique import IntervalTreeUnique, Interval, IntervalNodeUnique
 
 
 INTINF = 999999

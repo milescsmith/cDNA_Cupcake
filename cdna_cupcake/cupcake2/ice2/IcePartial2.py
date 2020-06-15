@@ -72,8 +72,11 @@ from pbtranscript.ice.__init__ import ICE_PARTIAL_PY
 
 from Bio import SeqIO
 
-from cupcake2.ice2.IceUtils2 import blasr_against_ref2, daligner_against_ref2
-from cupcake2.tofu2.ToFuOptions2 import add_partial_argument
+from cupcake.cupcake2.ice2.IceUtils2 import (
+    blasr_against_ref2,
+    daligner_against_ref2,
+)
+from cupcake.cupcake2.tofu2.ToFuOptions2 import add_partial_argument
 
 
 rex_local_cid = re.compile(r"c(\d+)")

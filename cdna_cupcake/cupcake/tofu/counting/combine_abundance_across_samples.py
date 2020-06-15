@@ -13,8 +13,8 @@ from Bio import SeqIO
 
 from bx.intervals import IntervalTree
 from bx.intervals.cluster import ClusterTree
-from cupcake.io import GFF
-from cupcake.tofu import compare_junctions
+from cupcake.cupcake.io import GFF
+from cupcake.cupcake.tofu import compare_junctions
 
 seqid_rex = re.compile("(\\S+\\.\\d+)\\.(\\d+)")
 

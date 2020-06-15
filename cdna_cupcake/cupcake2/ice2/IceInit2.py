@@ -22,8 +22,8 @@ import networkx as nx
 from Bio import SeqIO
 
 import cupcake.ice.pClique as pClique
-from cupcake2.ice2.AlignerRunners import run_minimap
-from cupcake2.ice2.IceUtils2 import minimap2_against_ref2
+from cupcake.cupcake2.ice2.AlignerRunners import run_minimap
+from cupcake.cupcake2.ice2.IceUtils2 import minimap2_against_ref2
 
 
 class IceInit2(object):

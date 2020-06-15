@@ -2,8 +2,8 @@ __author__ = "etseng@pacb.com"
 
 from pickle import dump
 
-from cupcake2.ice2.IceInit2 import IceInit2
-from cupcake2.tofu2.ClusterOptions2 import IceOptions2, SgeOptions2
+from cupcake.cupcake2.ice2.IceInit2 import IceInit2
+from cupcake.cupcake2.tofu2.ClusterOptions2 import IceOptions2, SgeOptions2
 
 
 def run_IceInit2(readsFa, out_pickle, ice_opts, sge_opts):
