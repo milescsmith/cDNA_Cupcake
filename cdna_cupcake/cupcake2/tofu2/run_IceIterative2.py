@@ -10,15 +10,15 @@ icec.run()
 import random
 from pickle import load
 
-from cupcake2.tofu2.ToFuOptions2 import (
+from cupcake.cupcake2.tofu2.ToFuOptions2 import (
     add_ice_arguments,
     add_sge_arguments,
     add_cluster_root_dir_as_positional_argument,
 )
-from cupcake2.tofu2.ClusterOptions2 import SgeOptions2, IceOptions2
+from cupcake.cupcake2.tofu2.ClusterOptions2 import SgeOptions2, IceOptions2
 
-from cupcake2.ice2.IceIterative2 import IceIterative2
-from cupcake2.tofu2.run_IceInit2 import run_IceInit2
+from cupcake.cupcake2.ice2.IceIterative2 import IceIterative2
+from cupcake.cupcake2.tofu2.run_IceInit2 import run_IceInit2
 
 
 def run_IceIterative2(

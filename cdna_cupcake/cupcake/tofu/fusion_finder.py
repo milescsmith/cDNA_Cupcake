@@ -13,12 +13,12 @@ from Bio.Seq import Seq
 
 from bx.intervals.cluster import ClusterTree
 
-from cupcake.io import BioReaders
-from cupcake.tofu.utils import check_ids_unique
-from cupcake.io.SeqReaders import LazyFastaReader, LazyFastqReader
-from cupcake.tofu.branch import branch_simple2
-from cupcake.tofu.compare_junctions import compare_junctions
-from cupcake.tofu.get_abundance_post_collapse import get_abundance_post_collapse
+from cupcake.cupcake.io import BioReaders
+from cupcake.cupcake.tofu.utils import check_ids_unique
+from cupcake.cupcake.io.SeqReaders import LazyFastaReader, LazyFastqReader
+from cupcake.cupcake.tofu.branch import branch_simple2
+from cupcake.cupcake.tofu.compare_junctions import compare_junctions
+from cupcake.cupcake.tofu.get_abundance_post_collapse import get_abundance_post_collapse
 
 
 def pick_rep(

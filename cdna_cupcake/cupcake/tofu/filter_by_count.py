@@ -2,7 +2,7 @@
 __author__ = "etseng@pacb.com"
 
 import os, sys
-from cupcake.io import GFF
+from cupcake.cupcake.io import GFF
 from csv import DictReader, DictWriter
 from Bio import SeqIO
 

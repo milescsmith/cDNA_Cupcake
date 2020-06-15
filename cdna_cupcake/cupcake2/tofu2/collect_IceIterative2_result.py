@@ -14,7 +14,7 @@ import os, sys, glob
 import fileinput
 from Bio import SeqIO
 from pickle import *
-from cupcake.io.SeqReaders import LazyFastaReader
+from cupcake.cupcake.io.SeqReaders import LazyFastaReader
 
 
 def collect_ice2_dirs(

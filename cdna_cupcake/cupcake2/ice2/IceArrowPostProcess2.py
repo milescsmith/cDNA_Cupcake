@@ -13,9 +13,9 @@ from time import sleep
 
 from pbcore.io import FastqReader, FastqWriter, FastaWriter
 
-from cupcake2.tofu2.ClusterOptions2 import IceArrowHQLQOptions2
+from cupcake.cupcake2.tofu2.ClusterOptions2 import IceArrowHQLQOptions2
 
-from cupcake2.tofu2.ToFuOptions2 import (
+from cupcake.cupcake2.tofu2.ToFuOptions2 import (
     add_cluster_summary_report_arguments,
     add_ice_post_arrow_hq_lq_arguments2,
     add_cluster_root_dir_as_positional_argument,
@@ -29,9 +29,9 @@ from pbtranscript.Utils import (
     nfs_exists,
 )
 
-from cupcake2.ice2.IceUtils2 import cid_with_annotation2
-from cupcake2.ice2.IceFiles2 import IceFiles2
-from cupcake2.ice2.__init__ import ICE_ARROW_PY
+from cupcake.cupcake2.ice2.IceUtils2 import cid_with_annotation2
+from cupcake.cupcake2.ice2.IceFiles2 import IceFiles2
+from cupcake.cupcake2.ice2.__init__ import ICE_ARROW_PY
 
 
 class IceArrowPostProcess2(IceFiles2):

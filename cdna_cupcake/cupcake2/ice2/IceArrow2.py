@@ -40,13 +40,13 @@ from pbtranscript.ice.IceUtils import (
     concat_bam,
 )
 
-from cupcake2.tofu2.ToFuOptions2 import (
+from ..tofu2.ToFuOptions2 import (
     add_fofn_arguments,
     add_sge_arguments,
     add_cluster_root_dir_as_positional_argument,
     BaseConstants,
 )
-from cupcake2.ice2.IceFiles2 import IceFiles2
+from .IceFiles2 import IceFiles2
 
 
 from pbtranscript.io import MetaSubreadFastaReader, BamCollection, FastaRandomReader

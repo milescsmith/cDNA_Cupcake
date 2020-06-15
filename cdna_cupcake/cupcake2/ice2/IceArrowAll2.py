@@ -1,4 +1,4 @@
-from cupcake2.tofu2.ToFuOptions2 import (
+from cupcake.cupcake2.tofu2.ToFuOptions2 import (
     add_sge_arguments,
     add_tmp_dir_argument,
     add_cluster_summary_report_arguments,
@@ -7,9 +7,9 @@ from cupcake2.tofu2.ToFuOptions2 import (
     add_fofn_arguments,
 )
 
-from cupcake2.ice2.IceArrow2 import IceArrow2
-from cupcake2.ice2.IceArrowPostProcess2 import IceArrowPostProcess2
-from cupcake2.ice2.__init__ import ICE_ARROW_PY
+from cupcake.cupcake2.ice2.IceArrow2 import IceArrow2
+from cupcake.cupcake2.ice2.IceArrowPostProcess2 import IceArrowPostProcess2
+from cupcake.cupcake2.ice2.__init__ import ICE_ARROW_PY
 
 
 class IceArrowAll2(object):

@@ -8,18 +8,24 @@ import logging
 import sys
 import os.path as op
 
-from cupcake2.tofu2.ClusterOptions2 import IceOptions2, SgeOptions2
+from cupcake.cupcake2.tofu2.ClusterOptions2 import IceOptions2, SgeOptions2
 
 from pbcore.util.ToolRunner import PBMultiToolRunner
 from pbtranscript.__init__ import get_version
 from pbtranscript.ClusterOptions import SgeOptions
 from pbtranscript.PBTranscriptOptions import _wrap_parser
 
-from cupcake2.ice2.IcePartialAll2 import IceAllPartials2, add_ice_all_partials_arguments
+from cupcake.cupcake2.ice2.IcePartialAll2 import (
+    IceAllPartials2,
+    add_ice_all_partials_arguments,
+)
 
-from cupcake2.ice2.IcePartial2 import IcePartialOne2, add_ice_partial_one_arguments
+from cupcake.cupcake2.ice2.IcePartial2 import (
+    IcePartialOne2,
+    add_ice_partial_one_arguments,
+)
 
-from cupcake2.ice2.IcePartialSplit2 import (
+from cupcake.cupcake2.ice2.IcePartialSplit2 import (
     IcePartialSplit2,
     add_ice_partial_split_arguments,
 )

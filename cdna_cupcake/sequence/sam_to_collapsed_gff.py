@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import os, sys
-from cupcake.io.GFF import write_collapseGFF_format
-from cupcake.io.BioReaders import GMAPSAMReader
+from cupcake.cupcake.io.GFF import write_collapseGFF_format
+from cupcake.cupcake.io.BioReaders import GMAPSAMReader
 
 
 def main():

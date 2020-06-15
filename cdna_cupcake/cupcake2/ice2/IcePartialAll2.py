@@ -24,10 +24,10 @@ from pbtranscript.ice.IceFiles import IceFiles
 from pbtranscript.ice.IceUtils import combine_nfl_pickles
 
 
-from cupcake2.ice2.__init__ import ICE_PARTIAL_PY
+from cupcake.cupcake2.ice2.__init__ import ICE_PARTIAL_PY
 
 
-from cupcake2.tofu2.ToFuOptions2 import (
+from cupcake.cupcake2.tofu2.ToFuOptions2 import (
     add_sge_arguments,
     add_fofn_arguments,
     add_tmp_dir_argument,
