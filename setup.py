@@ -36,7 +36,7 @@ EXT_MODULES = [
 
 setup(
     name="cupcake",
-    version="12.2.0",
+    version="12.2.1",
     author="Elizabeth Tseng",
     author_email="etseng@pacb.com",
     description="Miscellaneous collection of Python and R scripts for processing Iso-Seq data",
