@@ -8,6 +8,7 @@ from Cython.Build import cythonize
 __author__ = "etseng@pacb.com"
 version = "12.1.2"
 
+# why is this defined twice?  commenting out until I figure out why
 # ext_modules = [
 #     Extension(
 #         " = cupcake.cupcake.tofu.branch.intersection_unique",
@@ -25,15 +26,13 @@ version = "12.1.2"
 EXT_MODULES = [
     Extension(
         "cupcake.cupcake.tofu.branch.intersection_unique",
-        ["cdna_cupcake/cupcake/tofu/branch/intersection_unique.pyx"],
+        ["cupcake/cupcake/tofu/branch/intersection_unique.pyx"],
     ),
     Extension(
         "cupcake.cupcake.tofu.branch.c_branch",
-        ["cdna_cupcake/cupcake/tofu/branch/c_branch.pyx"],
+        ["cupcake/cupcake/tofu/branch/c_branch.pyx"],
     ),
-    Extension(
-        "cupcake.cupcake.ice.find_ECE", ["cdna_cupcake/cupcake/ice/find_ECE.pyx"]
-    ),
+    Extension("cupcake.cupcake.ice.find_ECE", ["cupcake/cupcake/ice/find_ECE.pyx"]),
 ]
 
 setup(
@@ -62,9 +61,9 @@ setup(
         "Topic :: Scientific/Engineering :: Bio-Informatics",
     ],
     keywords=["isoseq", "rnaseq", "pacbio", "long reads"],
-    packages=find_packages(include=["cupcake", "cupcake.*"]),
-    package_dir={"cupcake": "cdna_cupcake"},
-    package_data={"": ["cupcake/cupcake/test_data/*.*",]},
+    packages=find_packages(),
+    package_dir={"cupcake": "cupcake"},
+    package_data={"": ["cupcake/cupcake/test_data/*.*"]},
     include_package_data=True,
     setup_requires=["numpy", "cython"],
     install_requires=[
@@ -73,28 +72,32 @@ setup(
     # this might be better to reformat into a series of subcommands
     entry_points={
         "console_scripts": [
-            "evaluate_alignment_sam = annotation.alignment_stats_from_sam.evaluate_alignment_sam:evaluate_alignment_sam",
-            "make_file_for_subsample = cupcake.annotation.make_file_for_subsampling_from_collapsed:make_file_for_subsample",
-            "parse_matchAnnot = cupcake.annotation.parse_matchAnnot:parse_matchAnnot",
-            "subsample_with_category = cupcake.annotation.subsample_with_category:subsample",
-            "subsample = cupcake.annotation.subsample:subsample",
+            # annotation submodule
+            "evaluate_alignment_sam = cupcake.annotation.alignment_stats_from_sam.evaluate_alignment_sam:main",
+            "make_file_for_subsample = cupcake.annotation.make_file_for_subsampling_from_collapsed:main",
+            "parse_matchAnnot = cupcake.annotation.parse_matchAnnot:main",
+            "subsample_with_category = cupcake.annotation.subsample_with_category:main",
+            "subsample = cupcake.annotation.subsample:main",
+            # cupcake submodule
             "collapse_isoforms_by_sam = cupcake.cupcake.tofu.collapse_isoforms_by_sam:main",
-            "get_abundance_post_collapse = cupcake.cupcake.tofu.get_abundance_post_collapse:get_abundance_post_collapse",
-            "filter_by_count = cupcake.cupcake.tofu.filter_by_count:filter_by_count",
+            "get_abundance_post_collapse = cupcake.cupcake.tofu.get_abundance_post_collapse:main",
+            "filter_by_count = cupcake.cupcake.tofu.filter_by_count:main",
             "filter_away_subset = cupcake.cupcake.tofu.filter_away_subset:main",
-            "fusion_finder = cupcake.cupcake.tofu.fusion_finder:fusion_main",
-            "chain_samples = cupcake.cupcake.tofu.counting.chain_samples:chain_samples_multithread",
-            "chain_fusion_samples = cupcake.cupcake.tofu.counting.chain_fusion_samples:chain_fusion_samples",
-            "summarize_junctions = cupcake.cupcake.tofu.counting.summarize_sample_GFF_junctions:summarize_junctions",
-            "scrub_sample_GFFs = cupcake.cupcake.tofu.counting.scrub_sample_GFF_junctions:scrub_sample_GFFs",
+            "fusion_finder = cupcake.cupcake.tofu.fusion_finder:main",
+            "chain_samples = cupcake.cupcake.tofu.counting.chain_samples:main",
+            "chain_fusion_samples = cupcake.cupcake.tofu.counting.chain_fusion_samples:main",
+            "summarize_junctions = cupcake.cupcake.tofu.counting.summarize_sample_GFF_junctions:main",
+            "scrub_sample_GFFs = cupcake.cupcake.tofu.counting.scrub_sample_GFF_junctions:main",
+            # cupcake2 submodule
             "run_Consensus = cupcake.cupcake2.tofu2.ice_pbdagcon2:runConsensus",
             "run_preCluster = cupcake.cupcake2.tofu2.run_preCluster:main",
-            "run_IceInit2 = cupcake.cupcake2.tofu2.run_IceInit2:run_IceInit2",
-            "run_IceIterative2 = cupcake.cupcake2.tofu2.run_IceIterative2:run_IceIterative2",
+            "run_IceInit2 = cupcake.cupcake2.tofu2.run_IceInit2:main",
+            "run_IceIterative2 = cupcake.cupcake2.tofu2.run_IceIterative2:main",
             "run_IcePartial2 = cupcake.cupcake2.tofu2.run_IcePartial2:main",
             "run_IceArrow2 = cupcake.cupcake2.tofu2.run_IceArrow2:main",
             "SeqSplitter = cupcake.cupcake2.io.SeqSplitter:main",
             "picking_up_ice2 = cupcake.cupcake2.tofu2.picking_up_ice2:main",
+            # uh, phasing! are we still doing phasing?
             "make_fake_genome = cupcake.phasing.create_fake_genome:main",
             # " = cupcake.phasing.run_phaser",
             # " = cupcake.sequence.sam_to_bam",
@@ -103,6 +106,6 @@ setup(
             # " = cupcake.sequence.STAR",
             # " = cupcake.sequence.BED",
             # " = cupcake.sequence.coordinate_mapper",
-        ],
+        ]
     },
 )
