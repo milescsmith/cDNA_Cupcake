@@ -27,7 +27,7 @@ from csv import DictReader
 from Bio import SeqIO
 from bx.intervals import IntervalTree
 from bx.intervals.cluster import ClusterTree
-import BioReaders  # should already have cDNA_Cupcake/sequence in $PYTHONPATH to get this
+from sequence import BioReaders
 
 AMatch = namedtuple("AMatch", "name strand start end record")
 
