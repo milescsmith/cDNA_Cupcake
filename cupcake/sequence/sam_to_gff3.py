@@ -24,7 +24,8 @@ import subprocess
 import pandas as pd
 from collections import Counter
 from math import floor
-from gtfparse.write_gtf import df_to_gtf
+# from gtfparse.write_gtf import df_to_gtf
+from BCBio import GFF as BCBio_GFF
 from Bio import SeqIO
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
