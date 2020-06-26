@@ -5,9 +5,9 @@ from Bio import SeqIO
 from cupcake.cupcake2.io.minimapIO import MiniReader
 from cupcake.cupcake.io.SeqReaders import LazyFastaReader
 from cupcake.cupcake2.tofu2.create_seed import create_seed_n_batch_files
-import cupcake2.ice2.preClusterProcess as sp
-import cupcake2.ice2.AlignerRunners as ar
-import cupcake2.io.FileIO as FileIO
+import cupcake.cupcake2.ice2.preClusterProcess as sp
+import cupcake.cupcake2.ice2.AlignerRunners as ar
+import cupcake.cupcake2.io.FileIO as FileIO
 from collections import defaultdict
 
 

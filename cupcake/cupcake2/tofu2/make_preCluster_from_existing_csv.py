@@ -15,7 +15,7 @@ from csv import DictReader
 from cupcake.cupcake.io.SeqReaders import LazyFastaReader
 from cupcake.cupcake2.ice2.preCluster import preClusterSet2, preCluster
 from cupcake.cupcake2.tofu2.run_preCluster import detect_PCR_chimeras
-import cupcake2.io.FileIO as FileIO
+import cupcake.cupcake2.io.FileIO as FileIO
 
 
 def read_seq_csv(csv_filename):

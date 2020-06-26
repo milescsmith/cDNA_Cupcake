@@ -8,7 +8,7 @@ import sys
 from collections import defaultdict
 from csv import DictReader
 
-import SIRVvalidate_smrtlink_isoseq as smrtlink
+import cupcake.SequelQC.SIRVvalidate_smrtlink_isoseq as smrtlink
 
 GENCODE_GTF = "/home/UNIXHOME/etseng/share/gencode/gencode.v29.annotation.gtf"
 CAGE_BED = (

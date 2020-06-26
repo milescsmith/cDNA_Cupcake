@@ -9,7 +9,7 @@ import sys
 from collections import defaultdict
 from csv import DictReader
 
-import SIRVvalidate_smrtlink_isoseq as smrtlink_sirv
+import cupcake.SequelQC.SIRVvalidate_smrtlink_isoseq as smrtlink_sirv
 
 """
 Files that should already be in the same directory:

@@ -3,7 +3,7 @@
 import os, sys
 from collections import defaultdict
 from Bio import SeqIO
-from . import BioReaders
+from cupcake.sequence import BioReaders
 
 
 def type_fa_or_fq(file):
