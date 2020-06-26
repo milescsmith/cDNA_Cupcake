@@ -10,3 +10,7 @@ cupcake/tofu/branch/*
 cupcake.egg-info/*
 cupcake.egg-info/
 **/*.swp
+.mypy_cache
+.vscode
+dist/
+build/
