@@ -1,0 +1,20 @@
+include *.md
+include *.txt
+include *.yaml
+include Dockerfile
+recursive-include cupcake *.R
+recursive-include cupcake *.Rhistory
+recursive-include cupcake *.config
+recursive-include cupcake *.csv
+recursive-include cupcake *.fastq
+recursive-include cupcake *.fq
+recursive-include cupcake *.gff
+recursive-include cupcake *.gz
+recursive-include cupcake *.png
+recursive-include cupcake *.py_log
+recursive-include cupcake *.pyx
+recursive-include cupcake *.sam
+recursive-include cupcake *.sh
+recursive-include cupcake *.txt
+recursive-include cupcake *.unfuzzy
+recursive-include dist *.egg

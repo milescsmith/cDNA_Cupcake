@@ -1,7 +1,3 @@
-__version__ = "8.6"
+import pkg_resources
 
-# from . import (
-#     ice,
-#     io,
-#     tofu,
-# )
+__version__ = pkg_resources.get_distribution("cupcake").version
