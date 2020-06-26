@@ -41,9 +41,9 @@ def sanity_check_collapse_input(input_prefix):
         print("File {} does not exist. Abort!".format(rep_filename), file=sys.stderr)
         sys.exit(-1)
 
-    pbids1 = {r.id for r in SeqIO.parse(open(rep_filename), "fastq")}
-    pbids2 = {r.seqid for r in GFF.collapseGFFReader(gff_filename)}
-    pbids3 = set(read_count_file(count_filename)[0].keys())
+    pbids1 = {[r.id for r in SeqIO.parse(open(rep_filename), "fastq")]}
+    pbids2 = {[r.seqid for r in GFF.collapseGFFReader(gff_filename)]}
+    pbids3 = {read_count_file(count_filename)[0].keys()}
 
     if (
         len(pbids1) != len(pbids2)

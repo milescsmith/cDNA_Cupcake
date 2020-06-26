@@ -99,7 +99,7 @@ class GTF:
         return pp
 
     def find(self, chr, start0, end1):
-        return list(set(self.genome[chr].find(start0, end1)))
+        return list({self.genome[chr].find(start0, end1)})
 
 
 class polyAGFF(GTF):
@@ -296,12 +296,12 @@ class Coords(GTF):
             ith = 0
 
             if tID in self.transcript:
-                print("duplicate tID {} seen, ignore!".format(tID), file=sys.stderr)
+                print(f"duplicate tID {tID} seen, ignore!", file=sys.stderr)
                 continue
 
             self.transcript_info[tID] = {"chr": chr}
 
-            for i in xrange(4, len(raw), 2):
+            for i in range(4, len(raw), 2):
                 start0 = int(raw[i]) - 1
                 end1 = int(raw[i + 1])
                 self.genome[chr].insert(start0, end1, tID)
@@ -495,9 +495,7 @@ class gmapGFFReader(object):
         raw = self.f.readline().strip().split("\t")
         if len(raw) != 9:
             print(
-                "ERROR:Sanity checking {} is GFF3 format: expected 9 tab-delimited fields but saw {}! Abort!".format(
-                    self.filename, len(raw)
-                )
+                f"ERROR:Sanity checking {self.filename} is GFF3 format: expected 9 tab-delimited fields but saw {len(raw)}! Abort!"
             )
             sys.exit(-1)
         self.f.seek(cur)
@@ -893,22 +891,22 @@ def CompareSimCoordinatesToAlnPath(alnPath, simCoordinates):
     #
     nAlnExons = len(alnPath)
     nSimExons = len(simCoordinates)
-    scoreMat = [[0 for j in xrange(nSimExons + 1)] for i in xrange(nAlnExons + 1)]
-    pathMat = [[0 for j in xrange(nSimExons + 1)] for i in xrange(nAlnExons + 1)]
+    scoreMat = [[0 for j in range(nSimExons + 1)] for i in range(nAlnExons + 1)]
+    pathMat = [[0 for j in range(nSimExons + 1)] for i in range(nAlnExons + 1)]
 
     diagonal = 0
     up = 1
     left = 2
 
-    for i in xrange(nAlnExons):
+    for i in range(nAlnExons):
         pathMat[i + 1][0] = up
-    for j in xrange(nSimExons):
+    for j in range(nSimExons):
         pathMat[0][j + 1] = left
     pathMat[0][0] = diagonal
     # return 0
 
-    for i in xrange(nAlnExons):
-        for j in xrange(nSimExons):
+    for i in range(nAlnExons):
+        for j in range(nSimExons):
             overlapScore = 0
             if (
                 len(simCoordinates[j].find(alnPath[i].start, alnPath[i].end)) > 0
@@ -941,7 +939,7 @@ def CompareSimCoordinatesToAlnPath(alnPath, simCoordinates):
     j = nSimExons
     matchedExons = []
     _cur_best_j = nSimExons
-    for j in xrange(nSimExons - 1, -1, -1):
+    for j in range(nSimExons - 1, -1, -1):
         if scoreMat[i][j] > scoreMat[i][_cur_best_j]:
             _cur_best_j = j
     j = _cur_best_j
@@ -1041,7 +1039,7 @@ def main(gtf):
         path = btab_reclist_to_interval_list(r)
         info = match_transcript(gtf, r[0]["chr"], path)
         if info["matchedExons"] is None:
-            print("Did not find a match for {}!".format(r[0]["seqid"]), file=sys.stderr)
+            print(f"Did not find a match for {r[0]['seqid']}!", file=sys.stderr)
             continue
         for i, j in info["matchedExons"]:
             transcript_tally[info["tID"]][i] += 1
@@ -1061,7 +1059,7 @@ def main_pasa(gtf):
 
         info = match_transcript(gtf, chr, path)
         if info["matchedExons"] is None:
-            print("Did not find a match for {}!".format(tID), file=sys.stderr)
+            print(f"Did not find a match for {format(tID)}!", file=sys.stderr)
             continue
         for i, j in info["matchedExons"]:
             pasa_tally[info["tID"]][i] += 1

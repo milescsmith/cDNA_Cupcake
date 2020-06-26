@@ -409,7 +409,8 @@ class GMAPSAMReader(SAMReader):
                 "@"
             ):  # header can occur at file end if the SAM was sorted
                 break
-        return GMAPSAMRecord(line, self.ref_len_dict, self.query_len_dict)
+        if line.split("\t")[0] in self.query_len_dict:
+            return GMAPSAMRecord(line, self.ref_len_dict, self.query_len_dict)
 
 
 class GMAPSAMRecord(SAMRecord):

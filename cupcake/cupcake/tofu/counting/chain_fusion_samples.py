@@ -43,7 +43,7 @@ def sample_sanity_check(
     for i in range(14):
         f.readline()  # just through the header
     ids3 = [r["pbid"] for r in DictReader(f, delimiter="\t")]
-    if len(set(ids2).difference(ids1)) > 0 or len(set(ids2).difference(ids3)) > 0:
+    if len({ids2}.difference(ids1)) > 0 or len({ids2}.difference(ids3)) > 0:
         raise Exception(
             "Sanity check failed! Please make sure the PBIDs listed in {1} are also in {0} and {2}".format(
                 group_filename, gff_filename, count_filename
@@ -52,7 +52,7 @@ def sample_sanity_check(
 
     if fastq_filename is not None:
         ids4 = [r.id.split("|")[0] for r in SeqIO.parse(open(fastq_filename), "fastq")]
-        if len(set(ids2).difference(ids4)) > 0:
+        if len({ids2}.difference(ids4)) > 0:
             raise Exception(
                 "Sanity check failed! Please make sure the PBIDs listed in {1} are also in {0}".format(
                     fastq_filename, gff_filename

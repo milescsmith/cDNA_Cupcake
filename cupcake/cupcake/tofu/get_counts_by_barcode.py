@@ -30,7 +30,7 @@ def read_classify_csv(csv_filename):
     for r in DictReader(open(csv_filename), delimiter=","):
         if r["primer"] != "NA":
             primer_info[r["id"]] = r["primer"]
-    primer_ranges = list(set(map(int, list(primer_info.values()))))
+    primer_ranges = list({map(int, list(primer_info.values()))})
     primer_ranges.sort()
     primer_ranges = list(map(str, primer_ranges))
     return primer_ranges, primer_info
