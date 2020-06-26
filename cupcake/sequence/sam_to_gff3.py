@@ -24,7 +24,8 @@ import subprocess
 import pandas as pd
 from collections import Counter
 from math import floor
-from gtfparse.write_gtf import df_to_gtf
+# from gtfparse.write_gtf import df_to_gtf
+from BCBio import GFF as BCBio_GFF
 from Bio import SeqIO
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
@@ -98,7 +99,8 @@ def convert_sam_to_gff3(sam_filename, output_gff3, source, q_dict=None):
             convert_sam_rec_to_gff3_rec(r0, source, qid_index_dict)
             for r0 in GMAPSAMReader(sam_filename, True, query_len_dict=q_dict)
         ]
-        df_to_gtf(df=pd.DataFrame([x for x in recs if x is not None]), filename=f)
+        BCBio_GFF.write([x for x in recs if x is not None], f)
+        # df_to_gtf(df=pd.DataFrame([x for x in recs if x is not None]), filename=f)
 
 
 def main():
