@@ -23,10 +23,10 @@ from collections import defaultdict
 from bx.intervals import IntervalTree
 from Bio import SeqIO
 
-from cupcake.tofu.utils import check_ids_unique
-from cupcake.tofu.branch import branch_simple2
-from cupcake.tofu.compare_junctions import compare_junctions
-from cupcake.io import GFF
+from cupcake.cupcake.tofu.utils import check_ids_unique
+from cupcake.cupcake.tofu.branch import branch_simple2
+from cupcake.cupcake.tofu.compare_junctions import compare_junctions
+from cupcake.cupcake.io import GFF
 
 
 def pick_rep(

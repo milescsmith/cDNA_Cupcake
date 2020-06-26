@@ -5,7 +5,7 @@ import os, sys, glob, datetime
 import numpy as np
 import json
 from Bio import SeqIO
-import SMRTLink_subread_stats as subread_stats
+import cupcake.SequelQC.SMRTLink_subread_stats as subread_stats
 
 """
 Collect stats from a completed SMRTLink Iso-Seq jobs

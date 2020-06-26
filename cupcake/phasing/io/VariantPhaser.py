@@ -10,7 +10,7 @@ from Bio.Seq import Seq
 import vcf
 from cupcake.cupcake.io.BioReaders import GMAPSAMReader
 
-from .coordinate_mapper import get_base_to_base_mapping_from_sam
+from cupcake.phasing.io.coordinate_mapper import get_base_to_base_mapping_from_sam
 
 __VCF_EXAMPLE__ = """
 ##fileformat=VCFv4.2

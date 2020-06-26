@@ -30,8 +30,8 @@ from csv import DictWriter
 
 from Bio import SeqIO
 
-from ..cupcake.io.BioReaders import GMAPSAMReader
-from ..cupcake.io.GFF import collapseGFFReader
+from cupcake.cupcake.io.BioReaders import GMAPSAMReader
+from cupcake.cupcake.io.GFF import collapseGFFReader
 
 FIELDNAMES_REPORT1 = [
     "seqid",
