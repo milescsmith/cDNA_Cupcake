@@ -15,7 +15,7 @@ import os, sys, random
 from collections import Counter
 from Bio import SeqIO
 from simulate import sim_seq
-from phasing.io.VariantPhaser import Haplotypes
+from cupcake.phasing.io.VariantPhaser import Haplotypes
 
 SNP_INTERVAL = 300  # 1 snp per 300 bp
 base_choices = {

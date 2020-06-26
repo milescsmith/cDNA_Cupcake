@@ -8,9 +8,9 @@ import sys
 from collections import defaultdict
 from csv import DictReader
 
-import RCvalidate_smrtlink_isoseq as smrtlink_rc
-import SIRVvalidate_smrtlink_isoseq as smrtlink
-import SIRVvalidate_tofu2_isoseq as tofu2_sirv
+import cupcake.SequelQC.RCvalidate_smrtlink_isoseq as smrtlink_rc
+import cupcake.SequelQC.SIRVvalidate_smrtlink_isoseq as smrtlink
+import cupcake.SequelQC.SIRVvalidate_tofu2_isoseq as tofu2_sirv
 
 GMAP_BIN = smrtlink_rc.GMAP_BIN
 GMAP_DB = smrtlink_rc.GMAP_DB

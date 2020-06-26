@@ -5,7 +5,7 @@ import os, sys
 from pickle import *
 from pbcore.io.FastqIO import FastqReader, FastqWriter
 
-import cupcake2.ice2.IceIterative2 as ice
+import cupcake.cupcake2.ice2.IceIterative2 as ice
 
 import pbtranscript.ice.ProbModel as pm
 

@@ -8,9 +8,9 @@ from argparse import ArgumentParser
 
 from Bio import SeqIO
 
-import phasing.io.MPileUpVariantCaller as VC
-import phasing.io.SAMMPileUpReader as sp
-from phasing.io import VariantPhaseCleaner, VariantPhaser
+import cupcake.phasing.io.MPileUpVariantCaller as VC
+import cupcake.phasing.io.SAMMPileUpReader as sp
+from cupcake.phasing.io import VariantPhaseCleaner, VariantPhaser
 
 try:
     import vcf

@@ -9,3 +9,6 @@ pyvcf~=0.6
 networkx~=2.4
 cython~=0.29
 pre-commit~=2.5
+pbcoretools @ git+https://github.com/PacificBiosciences/pbcoretools
+pbcore @ git+https://github.com/PacificBiosciences/pbcore
+pbcommand @ git+https://github.com/PacificBiosciences/pbcommand
