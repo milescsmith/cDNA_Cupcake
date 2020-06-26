@@ -57,7 +57,7 @@ setup(
     entry_points={
         "console_scripts": [
             # annotation submodule
-            "evaluate_alignment_sam = cupcake.annotation.alignment_stats_from_sam.evaluate_alignment_sam:main",
+            "evaluate_alignment_sam = cupcake.annotation.alignment_stats_from_sam:main",
             "make_file_for_subsample = cupcake.annotation.make_file_for_subsampling_from_collapsed:main",
             "parse_matchAnnot = cupcake.annotation.parse_matchAnnot:main",
             "subsample_with_category = cupcake.annotation.subsample_with_category:main",
