@@ -61,7 +61,7 @@ def parse_matchAnnot(fa_or_fq, filename, not_pbid=False, parse_FL_coverage=False
         else:
             gene, isoform, score = match[pbid]
             if gene is None:
-                f.write(f"{pid}\t{pbpre}\tNA\tNA\tNA{_cov_text}\n")
+                f.write(f"{pbid}\t{pbpre}\tNA\tNA\tNA{_cov_text}\n")
             else:
                 f.write(f"{pbid}\t{pbpre}\t{isoform}\t{gene}\t{score}{_cov_text}\n")
     f.close()

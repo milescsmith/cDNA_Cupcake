@@ -23,10 +23,10 @@ from collections import defaultdict
 from bx.intervals import IntervalTree
 from Bio import SeqIO
 
-from cupcake.cupcake.tofu.utils import check_ids_unique
-from cupcake.cupcake.tofu.branch import branch_simple2
-from cupcake.cupcake.tofu import compare_junctions
-from cupcake.cupcake.io import GFF
+from cupcake.tofu.utils import check_ids_unique
+from cupcake.tofu.branch import branch_simple2
+from cupcake.tofu.compare_junctions import compare_junctions
+from cupcake.io import GFF
 
 
 def pick_rep(
@@ -142,7 +142,7 @@ def collapse_fuzzy_junctions(
         r.segments = r.ref_exons
         for r2 in recs[r.chr][r.strand].find(r.start, r.end):
             r2.segments = r2.ref_exons
-            m = compare_junctions.compare_junctions(
+            m = compare_junctions(
                 r,
                 r2,
                 internal_fuzzy_max_dist=internal_fuzzy_max_dist,
@@ -255,13 +255,11 @@ def main():
     args = parser.parse_args()
     ### sanity check that input file and input SAM exists
     if not os.path.exists(args.input):
-        print(
-            "Input file {} does not exist. Abort.".format(args.input), file=sys.stderr
-        )
+        print(f"Input file {args.input} does not exist. Abort.", file=sys.stderr)
         sys.exit(-1)
 
     if not os.path.exists(args.sam):
-        print("SAM file {} does not exist. Abort.".format(args.sam), file=sys.stderr)
+        print(f"SAM file {args.sam} does not exist. Abort.", file=sys.stderr)
         sys.exit(-1)
 
     # check for duplicate IDs
@@ -346,11 +344,9 @@ def main():
             bad_gff_filename=f_bad.name,
         )
 
-    print("Ignored IDs written to: {}".format(ignored_fout.name), file=sys.stdout)
+    print(f"Ignored IDs written to: {ignored_fout.name}", file=sys.stdout)
     print(
-        "Output written to: {}\n{}\n{}\n{}\n".format(
-            f_good.name, f_txt.name, outfile, args
-        ),
+        f"Output written to: {f_good.name}\n{f_txt.name}\n{outfile}\n{args}\n",
         file=sys.stdout,
     )
 
