@@ -169,9 +169,9 @@ class IceArrowPostProcess2(IceFiles2):
                 job_id = x.split()[0]
                 running_jids.append(job_id)
                 if job_id in sge_jobids:
-                    self.add_log("job {} is still running.".format(job_id))
-                    done_flag = False
-
+                    self.add_log(
+                        "job {} is still running.".format(job_id), done_flag=False
+                    )
         # now go through all the expected fastq files and check they exist
         for fq_filename, (job_id, sh_file) in submitted.items():
             if not nfs_exists(fq_filename) or os.stat(fq_filename).st_size == 0:
@@ -179,13 +179,11 @@ class IceArrowPostProcess2(IceFiles2):
                     done_flag = False
                 else:
                     self.add_log(
-                        "job {} is completed but {} is still empty!".format(
-                            job_id, fq_filename
-                        )
+                        f"job {job_id} is completed but {fq_filename} is still empty!"
                     )
                     bad_sh.append(sh_file)
             else:
-                self.add_log("job {} is done".format(job_id))
+                self.add_log(f"job {job_id} is done")
                 self.fq_filenames.append(fq_filename)
 
         if not done_flag:
@@ -197,9 +195,7 @@ class IceArrowPostProcess2(IceFiles2):
                 f.write("\n".join(bad_sh) + "\n")
                 f.close()
                 self.add_log(
-                    "Some jobs were incomplete! Please re-run all files listed in {1}.\n".format(
-                        len(bad_sh), f.name
-                    )
+                    f"{len(bad_sh)} jobs were incomplete! Please re-run all files listed in {f.name}.\n"
                 )
                 return "FAILED"
         else:
@@ -210,9 +206,7 @@ class IceArrowPostProcess2(IceFiles2):
         """Return $root_dir/all_arrowed.hq.a_b_c.fasta"""
         return op.join(
             self.root_dir,
-            "all_arrowed_hq.{a}_{b}_{c}.fasta".format(
-                a=self.qv_trim_5, b=self.qv_trim_3, c=self.hq_arrow_min_accuracy
-            ),
+            f"all_arrowed_hq.{self.qv_trim_5}_{qv_trim_3}_{self.hq_arrow_min_accuracy}.fasta",
         )
 
     @property
@@ -220,9 +214,7 @@ class IceArrowPostProcess2(IceFiles2):
         """Return $root_dir/all_arrowed_hq.a_b_c.fastq"""
         return op.join(
             self.root_dir,
-            "all_arrowed_hq.{a}_{b}_{c}.fastq".format(
-                a=self.qv_trim_5, b=self.qv_trim_3, c=self.hq_arrow_min_accuracy
-            ),
+            f"all_arrowed_hq.{self.qv_trim_5}_{self.qv_trim_3}_{self.hq_arrow_min_accuracy}.fastq",
         )
 
     @property

@@ -37,7 +37,7 @@ def err_correct(genome_file, sam_file, output_err_corrected_fasta, genome_dict=N
 
     f.close()
 
-    print("output written to ".format(output_err_corrected_fasta), file=sys.stderr)
+    print(f"output written to {output_err_corrected_fasta}", file=sys.stderr)
 
 
 def main():

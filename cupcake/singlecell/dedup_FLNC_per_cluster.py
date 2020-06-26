@@ -43,7 +43,7 @@ CORRECTED_CSV_FILELDS = [
 # PBID_FORMAT = re.compile("PB.(\d+).(\d+)")
 
 
-def main(
+def dedup_FLNC_per_cluster(
     corrected_csv,
     cluster_info,
     output_prefix,
@@ -213,7 +213,7 @@ def main():
 
     output_prefix = args.corrected_csv[: args.corrected_csv.rfind(".")] + ".dedup"
 
-    main(
+    dedup_FLNC_per_cluster(
         args.corrected_csv, cluster_info, output_prefix, args.fasta, args.gff, args.faa
     )
 

@@ -17,7 +17,7 @@ lens.sort(key=lambda x: x[1], reverse=True)
 n = len(lens)
 
 # start at 1% of the data
-starting_seed_index = n * 1 / 100
+starting_seed_index = int(n * 1 / 100)
 good = [
     x[0] for x in lens[starting_seed_index : starting_seed_index + NUM_SEQS_PER_BATCH]
 ]

@@ -341,7 +341,7 @@ class SAMRecord:
                 cur_start = cur_end + num
                 cur_end = cur_start
             else:
-                raise Exception("Unrecognized cigar character {}!".format(type))
+                raise Exception(f"Unrecognized cigar character {type}!")
             first_thing = False
         if cur_start != cur_end:
             segments.append(Interval(cur_start, cur_end))
@@ -349,7 +349,7 @@ class SAMRecord:
         return segments
 
     @classmethod
-    def parse_sam_flag(self, flag):
+    def parse_sam_flag(cls, flag):
         """
 		Heng Li's SAM https://samtools.github.io/hts-specs/SAMv1.pdf
         1 -- read is one of a pair
@@ -409,8 +409,7 @@ class GMAPSAMReader(SAMReader):
                 "@"
             ):  # header can occur at file end if the SAM was sorted
                 break
-        if line.split("\t")[0] in self.query_len_dict:
-            return GMAPSAMRecord(line, self.ref_len_dict, self.query_len_dict)
+        return GMAPSAMRecord(line, self.ref_len_dict, self.query_len_dict)
 
 
 class GMAPSAMRecord(SAMRecord):

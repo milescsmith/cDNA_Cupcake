@@ -25,7 +25,9 @@ def func(r):
     return fl_count, exp_acc
 
 
-def main(fastq_filename, output_filename, min_fl_count, min_exp_acc, is_flnc):
+def filter_lq_isoforms(
+    fastq_filename, output_filename, min_fl_count, min_exp_acc, is_flnc
+):
     f = open(output_filename, "w")
     for r in SeqIO.parse(open(fastq_filename), "fastq"):
         fl_count, exp_acc = func(r)
@@ -78,7 +80,7 @@ def main():
 
     args = parser.parse_args()
     assert 0 <= args.min_exp_acc <= 1
-    main(
+    filter_lq_isoforms(
         args.fastq_filename,
         args.output_filename,
         args.min_fl_count,

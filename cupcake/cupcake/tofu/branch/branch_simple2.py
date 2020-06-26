@@ -140,7 +140,9 @@ class BranchSimple:
                 if r.sID == "*":
                     ignored_fout.write(f"{r.qID}\tUnmapped.\n")
                 elif r.qCoverage < self.min_aln_coverage:
-                    ignored_fout.write(f"{r.qID}\tCoverage {r.qCoverage:.3f} too low.\n")
+                    ignored_fout.write(
+                        f"{r.qID}\tCoverage {r.qCoverage:.3f} too low.\n"
+                    )
                 elif r.identity < self.min_aln_identity:
                     ignored_fout.write(f"{r.qID}\tIdentity {r.identity:.3f} too low.\n")
                 elif any((e - s == 0) for s, e in r.segments):

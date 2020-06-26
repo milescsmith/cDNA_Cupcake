@@ -130,7 +130,7 @@ def read_classify_csv(classify_csv):
     return max_p, info
 
 
-def main(
+def demux_isoseq2_no_genome(
     job_dir=None,
     hq_fastq=None,
     cluster_csv=None,
@@ -205,7 +205,9 @@ def main():
 
     args = parser.parse_args()
 
-    main(args.job_dir, args.hq_fastq, args.cluster_csv, args.classify_csv, args.output)
+    demux_isoseq2_no_genome(
+        args.job_dir, args.hq_fastq, args.cluster_csv, args.classify_csv, args.output
+    )
 
 
 if __name__ == "__main__":

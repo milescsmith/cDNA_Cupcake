@@ -5,13 +5,14 @@ from .RCvalidate_smrtlink_isoseq_mm10 import (
     collapse_to_mm10,
     eval_result,
     make_abundance_from_Sequel_cluster_csv,
-    validate_with_Gencode,
+    # validate_with_Gencode,
 )
-from .RCvalidate_tofu2_isoseq import (
-    collapse_to_hg38,
-    eval_result,
-    validate_with_Gencode,
-)
+
+# from .RCvalidate_tofu2_isoseq import (
+#     # collapse_to_hg38,
+#     eval_result,
+#     validate_with_Gencode,
+# )
 from .SIRVvalidate_tofu2_isoseq import (
     collapse_to_SIRV,
     eval_result,
