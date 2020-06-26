@@ -301,7 +301,7 @@ class IceArrow2(IceFiles2):
                         bin_ref_fa_writer.write(">{}\n{}\n".format(name, seq))
                     else:
                         self.add_log(
-                            "ignoring {0} because identical " + "sequence!".format(cid)
+                            "ignoring {0} because identical sequence!".format(cid)
                         )
                 else:
                     self.add_log("ignoring {} because no alignments!".format(cid))

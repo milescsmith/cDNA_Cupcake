@@ -6,8 +6,8 @@ from cupcake.cupcake2.io.minimapIO import MiniReader
 from cupcake.cupcake.io.SeqReaders import LazyFastaReader
 from cupcake.cupcake2.tofu2.create_seed import create_seed_n_batch_files
 import cupcake.cupcake2.ice2.preClusterProcess as sp
-import cupcake.cupcake2.ice2.AlignerRunners as ar
-import cupcake.cupcake2.io.FileIO as FileIO
+import cupcake2.ice2.AlignerRunners as ar
+import cupcake2.io.FileIO as FileIO
 from collections import defaultdict
 
 
@@ -115,7 +115,7 @@ def add_batch(batch_index, pCS, orphans, fasta_d, cpus, dun_use_partial):
     return pCS, orphans
 
 
-def main(
+def run_preCluster(
     cpus,
     dun_make_bins=False,
     dun_use_partial=False,
@@ -222,7 +222,7 @@ def main(
 
 
 def main():
-    from argparse import ArgumentParser
+    from argparse import ArgumentParser, SUPPRESS
 
     parser = ArgumentParser("PreCluster processing of isoseq_flnc.fasta using minimap")
     parser.add_argument(
@@ -247,10 +247,7 @@ def main():
         help="Number of seqs per batch (default: 100000, use less for targeted)",
     )
     parser.add_argument(
-        "--dun_cleanup_files",
-        action="store_true",
-        default=False,
-        help=argparse.SUPPRESS,
+        "--dun_cleanup_files", action="store_true", default=False, help=SUPPRESS,
     )
 
     args = parser.parse_args()
@@ -267,7 +264,7 @@ def main():
         print("preCluster_out/ already exists! Abort.", file=sys.stderr)
         sys.exit(-1)
 
-    main(
+    run_preCluster(
         args.cpus,
         args.dun_make_bins,
         args.dun_use_partial,

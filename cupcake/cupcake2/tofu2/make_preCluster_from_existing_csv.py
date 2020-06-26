@@ -45,7 +45,7 @@ def read_seq_csv(csv_filename):
     return pCS, orphans
 
 
-def main(fasta_filename, csv_filename):
+def make_preCluster_from_existing_csv(fasta_filename, csv_filename):
     d = LazyFastaReader(fasta_filename)
     pCS, orphans = read_seq_csv(csv_filename)
 
@@ -87,7 +87,7 @@ def main():
     parser.add_argument("cluster_csv")
 
     args = parser.parse_args()
-    main(args.fasta_filename, args.cluster_csv)
+    make_preCluster_from_existing_csv(args.fasta_filename, args.cluster_csv)
 
 
 if __name__ == "__main__":

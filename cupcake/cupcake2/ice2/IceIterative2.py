@@ -37,8 +37,8 @@ from cupcake.cupcake2.ice2.IceFiles2 import IceFiles2
 from cupcake.cupcake2.ice2.IceInit2 import IceInit2
 
 from cupcake.cupcake2.ice2.IceUtils2 import (
-    daligner_against_ref2,
-    blasr_against_ref2,
+    # daligner_against_ref2,
+    # blasr_against_ref2,
     possible_merge2,
     sanity_check_gcon2,
 )
@@ -485,24 +485,18 @@ class IceIterative2(IceFiles2):
         self.run_gcon_parallel_helper(cids)
         # TODO: handle failed qsub jobs separately
         while len(self.unrun_cids) > 0 and self.iterNum <= 100:
-            msg = "NEED to run gcon for {n} clusters: {cid}.".format(
-                n=len(self.unrun_cids), cid=",".format(self.unrun_cids)
-            )
+            msg = f"NEED to run gcon for {len(self.unrun_cids)} clusters: {','.join(self.unrun_cids)}."
             self.add_log(msg)
             _cids = list(self.unrun_cids)
             self.unrun_cids = []
             self.run_gcon_parallel_helper(_cids)
-        self.add_log(
-            "Total time for run_gcon_parallel is {}.".format(datetime.now() - time0)
-        )
+        self.add_log(f"Total time for run_gcon_parallel is {datetime.now() - time0}.")
 
     def gconJobFN(self, iterNum, gid):
         """Return file name of gcon job with in the iterNum-th iteration,
         while id=gid, e.g. scripts/$iterNum/gcon_job_1.sh
         """
-        return op.join(
-            self.script_dir, str(iterNum), "gcon_job_{gid}.sh".format(gid=gid)
-        )
+        return op.join(self.script_dir, str(iterNum), f"gcon_job_{gid}.sh")
 
     def elogFN(self, iterNum, scriptFN):
         """return elog for scriptFN, e.g., log/0/script.elog"""
@@ -962,34 +956,36 @@ class IceIterative2(IceFiles2):
         by going through the .las.out files
         (REMEMBER to pre-clean the self.d)
         """
+        pass
         # Liz: is_FL is set to False in "daligner_against_ref" until LA4Ice -E is fixed
-        for la4ice_filename in runner.la4ice_filenames:
-            for hit in daligner_against_ref2(
-                query_dazz_handler=runner.query_dazz_handler,
-                target_dazz_handler=runner.target_dazz_handler,
-                la4ice_filename=la4ice_filename,
-                is_FL=False,
-                sID_starts_with_c=True,
-                qver_get_func=self.probQV.get_smoothed,
-                qvmean_get_func=self.probQV.get_mean,
-                qv_prob_threshold=self.qv_prob_threshold,
-                ece_penalty=self.ice_opts.ece_penalty,
-                ece_min_len=self.ice_opts.ece_min_len,
-                same_strand_only=True,
-                no_qv_or_aln_checking=False,
-                max_missed_start=self.ice_opts.max_missed_start,
-                max_missed_end=self.ice_opts.max_missed_end,
-                full_missed_start=self.ice_opts.full_missed_start,
-                full_missed_end=self.ice_opts.full_missed_end,
-            ):
-                if hit.qID not in self.d:
-                    self.d[hit.qID] = {}
-                if hit.fakecigar is not None:
-                    # self.add_log("[Liz] fakecigar string is {0}".format(hit.fakecigar))
-                    self.d[hit.qID][hit.cID] = self.probQV.calc_prob_from_aln(
-                        hit.qID, hit.qStart, hit.qEnd, hit.fakecigar
-                    )
-                    # self.add_log("[Liz] {0}-{1}:{2}".format(hit.qID, hit.cID,self.d[hit.qID][hit.cID]))
+        # there is no daligner_against_ref2()
+        # for la4ice_filename in runner.la4ice_filenames:
+        #     for hit in daligner_against_ref2(
+        #         query_dazz_handler=runner.query_dazz_handler,
+        #         target_dazz_handler=runner.target_dazz_handler,
+        #         la4ice_filename=la4ice_filename,
+        #         is_FL=False,
+        #         sID_starts_with_c=True,
+        #         qver_get_func=self.probQV.get_smoothed,
+        #         qvmean_get_func=self.probQV.get_mean,
+        #         qv_prob_threshold=self.qv_prob_threshold,
+        #         ece_penalty=self.ice_opts.ece_penalty,
+        #         ece_min_len=self.ice_opts.ece_min_len,
+        #         same_strand_only=True,
+        #         no_qv_or_aln_checking=False,
+        #         max_missed_start=self.ice_opts.max_missed_start,
+        #         max_missed_end=self.ice_opts.max_missed_end,
+        #         full_missed_start=self.ice_opts.full_missed_start,
+        #         full_missed_end=self.ice_opts.full_missed_end,
+        #     ):
+        #         if hit.qID not in self.d:
+        #             self.d[hit.qID] = {}
+        #         if hit.fakecigar is not None:
+        #             # self.add_log("[Liz] fakecigar string is {0}".format(hit.fakecigar))
+        #             self.d[hit.qID][hit.cID] = self.probQV.calc_prob_from_aln(
+        #                 hit.qID, hit.qStart, hit.qEnd, hit.fakecigar
+        #             )
+        # self.add_log("[Liz] {0}-{1}:{2}".format(hit.qID, hit.cID,self.d[hit.qID][hit.cID]))
 
     def g(self, output_filename):
         """
@@ -1001,28 +997,30 @@ class IceIterative2(IceFiles2):
         I'm still keeping this because may eventually use BLASR again
         """
         # for qID, cID, qStart, qEnd, _missed_q, _missed_t, fakecigar, _ece_arr
-        for hit in blasr_against_ref2(
-            output_filename=output_filename,
-            is_FL=self.is_FL,
-            sID_starts_with_c=True,
-            qver_get_func=self.probQV.get_smoothed,
-            qvmean_get_func=self.probQV.get_mean,
-            qv_prob_threshold=self.qv_prob_threshold,
-            ece_penalty=self.ice_opts.ece_penalty,
-            ece_min_len=self.ice_opts.ece_min_len,
-            max_missed_start=self.ice_opts.max_missed_start,
-            max_missed_end=self.ice_opts.max_missed_end,
-            full_missed_start=self.ice_opts.full_missed_start,
-            full_missed_end=self.ice_opts.full_missed_end,
-        ):
+        pass
+        # There is no blasr_against_ref()
+        # for hit in blasr_against_ref2(
+        #     output_filename=output_filename,
+        #     is_FL=self.is_FL,
+        #     sID_starts_with_c=True,
+        #     qver_get_func=self.probQV.get_smoothed,
+        #     qvmean_get_func=self.probQV.get_mean,
+        #     qv_prob_threshold=self.qv_prob_threshold,
+        #     ece_penalty=self.ice_opts.ece_penalty,
+        #     ece_min_len=self.ice_opts.ece_min_len,
+        #     max_missed_start=self.ice_opts.max_missed_start,
+        #     max_missed_end=self.ice_opts.max_missed_end,
+        #     full_missed_start=self.ice_opts.full_missed_start,
+        #     full_missed_end=self.ice_opts.full_missed_end,
+        # ):
 
-            if hit.qID not in self.d:
-                self.d[hit.qID] = {}
+        #     if hit.qID not in self.d:
+        #         self.d[hit.qID] = {}
 
-            if hit.fakecigar is not None:
-                self.d[hit.qID][hit.cID] = self.probQV.calc_prob_from_aln(
-                    hit.qID, hit.qStart, hit.qEnd, hit.fakecigar
-                )
+        #     if hit.fakecigar is not None:
+        #         self.d[hit.qID][hit.cID] = self.probQV.calc_prob_from_aln(
+        #             hit.qID, hit.qStart, hit.qEnd, hit.fakecigar
+        #         )
 
     def run_til_end(self, max_iter=99):
         """

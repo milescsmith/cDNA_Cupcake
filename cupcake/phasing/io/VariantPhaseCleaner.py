@@ -25,7 +25,7 @@ from collections import Counter
 import networkx as nx
 import numpy as np
 
-from phasing.io.VariantPhaser import Haplotypes
+from cupcake.phasing.io.VariantPhaser import Haplotypes
 
 
 def make_haplotype_counts(isoform_tally):

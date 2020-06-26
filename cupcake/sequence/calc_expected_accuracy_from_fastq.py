@@ -34,7 +34,9 @@ def calc_exp_acc(r, qv_trim_5, qv_trim_3):
     return 1.0 - (err_sum / float(qv_len))
 
 
-def main(fastq_filename, output_filename, qv_trim_5, qv_trim_3):
+def cal_expected_accuracy_from_fastq(
+    fastq_filename, output_filename, qv_trim_5, qv_trim_3
+):
     f = open(output_filename, "w")
     for r in SeqIO.parse(open(fastq_filename), "fastq"):
         exp_acc = calc_exp_acc(r, qv_trim_5, qv_trim_3)
@@ -63,7 +65,9 @@ def main():
     )
 
     args = parser.parse_args()
-    main(args.fastq_filename, args.output_filename, args.qv_trim_5, args.qv_trim_3)
+    cal_expected_accuracy_from_fastq(
+        args.fastq_filename, args.output_filename, args.qv_trim_5, args.qv_trim_3
+    )
 
 
 if __name__ == "__main__":

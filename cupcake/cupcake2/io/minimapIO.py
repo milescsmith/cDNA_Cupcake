@@ -227,8 +227,8 @@ class MiniReader(object):
     def __exit__(self, exc_type, exc_value, traceback):
         self.close()
 
-    def __iter__(self):
-        return self
+    # def __iter__(self): # what?
+    #     return self
 
     def __next__(self):
         cur = self.infile.tell()

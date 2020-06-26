@@ -115,7 +115,7 @@ def error_correct_BC_or_UMI(records, key, threshold=1):
     return merge_map
 
 
-def main(
+def umi_bc_error_correct(
     csv_filename,
     output_filename,
     shortread_bc={},
@@ -222,7 +222,7 @@ def main():
             args.dropseq_synthesis_report, bc_repair_dict
         )
 
-    main(
+    umi_bc_error_correct(
         args.input_csv,
         args.output_csv,
         shortread_bc,

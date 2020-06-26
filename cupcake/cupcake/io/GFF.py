@@ -589,9 +589,9 @@ class gmapGFFReader(object):
                         )
                         cds_seq_end = send1
             else:
-                raise Exception("Not supposed to see type {} here!!".format(type))
+                raise Exception(f"Not supposed to see type {type} here!!")
 
-        return rec
+        # return rec
 
 
 class pasaGFFReader(gmapGFFReader):
@@ -791,7 +791,7 @@ class ucscGFFReader(gmapGFFReader):
             assert raw[2] == "exon"
             s, e = int(raw[3]) - 1, int(raw[4])
             rec.add_exon(s, e, s, e, strand, score=None)
-        return rec
+        # return rec
 
 
 def GFFReader(filename):

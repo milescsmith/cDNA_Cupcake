@@ -90,7 +90,7 @@ def read_classify_csv(classify_csv):
     return primer_list, info
 
 
-def main(
+def demux_isoseq_no_genome(
     job_dir=None,
     hq_fafq=None,
     cluster_csv=None,
@@ -171,7 +171,7 @@ def main():
     else:
         primer_names = None
 
-    main(
+    demux_isoseq_no_genome(
         args.job_dir,
         args.hq_fafq,
         args.cluster_csv,

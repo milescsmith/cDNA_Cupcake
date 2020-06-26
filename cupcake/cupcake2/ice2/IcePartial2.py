@@ -72,7 +72,7 @@ from pbtranscript.ice.__init__ import ICE_PARTIAL_PY
 
 from Bio import SeqIO
 
-from cupcake.cupcake2.ice2.IceUtils2 import blasr_against_ref2, daligner_against_ref2
+# from cupcake.cupcake2.ice2.IceUtils2 import blasr_against_ref2, daligner_against_ref2
 from cupcake.cupcake2.tofu2.ToFuOptions2 import add_partial_argument
 
 
@@ -146,38 +146,39 @@ def build_uc_from_partial_daligner(
     seen = set()  # reads seen
     logging.info("Building uc from DALIGNER hits.")
 
-    for la4ice_filename in runner.la4ice_filenames:
-        start_t = time.time()
+    # there is no daligner_against_ref2()
+    # for la4ice_filename in runner.la4ice_filenames:
+    #     start_t = time.time()
 
-        # not providing full_missed_start/end since aligning nFLs, ok to partially align only
-        hitItems = daligner_against_ref2(
-            query_dazz_handler=runner.query_dazz_handler,
-            target_dazz_handler=runner.target_dazz_handler,
-            la4ice_filename=la4ice_filename,
-            is_FL=False,
-            sID_starts_with_c=sID_starts_with_c,
-            qver_get_func=probqv.get_smoothed,
-            qvmean_get_func=probqv.get_mean,
-            qv_prob_threshold=qv_prob_threshold,
-            ece_penalty=ice_opts.ece_penalty,
-            ece_min_len=ice_opts.ece_min_len,
-            same_strand_only=True,
-            no_qv_or_aln_checking=no_qv_or_aln_checking,
-            max_missed_start=ice_opts.max_missed_start,
-            max_missed_end=ice_opts.max_missed_end,
-            full_missed_start=ice_opts.full_missed_start,
-            full_missed_end=ice_opts.full_missed_end,
-        )
+    #     # not providing full_missed_start/end since aligning nFLs, ok to partially align only
+    #     hitItems = daligner_against_ref2(
+    #         query_dazz_handler=runner.query_dazz_handler,
+    #         target_dazz_handler=runner.target_dazz_handler,
+    #         la4ice_filename=la4ice_filename,
+    #         is_FL=False,
+    #         sID_starts_with_c=sID_starts_with_c,
+    #         qver_get_func=probqv.get_smoothed,
+    #         qvmean_get_func=probqv.get_mean,
+    #         qv_prob_threshold=qv_prob_threshold,
+    #         ece_penalty=ice_opts.ece_penalty,
+    #         ece_min_len=ice_opts.ece_min_len,
+    #         same_strand_only=True,
+    #         no_qv_or_aln_checking=no_qv_or_aln_checking,
+    #         max_missed_start=ice_opts.max_missed_start,
+    #         max_missed_end=ice_opts.max_missed_end,
+    #         full_missed_start=ice_opts.full_missed_start,
+    #         full_missed_end=ice_opts.full_missed_end,
+    #     )
 
-        for h in hitItems:
-            if h.ece_arr is not None:
-                if h.cID not in partial_uc:
-                    partial_uc[h.cID] = set()
-                partial_uc[h.cID].add(h.qID)
-                seen.add(h.qID)
-        logging.info(
-            "processing %s took %s sec", la4ice_filename, str(time.time() - start_t)
-        )
+    # for h in hitItems:
+    #     if h.ece_arr is not None:
+    #         if h.cID not in partial_uc:
+    #             partial_uc[h.cID] = set()
+    #         partial_uc[h.cID].add(h.qID)
+    #         seen.add(h.qID)
+    # logging.info(
+    #     "processing %s took %s sec", la4ice_filename, str(time.time() - start_t)
+    # )
 
     for k in partial_uc:
         partial_uc[k] = list(partial_uc[k])
@@ -262,21 +263,21 @@ def build_uc_from_partial_blasr(
     logging.info("Calling blasr_against_ref ...")
 
     # no need to provide full_missed_start/end for nFLs, since is_FL = False
-    hitItems = blasr_against_ref2(
-        output_filename=m5_file,
-        is_FL=False,
-        sID_starts_with_c=sID_starts_with_c,
-        qver_get_func=probqv.get_smoothed,
-        qvmean_get_func=probqv.get_mean,
-        qv_prob_threshold=qv_prob_threshold,
-        ece_penalty=ice_opts.ece_penalty,
-        ece_min_len=ice_opts.ece_min_len,
-        max_missed_start=ice_opts.max_missed_start,
-        max_missed_end=ice_opts.max_missed_end,
-        full_missed_start=ice_opts.full_missed_start,
-        full_missed_end=ice_opts.full_missed_end,
-        same_strand_only=False,
-    )
+    # hitItems = blasr_against_ref2(
+    #     output_filename=m5_file,
+    #     is_FL=False,
+    #     sID_starts_with_c=sID_starts_with_c,
+    #     qver_get_func=probqv.get_smoothed,
+    #     qvmean_get_func=probqv.get_mean,
+    #     qv_prob_threshold=qv_prob_threshold,
+    #     ece_penalty=ice_opts.ece_penalty,
+    #     ece_min_len=ice_opts.ece_min_len,
+    #     max_missed_start=ice_opts.max_missed_start,
+    #     max_missed_end=ice_opts.max_missed_end,
+    #     full_missed_start=ice_opts.full_missed_start,
+    #     full_missed_end=ice_opts.full_missed_end,
+    #     same_strand_only=False,
+    # )
 
     partial_uc = {}  # Maps each isoform (cluster) id to a list of reads
     # which can map to the isoform

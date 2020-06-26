@@ -84,7 +84,7 @@ def read_classify_csv(classify_csv):
     return primer_list, info
 
 
-def main(
+def demux_isoseq_with_genome(
     job_dir=None,
     mapped_fafq=None,
     read_stat=None,
@@ -167,7 +167,7 @@ def main():
     else:
         primer_names = None
 
-    main(
+    demux_isoseq_with_genome(
         args.job_dir,
         args.mapped_fafq,
         args.read_stat,
