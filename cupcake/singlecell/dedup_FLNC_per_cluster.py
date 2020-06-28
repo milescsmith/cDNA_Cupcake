@@ -23,10 +23,10 @@ Outputs:
 - gff
 """
 
-import os, sys, re
+import os, sys
 from csv import DictReader, DictWriter
 from collections import Counter, defaultdict
-from cupcake.cupcake.io.GFF import write_collapseGFF_format, collapseGFFReader
+from cupcake.sequence.GFF import write_collapseGFF_format, collapseGFFReader
 from Bio import SeqIO
 
 CORRECTED_CSV_FILELDS = [

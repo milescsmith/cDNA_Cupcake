@@ -1,12 +1,10 @@
 #!/usr/bin/env python
-import os
-import pdb
 import sys
 from csv import DictReader, DictWriter
 
 from Bio.Seq import Seq
 
-import pysam
+from pysam import pysam
 
 
 def iter_cigar_string(cigar_string):
@@ -148,7 +146,7 @@ def clip_out(
 
                 diff = len(seq2) - umi_bc_len
                 if diff < 0:  # UMI may have started with 'A's
-                    seq2 = d["seq"][A_end + diff :]
+                    seq2 = d["seq"][(A_end + diff) :]
 
                 seq_extra = "NA"
                 if diff > 0:
@@ -246,7 +244,7 @@ def clip_out(
                         or tag.startswith("iq:i:")
                         or tag.startswith("sq:i:")
                     ):
-                        tag = tag[:5] + tag[5 + G_end :]
+                        tag = tag[:5] + tag[(5 + G_end) :]
                         new_tags.append(tag)
                     else:
                         new_tags.append(tag)
@@ -314,7 +312,7 @@ def clip_out(
                         or tag.startswith("iq:i:")
                         or tag.startswith("sq:i:")
                     ):
-                        tag = tag[:5] + tag[5 + c_num :]
+                        tag = tag[:5] + tag[(5 + c_num) :]
                         new_tags.append(tag)
                     else:
                         new_tags.append(tag)
@@ -327,7 +325,9 @@ def clip_out(
             d["qual"] = d["qual"][::-1]
             # now it is BC -- UMI -- TSO -- GGG -- transcript -- polyA
             umi_bc_tso_len = bc_len + umi_len + tso_len
-            G_start, G_end = find_Gstart(d["seq"][umi_bc_tso_len : umi_bc_tso_len + 10])
+            G_start, G_end = find_Gstart(
+                d["seq"][umi_bc_tso_len : (umi_bc_tso_len + 10)]
+            )
 
             # pdb.set_trace()
 
@@ -352,8 +352,8 @@ def clip_out(
                     diff < 0
                 ):  # we may have accidentally trimmed away some bases for BC, can't do anything
                     seq_extra = "NA"
-                    seq_bc = seq2[: bc_len + diff]
-                    seq_umi = seq2[bc_len + diff : umi_bc_len + diff]
+                    seq_bc = seq2[: (bc_len + diff)]
+                    seq_umi = seq2[(bc_len + diff) : (umi_bc_len + diff)]
 
                 # reverse complement BC because it's always listed in rev comp in short read data
                 seq_bc_rev = str(Seq(seq_bc).reverse_complement())
@@ -388,7 +388,7 @@ def clip_out(
                         or tag.startswith("iq:i:")
                         or tag.startswith("sq:i:")
                     ):
-                        tag = tag[:5] + tag[5 + G_end :]
+                        tag = tag[:5] + tag[(5 + G_end) :]
                         new_tags.append(tag)
                     else:
                         new_tags.append(tag)

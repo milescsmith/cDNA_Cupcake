@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 __author__ = "etseng@pacb.com"
 
-import os, sys
+import sys
 from bx.intervals import IntervalTree, Interval
 from Bio import SeqIO
 from csv import DictWriter
@@ -21,7 +21,7 @@ except ImportError:
         file=sys.stderr,
     )
 
-from cupcake.cupcake.io.GFF import collapseGFFReader
+from cupcake.sequence.GFF import collapseGFFReader
 
 
 def get_probe_hit(tree, gene_info, r, is_gtf=False):

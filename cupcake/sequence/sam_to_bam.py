@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 __author__ = "etseng@pacb.com"
 
-import os, sys
+import sys
 import subprocess
 
 

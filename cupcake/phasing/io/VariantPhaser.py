@@ -1,6 +1,5 @@
 __author__ = "etseng@pacb.com"
 
-import pdb
 from collections import defaultdict, namedtuple
 from csv import DictReader
 
@@ -8,7 +7,7 @@ from Bio import SeqIO
 from Bio.Seq import Seq
 
 import vcf
-from cupcake.cupcake.io.BioReaders import GMAPSAMReader
+from cupcake.sequence.BioReaders import GMAPSAMReader
 
 from cupcake.phasing.io.coordinate_mapper import get_base_to_base_mapping_from_sam
 

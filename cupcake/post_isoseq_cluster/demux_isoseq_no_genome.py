@@ -6,7 +6,7 @@ Demultiplex IsoSeq (SMRT Link 8.0) job output (without genome mapping)
 """
 
 import os, re, sys
-from csv import DictReader, DictWriter
+from csv import DictReader
 from collections import defaultdict, Counter
 from Bio import SeqIO
 

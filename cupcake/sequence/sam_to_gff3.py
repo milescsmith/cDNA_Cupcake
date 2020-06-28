@@ -15,41 +15,37 @@ ex: from GMAP
 
 6   cow_hereford    mRNA    109018744   109018861   .   +   .   \
      ID=myid.mrna1;Name=myid;Parent=myid.path1;coverage=29.5;identity=98.3;matches=116;mismatches=2;indels=0;unknowns=0
-
 """
 
-#!/usr/bin/env python
-import os, sys
-import subprocess
-import pandas as pd
+import sys
 from collections import Counter
-from math import floor
+
 # from gtfparse.write_gtf import df_to_gtf
 from BCBio import GFF as BCBio_GFF
 from Bio import SeqIO
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 from Bio.SeqFeature import SeqFeature, FeatureLocation
-from cupcake.cupcake.io.BioReaders import GMAPSAMReader
+from cupcake.sequence.BioReaders import GMAPSAMReader
 
 
 def convert_sam_rec_to_gff3_rec(r, source, qid_index_dict=None):
     """
     :param r: GMAPSAMRecord record
-	:param qid_seen: list of qIDs processed so far -- if redundant, we have to put a unique suffix
+    :param qid_seen: list of qIDs processed so far -- if redundant, we have to put a unique suffix
     :return SeqRecord ready to be written as GFF3
     """
     if r.sID == "*":
-        print("Skipping {} because unmapped.".format(r.qID), file=sys.stderr)
+        print(f"Skipping {r.qID} because unmapped.", file=sys.stderr)
         return None
     t_len = sum(e.end - e.start for e in r.segments)
     seq = Seq("A" * t_len)  # DO NOT CARE since sequence is not written in GFF3
     rec = SeqRecord(seq, r.sID)
     strand = 1 if r.flag.strand == "+" else -1
 
-    indels = r.num_ins + r.num_del
-    mismatches = r.num_nonmatches
-    matches = r.num_mat_or_sub - r.num_nonmatches
+    # indels = r.num_ins + r.num_del
+    # mismatches = r.num_nonmatches
+    # matches = r.num_mat_or_sub - r.num_nonmatches
 
     if qid_index_dict is not None:
         if r.qID in qid_index_dict:
@@ -100,7 +96,6 @@ def convert_sam_to_gff3(sam_filename, output_gff3, source, q_dict=None):
             for r0 in GMAPSAMReader(sam_filename, True, query_len_dict=q_dict)
         ]
         BCBio_GFF.write([x for x in recs if x is not None], f)
-        # df_to_gtf(df=pd.DataFrame([x for x in recs if x is not None]), filename=f)
 
 
 def main():
@@ -138,9 +133,9 @@ def main():
             convert_sam_rec_to_gff3_rec(r0, args.source)
             for r0 in GMAPSAMReader(args.sam_filename, True, query_len_dict=q_dict)
         ]
-        df_to_gtf(df=pd.DataFrame([x for x in recs if x is not None]), filename=f)
+        BCBio_GFF.write([x for x in recs if x is not None], f)
 
-    print("Output written to {}.".format(output_gff3), file=sys.stderr)
+    print(f"Output written to {output_gff3}.", file=sys.stderr)
 
 
 if __name__ == "__main__":

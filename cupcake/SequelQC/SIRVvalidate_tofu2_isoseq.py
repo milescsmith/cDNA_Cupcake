@@ -71,7 +71,7 @@ def make_abundance_from_Sequel_cluster_csv(cluster_csv, collapse_prefix):
             nfl_hit_count[r["read_id"]] += 1
 
     f = open(collapse_prefix + ".abundance.txt", "w")
-    for i in xrange(14):
+    for i in range(14):
         f.write("#\n")
     f.write("pbid\tcount_fl\tcount_nfl\n")
     for line in open(collapse_prefix + ".group.txt"):
@@ -81,7 +81,7 @@ def make_abundance_from_Sequel_cluster_csv(cluster_csv, collapse_prefix):
         for m in members.split(","):
             i = m.find("|")
             if i > 0:
-                m = m[i + 1 :]
+                m = m[(i + 1) :]
             cid = m.split("/")[0]
             total_fl += len(fl_ass[cid])
             total_nfl += len(fl_ass[cid]) + len(
@@ -140,7 +140,7 @@ def collapse_to_SIRV(out_dir, hq_fastq, cluster_csv, min_count, aligner_choice):
     if subprocess.check_call(cmd, shell=True) != 0:
         raise Exception(f"ERROR CMD: {cmd}")
 
-    ### make_abundance_from_CSV
+    # make_abundance_from_CSV
     collapse_prefix = hq_fastq + ".no5merge.collapsed"
     make_abundance_from_Sequel_cluster_csv(cluster_csv, collapse_prefix)
 

@@ -54,7 +54,7 @@ def make_file_for_subsample(
         sys.exit(-1)
 
     if not include_single_exons:
-        from cupcake.cupcake.io.GFF import collapseGFFReader
+        from cupcake.sequence.GFF import collapseGFFReader
 
         gff_filename = input_prefix + ".gff"
         print(

@@ -1,11 +1,8 @@
 __author__ = "etseng@pacb.com"
 
 
-import os
-import pdb
 import re
 import sys
-import time
 from collections import defaultdict, namedtuple
 from csv import DictWriter
 
@@ -13,7 +10,7 @@ from Bio import SeqIO
 
 from bx.intervals import IntervalTree
 from bx.intervals.cluster import ClusterTree
-from cupcake.cupcake.io import GFF
+from cupcake.sequence import GFF
 from cupcake.cupcake.tofu import compare_junctions
 
 seqid_rex = re.compile("(\\S+\\.\\d+)\\.(\\d+)")

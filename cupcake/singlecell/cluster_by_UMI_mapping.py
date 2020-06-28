@@ -9,7 +9,7 @@ from multiprocessing import Process
 
 from Bio import SeqIO
 
-import cupcake.cupcake.io.BioReaders as BioReaders
+import cupcake.sequence.BioReaders as BioReaders
 import pysam
 from bx.intervals.cluster import ClusterTree
 
@@ -39,7 +39,7 @@ def collect_cluster_results_multithreaded(
                 out_dir,
                 output_prefix + "." + str(i),
                 use_BC,
-                indices[(i * chunk_size) : (i + 1) * chunk_size],
+                indices[(i * chunk_size) : ((i + 1) * chunk_size)],
             ),
         )
         p.start()

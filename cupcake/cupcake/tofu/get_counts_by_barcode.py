@@ -15,7 +15,7 @@ Optional input: primer names in a text file where each line is:
 
 """
 
-import os, sys
+import sys
 from csv import DictReader
 from collections import defaultdict
 from collections import Counter

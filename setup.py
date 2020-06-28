@@ -16,7 +16,6 @@ EXT_MODULES = [
         "cupcake.cupcake.tofu.branch.c_branch",
         ["cupcake/cupcake/tofu/branch/c_branch.pyx"],
     ),
-    Extension("cupcake.cupcake.ice.find_ECE", ["cupcake/cupcake/ice/find_ECE.pyx"]),
 ]
 
 setup(
@@ -47,11 +46,12 @@ setup(
     keywords=["isoseq", "rnaseq", "pacbio", "long reads"],
     packages=find_packages(),
     package_dir={"cupcake": "cupcake"},
-    package_data={"": ["cupcake/cupcake/test_data/*.*"]},
+    package_data={"": ["tests/test_data/*.*"]},
     include_package_data=True,
     setup_requires=["numpy", "cython"],
     install_requires=[
-        l.strip() for l in Path("requirements.txt").read_text("utf-8").splitlines()
+        line.strip()
+        for line in Path("requirements.txt").read_text("utf-8").splitlines()
     ],
     # this might be better to reformat into a series of subcommands
     entry_points={
@@ -72,24 +72,8 @@ setup(
             "chain_fusion_samples = cupcake.cupcake.tofu.counting.chain_fusion_samples:main",
             "summarize_junctions = cupcake.cupcake.tofu.counting.summarize_sample_GFF_junctions:main",
             "scrub_sample_GFFs = cupcake.cupcake.tofu.counting.scrub_sample_GFF_junctions:main",
-            # cupcake2 submodule
-            "run_Consensus = cupcake.cupcake2.tofu2.ice_pbdagcon2:runConsensus",
-            "run_preCluster = cupcake.cupcake2.tofu2.run_preCluster:main",
-            "run_IceInit2 = cupcake.cupcake2.tofu2.run_IceInit2:main",
-            "run_IceIterative2 = cupcake.cupcake2.tofu2.run_IceIterative2:main",
-            "run_IcePartial2 = cupcake.cupcake2.tofu2.run_IcePartial2:main",
-            "run_IceArrow2 = cupcake.cupcake2.tofu2.run_IceArrow2:main",
-            "SeqSplitter = cupcake.cupcake2.io.SeqSplitter:main",
-            "picking_up_ice2 = cupcake.cupcake2.tofu2.picking_up_ice2:main",
             # uh, phasing! are we still doing phasing?
             "make_fake_genome = cupcake.phasing.create_fake_genome:main",
-            # " = cupcake.phasing.run_phaser",
-            # " = cupcake.sequence.sam_to_bam",
-            # " = cupcake.sequence.err_correct_w_genome",
-            # " = cupcake.sequence.sam_to_gff3",
-            # " = cupcake.sequence.STAR",
-            # " = cupcake.sequence.BED",
-            # " = cupcake.sequence.coordinate_mapper",
         ]
     },
 )

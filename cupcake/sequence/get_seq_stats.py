@@ -2,9 +2,6 @@
 
 __version__ = "1.0"
 
-import os
-import sys
-
 import numpy as np
 from Bio import SeqIO
 

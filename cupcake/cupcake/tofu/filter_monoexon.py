@@ -13,12 +13,11 @@ Example:
 """
 
 import os, sys
-from collections import defaultdict
 from csv import DictReader, DictWriter
 
 from Bio import SeqIO
 
-from cupcake.cupcake.io import GFF
+from cupcake.sequence import GFF
 
 
 def sanity_check_collapse_input(input_prefix):
@@ -27,10 +26,10 @@ def sanity_check_collapse_input(input_prefix):
     1. the count, gff, rep files exist
     2. the number of records agree among the three
     """
-    group_filename = input_prefix + ".group.txt"
-    count_filename = input_prefix + ".abundance.txt"
-    gff_filename = input_prefix + ".gff"
-    rep_filename = input_prefix + ".rep.fq"
+    # group_filename =  f"{input_prefix}.group.txt"
+    count_filename = f"{input_prefix}.abundance.txt"
+    gff_filename = f"{input_prefix}.gff"
+    rep_filename = f"{input_prefix}.rep.fq"
     if not os.path.exists(count_filename):
         print("File {} does not exist. Abort!".format(count_filename), file=sys.stderr)
         sys.exit(-1)

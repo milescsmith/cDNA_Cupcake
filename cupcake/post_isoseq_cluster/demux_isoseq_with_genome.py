@@ -6,7 +6,7 @@ Demultiplex IsoSeq (SMRT Link 8.0) job output (with genome mapping)
 """
 
 import os, re, sys
-from csv import DictReader, DictWriter
+from csv import DictReader
 from collections import defaultdict, Counter
 from Bio import SeqIO
 
@@ -36,9 +36,9 @@ def link_files(src_dir, out_dir="./"):
     mapped_fastq = os.path.join(
         os.path.abspath(src_dir), "outputs", "collapse_isoforms.fastq"
     )
-    mapped_gff = os.path.join(
-        os.path.abspath(src_dir), "outputs", "collapse_isoforms.gff"
-    )
+    # mapped_gff = os.path.join(
+    #     os.path.abspath(src_dir), "outputs", "collapse_isoforms.gff"
+    # )
     read_stat = os.path.join(
         os.path.abspath(src_dir), "outputs", "collapse_isoforms.read_stat.txt"
     )

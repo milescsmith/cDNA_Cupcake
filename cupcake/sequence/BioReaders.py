@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 """
-Should always be faithful duplicate of sequence/BioReaders.py
+Should always be faithful duplicate of sequence/BioReaders.py - why?
 Duplicated here for tofu installation. This one is called via cupcake.io.BioReaders.
 """
 
-import re, sys
+import re
 from collections import namedtuple
 
 Interval = namedtuple("Interval", ["start", "end"])
@@ -341,7 +341,7 @@ class SAMRecord:
                 cur_start = cur_end + num
                 cur_end = cur_start
             else:
-                raise Exception("Unrecognized cigar character {}!".format(type))
+                raise Exception(f"Unrecognized cigar character {type}!")
             first_thing = False
         if cur_start != cur_end:
             segments.append(Interval(cur_start, cur_end))
@@ -349,9 +349,9 @@ class SAMRecord:
         return segments
 
     @classmethod
-    def parse_sam_flag(self, flag):
+    def parse_sam_flag(cls, flag):
         """
-		Heng Li's SAM https://samtools.github.io/hts-specs/SAMv1.pdf
+        Heng Li's SAM https://samtools.github.io/hts-specs/SAMv1.pdf
         1 -- read is one of a pair
         2 -- alignment is one end of proper PE alignment          (IGNORE)
         4 -- read has no reported alignments                      (IGNORE)
@@ -361,9 +361,9 @@ class SAMRecord:
         64 -- first mate in pair
         128 -- second mate in pair
         256 -- not primary alignment
-		512 -- not passing filters
-		1024 -- PCR or optical duplicate
-		2048 -- supplementary alignment
+        512 -- not passing filters
+        1024 -- PCR or optical duplicate
+        2048 -- supplementary alignment
 
         Return: SAMflag
         """

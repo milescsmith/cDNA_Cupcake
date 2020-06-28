@@ -1,6 +1,6 @@
 #!/usr/bin/env python
-import os, sys
-from cupcake.cupcake.io import GFF
+import sys
+from cupcake.sequence import GFF
 
 
 def get_gff_from_list(gff_filename, listfile, partial_ok=False):

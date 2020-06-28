@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 __author__ = "etseng@pacb.com"
 
-import os, re, sys
+import re, sys
 from Bio import SeqIO
 from csv import DictReader, DictWriter
 from collections import Counter
