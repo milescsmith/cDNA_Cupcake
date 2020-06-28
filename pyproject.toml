@@ -2,6 +2,9 @@
 requires = ["setuptools>=42", "wheel", "setuptools_scm[toml]>=3.4", "numpy>1.18",  "cython>=0.29"]
 build-backend = 'setuptools.build_meta'
 
+[tool.setuptools_scm]
+write_to = "cupcake/_version.py"
+
 [tool.black]
 line-length = 88
 target-version = ['py37', 'py38']

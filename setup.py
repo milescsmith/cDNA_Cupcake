@@ -2,7 +2,13 @@ from pathlib import Path
 
 import numpy as np
 from setuptools import Extension, setup, find_packages
+from pkg_resources import get_distribution, DistributionNotFound
 
+try:
+    __version__ = get_distribution(__name__).version
+except DistributionNotFound:
+     # package is not installed
+    pass
 from Cython.Build import cythonize
 
 __author__ = "etseng@pacb.com"
@@ -21,6 +27,11 @@ EXT_MODULES = [
 setup(
     name="cupcake",
     # version="12.2.4",
+    use_scm_version=True,
+    use_scm_version={
+        'write_to': 'version.py',
+        'write_to_template': '__version__ = "{version}"',
+        'tag_regex': r'^(?P<prefix>v)?(?P<version>[^\+]+)(?P<suffix>.*)?$'},
     author="Elizabeth Tseng",
     author_email="etseng@pacb.com",
     description="Miscellaneous collection of Python and R scripts for processing Iso-Seq data",
