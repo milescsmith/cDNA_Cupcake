@@ -1,0 +1,71 @@
+[build-system]
+requires = ["setuptools>=42", "wheel", "setuptools_scm[toml]>=3.4"]
+build-backend = 'setuptools.build_meta'
+
+[tool.black]
+line-length = 88
+target-version = ['py37', 'py38']
+skip-string-normalization = true
+
+[tool.poetry]
+name = "cupcake"
+description = "Miscellaneous collection of Python and R scripts for processing Iso-Seq data"
+authors = ["Elizabeth Tseng <etseng@pacb.com>"]
+license = "BSD3"
+readme = "README.rst"
+repository = "https://github.com/Magdoll/cDNA_Cupcake"
+classifiers = [
+        "Development Status :: 5 - Production/Stable",
+        "Environment :: Console",
+        "Intended Audience :: Science/Research",
+        "License :: OSI Approved :: BSD License",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Operating System :: MacOS :: MacOS X",
+        "Operating System :: POSIX :: Linux",
+        "Topic :: Scientific/Engineering :: Bio-Informatics",
+    ]
+keywords = ["isoseq", "rnaseq", "pacbio", "long reads"]
+
+[tool.poetry.scripts]
+pygmst = "pygmst.pygmst:gmst"
+evaluate_alignment_sam = "cupcake.annotation.alignment_stats_from_sam:main"
+make_file_for_subsample = "cupcake.annotation.make_file_for_subsampling_from_collapsed:main"
+parse_matchAnnot = "cupcake.annotation.parse_matchAnnot:main"
+subsample_with_category = "cupcake.annotation.subsample_with_category:main"
+subsample = "cupcake.annotation.subsample:main"
+collapse_isoforms_by_sam = "cupcake.cupcake.tofu.collapse_isoforms_by_sam:main"
+get_abundance_post_collapse = "cupcake.cupcake.tofu.get_abundance_post_collapse:main"
+filter_by_count = "cupcake.cupcake.tofu.filter_by_count:main"
+filter_away_subset = "cupcake.cupcake.tofu.filter_away_subset:main"
+fusion_finder = "cupcake.cupcake.tofu.fusion_finder:main"
+chain_samples = "cupcake.cupcake.tofu.counting.chain_samples:main"
+chain_fusion_samples = "cupcake.cupcake.tofu.counting.chain_fusion_samples:main"
+summarize_junctions = "cupcake.cupcake.tofu.counting.summarize_sample_GFF_junctions:main"
+scrub_sample_GFFs = "cupcake.cupcake.tofu.counting.scrub_sample_GFF_junctions:main"
+
+[tool.poetry.dependencies]
+python = "^3.7"
+numpy = "^1.18"
+biopython = "^1.76"
+bx-python = "^0.8.8"
+scikit-learn = "^0.23"
+pysam = "^0.16"
+bcbio-gff = "^0.6.6"
+pandas = "^1.0"
+pyvcf = "^0.6"
+networkx = "^2.4"
+cython = "^0.29"
+pre-commit = "^2.5"
+pbcoretools = { git = "https://github.com/PacificBiosciences/pbcoretools" }
+pbcore = { git = "https://github.com/PacificBiosciences/pbcore" }
+pbcommand = { git = "https://github.com/PacificBiosciences/pbcommand" }
+setuptools-scm  = "^4.1"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.4"
+
+# [build-system]
+# requires = ["poetry>=0.12"]
+# build-backend = "poetry.masonry.api"

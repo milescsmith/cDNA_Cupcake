@@ -20,7 +20,7 @@ EXT_MODULES = [
 
 setup(
     name="cupcake",
-    version="12.2.4",
+    # version="12.2.4",
     author="Elizabeth Tseng",
     author_email="etseng@pacb.com",
     description="Miscellaneous collection of Python and R scripts for processing Iso-Seq data",
@@ -48,7 +48,7 @@ setup(
     package_dir={"cupcake": "cupcake"},
     package_data={"": ["tests/test_data/*.*"]},
     include_package_data=True,
-    setup_requires=["numpy", "cython"],
+    setup_requires=["numpy", "cython", "setuptools_scm"],
     install_requires=[
         line.strip()
         for line in Path("requirements.txt").read_text("utf-8").splitlines()
