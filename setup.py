@@ -48,7 +48,8 @@ setup(
     package_dir={"cupcake": "cupcake"},
     package_data={"": ["tests/test_data/*.*"]},
     include_package_data=True,
-    setup_requires=["numpy", "cython", "setuptools_scm"],
+    # setup_requires=["numpy", "cython", "setuptools_scm"],
+    setup_requires=["cython", "setuptools_scm"],
     install_requires=[
         line.strip()
         for line in Path("requirements.txt").read_text("utf-8").splitlines()
