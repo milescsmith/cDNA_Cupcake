@@ -7,7 +7,7 @@ import sys
 
 from Bio import SeqIO
 
-import cupcake.cupcake.io.GFF as GFF
+import cupcake.sequence.GFF as GFF
 from bx.intervals.cluster import ClusterTree
 
 """

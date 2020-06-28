@@ -5,8 +5,8 @@ __author__ = "etseng@pacb.com"
 Given a pooled input GFF + demux CSV file, write out per-{barcode group} GFFs
 If input fasta/fastq is given, optionally also output per-{barcode group} FASTA/FASTQ
 """
-import os, re, sys
-import cupcake.cupcake.io.GFF as GFF
+import re, sys
+import cupcake.sequence.GFF as GFF
 from csv import DictReader
 from collections import defaultdict
 from Bio import SeqIO
@@ -22,9 +22,7 @@ def get_type_fafq(in_filename):
         return "fastq"
     else:
         raise Exception(
-            "Unrecognized file suffix .{}! Must end with .fasta or .fastq!".format(
-                in_filename[in_filename.find(".") :]
-            )
+            f"Unrecognized file suffix .{in_filename[in_filename.find('.'):]}! Must end with .fasta or .fastq!"
         )
 
 

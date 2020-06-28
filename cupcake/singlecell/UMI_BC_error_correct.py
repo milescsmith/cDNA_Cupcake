@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-import os
 import sys
 from collections import Counter, defaultdict
 from csv import DictReader, DictWriter
@@ -111,7 +110,7 @@ def error_correct_BC_or_UMI(records, key, threshold=1):
 
     # if len(merge_map) > 0:
     #    print merge_map
-    ##   raw_input()
+    #    raw_input()
     return merge_map
 
 

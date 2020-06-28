@@ -2,6 +2,7 @@
 import math
 import random
 from csv import DictReader
+from collections import defaultdict
 
 
 def get_counts(count_filename, min_fl_count=2, key="id", min_len=None, max_len=None):
@@ -23,9 +24,6 @@ def get_counts(count_filename, min_fl_count=2, key="id", min_len=None, max_len=N
         counts += [k] * v
 
     return total, counts
-
-
-from collections import defaultdict
 
 
 def subsample(total, counts, iter=100, min_fl_count=2, step=10 ** 4):

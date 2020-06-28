@@ -4,7 +4,7 @@ __version__ = "1.2"
 
 import os
 import subprocess
-import sys
+
 from collections import defaultdict
 from csv import DictReader
 
@@ -40,7 +40,7 @@ def make_abundance_from_Sequel_cluster_csv(cluster_csv, collapse_prefix):
     f2 = open(collapse_prefix + ".read_stat.txt", "w")
     f2.write("id\tlength\tis_fl\tstat\tpbid\n")
     f = open(collapse_prefix + ".abundance.txt", "w")
-    for i in xrange(14):
+    for i in range(14):
         f.write("#\n")
     f.write("pbid\tcount_fl\n")
     for line in open(collapse_prefix + ".group.txt"):
@@ -98,7 +98,7 @@ def collapse_to_mm10(
     if subprocess.check_call(cmd, shell=True) != 0:
         raise Exception(f"ERROR CMD: {cmd}")
 
-    ### make_abundance_from_CSV
+    # make_abundance_from_CSV
     collapse_prefix = hq_fastq + ".no5merge.collapsed"
     smrtlink.make_abundance_from_Sequel_cluster_csv(
         cluster_csv, collapse_prefix, isoseq_version

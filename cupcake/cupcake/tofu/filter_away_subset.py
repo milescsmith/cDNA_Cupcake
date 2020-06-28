@@ -27,7 +27,7 @@ from csv import DictReader, DictWriter
 
 from Bio import SeqIO
 
-from cupcake.cupcake.io import GFF
+from cupcake.sequence import GFF
 from cupcake.cupcake.tofu import compare_junctions
 
 
@@ -37,7 +37,7 @@ def sanity_check_collapse_input(input_prefix):
     1. the count, gff, rep files exist
     2. the number of records agree among the three
     """
-    group_filename = input_prefix + ".group.txt"
+    # group_filename = input_prefix + ".group.txt"
     count_filename = input_prefix + ".abundance.txt"
     gff_filename = input_prefix + ".gff"
     rep_filenames = [
@@ -111,7 +111,7 @@ def read_count_file(count_filename):
 
 def can_merge(m, r1, r2, internal_fuzzy_max_dist):
     if m == "subset":
-        r1, r2 = r2, r1  #  rotate so r1 is always the longer one
+        r1, r2 = r2, r1  # rotate so r1 is always the longer one
     if m == "super" or m == "subset":
         n2 = len(r2.ref_exons)
         if r1.strand == "+":

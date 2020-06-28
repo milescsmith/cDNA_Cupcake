@@ -8,7 +8,6 @@ ex:
 i0_LQ_sample32f89e|c32/f1p0/929 isoform=c32;full_length_coverage=1;non_full_length_coverage=0;isoform_length=929;expected_accuracy=1.0
 """
 
-import os, sys
 from Bio import SeqIO
 
 

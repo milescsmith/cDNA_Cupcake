@@ -275,7 +275,7 @@ def main_maize(ki11_snps=None, dirs=None):
 
 
 if __name__ == "__main__":
-    from csv import DictReader
+    # from csv import DictReader
 
     main_brangus(
         sys.argv[1], sys.argv[2]

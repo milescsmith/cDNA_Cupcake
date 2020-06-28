@@ -9,7 +9,6 @@ Requires pbcore from SA3.x! So putting this in a separate script for dev.
 Note: also "approximates" ZMW length by using last subread end
 """
 
-import os, sys
 from collections import defaultdict
 from pbcore.io import SubreadSet
 

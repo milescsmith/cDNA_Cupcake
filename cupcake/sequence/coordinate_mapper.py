@@ -1,6 +1,5 @@
 #!/usr/bin/env python
-import os, sys
-import pdb
+
 import bisect
 from bx.intervals import Interval
 from Bio.Seq import Seq
@@ -192,7 +191,7 @@ def get_exon_coordinates(exons, start, end):
                         start - acc_lens[i - 1] + exons[i - 1].start, exons[i - 1].end
                     )
                 ]
-                + exons[i : j - 1]
+                + exons[i : (j - 1)]
                 + [
                     Interval(
                         exons[j - 1].start, end - acc_lens[j - 1] + exons[j - 1].start

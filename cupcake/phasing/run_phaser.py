@@ -12,11 +12,11 @@ import cupcake.phasing.io.MPileUpVariantCaller as VC
 import cupcake.phasing.io.SAMMPileUpReader as sp
 from cupcake.phasing.io import VariantPhaseCleaner, VariantPhaser
 
-try:
-    import vcf
-except ImportError:
-    print("Cannot import vcf! Please install pyvcf!", file=sys.stderr)
-    sys.exit(-1)
+# try:
+#     import vcf
+# except ImportError:
+#     print("Cannot import vcf! Please install pyvcf!", file=sys.stderr)
+#     sys.exit(-1)
 
 MIN_COVERAGE = 10  # minimum number of FL reads for a gene to do SNP calling and phasing
 ERR_SUB = 0.005
@@ -44,13 +44,13 @@ args = parser.parse_args()
 
 # remove potential past run output
 past_files = [
-    args.output_prefix + ".NO_SNPS_FOUND",
-    args.output_prefix + ".NO_HAPS_FOUND",
-    args.output_prefix + ".log",
-    args.output_prefix + ".human_readable.txt",
-    args.output_prefix + ".vcf",
-    args.output_prefix + ".cleaned.human_readable.txt",
-    args.output_prefix + ".cleaned.vcf",
+    f"{args.output_prefix}.NO_SNPS_FOUND",
+    f"{args.output_prefix}.NO_HAPS_FOUND",
+    f"{args.output_prefix}.log",
+    f"{args.output_prefix}.human_readable.txt",
+    f"{args.output_prefix}.vcf",
+    f"{args.output_prefix}.cleaned.human_readable.txt",
+    f"{args.output_prefix}.cleaned.vcf",
 ]
 
 for file in past_files:

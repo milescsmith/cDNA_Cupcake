@@ -4,9 +4,6 @@ __version__ = "1.2"
 
 import os
 import subprocess
-import sys
-from collections import defaultdict
-from csv import DictReader
 
 import cupcake.SequelQC.SIRVvalidate_smrtlink_isoseq as smrtlink
 
@@ -109,7 +106,7 @@ def collapse_to_hg38(
     if subprocess.check_call(cmd, shell=True) != 0:
         raise Exception(f"ERROR CMD: {cmd}")
 
-    ### make_abundance_from_CSV
+    # make_abundance_from_CSV
     collapse_prefix = hq_fastq + ".no5merge.collapsed"
     cmd = "get_abundance_post_collapse.py " + collapse_prefix + " cluster_report.csv"
     if subprocess.check_call(cmd, shell=True) != 0:

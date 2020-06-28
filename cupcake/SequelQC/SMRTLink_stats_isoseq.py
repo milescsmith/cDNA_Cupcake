@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 __author__ = "etseng@pacb.com"
 
-import os, sys, glob, datetime
+import os, glob, datetime
 import numpy as np
 import json
 from Bio import SeqIO

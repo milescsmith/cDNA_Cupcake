@@ -14,7 +14,7 @@ given an input transcript sequence ---
 import os, sys, random
 from collections import Counter
 from Bio import SeqIO
-from cupcake.simulate import sim_seq
+from cupcake.simulate.simulate import sim_seq
 from cupcake.phasing.io.VariantPhaser import Haplotypes
 
 SNP_INTERVAL = 300  # 1 snp per 300 bp

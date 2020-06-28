@@ -2,7 +2,7 @@
 __author__ = "etseng@pacb.com"
 
 import os, sys
-from cupcake.cupcake.io.SeqReaders import LazyFastaReader
+from cupcake.sequence.SeqReaders import LazyFastaReader
 from cupcake.phasing.io.MummerSNPReader import write_snp_to_vcf
 
 

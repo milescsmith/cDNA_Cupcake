@@ -1,10 +1,7 @@
+#!/usr/bin/env python
 __author__ = "etseng@pacb.com"
 
-import glob
-
-#!/usr/bin/env python
 import os
-import pdb
 import shutil
 import sys
 from collections import OrderedDict, defaultdict
@@ -14,7 +11,7 @@ from multiprocessing import Process
 from Bio import SeqIO
 
 from bx.intervals.cluster import ClusterTree
-from cupcake.cupcake.io import GFF
+from cupcake.sequence import GFF
 from cupcake.cupcake.tofu.counting import combine_abundance_across_samples as sp
 
 

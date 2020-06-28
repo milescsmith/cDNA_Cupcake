@@ -13,10 +13,9 @@ Suggested process is:
 """
 import os, sys
 from collections import defaultdict
-from csv import DictReader, DictWriter
-import cupcake.cupcake.io.GFF as GFF
+from csv import DictWriter
+import cupcake.sequence.GFF as GFF
 import numpy as np
-from Bio.Seq import Seq
 from Bio import SeqIO
 from sklearn.cluster import Birch
 
@@ -203,8 +202,8 @@ def summarize_junctions(
                     # f.write("NA\t")
                 else:
                     up, down = (
-                        genome_d[_chr][_donor + 1 : _donor + 3],
-                        genome_d[_chr][_accep - 2 : _accep],
+                        genome_d[_chr][(_donor + 1) : (_donor + 3)],
+                        genome_d[_chr][(_accep - 2) : _accep],
                     )
                     if _strand == "+":
                         rec["genome"] = "{}-{}".format(

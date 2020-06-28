@@ -50,7 +50,7 @@ __VCF_EXAMPLE__ = """
 
 import os, sys
 import vcf
-from cupcake.cupcake.io.SeqReaders import LazyFastaReader
+from cupcake.sequence.SeqReaders import LazyFastaReader
 
 
 class SNPRecord(object):

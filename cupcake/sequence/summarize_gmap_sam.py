@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import os, sys
+import sys
 from collections import defaultdict
 from Bio import SeqIO
 from cupcake.sequence import BioReaders

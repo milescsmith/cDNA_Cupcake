@@ -23,7 +23,8 @@ We would get the loci (chr:start-end strand) from the config file in each direct
 
 
 import os, sys, glob
-from collections import defaultdict
+
+# from collections import defaultdict
 import vcf
 
 

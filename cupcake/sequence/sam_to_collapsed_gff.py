@@ -1,7 +1,7 @@
 #!/usr/bin/env python
-import os, sys
-from cupcake.cupcake.io.GFF import write_collapseGFF_format
-from cupcake.cupcake.io.BioReaders import GMAPSAMReader
+import sys
+from cupcake.sequence.GFF import write_collapseGFF_format
+from cupcake.sequence.BioReaders import GMAPSAMReader
 
 
 def main():
@@ -33,7 +33,7 @@ def main():
             r.cds_exons = None
             write_collapseGFF_format(f, r)
 
-    print("Output written to {}.".format(output_gff), file=sys.stderr)
+    print(f"Output written to {output_gff}.", file=sys.stderr)
 
 
 if __name__ == "__main__":
