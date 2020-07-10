@@ -1,3 +1,4 @@
+import os.path as osp
 from pathlib import Path
 
 import numpy as np
@@ -5,7 +6,14 @@ from setuptools import Extension, setup, find_packages
 
 from Cython.Build import cythonize
 
-__author__ = "etseng@pacb.com"
+try:
+    with open(osp.join("cupcake", "__about__.py")) as f:
+        exec(f.read())
+except:
+    __author__ = "Elizabeth Tseng"
+    __email__ = "etseng@pacb.com"
+    __version__ = "unknown"
+
 
 EXT_MODULES = [
     Extension(
@@ -20,10 +28,9 @@ EXT_MODULES = [
 
 setup(
     name="cupcake",
-    # version="12.2.4",
-    use_scm_version=True,
-    author="Elizabeth Tseng",
-    author_email="etseng@pacb.com",
+    version=__version__,
+    author=__author__,
+    author_email=__email__,
     description="Miscellaneous collection of Python and R scripts for processing Iso-Seq data",
     long_description=Path("README.rst").read_text("utf-8"),
     url="https://github.com/Magdoll/cDNA_Cupcake",
