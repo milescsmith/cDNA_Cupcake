@@ -17,4 +17,3 @@ black
 ipython
 pylint
 mypy
-setuptools-scm
