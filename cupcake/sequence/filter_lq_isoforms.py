@@ -7,7 +7,7 @@ Sequence headers must have:
 @i0_LQ_sample32f89e|c31/f12p0/433 isoform=c31;full_length_coverage=12;non_full_length_coverage=0;isoform_length=433;expected_accuracy=0.300
 
 """
-import os, sys
+import sys
 from Bio import SeqIO
 
 

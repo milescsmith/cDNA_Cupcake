@@ -5,7 +5,7 @@ Most of the code follows Juliet's code at
 https://github.com/PacificBiosciences/minorseq/blob/develop/src/AminoAcidCaller.cpp
 
 """
-import os, sys
+
 import scipy.stats as stats
 from collections import Counter
 

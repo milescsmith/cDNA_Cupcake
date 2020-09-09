@@ -30,8 +30,8 @@ from csv import DictWriter
 
 from Bio import SeqIO
 
-from cupcake.cupcake.io.BioReaders import GMAPSAMReader
-from cupcake.cupcake.io.GFF import collapseGFFReader
+from cupcake.sequence.BioReaders import GMAPSAMReader
+from cupcake.sequence.GFF import collapseGFFReader
 
 FIELDNAMES_REPORT1 = [
     "seqid",
@@ -129,8 +129,8 @@ def get_donor_acceptor(genome_d, chrom, strand, pos1, pos2):
 
     :return: donor sequence (ex: "GT"), acceptor sequence (ex: "AG")
     """
-    seq1 = genome_d[chrom][pos1 + 1 : pos1 + 3].seq
-    seq2 = genome_d[chrom][pos2 - 2 : pos2].seq
+    seq1 = genome_d[chrom][(pos1 + 1) : (pos1 + 3)].seq
+    seq2 = genome_d[chrom][(pos2 - 2) : pos2].seq
     if strand == "+":
         return str(seq1).upper(), str(seq2).upper()
     else:

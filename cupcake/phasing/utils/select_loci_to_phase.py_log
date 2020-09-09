@@ -3,7 +3,7 @@
 import os, sys
 import cupcake.cupcake.tofu.filter_away_subset as sp
 from Bio import SeqIO
-from cupcake.cupcake.io.SeqReaders import LazyFastqReader
+from cupcake.sequence.SeqReaders import LazyFastqReader
 
 print >> sys.stderr, "Reading isoseq_flnc.fastq..."
 
@@ -35,7 +35,7 @@ print >> sys.stderr, "Reading read_stat...."
 #        else:
 #            poor_zmws_not_in_rich.add(zmw)
 
-from cupcake.cupcake.io.GFF import collapseGFFReader
+from cupcake.sequence.GFF import collapseGFFReader
 #gff_regions = {} # loci --> chr, strand, min start, max end
 #for r in collapseGFFReader('hq.no5merge.collapsed.filtered.gff'):
 #    locus = r.seqid[:r.seqid.rfind('.')]

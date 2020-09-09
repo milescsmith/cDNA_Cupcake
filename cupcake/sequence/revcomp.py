@@ -2,7 +2,7 @@
 
 __version__ = "1.0"
 
-import os, sys
+import sys
 from Bio import Seq
 
 for seq in sys.argv[1:]:

@@ -9,7 +9,7 @@ from multiprocessing import Process
 
 from Bio import SeqIO
 
-import cupcake.cupcake.io.BioReaders as BioReaders
+import cupcake.sequence.BioReaders as BioReaders
 import pysam
 from bx.intervals.cluster import ClusterTree
 
@@ -39,7 +39,7 @@ def collect_cluster_results_multithreaded(
                 out_dir,
                 output_prefix + "." + str(i),
                 use_BC,
-                indices[(i * chunk_size) : (i + 1) * chunk_size],
+                indices[(i * chunk_size) : ((i + 1) * chunk_size)],
             ),
         )
         p.start()
@@ -337,7 +337,8 @@ def sep_by_UMI(
                 "index": loci_index,
                 "UMI": umi,
                 "BC": bc,
-                "locus": "{}:{}-{}".format(chrom, s, e),
+                "locus": f"{chrom}:{s}-{e}",
+                "size": len(members_indices),
                 "members": ",".join(member_ids),
             }
             f_out.writerow(info)
@@ -407,7 +408,7 @@ def run(args):
     }
 
     f = open(args.output_prefix + "_founder_info.csv", "w")
-    f_out = DictWriter(f, fieldnames=["index", "UMI", "BC", "locus", "members"])
+    f_out = DictWriter(f, fieldnames=["index", "UMI", "BC", "locus", "size", "members"])
     f_out.writeheader()
     m = iter_sorted_gmap_record(
         sam_filename=args.sorted_sam,

@@ -84,10 +84,10 @@ def read_group_filename(group_filename, is_cid=True):
     PBfusion.1      HQ_sample0ZPg9hS7|cb7607_c93041/f2p0/1713
     PBfusion.2      HQ_sample0ZPg9hS7|cb7607_c16635/f3p0/810,HQ_sample0ZPg9hS7|cb7607_c32934/f2p1/1066
 
-	For IsoSeq3, two possible flavors depending on using conda version or SL Mapping version:
-	PB.1.1	transcript/0,transcript/1
-	(or)
-	PB.1.1	Sample1_RC0_50pM_transcript/0,Sample1_RC0_50pM_transcript/1   <-- in this case we want to strip the prefix out, just keep 'transcript/0'
+    For IsoSeq3, two possible flavors depending on using conda version or SL Mapping version:
+    PB.1.1	transcript/0,transcript/1
+    (or)
+    PB.1.1	Sample1_RC0_50pM_transcript/0,Sample1_RC0_50pM_transcript/1   <-- in this case we want to strip the prefix out, just keep 'transcript/0'
 
     Note: LQ/HQ isoforms use the _HQ_ or _LQ_ prefix, but in cluster_report.csv it will be _ICE_
     So we just replace _HQ_ or _LQ_ --> both to be _ICE_

@@ -1,11 +1,9 @@
-import os
-import pdb
 import re
 import sys
 from collections import defaultdict
 from csv import DictReader
 
-from bx.intervals.intersection import Interval, IntervalNode, IntervalTree
+from bx.intervals.intersection import Interval, IntervalTree
 
 
 class GTF:
@@ -315,10 +313,14 @@ def write_gtf_records(gtf, tIDs, output_filename):
     f = open(output_filename, "w")
     for tID in tIDs:
         info = gtf.transcript_info[tID]
-        _chr = info["chr"]
+        chr = info["chr"]
         strand = info["strand"]
+        tab = "\t"
+        start = info["start"]
+        end = info["end"]
+        gid = info["gid"]
         f.write(
-            '{chr}\tJUNK\tgene\t{start}\t{end}\t.\t{strand}\t.\tgene_id "{gid}"; transcript_id "{tid}"'
+            f'{chr}{tab}JUNK{tab}gene{tab}{start}{tab}{end}{tab}.{tab}{strand}{tab}.{tab}gene_id "{gid}"; transcript_id "{tID}"'
         )
 
     f.close()
@@ -960,7 +962,7 @@ def match_transcript(gtf, chr, exon_path):
     """
     exon_tree is an IntervalTree, so it's already sorted
     """
-    num_exon = len(exon_path)
+    # num_exon = len(exon_path)
 
     # print 'matching transcript for:', exon_path
 
@@ -1036,7 +1038,7 @@ def main(gtf):
     for tID in gtf.transcript:
         transcript_tally[tID] = [0] * len(gtf.get_exons(tID))
     for r in btabBlockReader("sim_gencode_20x_first1000_test2.gmap.tophits.btab"):
-        path = btab_reclist_to_interval_list(r)
+        path = btab_reclist_to_interval_list_0basedStart(r)
         info = match_transcript(gtf, r[0]["chr"], path)
         if info["matchedExons"] is None:
             print(f"Did not find a match for {r[0]['seqid']}!", file=sys.stderr)

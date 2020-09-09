@@ -1,11 +1,6 @@
-#!/usr/bin/env python
 __author__ = "etseng@pacb.com"
-import sys
-
 
 """
-Faithful copy of cupcake.io.BED.py
-
 Misc APIs for reading BED format
 
 UCSC BED format:
@@ -13,16 +8,15 @@ https://genome.ucsc.edu/FAQ/FAQformat#format1
 
 SimpleBED --- chr, 0-based start, 1-based end
 """
+from sys import stdout
 
 
 class SimpleBED(object):
-    def __init__(self, chrom, start, end, name=None, score=None, strand=None):
+    def __init__(self, chrom, start, end, name=None):
         self.chr = chrom
         self.start = start
         self.end = end
         self.name = name
-        self.score = score
-        self.strand = strand
 
     def __str__(self):
         return "{c}:{s}-{e} (name:{n})".format(
@@ -56,19 +50,15 @@ class SimpleBEDReader:
             raise StopIteration
 
         raw = line.strip().split("\t")
-        if len(raw) >= 6:
-            strand, name = raw[5], raw[3]
-        elif len(raw) >= 4:
-            strand, name = None, raw[3]
+        if len(raw) >= 4:
+            name = raw[3]
         else:
-            strand, name = None, None
+            name = None
         return SimpleBED(
             raw[0],
             int(raw[1]) - self.start_base,
             int(raw[2]) + (1 - self.end_base),
             name,
-            None,
-            strand,
         )
 
 
@@ -127,9 +117,7 @@ class LazyBEDPointReader(SimpleBEDReader):
             if i not in self.pos_d[chrom]:
                 self.pos_d[chrom][i] = cur
                 if debug:
-                    print(
-                        "**** Hashing {}:{}....".format(chrom, start), file=sys.stdout
-                    )
+                    print(f"**** Hashing {chrom}:{start}....", file=stdout)
 
     def get_pos(self, chrom, pos):
         if chrom not in self.pos_d:
@@ -144,9 +132,7 @@ class LazyBEDPointReader(SimpleBEDReader):
             cur = self.f.tell()
             line = self.f.readline()
             if self.f.tell() == cur:
-                return (
-                    "NA"  # raise Exception("EOF reached and {chrom}:{pos} not seen!")
-                )
+                return "NA"  # raise Exception, "EOF reached and {0}:{1} not seen!".format(chrom, pos)
 
             raw = line.strip().split("\t")
             _chrom, start, end = (
@@ -156,9 +142,7 @@ class LazyBEDPointReader(SimpleBEDReader):
             )
 
             if _chrom != chrom or start > pos:
-                return (
-                    "NA"  # raise Exception("EOF reached and {chrom}:{pos} not seen!")
-                )
+                return "NA"  # raise Exception, "End of chrom reached and {0}:{1} not seen!".format(chrom, pos)
 
             if start == pos:
                 return raw[3]

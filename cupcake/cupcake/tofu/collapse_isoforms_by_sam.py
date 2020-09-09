@@ -26,7 +26,7 @@ from Bio import SeqIO
 from cupcake.cupcake.tofu.utils import check_ids_unique
 from cupcake.cupcake.tofu.branch import branch_simple2
 from cupcake.cupcake.tofu.compare_junctions import compare_junctions
-from cupcake.cupcake.io import GFF
+from cupcake.sequence import GFF
 
 
 def pick_rep(
@@ -98,7 +98,12 @@ def pick_rep(
 
 
 def collapse_fuzzy_junctions(
-    gff_filename, group_filename, allow_extra_5exon, internal_fuzzy_max_dist
+    gff_filename,
+    group_filename,
+    allow_extra_5exon,
+    internal_fuzzy_max_dist,
+    max_5_diff,
+    max_3_diff,
 ):
     def can_merge(m, r1, r2):
         if m == "exact":
@@ -108,7 +113,7 @@ def collapse_fuzzy_junctions(
                 return False
         # below is continued only if (a) is 'subset' or 'super' AND (b) allow_extra_5exon is True
         if m == "subset":
-            r1, r2 = r2, r1  #  rotate so r1 is always the longer one
+            r1, r2 = r2, r1  # rotate so r1 is always the longer one
         if m == "super" or m == "subset":
             n2 = len(r2.ref_exons)
             # check that (a) r1 and r2 end on same 3' exon, that is the last acceptor site agrees
@@ -146,8 +151,8 @@ def collapse_fuzzy_junctions(
                 r,
                 r2,
                 internal_fuzzy_max_dist=internal_fuzzy_max_dist,
-                max_5_diff=args.max_5_diff,
-                max_3_diff=args.max_3_diff,
+                max_5_diff=max_5_diff,
+                max_3_diff=max_3_diff,
             )
             if can_merge(m, r, r2):
                 fuzzy_match[r2.seqid].append(r.seqid)
@@ -230,11 +235,13 @@ def main():
     parser.add_argument(
         "--max_5_diff",
         default=1000,
+        type=int,
         help="Maximum allowed 5' difference if on same exon (default: 1000 bp)",
     )
     parser.add_argument(
         "--max_3_diff",
         default=100,
+        type=int,
         help="Maximum allowed 3' difference if on same exon (default: 100 bp)",
     )
     parser.add_argument(
@@ -253,7 +260,7 @@ def main():
     )
 
     args = parser.parse_args()
-    ### sanity check that input file and input SAM exists
+    # sanity check that input file and input SAM exists
     if not os.path.exists(args.input):
         print(f"Input file {args.input} does not exist. Abort.", file=sys.stderr)
         sys.exit(-1)
@@ -313,6 +320,8 @@ def main():
             f_txt.name,
             args.allow_extra_5exon,
             internal_fuzzy_max_dist=args.max_fuzzy_junction,
+            max_5_diff=args.max_5_diff,
+            max_3_diff=args.max_3_diff,
         )
         os.rename(f_good.name, f_good.name + ".unfuzzy")
         os.rename(f_txt.name, f_txt.name + ".unfuzzy")
@@ -345,8 +354,9 @@ def main():
         )
 
     print(f"Ignored IDs written to: {ignored_fout.name}", file=sys.stdout)
+    newline = "\n"
     print(
-        f"Output written to: {f_good.name}\n{f_txt.name}\n{outfile}\n{args}\n",
+        f"Output written to: {f_good.name}{newline}{f_txt.name}{newline}{outfile}{newline}{args}{newline}",
         file=sys.stdout,
     )
 

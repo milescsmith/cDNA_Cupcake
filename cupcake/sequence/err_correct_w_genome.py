@@ -2,8 +2,8 @@
 
 __version__ = "1.0"
 
-import os, sys
-from Bio.Seq import Seq
+import sys
+
 from Bio import SeqIO
 import cupcake.sequence.coordinate_mapper as sp
 from cupcake.sequence import BioReaders
