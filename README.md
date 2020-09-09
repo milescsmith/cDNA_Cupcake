@@ -2,34 +2,25 @@
 
 ![logo](https://github.com/Magdoll/images_public/blob/master/logos/Cupcake_logo.png)
 
-Last Updated: 04.26.2020
+Last Updated: 09.09.2020
 
 **cDNA_Cupcake** is a miscellaneous collection of Python and R scripts used for analyzing sequencing data. Most of the scripts only require [Biopython](http://biopython.org/wiki/Download). For scripts that require additional libraries, it will be specified in documentation.
 
-Current version: 12.0.0
+Current version: 12.2.9
 
-**If you use Python 2.7, please use the branch [Py2_v8.7.x](https://github.com/Magdoll/cDNA_Cupcake/tree/Py2_v8.7.x). Note that however, the Py2 version will NOT have any new features, only bug fixes! Users are encouraged to migrate to Python 3.7 now.**
-
+**This only works with Python 3.7+ now.**
 
 ## Python Requirements
 * Python >= 3.7
 * Biopython 
 
-
 If you are running post Iso-Seq analysis you will need more install requirements. See [wiki](https://github.com/Magdoll/cDNA_Cupcake/wiki/Cupcake-ToFU%3A-supporting-scripts-for-Iso-Seq-after-clustering-step) for more details.
 
-## How to use this repository
-
-Since most of the scripts are independent (do not depend on each other), you can either clone the whole directory, or, if you are only interested in a specific script, just download that specific script to your local drive.
-
-You can clone the GitHub repository, then add the GitHub repo path to your `$PATH` variable. The scripts are organized into different sub-directories (ex: `sequence/`, `rarefaction/` etc) so you will have to add them individually.
-
+## Installation
 ```
-git clone https://github.com/Magdoll/cDNA_Cupcake.git
-export PATH=$PATH:<path_to_Cupcake>/sequence/
-export PATH=$PATH:<path_to_Cupcake>/rarefaction/
+pip install --user git+https://github.com/milescsmith/cDNA_Cupcake
 ```
-
+Once installed, any of the scripts below should be placed in your PATH and you should be able to call them just using the script name
 
 For any issues or bugs, please report to [Issues](https://github.com/Magdoll/cDNA_Cupcake/issues).
 
@@ -40,29 +31,30 @@ Please see [wiki](https://github.com/Magdoll/cDNA_Cupcake/wiki) for the latest m
 A brief list of currently listed scripts are:
 
 ### Annotation and Rarefaction
-* `make_file_for_subsampling_from_collapsed.py`: Prepare file for running subsampling (rarefaction curve).
-* `subsample.py` and `subsample_with_category.py`: Running subsamping. Results can be plotted with Excel graphics and R, etc.
+* `make_file_for_subsampling_from_collapsed`: Prepare file for running subsampling (rarefaction curve).
+* `subsample.py` and `subsample_with_category`: Running subsamping. Results can be plotted with Excel graphics and R, etc.
 
 ### Sequence Manipulation
-* `get_seq_stats.py`: Summarize length distribution of a FASTA/FASTQ file.
-* `rev_comp.py`: Reverse complement a sequence from command line.
-* `fa2fq.py` and `fq2fa.py`: Convert between FASTA and FASTQ format.
-* `get_seqs_from_list.py`: extract list of sequences given a fasta file and a list of IDs.
-* `err_correct_w_genome.py`: generate fasta sequences given genom
-* `sam_to_bam.py`: quick script to run SAM to BAM conversion. Assumes `samtools` is installed.
-* `sam_to_gff3.py`: use BCBio and BioPython to convert SAM file into GFF3 format. 
-* `group_ORF_sequences.py`: group identical ORF sequences from different isoforms.
+* `get_seq_stats`: Summarize length distribution of a FASTA/FASTQ file.
+* `rev_comp`: Reverse complement a sequence from command line.
+* `fa2fq` and `fq2fa`: Convert between FASTA and FASTQ format.
+* `get_seqs_from_list`: extract list of sequences given a fasta file and a list of IDs.
+* `err_correct_w_genome`: generate fasta sequences given genom
+* `sam_to_bam`: quick script to run SAM to BAM conversion. Assumes `samtools` is installed.
+* `sam_to_gff3`: use BCBio and BioPython to convert SAM file into GFF3 format. 
+* `group_ORF_sequences`: group identical ORF sequences from different isoforms.
 
 ### Cupcake ToFU: supporting scripts for Iso Seq after clustering step
-* `collapse_isoforms_by_sam.py`: Collapse HQ isoform results to unique isoforms (based on genome alignment).
-* `get_abundance_post_collapse.py`: Obtain count information post collapse to unique isoforms.
-* `filter_by_count.py`: Filter collapse result by FL count information.
-* `filter_away_subset.py`: Filter away 5' degraded isoforms.
-* `chain_samples.py`: Chaining together multiple samples.
-* `fusion_finder.py`: Finding fusion genes.
-
+* `collapse_isoforms_by_sam`: Collapse HQ isoform results to unique isoforms (based on genome alignment).
+* `get_abundance_post_collapse`: Obtain count information post collapse to unique isoforms.
+* `filter_by_count`: Filter collapse result by FL count information.
+* `filter_away_subset`: Filter away 5' degraded isoforms.
+* `chain_samples`: Chaining together multiple samples.
+* `fusion_finder`: Finding fusion genes.
 
 ## Version Changes
+
+2020.09.09 updated to v12.2.9.  Extensive reorganization, updating, and deduplication of code.
 
 2020.04.26 updated to v12.0.0. `clip_out_UMI_cellBC.py` now supports new mode `G5-clip`.
 
