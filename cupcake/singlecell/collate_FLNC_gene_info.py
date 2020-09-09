@@ -36,6 +36,7 @@ def collate_gene_info(
     ontarget_filename=None,
     dedup_ORF_prefix=None,
     no_extra_base=False,
+    is_clustered=False,
 ):
     """
     <id>, <pbid>, <length>, <transcript>, <gene>, <category>, <ontarget Y|N|NA>, <ORFgroup NA|NoORF|groupID>, <UMI>, <BC>
@@ -79,20 +80,32 @@ def collate_gene_info(
     for ccs_id, pbid in group_info.items():
         if pbid not in sqanti_info:
             print(
-                "ignoring ID {} cuz not in classification file.".format(pbid),
-                file=sys.stderr,
+                f"ignoring ID {pbid} cuz not in classification file.", file=sys.stderr,
             )
             continue
-        if no_extra_base and umi_bc_info[ccs_id]["extra"] != "NA":
-            print("ignoring ID {} cuz extra bases.".format(pbid), file=sys.stderr)
+
+        if is_clustered:
+            # id: 1-ATCGAATGT-GCTTCTTTCACCTATCGATGATGGCTCAT-m64015_200531_015713/110297924/ccs
+            _index, _umi, _bc, _ccs_id = ccs_id.split("-")
+            ccs_id = _ccs_id
+
+        if no_extra_base and (
+            not is_clustered and umi_bc_info[ccs_id]["extra"] != "NA"
+        ):
+            print(f"ignoring ID {pbid} cuz extra bases.", file=sys.stderr)
             continue
         rec = {"id": ccs_id, "pbid": pbid}
         rec["length"] = sqanti_info[pbid]["length"]
         rec["category"] = sqanti_info[pbid]["structural_category"]
         rec["transcript"] = sqanti_info[pbid]["associated_transcript"]
         rec["gene"] = sqanti_info[pbid]["associated_gene"]
-        rec["UMI"] = umi_bc_info[ccs_id]["UMI"]
-        rec["BC"] = umi_bc_info[ccs_id]["BC"]
+
+        if is_clustered:
+            rec["UMI"] = _umi
+            rec["BC"] = _bc
+        else:
+            rec["UMI"] = umi_bc_info[ccs_id]["UMI"]
+            rec["BC"] = umi_bc_info[ccs_id]["BC"]
         if ontarget_filename is None:
             rec["ontarget"] = "NA"
         else:
@@ -133,33 +146,35 @@ def main():
         default=False,
         help="Drop all reads where there are extra bases",
     )
+    parser.add_argument(
+        "--is_clustered",
+        action="store_true",
+        default=False,
+        help="group.txt contains post-UMI clustering result",
+    )
 
     args = parser.parse_args()
 
     if os.path.exists(args.output_filename):
         print(
-            "Output file {} already exists. Abort!".format(args.output_filename),
+            f"Output file {args.output_filename} already exists. Abort!",
             file=sys.stderr,
         )
         sys.exit(-1)
 
     if not os.path.exists(args.group_filename):
         print(
-            "Group file {} not found. Abort!".format(args.group_filename),
-            file=sys.stderr,
+            f"Group file {args.group_filename} not found. Abort!", file=sys.stderr,
         )
         sys.exit(-1)
 
     if not os.path.exists(args.csv_filename):
-        print(
-            "CSV file {} not found. Abort!".format(args.csv_filename), file=sys.stderr
-        )
+        print(f"CSV file {args.csv_filename} not found. Abort!", file=sys.stderr)
         sys.exit(-1)
 
     if not os.path.exists(args.class_filename):
         print(
-            "Class file {} not found. Abort!".format(args.class_filename),
-            file=sys.stderr,
+            f"Class file {args.class_filename} not found. Abort!", file=sys.stderr,
         )
         sys.exit(-1)
 
@@ -167,9 +182,7 @@ def main():
         args.ontarget_filename
     ):
         print(
-            "Ontarget file {} given but not found. Abort!".format(
-                args.ontarget_filename
-            ),
+            f"Ontarget file {args.ontarget_filename} given but not found. Abort!",
             file=sys.stderr,
         )
         sys.exit(-1)
@@ -177,14 +190,13 @@ def main():
     if args.dedup_ORF_prefix is not None:
         if not os.path.exists(args.dedup_ORF_prefix + ".group.txt"):
             print(
-                "Dedup {}.group.txt not found. Abort!".format(args.dedup_ORF_prefix),
+                f"Dedup {args.dedup_ORF_prefix}.group.txt not found. Abort!",
                 file=sys.stderr,
             )
             sys.exit(-1)
         if not os.path.exists(args.dedup_ORF_prefix + ".faa"):
             print(
-                "Dedup {}.faa not found. Abort!".format(args.dedup_ORF_prefix),
-                file=sys.stderr,
+                f"Dedup {args.dedup_ORF_prefix}.faa not found. Abort!", file=sys.stderr,
             )
             sys.exit(-1)
 
@@ -196,6 +208,7 @@ def main():
         args.ontarget_filename,
         args.dedup_ORF_prefix,
         args.no_extra_base,
+        args.is_clustered,
     )
 
 
