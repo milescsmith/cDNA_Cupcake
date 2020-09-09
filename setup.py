@@ -32,7 +32,7 @@ setup(
     author=__author__,
     author_email=__email__,
     description="Miscellaneous collection of Python and R scripts for processing Iso-Seq data",
-    long_description=Path("README.rst").read_text("utf-8"),
+    long_description=Path("README.md").read_text("utf-8"),
     url="https://github.com/Magdoll/cDNA_Cupcake",
     ext_modules=cythonize(EXT_MODULES),
     include_dirs=[np.get_include()],
