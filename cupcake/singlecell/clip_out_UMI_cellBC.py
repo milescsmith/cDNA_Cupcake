@@ -111,7 +111,7 @@ def clip_out(
         FIELDS += ["TSO"]
 
     f1 = open(output_prefix + ".trimmed.csv", "w")
-    writer1 = DictWriter(f1, FIELDS, delimiter="\t")
+    writer1 = DictWriter(f1, FIELDS, delimiter="\t", dialect="unix", quoting=QUOTE_NONE)
     writer1.writeheader()
 
     reader = pysam.AlignmentFile(bam_filename, "rb", check_sq=False)

@@ -235,11 +235,13 @@ def main():
     parser.add_argument(
         "--max_5_diff",
         default=1000,
+        type=int,
         help="Maximum allowed 5' difference if on same exon (default: 1000 bp)",
     )
     parser.add_argument(
         "--max_3_diff",
         default=100,
+        type=int,
         help="Maximum allowed 3' difference if on same exon (default: 100 bp)",
     )
     parser.add_argument(
