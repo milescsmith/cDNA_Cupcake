@@ -1,12 +1,9 @@
-import os
-import pdb
 import sys
 
 import numpy as np
 from Bio import SeqIO
 
-import cupcake.cupcake.tofu.branch
-from cupcake.cupcake.io import BioReaders
+from cupcake.sequence import BioReaders
 from cupcake.cupcake.tofu.branch import c_branch
 from bx.intervals.cluster import ClusterTree
 
@@ -378,7 +375,6 @@ class BranchSimple:
 
         self.isoform_index = starting_isoform_index
         # make the exon value --> interval dictionary
-        a = []
 
         for ids, strand, m in result_merged:
             assert self.strand == strand
@@ -388,11 +384,13 @@ class BranchSimple:
                 f_out = f_good
             self.isoform_index += 1
             segments = [node_d[x] for x in m.nonzero()[1]]
+            newline = "\n"
+            tab = "\t"
             f_group.write(
-                f"{gene_prefix}.{self.cuff_index}.{self.isoform_index}\t{ids}\n"
+                f"{gene_prefix}.{self.cuff_index}.{self.isoform_index}{tab}{ids}{newline}"
             )
             f_out.write(
-                f'{self.chrom}\tPacBio\ttranscript\t{segments[0].start + 1}\t{segments[-1].end}\t.\t{self.strand}\t.\tgene_id "{gene_prefix}.{self.cuff_index}"; transcript_id "{gene_prefix}.{self.cuff_index}.{self.isoform_index}";\n'
+                f'{self.chrom}{tab}PacBio{tab}transcript{tab}{segments[0].start + 1}{tab}{segments[-1].end}{tab}.{tab}{self.strand}{tab}.{tab}gene_id "{gene_prefix}.{self.cuff_index}"; transcript_id "{gene_prefix}.{self.cuff_index}.{self.isoform_index}";{newline}'
             )
 
             i = 0
@@ -400,11 +398,11 @@ class BranchSimple:
             for j in range(1, len(segments)):
                 if segments[j].start != segments[j - 1].end:
                     f_out.write(
-                        f'{self.chrom}\tPacBio\texon\t{segments[i].start + 1}\t{segments[j - 1].end}\t.\t{self.strand}\t.\tgene_id "{gene_prefix}.{self.cuff_index}"; transcript_id "{gene_prefix}.{self.cuff_index}.{self.isoform_index}";\n'
+                        f'{self.chrom}{tab}PacBio{tab}exon{tab}{segments[i].start + 1}{tab}{segments[j - 1].end}{tab}.{tab}{self.strand}{tab}.{tab}gene_id "{gene_prefix}.{self.cuff_index}"; transcript_id "{gene_prefix}.{self.cuff_index}.{self.isoform_index}";{newline}'
                     )
                     i = j
             f_out.write(
-                f'{self.chrom}\tPacBio\texon\t{segments[i].start + 1}\t{segments[j].end}\t.\t{self.strand}\t.\tgene_id "{gene_prefix}.{self.cuff_index}"; transcript_id "{gene_prefix}.{self.cuff_index}.{self.isoform_index}";\n'
+                f'{self.chrom}{tab}PacBio{tab}exon{tab}{segments[i].start + 1}{tab}{segments[j].end}{tab}.{tab}{self.strand}{tab}.{tab}gene_id "{gene_prefix}.{self.cuff_index}"; transcript_id "{gene_prefix}.{self.cuff_index}.{self.isoform_index}";{newline}'
             )
 
         self.cuff_index += 1

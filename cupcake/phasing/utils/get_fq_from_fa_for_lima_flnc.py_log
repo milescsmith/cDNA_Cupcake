@@ -2,7 +2,7 @@
 import pdb
 from Bio import SeqIO
 from Bio.SeqRecord import SeqRecord
-from cupcake.cupcake.io.SeqReaders import LazyFastaReader
+from cupcake.sequence.SeqReaders import LazyFastaReader
 #fastad = LazyFastaReader('unpolished.flnc.fasta')
 f = open('unpolished.flnc.fastq','w')
 reader = SeqIO.parse(open('ccs.fastq'),'fastq')

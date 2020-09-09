@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 __author__ = "etseng@pacb.com"
 
-import pdb
-
 
 def overlaps(s1, s2):
     return max(0, min(s1.end, s2.end) - max(s1.start, s2.start))

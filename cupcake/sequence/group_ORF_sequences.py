@@ -16,8 +16,8 @@ The group file format:
 ORFgroup_<index> \t comma-sep list of IDs with the same ORF
 """
 
-import os, re, sys
-from collections import defaultdict, OrderedDict, Counter
+import re, sys
+from collections import OrderedDict, Counter
 from Bio import SeqIO
 
 

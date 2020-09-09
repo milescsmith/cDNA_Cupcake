@@ -3,8 +3,7 @@
 __version__ = "1.0"
 
 
-import os, sys, random
-from collections import defaultdict
+import sys, random
 from Bio import SeqIO
 
 

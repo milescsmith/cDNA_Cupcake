@@ -74,17 +74,22 @@ class STARJunctionRecord:
         start = int(raw[1])
         end = int(raw[2])
         strand = STARJunctionRecord.strand_dict[int(raw[3])]
+        motif = STARJunctionRecord.motif_dict[int(raw[4])]
+        annotation = int(raw[5]) == 1
+        unique_count = (int(raw[6]),)
+        multi_count = (int(raw[7]),)
+        overhang = (int(raw[8]),)
 
         return STARJunctionRecord(
-            chrom=raw[0],
-            start=int(raw[1]) - 1,
-            end=int(raw[2]),
-            strand=STARJunctionRecord.strand_dict[int(raw[3])],
-            motif=STARJunctionRecord.motif_dict[int(raw[4])],
-            is_annotated=True if int(raw[5]) == 1 else False,
-            unique_count=int(raw[6]),
-            multi_count=int(raw[7]),
-            overhang=int(raw[8]),
+            chrom=chrom,
+            start=start - 1,
+            end=end,
+            strand=strand,
+            motif=motif,
+            is_annotated=True if annotation else False,
+            unique_count=unique_count,
+            multi_count=multi_count,
+            overhang=overhang,
         )
 
 

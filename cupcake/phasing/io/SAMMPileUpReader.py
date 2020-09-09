@@ -24,10 +24,7 @@ acgn   mismatch on - strand
 $ end of read
 """
 
-import os
-import pdb
 import re
-import sys
 from collections import Counter
 
 
@@ -165,7 +162,7 @@ class MPileUpReader(object):
     def parseLine(self, line):
         raw = line.strip().split("\t")
         if len(raw) == 7 or len(raw) == 15:
-            cov = int(raw[3])
+            # cov = int(raw[3])
             # if cov > 0:
             return MPileUpRecord(
                 chr=raw[0],

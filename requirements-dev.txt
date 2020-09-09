@@ -13,3 +13,7 @@ pre-commit~=2.5
 pbcoretools @ git+https://github.com/PacificBiosciences/pbcoretools
 pbcore @ git+https://github.com/PacificBiosciences/pbcore
 pbcommand @ git+https://github.com/PacificBiosciences/pbcommand
+black
+ipython
+pylint
+mypy

@@ -19,8 +19,8 @@ from csv import DictReader
 from Bio import SeqIO
 
 from bx.intervals.cluster import ClusterTree
-from cupcake.cupcake.io.GFF import collapseGFFReader
-from cupcake.cupcake.io.SeqReaders import LazyFastqReader
+from cupcake.sequence.GFF import collapseGFFReader
+from cupcake.sequence.SeqReaders import LazyFastqReader
 
 rex_flnc = re.compile(r"(m\S+_\d+_\d+\/\d+)\/ccs")  # Sequel/Iso-Seq 3 format
 rex_flnc2 = re.compile(

@@ -4,7 +4,7 @@ __version__ = "1.2"
 
 import os
 import subprocess
-import sys
+
 from collections import defaultdict
 from csv import DictReader
 
@@ -46,7 +46,7 @@ def collapse_to_hg38(out_dir, hq_fastq, cluster_csv, min_count, aligner_choice):
     if subprocess.check_call(cmd, shell=True) != 0:
         raise Exception(f"ERROR CMD: {cmd}")
 
-    ### make_abundance_from_CSV
+    # make_abundance_from_CSV
     collapse_prefix = hq_fastq + ".no5merge.collapsed"
     tofu2_sirv.make_abundance_from_Sequel_cluster_csv(cluster_csv, collapse_prefix)
 

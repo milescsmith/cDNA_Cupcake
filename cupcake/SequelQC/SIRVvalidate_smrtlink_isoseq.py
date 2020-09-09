@@ -8,7 +8,6 @@ import sys
 from collections import defaultdict
 from csv import DictReader
 
-from Bio import SeqIO
 
 GMAP_BIN = "/home/UNIXHOME/etseng/bin/gmap"
 GMAP_DB = "/home/UNIXHOME/etseng/share/gmap_db_new/"
@@ -273,7 +272,7 @@ def collapse_to_SIRV(
     if subprocess.check_call(cmd, shell=True) != 0:
         raise Exception(f"ERROR CMD: {cmd}")
 
-    ### make_abundance_from_CSV
+    # make_abundance_from_CSV
     collapse_prefix = hq_fastq + ".no5merge.collapsed"
     cmd = "get_abundance_post_collapse.py " + collapse_prefix + " cluster_report.csv"
     if subprocess.check_call(cmd, shell=True) != 0:
