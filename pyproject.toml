@@ -69,3 +69,18 @@ pytest = "^5.4"
 # [build-system]
 # requires = ["poetry>=0.12"]
 # build-backend = "poetry.masonry.api"
+
+pycodestyle = ["+*"]
+pyflakes = ["+*"]
+
+# match by prefix
+[tool.flakehell.exceptions."tests/"]
+pycodestyle = ["-E501", "-Q000", "-W503", "-E401", "-E203"]     # disable a check
+pyflakes = ["-*"]           # disable a plugin
+
+[tool.flakehell.exceptions."tests/test_example.py"]
+pyflakes = ["+*"]           # enable a plugin
+
+# match by glob
+[tool.flakehell.exceptions."**/test_*.py"]
+pyflakes = ["-*"]
