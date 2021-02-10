@@ -1,18 +1,18 @@
-import os.path as osp
 from pathlib import Path
 
 import numpy as np
 from setuptools import Extension, setup, find_packages
+from glob import glob
 
 from Cython.Build import cythonize
 
 try:
-    with open(osp.join("cupcake", "__about__.py")) as f:
+    with open(Path("src", "cupcake", "__about__.py")) as f:
         exec(f.read())
-except:
+except FileNotFoundError:
     __author__ = "Elizabeth Tseng"
     __email__ = "etseng@pacb.com"
-    __version__ = "unknown"
+    __version__ = "19.0.0"
 
 
 EXT_MODULES = [
@@ -52,9 +52,10 @@ setup(
         "Topic :: Scientific/Engineering :: Bio-Informatics",
     ],
     keywords=["isoseq", "rnaseq", "pacbio", "long reads"],
-    packages=find_packages(),
-    package_dir={"cupcake": "cupcake"},
+    packages=find_packages("src"),
     package_data={"": ["tests/test_data/*.*"]},
+    package_dir={"cupcake": "src/cupcake"},
+    py_modules=[Path(path).stem for path in glob("src/cupcake/*.py")],
     include_package_data=True,
     setup_requires=["numpy", "cython", "setuptools_scm"],
     # setup_requires=["cython", "setuptools_scm"],
@@ -66,23 +67,27 @@ setup(
     entry_points={
         "console_scripts": [
             # annotation submodule
-            "evaluate_alignment_sam = cupcake.annotation.alignment_stats_from_sam:main",
-            "make_file_for_subsample = cupcake.annotation.make_file_for_subsampling_from_collapsed:main",
-            "parse_matchAnnot = cupcake.annotation.parse_matchAnnot:main",
-            "subsample_with_category = cupcake.annotation.subsample_with_category:main",
-            "subsample = cupcake.annotation.subsample:main",
-            # cupcake submodule
-            "collapse_isoforms_by_sam = cupcake.cupcake.tofu.collapse_isoforms_by_sam:main",
-            "get_abundance_post_collapse = cupcake.cupcake.tofu.get_abundance_post_collapse:main",
-            "filter_by_count = cupcake.cupcake.tofu.filter_by_count:main",
-            "filter_away_subset = cupcake.cupcake.tofu.filter_away_subset:main",
-            "fusion_finder = cupcake.cupcake.tofu.fusion_finder:main",
-            "chain_samples = cupcake.cupcake.tofu.counting.chain_samples:main",
-            "chain_fusion_samples = cupcake.cupcake.tofu.counting.chain_fusion_samples:main",
-            "summarize_junctions = cupcake.cupcake.tofu.counting.summarize_sample_GFF_junctions:main",
-            "scrub_sample_GFFs = cupcake.cupcake.tofu.counting.scrub_sample_GFF_junctions:main",
+            "evaluate_alignment_sam      = cupcake.annotation.alignment_stats_from_sam:main",
+            "make_file_for_subsample     = cupcake.annotation.make_file_for_subsampling_from_collapsed:main",
+            "parse_matchAnnot            = cupcake.annotation.parse_matchAnnot:main",
+            "subsample_with_category     = cupcake.annotation.subsample_with_category:main",
+            "subsample                   = cupcake.annotation.subsample:main",
+            # tofu submodule
+            "collapse_isoforms_by_sam    = cupcake.tofu.collapse_isoforms_by_sam:main",
+            "get_abundance_post_collapse = cupcake.tofu.get_abundance_post_collapse:main",
+            "filter_by_count             = cupcake.tofu.filter_by_count:main",
+            "filter_away_subset          = cupcake.tofu.filter_away_subset:main",
+            "fusion_finder               = cupcake.tofu.fusion_finder:main",
+            "chain_samples               = cupcake.tofu.counting.chain_samples:main",
+            "chain_fusion_samples        = cupcake.tofu.counting.chain_fusion_samples:main",
+            "summarize_junctions         = cupcake.tofu.counting.summarize_sample_GFF_junctions:main",
+            "scrub_sample_GFFs           = cupcake.tofu.counting.scrub_sample_GFF_junctions:main",
             # uh, phasing! are we still doing phasing?
-            "make_fake_genome = cupcake.phasing.create_fake_genome:main",
+            "make_fake_genome            = cupcake.phasing.create_fake_genome:main",
+            'simple_stats_post_collapse  = cupcake.tofu.simple_stats_post_collapse.py:main',
+            'fusion_collate_info         = cupcake.tofu.fusion_collate_info.py:main',
+            'color_bed12_post_sqanti     = cupcake.tofu.color_bed12_post_sqanti.py:main',
+            'run_phaser                  = phasing.run_phaser.py:main',
         ]
     },
 )

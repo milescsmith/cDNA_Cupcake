@@ -2,25 +2,31 @@
 
 ![logo](https://github.com/Magdoll/images_public/blob/master/logos/Cupcake_logo.png)
 
-Last Updated: 09.09.2020
+Last Updated: 01.18.2021
 
 **cDNA_Cupcake** is a miscellaneous collection of Python and R scripts used for analyzing sequencing data. Most of the scripts only require [Biopython](http://biopython.org/wiki/Download). For scripts that require additional libraries, it will be specified in documentation.
 
-Current version: 12.2.9
-
-**This only works with Python 3.7+ now.**
+Current version: 19.0.0
 
 ## Python Requirements
 * Python >= 3.7
 * Biopython 
 
+
 If you are running post Iso-Seq analysis you will need more install requirements. See [wiki](https://github.com/Magdoll/cDNA_Cupcake/wiki/Cupcake-ToFU%3A-supporting-scripts-for-Iso-Seq-after-clustering-step) for more details.
 
-## Installation
+## How to use this repository
+
+Since most of the scripts are independent (do not depend on each other), you can either clone the whole directory, or, if you are only interested in a specific script, just download that specific script to your local drive.
+
+You can clone the GitHub repository, then add the GitHub repo path to your `$PATH` variable. The scripts are organized into different sub-directories (ex: `sequence/`, `rarefaction/` etc) so you will have to add them individually.
+
 ```
-pip install --user git+https://github.com/milescsmith/cDNA_Cupcake
+git clone https://github.com/Magdoll/cDNA_Cupcake.git
+export PATH=$PATH:<path_to_Cupcake>/sequence/
+export PATH=$PATH:<path_to_Cupcake>/rarefaction/
 ```
-Once installed, any of the scripts below should be placed in your PATH and you should be able to call them just using the script name
+
 
 For any issues or bugs, please report to [Issues](https://github.com/Magdoll/cDNA_Cupcake/issues).
 
@@ -31,55 +37,85 @@ Please see [wiki](https://github.com/Magdoll/cDNA_Cupcake/wiki) for the latest m
 A brief list of currently listed scripts are:
 
 ### Annotation and Rarefaction
-* `make_file_for_subsampling_from_collapsed`: Prepare file for running subsampling (rarefaction curve).
-* `subsample.py` and `subsample_with_category`: Running subsamping. Results can be plotted with Excel graphics and R, etc.
+* `make_file_for_subsampling_from_collapsed.py`: Prepare file for running subsampling (rarefaction curve).
+* `subsample.py` and `subsample_with_category.py`: Running subsamping. Results can be plotted with Excel graphics and R, etc.
 
 ### Sequence Manipulation
-* `get_seq_stats`: Summarize length distribution of a FASTA/FASTQ file.
-* `rev_comp`: Reverse complement a sequence from command line.
-* `fa2fq` and `fq2fa`: Convert between FASTA and FASTQ format.
-* `get_seqs_from_list`: extract list of sequences given a fasta file and a list of IDs.
-* `err_correct_w_genome`: generate fasta sequences given genom
-* `sam_to_bam`: quick script to run SAM to BAM conversion. Assumes `samtools` is installed.
-* `sam_to_gff3`: use BCBio and BioPython to convert SAM file into GFF3 format. 
-* `group_ORF_sequences`: group identical ORF sequences from different isoforms.
+* `get_seq_stats.py`: Summarize length distribution of a FASTA/FASTQ file.
+* `rev_comp.py`: Reverse complement a sequence from command line.
+* `fa2fq.py` and `fq2fa.py`: Convert between FASTA and FASTQ format.
+* `get_seqs_from_list.py`: extract list of sequences given a fasta file and a list of IDs.
+* `err_correct_w_genome.py`: generate fasta sequences given genom
+* `sam_to_bam.py`: quick script to run SAM to BAM conversion. Assumes `samtools` is installed.
+* `sam_to_gff3.py`: use BCBio and BioPython to convert SAM file into GFF3 format. 
+* `group_ORF_sequences.py`: group identical ORF sequences from different isoforms.
 
 ### Cupcake ToFU: supporting scripts for Iso Seq after clustering step
-* `collapse_isoforms_by_sam`: Collapse HQ isoform results to unique isoforms (based on genome alignment).
-* `get_abundance_post_collapse`: Obtain count information post collapse to unique isoforms.
-* `filter_by_count`: Filter collapse result by FL count information.
-* `filter_away_subset`: Filter away 5' degraded isoforms.
-* `chain_samples`: Chaining together multiple samples.
-* `fusion_finder`: Finding fusion genes.
+* `collapse_isoforms_by_sam.py`: Collapse HQ isoform results to unique isoforms (based on genome alignment).
+* `get_abundance_post_collapse.py`: Obtain count information post collapse to unique isoforms.
+* `filter_by_count.py`: Filter collapse result by FL count information.
+* `filter_away_subset.py`: Filter away 5' degraded isoforms.
+* `simple_stats_post_collapse.py`: Generating simple stats file to plot in R later.
+* `chain_samples.py`: Chaining together multiple samples.
+* `fusion_finder.py`: Finding fusion genes.
+* `fusion_collate_info.py`: Collate fusion information after running SQANTI(3).
+* `color_bed12_post_sqanti.py`: Color BED12 files using FL counts after running SQANTI(3).
+
+
 
 ## Version Changes
 
-2020.09.09 updated to v12.2.9.  Extensive reorganization, updating, and deduplication of code.
+2021.01.18 updated to v19.0.0. IsoPhase release (for redwood Iso-Seq) and updated `fusion_collate_info.py`
 
-2020.04.26 updated to v12.0.0. `clip_out_UMI_cellBC.py` now supports new mode `G5-clip`.
+2020.12.15 updated to v18.1.0. fixed file splitting bug in `chain_samples.py`.
 
-2020.03.12 updated to v11.0.0. major chaining bug fixed for `chain_samples.py`.
+2020.12.14 updated to v18.0.0. added `simple_stats_post_collapse.py`.
+
+2020.12.03 updated to v17.1.0. added `color_bed12_post_sqanti.py`
+
+2020.11.20 updated to v16.0.0. `collapse_isoforms_by_sam.py` has `--gen_mol_count` option to output .abundance.txt output (for FLNC or UMI-based isoseq3 dedup mappings)
+
+2020.11.12 updated to v15.1.0. `fusion_collate_info.py` can now work without .abundance.txt
+
+2020.11.12 updated to v15.0.0. summarized VCF file from `collect_all_vcf.py` in IsoPhase now will output a `SAMPLE` column.
 
 <details>
    <summary>Click to see older version logs</summary>
+   
+    2020.10.17 updated to v14.2.0. added `fusion_collate_info.py` which was missing in v14.0.0 causing install failure.
+   
+    2020.10.14 updated to v14.0.0. `fusion_finder.py` now outputs fusions in transcription order.
+   
+    2020.09.23 updated to v13.0.0. adding support for `isoseq3 dedup`
+   
+    2020.09.15 updated to v12.5.0. fixed bug for `chain_samples.py` where chromosomes are numeric (ex: 12 instead of chr12).
+   
+    2020.08.12 updated to v12.4.0. fixed bug for `chain_samples.py` for a chunk sizing bug.
+   
+    2020.08.05 updated to v12.3.0. fixed bug for `demux_isoseq_with_genome.py` to work with mapped fasta output in SL9.
+   
+    2020.07.15 updated to v12.2.0. fixed bug for `clip_out_UMI_cellBC.py` for MS characters - switched to unix dialect.
+   
+    2020.05.28 updated to v12.1.0. fixed bug for `clip_out_UMI_cellBC.py` handling cigar strings.
 
-	2020.01.31 updated to v10.0.1. fixed typo in `collapse_isoforms_by_sam.py`
+    2020.01.31 updated to v10.0.1. fixed typo in `collapse_isoforms_by_sam.py`
+    
+    2020.01.27 updated to v10.0.0. `chain_samples.py` now supported multithreading via `--cpus` option, also fixed chain bugs related to 3' differences.
+    
+    2019.12.30 updated to v9.2.0. fixed support for running `run_preCluster.py` that is used by Cogent.
+    
+    2019.12.18 updated to v9.1.1. changed `bcbiogff` dependency to `bcbio-gff` in `setup.py`.
+    
+    2019.12.18 updated to v9.1.0. added fasta support for `filter_away_subset.py` and `filter_by_count.py`.
+    
+    2019.12.09 updated to v9.0.3. fixed geneid display issue with PB.X.Y in GFF output for collapse.
+    
+    2019.10.02 updated to v9.0.2. updated collapse script series parameters to fit with isoseq3 output.
+    
+    2019.10.02 updated to v9.0.1. bug fix on fasta output in `dedup_FLNC_per_cluster.py`. removed pbcore dependency so Py3 fully usable for single cell scripts!
+    
+    2019.09.25 updated to v8.7.0. `clip_out_UMI_cellBC.py` supports unusual 10X 5' end single cell schema.
 
-	2020.01.27 updated to v10.0.0. `chain_samples.py` now supported multithreading via `--cpus` option, also fixed chain bugs related to 3' differences.
-
-	2019.12.30 updated to v9.2.0. fixed support for running `run_preCluster.py` that is used by Cogent.
-
-	2019.12.18 updated to v9.1.1. changed `bcbiogff` dependency to `bcbio-gff` in `setup.py`.
-
-	2019.12.18 updated to v9.1.0. added fasta support for `filter_away_subset.py` and `filter_by_count.py`.
-
-	2019.12.09 updated to v9.0.3. fixed geneid display issue with PB.X.Y in GFF output for collapse.
-
-	2019.10.02 updated to v9.0.2. updated collapse script series parameters to fit with isoseq3 output.
-
-	2019.10.02 updated to v9.0.1. bug fix on fasta output in `dedup_FLNC_per_cluster.py`. removed pbcore dependency so Py3 fully usable for single cell scripts!
-
-	2019.09.25 updated to v8.7.0. `clip_out_UMI_cellBC.py` supports unusual 10X 5' end single cell schema.
     
     2019.09.24 updated to v8.6. `cupcake.io.GFF.py` now supports `gene_id` write out.
     

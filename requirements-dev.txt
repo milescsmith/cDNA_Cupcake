@@ -17,3 +17,4 @@ black
 ipython
 pylint
 mypy
+wemake-python-styleguide
