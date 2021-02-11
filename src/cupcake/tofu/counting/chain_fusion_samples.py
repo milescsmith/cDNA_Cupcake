@@ -13,7 +13,7 @@ Difference with regular chaining:
 
 """
 
-from cupcake.cupcake.tofu.counting.chain_samples import read_config, read_count_info
+from cupcake.tofu.counting.chain_samples import read_config, read_count_info
 
 
 import os, sys, shutil
@@ -21,7 +21,7 @@ from csv import DictReader
 from collections import defaultdict
 from Bio import SeqIO
 import cupcake.sequence.GFF as GFF
-from cupcake.cupcake.tofu.counting import combine_abundance_across_samples as sp
+from cupcake.tofu.counting import combine_abundance_across_samples as sp
 
 
 def sample_sanity_check(

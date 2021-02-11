@@ -64,8 +64,10 @@ def collect_cluster_results_multithreaded(
     cmd_cat_csv1 = 'echo "index,UMI,BC,locus,cluster,ccs_id" > {}.clustered_transcript.header'.format(
         output_prefix
     )
-    cmd_cat_csv2 = "cat {0}.clustered_transcript.header {1} > {0}.clustered_transcript.csv".format(
-        output_prefix, " ".join(csv_files)
+    cmd_cat_csv2 = (
+        "cat {0}.clustered_transcript.header {1} > {0}.clustered_transcript.csv".format(
+            output_prefix, " ".join(csv_files)
+        )
     )
 
     try:

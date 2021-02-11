@@ -110,7 +110,10 @@ def main():
         help="(Optional) input fasta. If given, coverage will be calculated.",
     )
     parser.add_argument(
-        "-s", "--source", required=True, help="source name (ex: hg38, mm10)",
+        "-s",
+        "--source",
+        required=True,
+        help="source name (ex: hg38, mm10)",
     )
 
     args = parser.parse_args()

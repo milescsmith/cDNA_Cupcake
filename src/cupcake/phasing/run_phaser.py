@@ -22,13 +22,9 @@ from cupcake.phasing.io import VariantPhaseCleaner, VariantPhaser
 MIN_COVERAGE = 10  # minimum number of FL reads for a gene to do SNP calling and phasing
 ERR_SUB = 0.005
 MAX_DIFF_ALLOWED = 3  # maximum difference in bases allowed for two haplotype strings
-MIN_PERC_ALLOWED = (
-    0.25
-)  # minimum percent of total count for an allele, can be adjusted by ploidy (ex: n=6, means this goes down to 1/6)
+MIN_PERC_ALLOWED = 0.25  # minimum percent of total count for an allele, can be adjusted by ploidy (ex: n=6, means this goes down to 1/6)
 PVAL_CUTOFF = 0.01
-MIN_AF_AT_ENDS = (
-    0.10
-)  # minimum minor allele frequency for SNPs at ends, which tend to have unreliable alignments
+MIN_AF_AT_ENDS = 0.10  # minimum minor allele frequency for SNPs at ends, which tend to have unreliable alignments
 
 
 def set_to_kill(

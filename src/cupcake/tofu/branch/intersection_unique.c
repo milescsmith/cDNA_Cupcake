@@ -4,12 +4,12 @@
 {
     "distutils": {
         "depends": [],
-        "name": "cupcake.cupcake.tofu.branch.intersection_unique",
+        "name": "cupcake.tofu.branch.intersection_unique",
         "sources": [
             "cupcake/cupcake/tofu/branch/intersection_unique.pyx"
         ]
     },
-    "module_name": "cupcake.cupcake.tofu.branch.intersection_unique"
+    "module_name": "cupcake.tofu.branch.intersection_unique"
 }
 END: Cython Metadata */
 
@@ -1393,7 +1393,7 @@ static PyObject *__pyx_f_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_1
 static void __pyx_f_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_18IntervalNodeUnique__traverse(struct __pyx_obj_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_IntervalNodeUnique *__pyx_v_self, PyObject *__pyx_v_func); /* proto*/
 static PyObject *__pyx_f_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_18IntervalNodeUnique_get_height(struct __pyx_obj_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_IntervalNodeUnique *__pyx_v_self, int __pyx_v_height); /* proto*/
 
-/* Module declarations from 'cupcake.cupcake.tofu.branch.intersection_unique' */
+/* Module declarations from 'cupcake.tofu.branch.intersection_unique' */
 static PyTypeObject *__pyx_ptype_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_IntervalNodeUnique = 0;
 static PyTypeObject *__pyx_ptype_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_Interval = 0;
 static PyTypeObject *__pyx_ptype_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_IntervalTreeUnique = 0;
@@ -1404,11 +1404,11 @@ static CYTHON_INLINE int __pyx_f_7cupcake_7cupcake_4tofu_6branch_19intersection_
 static CYTHON_INLINE int __pyx_f_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_imin3(int, int, int); /*proto*/
 static CYTHON_INLINE int __pyx_f_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_imin2(int, int); /*proto*/
 static PyObject *__pyx_f_7cupcake_7cupcake_4tofu_6branch_19intersection_unique___pyx_unpickle_Interval__set_state(struct __pyx_obj_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_Interval *, PyObject *); /*proto*/
-#define __Pyx_MODULE_NAME "cupcake.cupcake.tofu.branch.intersection_unique"
+#define __Pyx_MODULE_NAME "cupcake.tofu.branch.intersection_unique"
 extern int __pyx_module_is_main_cupcake__cupcake__tofu__branch__intersection_unique;
 int __pyx_module_is_main_cupcake__cupcake__tofu__branch__intersection_unique = 0;
 
-/* Implementation of 'cupcake.cupcake.tofu.branch.intersection_unique' */
+/* Implementation of 'cupcake.tofu.branch.intersection_unique' */
 static PyObject *__pyx_builtin_TypeError;
 static const char __pyx_k_n[] = "n";
 static const char __pyx_k__3[] = ")";
@@ -1487,7 +1487,7 @@ static const char __pyx_k_start_must_be_less_than_end[] = "start must be less th
 static const char __pyx_k_uproot_smallest_predecessor[] = "uproot_smallest_predecessor";
 static const char __pyx_k_Data_structure_for_performing_i[] = "\nData structure for performing intersect queries on a set of intervals which\npreserves all information about the intervals (unlike bitset projection methods).\n\n:Authors: James Taylor (james@jamestaylor.org),\n          Ian Schenk (ian.schenck@gmail.com),\n          Brent Pedersen (bpederse@gmail.com)\n";
 static const char __pyx_k_Incompatible_checksums_s_vs_0xae[] = "Incompatible checksums (%s vs 0xae991c3 = (chrom, end, start, strand, value))";
-static const char __pyx_k_cupcake_cupcake_tofu_branch_inte[] = "cupcake.cupcake.tofu.branch.intersection_unique";
+static const char __pyx_k_cupcake_cupcake_tofu_branch_inte[] = "cupcake.tofu.branch.intersection_unique";
 static const char __pyx_k_no_default___reduce___due_to_non[] = "no default __reduce__ due to non-trivial __cinit__";
 static const char __pyx_k_replacing_current_node_info_with[] = "replacing current node info with #1 {0}-{1}";
 static const char __pyx_k_replacing_current_node_with_R_no[] = "replacing current node with R node {0}-{1}";
@@ -2264,7 +2264,7 @@ static PyObject *__pyx_pf_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.IntervalNodeUnique.__repr__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.IntervalNodeUnique.__repr__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -2344,7 +2344,7 @@ static int __pyx_pw_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_18Inte
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 86, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.IntervalNodeUnique.__cinit__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.IntervalNodeUnique.__cinit__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return -1;
   __pyx_L4_argument_unpacking_done:;
@@ -2493,7 +2493,7 @@ static int __pyx_pf_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_18Inte
   __pyx_r = 0;
   goto __pyx_L0;
   __pyx_L1_error:;
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.IntervalNodeUnique.__cinit__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.IntervalNodeUnique.__cinit__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = -1;
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
@@ -2967,7 +2967,7 @@ static struct __pyx_obj_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_In
   __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_6);
   __Pyx_XDECREF(__pyx_t_8);
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.IntervalNodeUnique.insert", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.IntervalNodeUnique.insert", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XDECREF((PyObject *)__pyx_v_croot);
@@ -3041,7 +3041,7 @@ static PyObject *__pyx_pw_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("insert", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 102, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.IntervalNodeUnique.insert", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.IntervalNodeUnique.insert", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
@@ -3070,7 +3070,7 @@ static PyObject *__pyx_pf_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.IntervalNodeUnique.insert", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.IntervalNodeUnique.insert", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -3255,7 +3255,7 @@ static struct __pyx_obj_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_In
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.IntervalNodeUnique.uproot_smallest_successor", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.IntervalNodeUnique.uproot_smallest_successor", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XDECREF((PyObject *)__pyx_v_a);
@@ -3303,7 +3303,7 @@ static PyObject *__pyx_pf_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.IntervalNodeUnique.uproot_smallest_successor", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.IntervalNodeUnique.uproot_smallest_successor", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -3488,7 +3488,7 @@ static struct __pyx_obj_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_In
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.IntervalNodeUnique.uproot_smallest_predecessor", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.IntervalNodeUnique.uproot_smallest_predecessor", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XDECREF((PyObject *)__pyx_v_a);
@@ -3536,7 +3536,7 @@ static PyObject *__pyx_pf_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.IntervalNodeUnique.uproot_smallest_predecessor", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.IntervalNodeUnique.uproot_smallest_predecessor", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -4547,7 +4547,7 @@ static struct __pyx_obj_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_In
   __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_6);
   __Pyx_XDECREF(__pyx_t_8);
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.IntervalNodeUnique.delete_node", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.IntervalNodeUnique.delete_node", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XDECREF((PyObject *)__pyx_v_croot);
@@ -4610,7 +4610,7 @@ static PyObject *__pyx_pw_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("delete_node", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 167, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.IntervalNodeUnique.delete_node", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.IntervalNodeUnique.delete_node", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
@@ -4639,7 +4639,7 @@ static PyObject *__pyx_pf_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.IntervalNodeUnique.delete_node", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.IntervalNodeUnique.delete_node", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -5088,7 +5088,7 @@ static PyObject *__pyx_pw_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("intersect", 0, 2, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 258, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.IntervalNodeUnique.intersect", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.IntervalNodeUnique.intersect", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
@@ -5153,7 +5153,7 @@ static PyObject *__pyx_pf_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.IntervalNodeUnique.intersect", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.IntervalNodeUnique.intersect", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_results);
@@ -5311,7 +5311,7 @@ static void __pyx_f_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_18Inte
   goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_WriteUnraisable("cupcake.cupcake.tofu.branch.intersection_unique.IntervalNodeUnique._intersect", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
+  __Pyx_WriteUnraisable("cupcake.tofu.branch.intersection_unique.IntervalNodeUnique._intersect", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
 }
@@ -5502,7 +5502,7 @@ static void __pyx_f_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_18Inte
   goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_WriteUnraisable("cupcake.cupcake.tofu.branch.intersection_unique.IntervalNodeUnique._seek_left", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
+  __Pyx_WriteUnraisable("cupcake.tofu.branch.intersection_unique.IntervalNodeUnique._seek_left", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
 }
@@ -5661,7 +5661,7 @@ static void __pyx_f_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_18Inte
   goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_WriteUnraisable("cupcake.cupcake.tofu.branch.intersection_unique.IntervalNodeUnique._seek_right", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
+  __Pyx_WriteUnraisable("cupcake.tofu.branch.intersection_unique.IntervalNodeUnique._seek_right", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
 }
@@ -5914,7 +5914,7 @@ static PyObject *__pyx_f_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_1
   __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_6);
   __Pyx_XDECREF(__pyx_t_8);
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.IntervalNodeUnique.left", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.IntervalNodeUnique.left", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_results);
@@ -6001,7 +6001,7 @@ static PyObject *__pyx_pw_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("left", 0, 1, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 321, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.IntervalNodeUnique.left", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.IntervalNodeUnique.left", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
@@ -6034,7 +6034,7 @@ static PyObject *__pyx_pf_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.IntervalNodeUnique.left", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.IntervalNodeUnique.left", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -6289,7 +6289,7 @@ static PyObject *__pyx_f_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_1
   __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_6);
   __Pyx_XDECREF(__pyx_t_8);
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.IntervalNodeUnique.right", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.IntervalNodeUnique.right", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_results);
@@ -6376,7 +6376,7 @@ static PyObject *__pyx_pw_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("right", 0, 1, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 336, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.IntervalNodeUnique.right", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.IntervalNodeUnique.right", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
@@ -6409,7 +6409,7 @@ static PyObject *__pyx_pf_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.IntervalNodeUnique.right", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.IntervalNodeUnique.right", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -6552,7 +6552,7 @@ static void __pyx_f_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_18Inte
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_WriteUnraisable("cupcake.cupcake.tofu.branch.intersection_unique.IntervalNodeUnique._traverse", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
+  __Pyx_WriteUnraisable("cupcake.tofu.branch.intersection_unique.IntervalNodeUnique._traverse", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
 }
@@ -6684,7 +6684,7 @@ static PyObject *__pyx_f_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_1
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_6);
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.IntervalNodeUnique.get_height", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.IntervalNodeUnique.get_height", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_lheight);
@@ -6828,7 +6828,7 @@ static PyObject *__pyx_pf_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.IntervalNodeUnique.start.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.IntervalNodeUnique.start.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -6864,7 +6864,7 @@ static int __pyx_pf_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_18Inte
   __pyx_r = 0;
   goto __pyx_L0;
   __pyx_L1_error:;
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.IntervalNodeUnique.start.__set__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.IntervalNodeUnique.start.__set__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = -1;
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
@@ -6902,7 +6902,7 @@ static PyObject *__pyx_pf_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.IntervalNodeUnique.end.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.IntervalNodeUnique.end.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -6938,7 +6938,7 @@ static int __pyx_pf_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_18Inte
   __pyx_r = 0;
   goto __pyx_L0;
   __pyx_L1_error:;
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.IntervalNodeUnique.end.__set__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.IntervalNodeUnique.end.__set__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = -1;
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
@@ -6994,7 +6994,7 @@ static PyObject *__pyx_pf_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.IntervalNodeUnique.__reduce_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.IntervalNodeUnique.__reduce_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
@@ -7051,7 +7051,7 @@ static PyObject *__pyx_pf_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.IntervalNodeUnique.__setstate_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.IntervalNodeUnique.__setstate_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
@@ -7160,7 +7160,7 @@ static int __pyx_pw_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_8Inter
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("__init__", 0, 2, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 387, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.Interval.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.Interval.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return -1;
   __pyx_L4_argument_unpacking_done:;
@@ -7264,7 +7264,7 @@ static int __pyx_pf_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_8Inter
   __pyx_r = 0;
   goto __pyx_L0;
   __pyx_L1_error:;
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.Interval.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.Interval.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = -1;
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
@@ -7406,7 +7406,7 @@ static PyObject *__pyx_pf_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.Interval.__repr__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.Interval.__repr__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_fstr);
@@ -7437,7 +7437,7 @@ static PyObject *__pyx_pw_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_
   __Pyx_GOTREF(__pyx_v_op);
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.Interval.__richcmp__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.Interval.__richcmp__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
@@ -7820,7 +7820,7 @@ static PyObject *__pyx_pf_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.Interval.__richcmp__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.Interval.__richcmp__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -7867,7 +7867,7 @@ static PyObject *__pyx_pf_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.Interval.start.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.Interval.start.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -7903,7 +7903,7 @@ static int __pyx_pf_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_8Inter
   __pyx_r = 0;
   goto __pyx_L0;
   __pyx_L1_error:;
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.Interval.start.__set__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.Interval.start.__set__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = -1;
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
@@ -7941,7 +7941,7 @@ static PyObject *__pyx_pf_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.Interval.end.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.Interval.end.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -7977,7 +7977,7 @@ static int __pyx_pf_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_8Inter
   __pyx_r = 0;
   goto __pyx_L0;
   __pyx_L1_error:;
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.Interval.end.__set__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.Interval.end.__set__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = -1;
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
@@ -8511,7 +8511,7 @@ static PyObject *__pyx_pf_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.Interval.__reduce_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.Interval.__reduce_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_state);
@@ -8572,7 +8572,7 @@ static PyObject *__pyx_pf_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_
   goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.Interval.__setstate_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.Interval.__setstate_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -8712,7 +8712,7 @@ static PyObject *__pyx_pw_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("insert", 0, 2, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 485, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.IntervalTreeUnique.insert", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.IntervalTreeUnique.insert", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
@@ -8821,7 +8821,7 @@ static PyObject *__pyx_pf_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.IntervalTreeUnique.insert", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.IntervalTreeUnique.insert", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -8947,7 +8947,7 @@ static PyObject *__pyx_pf_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_7);
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.IntervalTreeUnique.delete_node", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.IntervalTreeUnique.delete_node", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -9016,7 +9016,7 @@ static PyObject *__pyx_pw_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("delete_node_by_interval", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 499, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.IntervalTreeUnique.delete_node_by_interval", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.IntervalTreeUnique.delete_node_by_interval", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
@@ -9103,7 +9103,7 @@ static PyObject *__pyx_pf_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_
   goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.IntervalTreeUnique.delete_node_by_interval", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.IntervalTreeUnique.delete_node_by_interval", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -9321,7 +9321,7 @@ static PyObject *__pyx_pf_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_
   __Pyx_XDECREF(__pyx_t_6);
   __Pyx_XDECREF(__pyx_t_7);
   __Pyx_XDECREF(__pyx_t_9);
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.IntervalTreeUnique.print_balance", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.IntervalTreeUnique.print_balance", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -9391,7 +9391,7 @@ static PyObject *__pyx_pw_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("find", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 512, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.IntervalTreeUnique.find", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.IntervalTreeUnique.find", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
@@ -9524,7 +9524,7 @@ static PyObject *__pyx_pf_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_7);
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.IntervalTreeUnique.find", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.IntervalTreeUnique.find", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -9611,7 +9611,7 @@ static PyObject *__pyx_pw_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("before", 0, 1, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 520, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.IntervalTreeUnique.before", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.IntervalTreeUnique.before", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
@@ -9700,7 +9700,7 @@ static PyObject *__pyx_pf_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.IntervalTreeUnique.before", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.IntervalTreeUnique.before", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -9787,7 +9787,7 @@ static PyObject *__pyx_pw_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("after", 0, 1, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 529, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.IntervalTreeUnique.after", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.IntervalTreeUnique.after", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
@@ -9876,7 +9876,7 @@ static PyObject *__pyx_pf_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.IntervalTreeUnique.after", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.IntervalTreeUnique.after", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -10006,7 +10006,7 @@ static PyObject *__pyx_pf_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_7);
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.IntervalTreeUnique.insert_interval", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.IntervalTreeUnique.insert_interval", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -10093,7 +10093,7 @@ static PyObject *__pyx_pw_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("before_interval", 0, 1, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 549, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.IntervalTreeUnique.before_interval", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.IntervalTreeUnique.before_interval", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
@@ -10187,7 +10187,7 @@ static PyObject *__pyx_pf_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_6);
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.IntervalTreeUnique.before_interval", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.IntervalTreeUnique.before_interval", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -10274,7 +10274,7 @@ static PyObject *__pyx_pw_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("after_interval", 0, 1, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 558, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.IntervalTreeUnique.after_interval", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.IntervalTreeUnique.after_interval", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
@@ -10368,7 +10368,7 @@ static PyObject *__pyx_pf_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_6);
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.IntervalTreeUnique.after_interval", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.IntervalTreeUnique.after_interval", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -10455,7 +10455,7 @@ static PyObject *__pyx_pw_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("upstream_of_interval", 0, 1, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 567, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.IntervalTreeUnique.upstream_of_interval", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.IntervalTreeUnique.upstream_of_interval", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
@@ -10610,7 +10610,7 @@ static PyObject *__pyx_pf_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.IntervalTreeUnique.upstream_of_interval", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.IntervalTreeUnique.upstream_of_interval", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -10697,7 +10697,7 @@ static PyObject *__pyx_pw_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("downstream_of_interval", 0, 1, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 579, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.IntervalTreeUnique.downstream_of_interval", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.IntervalTreeUnique.downstream_of_interval", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
@@ -10852,7 +10852,7 @@ static PyObject *__pyx_pf_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.IntervalTreeUnique.downstream_of_interval", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.IntervalTreeUnique.downstream_of_interval", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -10968,7 +10968,7 @@ static PyObject *__pyx_pf_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.IntervalTreeUnique.traverse", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.IntervalTreeUnique.traverse", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -11025,7 +11025,7 @@ static PyObject *__pyx_pf_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.IntervalTreeUnique.__reduce_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.IntervalTreeUnique.__reduce_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
@@ -11082,7 +11082,7 @@ static PyObject *__pyx_pf_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.IntervalTreeUnique.__setstate_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.IntervalTreeUnique.__setstate_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
@@ -11160,7 +11160,7 @@ static PyObject *__pyx_pw_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("__pyx_unpickle_Interval", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 1, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.__pyx_unpickle_Interval", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.__pyx_unpickle_Interval", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
@@ -11344,7 +11344,7 @@ static PyObject *__pyx_pf_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.__pyx_unpickle_Interval", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.__pyx_unpickle_Interval", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v___pyx_PickleError);
@@ -11519,7 +11519,7 @@ static PyObject *__pyx_f_7cupcake_7cupcake_4tofu_6branch_19intersection_unique__
   __Pyx_XDECREF(__pyx_t_7);
   __Pyx_XDECREF(__pyx_t_8);
   __Pyx_XDECREF(__pyx_t_9);
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.intersection_unique.__pyx_unpickle_Interval__set_state", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.intersection_unique.__pyx_unpickle_Interval__set_state", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -11680,7 +11680,7 @@ static struct PyGetSetDef __pyx_getsets_7cupcake_7cupcake_4tofu_6branch_19inters
 
 static PyTypeObject __pyx_type_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_IntervalNodeUnique = {
   PyVarObject_HEAD_INIT(0, 0)
-  "cupcake.cupcake.tofu.branch.intersection_unique.IntervalNodeUnique", /*tp_name*/
+  "cupcake.tofu.branch.intersection_unique.IntervalNodeUnique", /*tp_name*/
   sizeof(struct __pyx_obj_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_IntervalNodeUnique), /*tp_basicsize*/
   0, /*tp_itemsize*/
   __pyx_tp_dealloc_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_IntervalNodeUnique, /*tp_dealloc*/
@@ -11891,7 +11891,7 @@ static struct PyGetSetDef __pyx_getsets_7cupcake_7cupcake_4tofu_6branch_19inters
 
 static PyTypeObject __pyx_type_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_Interval = {
   PyVarObject_HEAD_INIT(0, 0)
-  "cupcake.cupcake.tofu.branch.intersection_unique.Interval", /*tp_name*/
+  "cupcake.tofu.branch.intersection_unique.Interval", /*tp_name*/
   sizeof(struct __pyx_obj_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_Interval), /*tp_basicsize*/
   0, /*tp_itemsize*/
   __pyx_tp_dealloc_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_Interval, /*tp_dealloc*/
@@ -12027,7 +12027,7 @@ static PyMethodDef __pyx_methods_7cupcake_7cupcake_4tofu_6branch_19intersection_
 
 static PyTypeObject __pyx_type_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_IntervalTreeUnique = {
   PyVarObject_HEAD_INIT(0, 0)
-  "cupcake.cupcake.tofu.branch.intersection_unique.IntervalTreeUnique", /*tp_name*/
+  "cupcake.tofu.branch.intersection_unique.IntervalTreeUnique", /*tp_name*/
   sizeof(struct __pyx_obj_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_IntervalTreeUnique), /*tp_basicsize*/
   0, /*tp_itemsize*/
   __pyx_tp_dealloc_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_IntervalTreeUnique, /*tp_dealloc*/
@@ -12614,8 +12614,8 @@ if (!__Pyx_RefNanny) {
   #if PY_MAJOR_VERSION >= 3
   {
     PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(1, 1, __pyx_L1_error)
-    if (!PyDict_GetItemString(modules, "cupcake.cupcake.tofu.branch.intersection_unique")) {
-      if (unlikely(PyDict_SetItemString(modules, "cupcake.cupcake.tofu.branch.intersection_unique", __pyx_m) < 0)) __PYX_ERR(1, 1, __pyx_L1_error)
+    if (!PyDict_GetItemString(modules, "cupcake.tofu.branch.intersection_unique")) {
+      if (unlikely(PyDict_SetItemString(modules, "cupcake.tofu.branch.intersection_unique", __pyx_m) < 0)) __PYX_ERR(1, 1, __pyx_L1_error)
     }
   }
   #endif
@@ -12764,11 +12764,11 @@ if (!__Pyx_RefNanny) {
   __Pyx_XDECREF(__pyx_t_3);
   if (__pyx_m) {
     if (__pyx_d) {
-      __Pyx_AddTraceback("init cupcake.cupcake.tofu.branch.intersection_unique", __pyx_clineno, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("init cupcake.tofu.branch.intersection_unique", __pyx_clineno, __pyx_lineno, __pyx_filename);
     }
     Py_CLEAR(__pyx_m);
   } else if (!PyErr_Occurred()) {
-    PyErr_SetString(PyExc_ImportError, "init cupcake.cupcake.tofu.branch.intersection_unique");
+    PyErr_SetString(PyExc_ImportError, "init cupcake.tofu.branch.intersection_unique");
   }
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();

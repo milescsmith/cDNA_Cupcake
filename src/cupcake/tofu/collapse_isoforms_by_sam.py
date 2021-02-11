@@ -17,16 +17,30 @@ Suggested scripts to follow up with:
    filter_away_subset.py (if collapse is run with --dun-merge-5-shorter)
 """
 
-import os, sys
+import sys
+from gzip import open as gzopen
 from collections import defaultdict
+from pathlib import Path
 
 from bx.intervals import IntervalTree
 from Bio import SeqIO
 
-from cupcake.cupcake.tofu.utils import check_ids_unique
-from cupcake.cupcake.tofu.branch import branch_simple2
-from cupcake.cupcake.tofu.compare_junctions import compare_junctions
+from cupcake.tofu.utils import check_ids_unique
+from cupcake.tofu.branch import branch_simple2
+from cupcake.tofu.compare_junctions import compare_junctions
 from cupcake.sequence import GFF
+
+GFF_FIELDS = [
+    "seqname",
+    "source",
+    "feature",
+    "start",
+    "end",
+    "score",
+    "strand",
+    "frame",
+    "attribute",
+]
 
 
 def pick_rep(
@@ -46,27 +60,41 @@ def pick_rep(
           If pick_least_err_instead is True, pick the one w/ least number of expected base errors
           Else, pick the longest one
     """
-    fd = SeqIO.to_dict(SeqIO.parse(open(fa_fq_filename), "fastq" if is_fq else "fasta"))
+    if Path(fa_fq_filename).suffix == ".gz":
+        fd = SeqIO.to_dict(
+            SeqIO.parse(gzopen(fa_fq_filename), "fastq" if is_fq else "fasta")
+        )
+    else:
+        fd = SeqIO.to_dict(
+            SeqIO.parse(open(fa_fq_filename), "fastq" if is_fq else "fasta")
+        )
     fout = open(output_filename, "w")
 
     coords = {}
     for line in open(gff_filename):
+        #     0       1       2               3       4       5       6       7       8
+        #     seqname source  feature         start   end     score   strand  frame   attribute
         # ex: chr1    PacBio  transcript      27567   29336   .       -       .       gene_id "PB.1"; transcript_id "PB.1.1";
-        raw = line.strip().split("\t")
-        if raw[2] == "transcript":
-            tid = raw[-1].split("; ")[1].split()[1][1:-2]
-            coords[tid] = "{}:{}-{}({})".format(raw[0], raw[3], raw[4], raw[6])
+
+        raw = {k: v for k, v in zip(GFF_FIELDS, line.strip().split("\t"))}
+        if raw["feature"] == "transcript":
+            tid = raw["attribute"].split("; ")[1].split()[1][1:-2]
+            coords[
+                tid
+            ] = f'{raw["seqname"]}:{raw["start"]}-{raw["end"]}({raw["strand"]})'
 
     if bad_gff_filename is not None:
         for line in open(bad_gff_filename):
-            raw = line.strip().split("\t")
-            if raw[2] == "transcript":
-                tid = raw[-1].split("; ")[1].split()[1][1:-2]
-                coords[tid] = "{}:{}-{}({})".format(raw[0], raw[3], raw[4], raw[6])
+            raw = {k: v for k, v in zip(GFF_FIELDS, line.strip().split("\t"))}
+            if raw["feature"] == "transcript":
+                tid = raw["attribute"].split("; ")[1].split()[1][1:-2]
+                coords[
+                    tid
+                ] = f'{raw["seqname"]}:{raw["start"]}-{raw["end"]}({raw["strand"]})'
 
     for line in open(group_filename):
         pb_id, members = line.strip().split("\t")
-        print("Picking representative sequence for {}".format(pb_id), file=sys.stdout)
+        print(f"Picking representative sequence for {pb_id}", file=sys.stdout)
         best_rec = None
         # best_id = None
         # best_seq = None
@@ -90,7 +118,7 @@ def pick_rep(
                 #    best_err = err
                 max_len = len(fd[x].seq)
 
-        _id_ = "{}|{}|{}".format(pb_id, coords[pb_id], best_rec.id)
+        _id_ = f"{pb_id}|{coords[pb_id]}|{best_rec.id}"
         best_rec.id = _id_
         SeqIO.write(best_rec, fout, "fastq" if is_fq else "fasta")
 
@@ -171,28 +199,28 @@ def collapse_fuzzy_junctions(
     # pick for each fuzzy group the one that has the most exons
     keys = list(fuzzy_match.keys())
     keys.sort(key=lambda x: int(x.split(".")[1]))
-    f_gff = open(gff_filename + ".fuzzy", "w")
-    f_group = open(group_filename + ".fuzzy", "w")
-    for k in keys:
-        all_members = []
-        best_pbid, best_size, best_num_exons = (
-            fuzzy_match[k][0],
-            len(group_info[fuzzy_match[k][0]]),
-            len(d[fuzzy_match[k][0]].ref_exons),
-        )
-        all_members += group_info[fuzzy_match[k][0]]
-        for pbid in fuzzy_match[k][1:]:
-            _num_exons = len(d[pbid].ref_exons)
-            _size = len(group_info[pbid])
-            all_members += group_info[pbid]
-            if _num_exons > best_num_exons or (
-                _num_exons == best_num_exons and _size > best_size
-            ):
-                best_pbid, best_size, best_num_exons = pbid, _size, _num_exons
-        GFF.write_collapseGFF_format(f_gff, d[best_pbid])
-        f_group.write("{}\t{}\n".format(best_pbid, ",".join(all_members)))
-    f_gff.close()
-    f_group.close()
+
+    with open(f"{gff_filename}.fuzzy", "w") as f_gff, open(
+        f"{group_filename}.fuzzy", "w"
+    ) as f_group:
+        for k in keys:
+            all_members = []
+            best_pbid, best_size, best_num_exons = (
+                fuzzy_match[k][0],
+                len(group_info[fuzzy_match[k][0]]),
+                len(d[fuzzy_match[k][0]].ref_exons),
+            )
+            all_members += group_info[fuzzy_match[k][0]]
+            for pbid in fuzzy_match[k][1:]:
+                _num_exons = len(d[pbid].ref_exons)
+                _size = len(group_info[pbid])
+                all_members += group_info[pbid]
+                if _num_exons > best_num_exons or (
+                    _num_exons == best_num_exons and _size > best_size
+                ):
+                    best_pbid, best_size, best_num_exons = pbid, _size, _num_exons
+            GFF.write_collapseGFF_format(f_gff, d[best_pbid])
+            f_group.write(f'{best_pbid}\t{",".join(all_members)}\n')
 
     return fuzzy_match
 
@@ -261,28 +289,28 @@ def main():
 
     args = parser.parse_args()
     # sanity check that input file and input SAM exists
-    if not os.path.exists(args.input):
+    if not Path(args.input).exists():
         print(f"Input file {args.input} does not exist. Abort.", file=sys.stderr)
         sys.exit(-1)
 
-    if not os.path.exists(args.sam):
+    if not Path(args.sam).exists:
         print(f"SAM file {args.sam} does not exist. Abort.", file=sys.stderr)
         sys.exit(-1)
 
     # check for duplicate IDs
     check_ids_unique(args.input, is_fq=args.fq)
 
-    ignored_fout = open(args.prefix + ".ignored_ids.txt", "w")
+    ignored_fout = open(f"{args.prefix}.ignored_ids.txt", "w")
 
     if args.flnc_coverage > 0:
-        f_good = open(args.prefix + ".collapsed.good.gff", "w")
-        f_bad = open(args.prefix + ".collapsed.bad.gff", "w")
+        f_good = open(f"{args.prefix}.collapsed.good.gff", "w")
+        f_bad = open(f"{args.prefix}.collapsed.bad.gff", "w")
         cov_threshold = args.flnc_coverage
     else:
-        f_good = open(args.prefix + ".collapsed.gff", "w")
+        f_good = open(f"{args.prefix}.collapsed.gff", "w")
         f_bad = f_good
         cov_threshold = 1
-    f_txt = open(args.prefix + ".collapsed.group.txt", "w")
+    f_txt = open(f"{args.prefix}.collapsed.group.txt", "w")
 
     b = branch_simple2.BranchSimple(
         args.input,
@@ -323,15 +351,15 @@ def main():
             max_5_diff=args.max_5_diff,
             max_3_diff=args.max_3_diff,
         )
-        os.rename(f_good.name, f_good.name + ".unfuzzy")
-        os.rename(f_txt.name, f_txt.name + ".unfuzzy")
-        os.rename(f_good.name + ".fuzzy", f_good.name)
-        os.rename(f_txt.name + ".fuzzy", f_txt.name)
+        Path(f_good.name).rename(f"{f_good.name}.unfuzzy")
+        Path(f_txt.name).rename(f"{f_txt.name}.unfuzzy")
+        Path(f"{f_good.name}.fuzzy").rename(f_good.name)
+        Path(f"{f_txt.name_}.fuzzy").rename(f_txt.name)
 
     if args.fq:
-        outfile = args.prefix + ".collapsed.rep.fq"
+        outfile = f"{args.prefix}.collapsed.rep.fq"
     else:
-        outfile = args.prefix + ".collapsed.rep.fa"
+        outfile = f"{args.prefix}.collapsed.rep.fa"
     if args.allow_extra_5exon:  # 5merge, pick longest
         pick_rep(
             args.input,

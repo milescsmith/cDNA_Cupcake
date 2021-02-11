@@ -4,10 +4,10 @@ import numpy as np
 from Bio import SeqIO
 
 from cupcake.sequence import BioReaders
-from cupcake.cupcake.tofu.branch import c_branch
+from cupcake.tofu.branch import c_branch
 from bx.intervals.cluster import ClusterTree
 
-# from cupcake.cupcake.tofu.branch.intersection_unique import IntervalTreeUnique, Interval, IntervalNodeUnique
+# from cupcake.tofu.branch.intersection_unique import IntervalTreeUnique, Interval, IntervalNodeUnique
 
 
 INTINF = 999999
@@ -63,9 +63,7 @@ class BranchSimple:
             )
         }
 
-        self.cov_threshold = (
-            cov_threshold
-        )  # only output GTF records if >= this many GMAP records support it (this must be if I'm running non-clustered fasta on GMAP)
+        self.cov_threshold = cov_threshold  # only output GTF records if >= this many GMAP records support it (this must be if I'm running non-clustered fasta on GMAP)
 
         self.min_aln_coverage = min_aln_coverage
         self.min_aln_identity = min_aln_identity
@@ -553,9 +551,7 @@ def compare_exon_matrix(m1, m2, node_d, strand, merge5, max_5_diff, max_3_diff):
 
 
 def trim_exon_left_to_right(m1, m2, node_d, max_distance):
-    """
-
-    """
+    """"""
     l1 = m1.nonzero()[1]
     l2 = m2.nonzero()[1]
 

@@ -15,9 +15,7 @@ Given a GFF file and selected loci (ex: PB.45),
 create a fake genome that is the concatenation of all seen exons.
 """
 
-extra_bp_around_junctions = (
-    50
-)  # get this much around junctions to be safe AND to not screw up GMAP who doesn't like microintrons....
+extra_bp_around_junctions = 50  # get this much around junctions to be safe AND to not screw up GMAP who doesn't like microintrons....
 __padding_before_after__ = 10  # get this much before and after the start
 
 

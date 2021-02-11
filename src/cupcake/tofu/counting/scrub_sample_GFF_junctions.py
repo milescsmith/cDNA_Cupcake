@@ -21,7 +21,7 @@ from bx.intervals import IntervalTree, Interval
 from Bio import SeqIO
 
 import cupcake.sequence.GFF as GFF
-import cupcake.cupcake.tofu.counting.chain_samples as sp
+import cupcake.tofu.counting.chain_samples as sp
 
 fields_to_add = [
     "count_fl",

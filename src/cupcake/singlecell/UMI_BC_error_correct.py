@@ -48,13 +48,13 @@ def read_dropseq_clean_report(report_filename):
 
 def read_dropseq_synthesis_report(report_filename, bc_repair_dict=None):
     """
-    EXAMPLE
-    intended_sequence       related_sequences       num_related     deleted_base    deleted_base_pos        non_incorporated_rate   intended
-_UMIs   related_median_UMIs     intended_TBias  related_median_TBias
-    NA      CGCAGCTCTGAG    1       NA      NA      NA      NA      20      NA      1
-    NA      GCTGGACTTACA    1       NA      NA      NA      NA      22      NA      0.95
-    CTCCACTGGAAA    CTCCACTGAAAA:CTCCACTGAAAC:CTCCACTGAAAG:CTCCACTGAAAT     4       G       9       0.47    4851    1039    0.3     0.98
-    TTTAATATGGAT    TTAATATGGATG:TTAATATGGATT
+        EXAMPLE
+        intended_sequence       related_sequences       num_related     deleted_base    deleted_base_pos        non_incorporated_rate   intended
+    _UMIs   related_median_UMIs     intended_TBias  related_median_TBias
+        NA      CGCAGCTCTGAG    1       NA      NA      NA      NA      20      NA      1
+        NA      GCTGGACTTACA    1       NA      NA      NA      NA      22      NA      0.95
+        CTCCACTGGAAA    CTCCACTGAAAA:CTCCACTGAAAC:CTCCACTGAAAG:CTCCACTGAAAT     4       G       9       0.47    4851    1039    0.3     0.98
+        TTTAATATGGAT    TTAATATGGATG:TTAATATGGATT
     """
     f = open(report_filename)
     while True:
