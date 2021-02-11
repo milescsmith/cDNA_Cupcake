@@ -28,7 +28,7 @@ from csv import DictReader, DictWriter
 from Bio import SeqIO
 
 from cupcake.sequence import GFF
-from cupcake.cupcake.tofu import compare_junctions
+from cupcake.tofu import compare_junctions
 
 
 def sanity_check_collapse_input(input_prefix):

@@ -12,7 +12,7 @@ from Bio import SeqIO
 
 from bx.intervals.cluster import ClusterTree
 from cupcake.sequence import GFF
-from cupcake.cupcake.tofu.counting import combine_abundance_across_samples as sp
+from cupcake.tofu.counting import combine_abundance_across_samples as sp
 
 
 def sample_sanity_check(

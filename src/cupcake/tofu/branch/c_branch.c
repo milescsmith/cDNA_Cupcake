@@ -4,12 +4,12 @@
 {
     "distutils": {
         "depends": [],
-        "name": "cupcake.cupcake.tofu.branch.c_branch",
+        "name": "cupcake.tofu.branch.c_branch",
         "sources": [
             "cupcake/cupcake/tofu/branch/c_branch.pyx"
         ]
     },
-    "module_name": "cupcake.cupcake.tofu.branch.c_branch"
+    "module_name": "cupcake.tofu.branch.c_branch"
 }
 END: Cython Metadata */
 
@@ -1832,13 +1832,13 @@ static PyTypeObject *__pyx_ptype_5numpy_ndarray = 0;
 static PyTypeObject *__pyx_ptype_5numpy_ufunc = 0;
 static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *, char *, char *, int *); /*proto*/
 
-/* Module declarations from 'cupcake.cupcake.tofu.branch.c_branch' */
+/* Module declarations from 'cupcake.tofu.branch.c_branch' */
 static __Pyx_TypeInfo __Pyx_TypeInfo_nn___pyx_t_7cupcake_7cupcake_4tofu_6branch_8c_branch_DTYPE_t = { "DTYPE_t", NULL, sizeof(__pyx_t_7cupcake_7cupcake_4tofu_6branch_8c_branch_DTYPE_t), { 0 }, 0, IS_UNSIGNED(__pyx_t_7cupcake_7cupcake_4tofu_6branch_8c_branch_DTYPE_t) ? 'U' : 'I', IS_UNSIGNED(__pyx_t_7cupcake_7cupcake_4tofu_6branch_8c_branch_DTYPE_t), 0 };
-#define __Pyx_MODULE_NAME "cupcake.cupcake.tofu.branch.c_branch"
+#define __Pyx_MODULE_NAME "cupcake.tofu.branch.c_branch"
 extern int __pyx_module_is_main_cupcake__cupcake__tofu__branch__c_branch;
 int __pyx_module_is_main_cupcake__cupcake__tofu__branch__c_branch = 0;
 
-/* Implementation of 'cupcake.cupcake.tofu.branch.c_branch' */
+/* Implementation of 'cupcake.tofu.branch.c_branch' */
 static PyObject *__pyx_builtin_xrange;
 static PyObject *__pyx_builtin_RuntimeError;
 static PyObject *__pyx_builtin_ValueError;
@@ -1895,10 +1895,10 @@ static const char __pyx_k_unknown_dtype_code_in_numpy_pxd[] = "unknown dtype cod
 static const char __pyx_k_Format_string_allocated_too_shor[] = "Format string allocated too short, see comment in numpy.pxd";
 static const char __pyx_k_Non_native_byte_order_not_suppor[] = "Non-native byte order not supported";
 static const char __pyx_k_cupcake_cupcake_tofu_branch_c_br[] = "cupcake/cupcake/tofu/branch/c_branch.pyx";
-static const char __pyx_k_cupcake_cupcake_tofu_branch_inte[] = "cupcake.cupcake.tofu.branch.intersection_unique";
+static const char __pyx_k_cupcake_cupcake_tofu_branch_inte[] = "cupcake.tofu.branch.intersection_unique";
 static const char __pyx_k_numpy_core_umath_failed_to_impor[] = "numpy.core.umath failed to import";
 static const char __pyx_k_Format_string_allocated_too_shor_2[] = "Format string allocated too short.";
-static const char __pyx_k_cupcake_cupcake_tofu_branch_c_br_2[] = "cupcake.cupcake.tofu.branch.c_branch";
+static const char __pyx_k_cupcake_cupcake_tofu_branch_c_br_2[] = "cupcake.tofu.branch.c_branch";
 static PyObject *__pyx_n_s_DTYPE;
 static PyObject *__pyx_kp_u_Format_string_allocated_too_shor;
 static PyObject *__pyx_kp_u_Format_string_allocated_too_shor_2;
@@ -2102,7 +2102,7 @@ static PyObject *__pyx_pw_7cupcake_7cupcake_4tofu_6branch_8c_branch_1exon_findin
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("exon_finding", 1, 8, 8, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 9, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.c_branch.exon_finding", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.c_branch.exon_finding", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
@@ -2841,7 +2841,7 @@ static PyObject *__pyx_pf_7cupcake_7cupcake_4tofu_6branch_8c_branch_exon_finding
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_baseC.rcbuffer->pybuffer);
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_transC.rcbuffer->pybuffer);
   __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.c_branch.exon_finding", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.c_branch.exon_finding", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   goto __pyx_L2;
   __pyx_L0:;
@@ -2984,7 +2984,7 @@ static PyObject *__pyx_pf_7cupcake_7cupcake_4tofu_6branch_8c_branch_2intervals_a
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_7);
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.c_branch.intervals_all_adjacent", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.c_branch.intervals_all_adjacent", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -3092,7 +3092,7 @@ static PyObject *__pyx_pw_7cupcake_7cupcake_4tofu_6branch_8c_branch_5exon_matchi
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("exon_matching", 0, 4, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 53, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.c_branch.exon_matching", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.c_branch.exon_matching", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
@@ -3554,7 +3554,7 @@ static PyObject *__pyx_pf_7cupcake_7cupcake_4tofu_6branch_8c_branch_4exon_matchi
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_7);
-  __Pyx_AddTraceback("cupcake.cupcake.tofu.branch.c_branch.exon_matching", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cupcake.tofu.branch.c_branch.exon_matching", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_matches);
@@ -5674,8 +5674,8 @@ if (!__Pyx_RefNanny) {
   #if PY_MAJOR_VERSION >= 3
   {
     PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(0, 1, __pyx_L1_error)
-    if (!PyDict_GetItemString(modules, "cupcake.cupcake.tofu.branch.c_branch")) {
-      if (unlikely(PyDict_SetItemString(modules, "cupcake.cupcake.tofu.branch.c_branch", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
+    if (!PyDict_GetItemString(modules, "cupcake.tofu.branch.c_branch")) {
+      if (unlikely(PyDict_SetItemString(modules, "cupcake.tofu.branch.c_branch", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
     }
   }
   #endif
@@ -5709,7 +5709,7 @@ if (!__Pyx_RefNanny) {
   /* "cupcake/cupcake/tofu/branch/c_branch.pyx":4
  * cimport numpy as np
  * from cpython cimport bool
- * from cupcake.cupcake.tofu.branch.intersection_unique import IntervalTreeUnique, Interval             # <<<<<<<<<<<<<<
+ * from cupcake.tofu.branch.intersection_unique import IntervalTreeUnique, Interval             # <<<<<<<<<<<<<<
  * 
  * DTYPE = np.int
  */
@@ -5735,7 +5735,7 @@ if (!__Pyx_RefNanny) {
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "cupcake/cupcake/tofu/branch/c_branch.pyx":6
- * from cupcake.cupcake.tofu.branch.intersection_unique import IntervalTreeUnique, Interval
+ * from cupcake.tofu.branch.intersection_unique import IntervalTreeUnique, Interval
  * 
  * DTYPE = np.int             # <<<<<<<<<<<<<<
  * ctypedef np.int_t DTYPE_t
@@ -5811,11 +5811,11 @@ if (!__Pyx_RefNanny) {
   __Pyx_XDECREF(__pyx_t_2);
   if (__pyx_m) {
     if (__pyx_d) {
-      __Pyx_AddTraceback("init cupcake.cupcake.tofu.branch.c_branch", __pyx_clineno, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("init cupcake.tofu.branch.c_branch", __pyx_clineno, __pyx_lineno, __pyx_filename);
     }
     Py_CLEAR(__pyx_m);
   } else if (!PyErr_Occurred()) {
-    PyErr_SetString(PyExc_ImportError, "init cupcake.cupcake.tofu.branch.c_branch");
+    PyErr_SetString(PyExc_ImportError, "init cupcake.tofu.branch.c_branch");
   }
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();

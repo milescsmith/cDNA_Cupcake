@@ -17,12 +17,12 @@ except FileNotFoundError:
 
 EXT_MODULES = [
     Extension(
-        "cupcake.cupcake.tofu.branch.intersection_unique",
-        ["cupcake/cupcake/tofu/branch/intersection_unique.pyx"],
+        "cupcake.tofu.branch.intersection_unique",
+        ["src/cupcake/tofu/branch/intersection_unique.pyx"],
     ),
     Extension(
-        "cupcake.cupcake.tofu.branch.c_branch",
-        ["cupcake/cupcake/tofu/branch/c_branch.pyx"],
+        "cupcake.tofu.branch.c_branch",
+        ["src/cupcake/tofu/branch/c_branch.pyx"],
     ),
 ]
 

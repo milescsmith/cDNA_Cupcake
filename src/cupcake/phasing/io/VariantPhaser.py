@@ -238,13 +238,9 @@ class Haplotypes(object):
         )  # haplotypes, where haplotypes[i] is the i-th distinct haplotype of all var concat
         self.hap_var_positions = var_positions
         self.ref_at_pos = ref_at_pos  # dict of (0-based) pos --> ref base
-        self.alt_at_pos = (
-            None
-        )  # init: None, later: dict of (0-based) pos --> unique list of alt bases
+        self.alt_at_pos = None  # init: None, later: dict of (0-based) pos --> unique list of alt bases
         self.count_of_vars_by_pos = count_of_vars_by_pos
-        self.haplotype_vcf_index = (
-            None
-        )  # init: None, later: dict of (hap index) --> (0-based) var pos --> phase (0 for ref, 1+ for alt)
+        self.haplotype_vcf_index = None  # init: None, later: dict of (hap index) --> (0-based) var pos --> phase (0 for ref, 1+ for alt)
 
         # sanity check: all variant positions must be present
         self.sanity_check()

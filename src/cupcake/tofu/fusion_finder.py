@@ -13,11 +13,11 @@ from Bio.SeqIO import SeqRecord
 from bx.intervals.cluster import ClusterTree
 
 from cupcake.sequence import BioReaders
-from cupcake.cupcake.tofu.utils import check_ids_unique
+from cupcake.tofu.utils import check_ids_unique
 from cupcake.sequence.SeqReaders import LazyFastaReader, LazyFastqReader
-from cupcake.cupcake.tofu.branch import branch_simple2
-from cupcake.cupcake.tofu.compare_junctions import compare_junctions
-from cupcake.cupcake.tofu.get_abundance_post_collapse import get_abundance_post_collapse
+from cupcake.tofu.branch import branch_simple2
+from cupcake.tofu.compare_junctions import compare_junctions
+from cupcake.tofu.get_abundance_post_collapse import get_abundance_post_collapse
 
 
 def get_isoform_index(in_order_ranges, chrom, start, end):

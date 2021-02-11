@@ -85,15 +85,16 @@ def read_group_filename(group_filename, is_cid=True):
     PBfusion.2      HQ_sample0ZPg9hS7|cb7607_c16635/f3p0/810,HQ_sample0ZPg9hS7|cb7607_c32934/f2p1/1066
 
     For IsoSeq3, two possible flavors depending on using conda version or SL Mapping version:
-    PB.1.1	transcript/0,transcript/1
+    PB.1.1  transcript/0,transcript/1
     (or)
-    PB.1.1	Sample1_RC0_50pM_transcript/0,Sample1_RC0_50pM_transcript/1   <-- in this case we want to strip the prefix out, just keep 'transcript/0'
+    PB.1.1  Sample1_RC0_50pM_transcript/0,Sample1_RC0_50pM_transcript/1   <-- in this case we want to strip the prefix out, just keep 'transcript/0'
 
     Note: LQ/HQ isoforms use the _HQ_ or _LQ_ prefix, but in cluster_report.csv it will be _ICE_
     So we just replace _HQ_ or _LQ_ --> both to be _ICE_
 
-    Return: dict of seq_or_ice_cluster --> collapsed cluster ID
-          (ex: in IsoSeq3 it is 'transcript/0' --> 'PB.1.1')
+    Returns
+    =======
+    dict of seq_or_ice_cluster --> collapsed cluster ID (ex: in IsoSeq3 it is 'transcript/0' --> 'PB.1.1')"
     """
     cid_info = {}  # ex: i1 --> c123 --> PB.1.1, or c123 --> PB.1.1
 

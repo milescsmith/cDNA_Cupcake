@@ -229,8 +229,8 @@ class variantRecord:
 
 class variantGFFReader:
     """
-    Chr1    .       substitution    86591   86591   .       .       .       reference=T;variantSeq=T/G;frequency=35/15;
-coverage=66;confidence=40
+        Chr1    .       substitution    86591   86591   .       .       .       reference=T;variantSeq=T/G;frequency=35/15;
+    coverage=66;confidence=40
     """
 
     def __init__(self, filename):

@@ -1,7 +1,7 @@
 # IPython log file
 
 import os, sys
-import cupcake.cupcake.tofu.filter_away_subset as sp
+import cupcake.tofu.filter_away_subset as sp
 from Bio import SeqIO
 from cupcake.sequence.SeqReaders import LazyFastqReader
 
