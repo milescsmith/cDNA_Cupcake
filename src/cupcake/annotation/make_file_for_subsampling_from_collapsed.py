@@ -47,7 +47,7 @@ def make_file_for_subsample(
             rep_type = type
 
     if rep_filename is None:
-        logging.CRITICAL(
+        logging.critical(
             "Expected to find input fasta or fastq files {input_prefix}.rep.fa or {input_prefix}.rep.fq. Not found. Abort!"
         )
         sys.exit(-1)
@@ -56,7 +56,7 @@ def make_file_for_subsample(
         from cupcake.sequence.GFF import collapseGFFReader
 
         gff_filename = input_prefix + ".gff"
-        logging.INFO(
+        logging.info(
             f"Reading {gff_filename} to exclude single exons..."
         )
         good_ids = []
@@ -65,15 +65,15 @@ def make_file_for_subsample(
                 good_ids.append(r.seqid)
 
     if demux_file is None and not Path(count_filename).exists():
-        logging.ERROR(f"Cannot find {count_filename}. Abort!")
+        logging.error(f"Cannot find {count_filename}. Abort!")
         sys.exit(-1)
 
     if matchAnnot_parsed is not None and not Path(matchAnnot_parsed).exists():
-        logging.ERROR(f"Cannot find {matchAnnot_parsed}. Abort!")
+        logging.error(f"Cannot find {matchAnnot_parsed}. Abort!")
         sys.exit(-1)
 
     if sqanti_class is not None and not Path(sqanti_class).exists():
-        logging.ERROR(f"Cannot find {sqanti_class}. Abort!")
+        logging.error(f"Cannot find {sqanti_class}. Abort!")
         sys.exit(-1)
 
     if matchAnnot_parsed is not None:
@@ -84,7 +84,7 @@ def make_file_for_subsample(
         for k in match_dict:
             match_dict[k]["category"] = match_dict[k]["score"]
     elif sqanti_class is not None:
-        logging.INFO(
+        logging.info(
             f"Reading {sqanti_class} to get gene/isoform assignment..."
         )
         match_dict = {}
@@ -137,7 +137,7 @@ def make_file_for_subsample(
         for pbid in to_write[sample]:
             if matchAnnot_parsed is not None or sqanti_class is not None:
                 if pbid not in match_dict:
-                    logging.CRITICAL(
+                    logging.critical(
                         f"Ignoring {pbid} because not on annotation (SQANTI/MatchAnnot) file."
                     )
                     continue
@@ -153,7 +153,7 @@ def make_file_for_subsample(
                     f"{pbid}\t{pbid.split(".")[1]}\t{seqlen_dict[pbid]}\t"
                 )
             h.write_text(f"{to_write[sample][pbid]}\n")
-        logging.INFO(f"Output written to {h.absolute()}.")
+        logging.info(f"Output written to {h.absolute()}.")
 
 
 def main():
