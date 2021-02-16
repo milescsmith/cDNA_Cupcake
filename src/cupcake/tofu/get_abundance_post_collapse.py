@@ -34,7 +34,9 @@ PBfusion.2      HQ_sample0ZPg9hS7|cb7607_c16635/f3p0/810,HQ_sample0ZPg9hS7|cb760
 """
 
 
-import os, sys, re
+import os
+import re
+import sys
 from collections import Counter
 from csv import DictReader, DictWriter
 

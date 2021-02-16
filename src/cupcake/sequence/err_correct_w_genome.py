@@ -3,11 +3,12 @@
 __version__ = "1.0"
 
 import sys
+from pathlib import Path
+from typing import Dict
 
 from Bio import SeqIO
-import cupcake.sequence.coordinate_mapper as sp
 from cupcake.sequence import BioReaders
-
+from cupcake.sequence.coordinate_mapper import consistute_genome_seq_from_exons
 
 ###### MODIFY FILENAME BELOW #######
 # genome_file = 'hg38.fa'
@@ -18,24 +19,27 @@ from cupcake.sequence import BioReaders
 ####################################
 
 
-def err_correct(genome_file, sam_file, output_err_corrected_fasta, genome_dict=None):
+def err_correct(
+    genome_file: Path,
+    sam_file: Path,
+    output_err_corrected_fasta: Path,
+    genome_dict: Dict[str, SeqIO.SeqRecord] = None,
+) -> None:
     if genome_dict is None:
         genome_dict = {}
-        for r in SeqIO.parse(open(genome_file), "fasta"):
+        for r in SeqIO.parse(genome_file.open(), "fasta"):
             genome_dict[r.name] = r
-        print("done reading {}".format(genome_file), file=sys.stderr)
+        print(f"done reading {genome_file}", file=sys.stderr)
 
-    f = open(output_err_corrected_fasta, "w")
-    reader = BioReaders.GMAPSAMReader(sam_file, True)
-    for r in reader:
-        if r.sID == "*":
-            continue
-        seq = sp.consistute_genome_seq_from_exons(
-            genome_dict, r.sID, r.segments, r.flag.strand
-        )
-        f.write(">{}\n{}\n".format(r.qID, seq))
-
-    f.close()
+    with output_err_corrected_fasta.open("w") as f:
+        reader = BioReaders.GMAPSAMReader(str(sam_file), True)
+        for r in reader:
+            if r.sID == "*":
+                continue
+            seq = consistute_genome_seq_from_exons(
+                genome_dict, r.sID, r.segments, r.flag.strand
+            )
+            f.write(f">{r.qID}\n{seq}\n")
 
     print(f"output written to {output_err_corrected_fasta}", file=sys.stderr)
 
@@ -51,7 +55,7 @@ def main():
     parser.add_argument("output_file", help="Output Fasta File")
     args = parser.parse_args()
 
-    err_correct(args.genome_file, args.sam_file, args.output_file)
+    err_correct(Path(args.genome_file), Path(args.sam_file), Path(args.output_file))
 
 
 if __name__ == "__main__":

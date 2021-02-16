@@ -16,9 +16,8 @@ Optional input: primer names in a text file where each line is:
 """
 
 import sys
+from collections import Counter, defaultdict
 from csv import DictReader
-from collections import defaultdict
-from collections import Counter
 
 
 def read_classify_csv(csv_filename):

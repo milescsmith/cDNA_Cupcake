@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import sys
+
 from cupcake.sequence import GFF
 
 

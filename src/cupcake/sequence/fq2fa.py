@@ -2,8 +2,9 @@
 
 __version__ = "1.0"
 
-from Bio import SeqIO
 import sys
+
+from Bio import SeqIO
 
 
 def main():

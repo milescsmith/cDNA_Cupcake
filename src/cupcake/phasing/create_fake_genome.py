@@ -5,9 +5,8 @@ import os
 import re
 import sys
 
-from Bio import SeqIO
-
 import cupcake.sequence.GFF as GFF
+from Bio import SeqIO
 from bx.intervals.cluster import ClusterTree
 
 """

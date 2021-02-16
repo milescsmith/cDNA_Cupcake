@@ -6,8 +6,9 @@ https://github.com/PacificBiosciences/minorseq/blob/develop/src/AminoAcidCaller.
 
 """
 
-import scipy.stats as stats
 from collections import Counter
+
+import scipy.stats as stats
 
 
 class MPileUPVariant(object):

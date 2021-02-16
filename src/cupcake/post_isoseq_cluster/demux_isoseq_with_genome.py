@@ -5,9 +5,12 @@ __author__ = "etseng@pacb.com"
 Demultiplex IsoSeq (SMRT Link 8.0) job output (with genome mapping)
 """
 
-import os, re, sys
+import os
+import re
+import sys
+from collections import Counter, defaultdict
 from csv import DictReader
-from collections import defaultdict, Counter
+
 from Bio import SeqIO
 
 mapped_id_rex = re.compile(r"(PB.\d+.\d+)")

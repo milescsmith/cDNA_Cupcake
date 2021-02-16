@@ -29,7 +29,6 @@ from collections import defaultdict
 from csv import DictWriter
 
 from Bio import SeqIO
-
 from cupcake.sequence.BioReaders import GMAPSAMReader
 from cupcake.sequence.GFF import collapseGFFReader
 

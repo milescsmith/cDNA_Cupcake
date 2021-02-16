@@ -1,11 +1,13 @@
-import os, sys
 import copy
+import os
+import sys
 from csv import DictReader, DictWriter
-from Bio import SeqIO
-from Bio.Seq import Seq
+from multiprocessing import Process
+
 import parasail
 import pysam
-from multiprocessing import Process
+from Bio import SeqIO
+from Bio.Seq import Seq
 
 SCOREMAT = parasail.matrix_create("ACGT", 2, -5)
 MIN_SCORE = 80

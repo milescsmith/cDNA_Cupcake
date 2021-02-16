@@ -16,10 +16,11 @@ The group file format:
 ORFgroup_<index> \t comma-sep list of IDs with the same ORF
 """
 
-import re, sys
-from collections import OrderedDict, Counter
-from Bio import SeqIO
+import re
+import sys
+from collections import Counter, OrderedDict
 
+from Bio import SeqIO
 
 rex_pbid = re.compile(r"(PB.\d+).(\d+)")
 

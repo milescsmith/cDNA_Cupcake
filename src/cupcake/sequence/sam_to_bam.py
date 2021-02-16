@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 __author__ = "etseng@pacb.com"
 
-import sys
 import subprocess
+import sys
 
 
 def run_cmd(cmd):

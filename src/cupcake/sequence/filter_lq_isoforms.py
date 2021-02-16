@@ -8,6 +8,7 @@ Sequence headers must have:
 
 """
 import sys
+
 from Bio import SeqIO
 
 

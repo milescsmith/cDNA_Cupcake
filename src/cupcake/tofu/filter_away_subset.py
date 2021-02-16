@@ -21,12 +21,12 @@ Example:
 
 """
 
-import os, sys
+import os
+import sys
 from collections import defaultdict
 from csv import DictReader, DictWriter
 
 from Bio import SeqIO
-
 from cupcake.sequence import GFF
 from cupcake.tofu import compare_junctions
 

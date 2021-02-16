@@ -2,9 +2,11 @@
 __author__ = "etseng@pacb.com"
 
 import sys
-from bx.intervals import IntervalTree, Interval
-from Bio import SeqIO
 from csv import DictWriter
+
+from Bio import SeqIO
+from bx.intervals import Interval, IntervalTree
+from cupcake.sequence.GFF import collapseGFFReader
 
 try:
     import BED
@@ -20,8 +22,6 @@ except ImportError:
         "Cannot find BioReaders.py! Please make sure you have cDNA_Cupcake/sequence in $PYTHONPATH.",
         file=sys.stderr,
     )
-
-from cupcake.sequence.GFF import collapseGFFReader
 
 
 def get_probe_hit(tree, gene_info, r, is_gtf=False):

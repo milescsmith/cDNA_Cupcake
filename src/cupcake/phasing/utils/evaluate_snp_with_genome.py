@@ -1,10 +1,13 @@
 __author__ = "etseng@pacb.com"
-import os, sys, glob
+import glob
+import os
+import sys
 from collections import defaultdict
 from csv import DictReader, DictWriter
-from bx.intervals import IntervalTree
+
 import vcf
-import phasing.io.SAMMPileUpReader as sp
+from bx.intervals import IntervalTree
+from cupcake.phasing.io.SAMMPileUpReader import MPileUpReader
 
 
 def read_fake_mapping(fake_genome_mapping_filename):
@@ -35,7 +38,7 @@ def get_positions_to_recover(
     cov_at_pos = defaultdict(
         lambda: 0
     )  # dict of (chrom,pos) --> (coverage)  // this is used for reports later
-    for rec in sp.MPileUpReader(mpileup_filename):
+    for rec in MPileUpReader(mpileup_filename):
         if rec is None:  # means coverage zero, ignore
             continue
         genome_chr, genome_pos = fake_map[rec.pos]
@@ -209,7 +212,7 @@ def main_maize(ki11_snps=None, dirs=None):
 
     ki11_shortread_cov = defaultdict(lambda: {})  # chrom -> pos -> short read cov
     # read the raw Ki11 pileup to get coverage in places where no SNPs were called
-    for r in sp.MPileUpReader("Ki11.raw.mpileup"):
+    for r in MPileUpReader("Ki11.raw.mpileup"):
         if r is not None:
             ki11_shortread_cov[r.chr][r.pos] = r.cov
     print("Fnished reading Ki11.raw.mpileup.", file=sys.stderr)

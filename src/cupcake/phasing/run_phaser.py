@@ -4,14 +4,13 @@ __author__ = "etseng@pacb.com"
 
 import sys
 from argparse import ArgumentParser
-from subprocess import check_output
 from pathlib import Path
+from subprocess import check_output
 
 from Bio import SeqIO
-
+from cupcake.phasing.io import VariantPhaseCleaner, VariantPhaser
 from cupcake.phasing.io.MPileUpVariantCaller import MPileUPVariant
 from cupcake.phasing.io.SAMMPileUpReader import MPileUpReader
-from cupcake.phasing.io import VariantPhaseCleaner, VariantPhaser
 
 # try:
 #     import vcf

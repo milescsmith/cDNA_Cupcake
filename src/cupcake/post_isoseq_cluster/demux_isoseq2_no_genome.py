@@ -30,9 +30,12 @@ Classify report format:
     m54033_171031_152256/27919086/29_3644_CCS,+,1,1,1,29,3644,3674,2,0
 """
 
-import os, re, sys
+import os
+import re
+import sys
+from collections import Counter, defaultdict
 from csv import DictReader
-from collections import defaultdict, Counter
+
 from Bio import SeqIO
 
 hq1_id_rex = re.compile(r"i\d+_HQ_\S+\|(\S+)\/f\d+p\d+\/\d+")

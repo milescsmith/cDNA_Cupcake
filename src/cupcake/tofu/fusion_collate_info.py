@@ -1,8 +1,11 @@
 #!/usr/bin/env python
 
-import os, re, sys
+import os
+import re
+import sys
 from collections import defaultdict
 from csv import DictReader, DictWriter
+
 from Bio import SeqIO
 from cupcake.io.GFF import collapseGFFReader
 

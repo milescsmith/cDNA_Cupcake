@@ -1,11 +1,12 @@
 """
 Experimemtal code for trimming primers & polyA tails from high error rate long reads
 """
-from csv import DictWriter
 from collections import namedtuple
+from csv import DictWriter
 from multiprocessing import Process
-from Bio import SeqIO
+
 import parasail
+from Bio import SeqIO
 
 ScoreTuple = namedtuple('ScoreTuple', ['score5', 'end5', 'score3', 'end3', 'endA'])
 

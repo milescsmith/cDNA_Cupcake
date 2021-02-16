@@ -1,12 +1,14 @@
 #!/usr/bin/env python
 __author__ = "etseng@pacb.com"
 
-import os, sys
-from cupcake.sequence import GFF
-from csv import DictReader, DictWriter
-from Bio import SeqIO
-
+import os
+import sys
 from argparse import ArgumentParser
+from csv import DictReader, DictWriter
+
+from Bio import SeqIO
+from cupcake.sequence import GFF
+
 
 """
 Given the collapse script result, further filter by FL counts.

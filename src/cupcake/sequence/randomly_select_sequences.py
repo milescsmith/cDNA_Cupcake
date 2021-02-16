@@ -3,7 +3,9 @@
 __version__ = "1.0"
 
 
-import sys, random
+import random
+import sys
+
 from Bio import SeqIO
 
 
