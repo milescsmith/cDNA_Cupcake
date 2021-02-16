@@ -134,7 +134,7 @@ def main():
 
     for r in SeqIO.parse(open(args.fasta_filename), "fasta"):
         d2 = r.id.split("|")[0]
-        logging.INFO(f"making {d2}")
+        logging.info(f"making {d2}")
         Path(d2).mkdir(parents=True, exist_ok=True)
         simulate_phasing_data(
             seq0=r.seq.tostring(),
