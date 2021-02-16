@@ -22,13 +22,17 @@ We would get the loci (chr:start-end strand) from the config file in each direct
 """
 
 
-import os, sys, glob
+import glob
+import sys
+from io import TextIOWrapper
+from pathlib import Path
+from typing import Tuple
 
 # from collections import defaultdict
 import vcf
 
 
-def read_config(config_filename):
+def read_config(config_filename: Path) -> Tuple[str, str, str, str]:
     """
     pbid=PB.9923
     ref_chr=000104F_0
@@ -38,7 +42,7 @@ def read_config(config_filename):
 
     :return: (chr, start, end, strand)
     """
-    for line in open(config_filename):
+    for line in config_filename.open("r"):
         a, b = line.strip().split("=")
         if a == "ref_chr":
             _chr = b
@@ -51,7 +55,9 @@ def read_config(config_filename):
     return _chr, _start, _end, _strand
 
 
-def eval_isophase_phaseswitch(isophase_vcf, config_file, out_f, name="NA"):
+def eval_isophase_phaseswitch(
+    isophase_vcf: str, config_file: Path, out_f: TextIOWrapper, name: str = "NA"
+) -> None:
 
     _chr, _start, _end, _strand = read_config(config_file)
 
@@ -76,39 +82,31 @@ def eval_isophase_phaseswitch(isophase_vcf, config_file, out_f, name="NA"):
             prev[c.sample] = c.data.GT
 
     out_f.write(
-        "{name}\t{chrom}\t{start}\t{end}\t{strand}\t{num_iso}\t{num_switch}\n".format(
-            name=name,
-            chrom=_chr,
-            start=_start,
-            end=_end,
-            strand=_strand,
-            num_iso=len(r.samples),
-            num_switch=num_switch,
-        )
+        f"{name}\t{_chr}\t{_start}\t{_end}\t{_strand}\t{len(r.samples)}\t{num_switch}\n"
     )
 
 
 def main_eval():
 
-    out_f = open("evaled.isophase_phase_switches.txt", "w")
-    out_f.write("dir\tchrom\tstart\tend\tstrand\tnum_iso\tnum_phase_switch\n")
-    dirs = glob.glob("by_loci/*size*/")
+    with open("evaled.isophase_phase_switches.txt", "w") as out_f:
 
-    for d1 in dirs:
-        configfile = os.path.join(d1, "config")
-        vcffile = os.path.join(d1, "phased.nopartial.cleaned.vcf")
-        nosnp = os.path.join(d1, "phased.nopartial.NO_SNPS_FOUND")
-        nohap = os.path.join(d1, "phased.nopartial.NO_HAPS_FOUND")
+        out_f.write("dir\tchrom\tstart\tend\tstrand\tnum_iso\tnum_phase_switch\n")
+        dirs = glob.glob("by_loci/*size*/")
 
-        if not os.path.exists(vcffile):
-            # no SNP, just skip
-            assert os.path.exists(nosnp) or os.path.exists(nohap)
-            print("Skipping {} because no SNPs found.".format(d1), file=sys.stderr)
-        else:
-            print("Evaluating {}.".format(d1), file=sys.stderr)
-            name = d1.split("/")[1]
-            eval_isophase_phaseswitch(vcffile, configfile, out_f, name)
-    out_f.close()
+        for d1 in dirs:
+            configfile = Path(d1, "config")
+            vcffile = Path(d1, "phased.nopartial.cleaned.vcf")
+            nosnp = Path(d1, "phased.nopartial.NO_SNPS_FOUND")
+            nohap = Path(d1, "phased.nopartial.NO_HAPS_FOUND")
+
+            if not vcffile.exists():
+                # no SNP, just skip
+                assert nosnp.exists() or nohap.exists()
+                print(f"Skipping {d1} because no SNPs found.", file=sys.stderr)
+            else:
+                print(f"Evaluating {d1}.", file=sys.stderr)
+                name = d1.split("/")[1]
+                eval_isophase_phaseswitch(vcffile, configfile, out_f, name)
 
 
 main_eval()

@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 __author__ = 'etseng@pacb.com'
 
-import sys, math
+import math
+import sys
+from collections import Counter, defaultdict
 from csv import DictReader
-from collections import defaultdict, Counter
 
 """
 Based on the script by Gloria Sheynkman for creating a BED12 file where

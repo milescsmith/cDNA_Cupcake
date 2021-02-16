@@ -1,12 +1,18 @@
 #!/usr/bin/env python
 __author__ = "etseng@pacb.com"
 
-import os, sys
-from cupcake.sequence.SeqReaders import LazyFastaReader
+import logging
+import sys
+from pathlib import Path
+
+from cupcake.logging import setup_logging
 from cupcake.phasing.io.MummerSNPReader import write_snp_to_vcf
+from cupcake.sequence.SeqReaders import LazyFastaReader
 
 
-def main():
+def main() -> None:
+    setup_logging("cDNA_Cupcake.phasing.snps_to_vcf")
+
     from argparse import ArgumentParser
 
     parser = ArgumentParser(
@@ -22,30 +28,27 @@ def main():
 
     args = parser.parse_args()
 
-    snps_filename = args.snps_filename
-    genome_filename = args.genome_filename
+    snps_filename = Path(args.snps_filename)
+    genome_filename = Path(args.genome_filename)
 
     snps_files = []
     # sanity checking of input files
-    for line in open(snps_filename):
-        filename = line.strip()
-        if not filename.endswith(".snps"):
-            print(
-                "Input files listed in {} must end with .snps_files!".format(
-                    snps_filename
-                ),
-                file=sys.stderr,
+    for line in snps_filename.open():
+        filename = Path(line.strip())
+        if not filename.suffix(".snps"):
+            logging.CRITICAL(
+                f"Input files listed in {snps_filename} must end with .snps_files!"
             )
             sys.exit(-1)
-        if not os.path.exists(filename):
-            print("{} does not exist! Abort.".format(filename), file=sys.stderr)
+        if not filename.exists():
+            logging.CRITICAL(f"{filename} does not exist! Abort.")
             sys.exit(-1)
         snps_files.append(filename)
 
-    if not os.path.exists(genome_filename):
-        print("Genome file {} does not exist!".format(genome_filename), file=sys.stderr)
+    if not genome_filename.exists():
+        logging.CRITICAL(f"Genome file {genome_filename} does not exist!")
 
-    print("Reading genome file {}....".format(genome_filename), file=sys.stderr)
+    logging.INFO(f"Reading genome file {genome_filename}...")
     genome_d = LazyFastaReader(genome_filename)
 
     # quick checking if the genome chromosomes have the |arrow|arrow style suffix, if they do, process it
@@ -54,21 +57,18 @@ def main():
         k2 = k.split("|")[0]
         if k2 != k and k2 not in keys:
             genome_d.d[k2] = genome_d.d[k]
-            print(
-                "Detected | string in chromosome ID, stripping {} to {}....".format(
-                    k, k2
-                ),
-                file=sys.stderr,
+            logging.INFO(
+                f"Detected | string in chromosome ID, stripping {k} to {k2}..."
             )
-    print("Finished reading genome.", file=sys.stderr)
+    logging.INFO("Finished reading genome.")
 
     for snp_file in snps_files:
-        assert snp_file.endswith(".snps")
-        if os.stat(snp_file).st_size == 0:
-            print("Skipping {} because empty file.".format(snp_file), file=sys.stderr)
+        assert snp_file.suffix(".snps")
+        if snp_file.st_size == 0:
+            logging.INFO(f"Skipping {snp_file} because empty file.")
             continue
-        vcf_file = snp_file[:-5] + ".vcf"
-        print("Processing {} --> {}".format(snp_file, vcf_file), file=sys.stderr)
+        vcf_file = snp_file.with_suffix(".vcf")
+        logging.INFO(f"Processing {snp_file} --> {vcf_file}")
         write_snp_to_vcf(snp_file, vcf_file, genome_filename, genome_d)
 
 

@@ -11,9 +11,11 @@ Suggested process is:
 3. run scrubber on all sample GFFs
 4. run chaining using scrubbed (cleaned) sample GFFs
 """
-import os, sys
+import os
+import sys
 from collections import defaultdict
 from csv import DictWriter
+
 import cupcake.sequence.GFF as GFF
 import numpy as np
 from Bio import SeqIO

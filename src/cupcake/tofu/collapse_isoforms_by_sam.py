@@ -18,17 +18,16 @@ Suggested scripts to follow up with:
 """
 
 import sys
-from gzip import open as gzopen
 from collections import defaultdict
+from gzip import open as gzopen
 from pathlib import Path
 
-from bx.intervals import IntervalTree
 from Bio import SeqIO
-
-from cupcake.tofu.utils import check_ids_unique
+from bx.intervals import IntervalTree
+from cupcake.sequence import GFF
 from cupcake.tofu.branch import branch_simple2
 from cupcake.tofu.compare_junctions import compare_junctions
-from cupcake.sequence import GFF
+from cupcake.tofu.utils import check_ids_unique
 
 GFF_FIELDS = [
     "seqname",

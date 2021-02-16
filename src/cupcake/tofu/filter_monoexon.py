@@ -12,11 +12,11 @@ Example:
 
 """
 
-import os, sys
+import os
+import sys
 from csv import DictReader, DictWriter
 
 from Bio import SeqIO
-
 from cupcake.sequence import GFF
 
 

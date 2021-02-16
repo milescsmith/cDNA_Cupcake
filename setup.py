@@ -1,14 +1,12 @@
+from glob import glob
 from pathlib import Path
 
 import numpy as np
-from setuptools import Extension, setup, find_packages
-from glob import glob
-
 from Cython.Build import cythonize
+from setuptools import Extension, find_packages, setup
 
 try:
-    with open(Path("src", "cupcake", "__about__.py")) as f:
-        exec(f.read())
+    exec(Path("src", "cupcake", "__about__.py").read_text())
 except FileNotFoundError:
     __author__ = "Elizabeth Tseng"
     __email__ = "etseng@pacb.com"
@@ -21,8 +19,7 @@ EXT_MODULES = [
         ["src/cupcake/tofu/branch/intersection_unique.pyx"],
     ),
     Extension(
-        "cupcake.tofu.branch.c_branch",
-        ["src/cupcake/tofu/branch/c_branch.pyx"],
+        "cupcake.tofu.branch.c_branch", ["src/cupcake/tofu/branch/c_branch.pyx"],
     ),
 ]
 
@@ -55,7 +52,7 @@ setup(
     packages=find_packages("src"),
     package_data={"": ["tests/test_data/*.*"]},
     package_dir={"cupcake": "src/cupcake"},
-    py_modules=[Path(path).stem for path in glob("src/cupcake/*.py")],
+    # py_modules=[Path(path).stem for path in glob("src/cupcake/*.py")],
     include_package_data=True,
     setup_requires=["numpy", "cython", "setuptools_scm"],
     # setup_requires=["cython", "setuptools_scm"],
@@ -84,10 +81,10 @@ setup(
             "scrub_sample_GFFs           = cupcake.tofu.counting.scrub_sample_GFF_junctions:main",
             # uh, phasing! are we still doing phasing?
             "make_fake_genome            = cupcake.phasing.create_fake_genome:main",
-            'simple_stats_post_collapse  = cupcake.tofu.simple_stats_post_collapse.py:main',
-            'fusion_collate_info         = cupcake.tofu.fusion_collate_info.py:main',
-            'color_bed12_post_sqanti     = cupcake.tofu.color_bed12_post_sqanti.py:main',
-            'run_phaser                  = phasing.run_phaser.py:main',
+            "simple_stats_post_collapse  = cupcake.tofu.simple_stats_post_collapse:main",
+            "fusion_collate_info         = cupcake.tofu.fusion_collate_info:main",
+            "color_bed12_post_sqanti     = cupcake.tofu.color_bed12_post_sqanti:main",
+            "run_phaser                  = cupcake.phasing.run_phaser:main",
         ]
     },
 )

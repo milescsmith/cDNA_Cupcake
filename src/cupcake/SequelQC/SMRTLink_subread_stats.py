@@ -10,6 +10,7 @@ Note: also "approximates" ZMW length by using last subread end
 """
 
 from collections import defaultdict
+
 from pbcore.io import SubreadSet
 
 

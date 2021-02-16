@@ -8,7 +8,6 @@ import sys
 from collections import defaultdict
 from csv import DictReader
 
-
 GMAP_BIN = "/home/UNIXHOME/etseng/bin/gmap"
 GMAP_DB = "/home/UNIXHOME/etseng/share/gmap_db_new/"
 GMAP_CPUS = 30

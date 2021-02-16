@@ -4,7 +4,6 @@ __version__ = "1.2"
 
 import os
 import subprocess
-
 from collections import defaultdict
 from csv import DictReader
 

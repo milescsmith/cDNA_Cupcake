@@ -14,14 +14,15 @@ Looks through the junction reports and scrub it, retaining only junctions that
 
 Output: scrubbed.junctions.bed
 """
-import os, sys
+import os
+import sys
 from collections import defaultdict
 from csv import DictReader, DictWriter
-from bx.intervals import IntervalTree, Interval
-from Bio import SeqIO
 
 import cupcake.sequence.GFF as GFF
 import cupcake.tofu.counting.chain_samples as sp
+from Bio import SeqIO
+from bx.intervals import Interval, IntervalTree
 
 fields_to_add = [
     "count_fl",

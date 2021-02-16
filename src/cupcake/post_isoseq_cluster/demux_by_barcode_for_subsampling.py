@@ -1,10 +1,12 @@
 #!/usr/bin/env python
 __author__ = "etseng@pacb.com"
 
-import re, sys
-from Bio import SeqIO
-from csv import DictReader, DictWriter
+import re
+import sys
 from collections import Counter
+from csv import DictReader, DictWriter
+
+from Bio import SeqIO
 
 FIELDNAMES = ["pbid", "pbgene", "length", "refisoform", "refgene", "fl_count"]
 pbid_rex = re.compile(r"PB.(\d+).\d+")

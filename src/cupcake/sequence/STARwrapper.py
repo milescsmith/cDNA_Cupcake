@@ -6,9 +6,11 @@ Parameters are pre-set according to:
 
 
 """
-import os, sys, subprocess
-import tempfile
+import os
 import shutil
+import subprocess
+import sys
+import tempfile
 
 CMD_STARlong = "/home/UNIXHOME/etseng/software_downloads/STAR-2.5.3a/bin/Linux_x86_64/STAR --runMode alignReads --outSAMattributes NH HI NM MD --readNameSeparator space --outFilterMultimapScoreRange 1 --outFilterMismatchNmax 2000 --scoreGapNoncan -1  --scoreGapGCAG -4 --scoreGapATAC -8 --scoreDelOpen -1 --scoreDelBase -1 --scoreInsOpen -1 --scoreInsBase -1 --alignEndsType Local --seedSearchStartLmax 50 --seedPerReadNmax 100000 --seedPerWindowNmax 1000 --alignTranscriptsPerReadNmax 100000 --alignTranscriptsPerWindowNmax 10000"
 CMD_STAR2_format = (

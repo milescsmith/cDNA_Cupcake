@@ -1,11 +1,14 @@
 #!/usr/bin/env python
 __author__ = "etseng@pacb.com"
 
-import os, glob, datetime
-import numpy as np
+import datetime
+import glob
 import json
-from Bio import SeqIO
+import os
+
 import cupcake.SequelQC.SMRTLink_subread_stats as subread_stats
+import numpy as np
+from Bio import SeqIO
 
 """
 Collect stats from a completed SMRTLink Iso-Seq jobs

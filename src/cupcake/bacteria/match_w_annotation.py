@@ -8,9 +8,9 @@ __email__ = "etseng@pacb.com"
 __version__ = "1.3"
 
 import sys
-
 from collections import defaultdict, namedtuple
 from csv import DictReader
+
 from Bio import SeqIO
 from bx.intervals import IntervalTree
 from bx.intervals.cluster import ClusterTree

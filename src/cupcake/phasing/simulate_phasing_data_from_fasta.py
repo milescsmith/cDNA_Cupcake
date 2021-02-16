@@ -11,11 +11,16 @@ given an input transcript sequence ---
 -> for each haplotype, simulate 100X sequences at 0%, 1%, 2%, 3% (each is a diff output fasta)
 
 """
-import os, sys, random
+import logging
+import random
 from collections import Counter
+from pathlib import Path
+from typing import List
+
 from Bio import SeqIO
-from cupcake.simulate.simulate import sim_seq
+from cupcake.logging import setup_logging
 from cupcake.phasing.io.VariantPhaser import Haplotypes
+from cupcake.simulate.simulate import sim_seq
 
 SNP_INTERVAL = 300  # 1 snp per 300 bp
 base_choices = {
@@ -26,7 +31,14 @@ base_choices = {
 }
 
 
-def simulate_phasing_data(seq0, err_sub, ploidity, copies, write_fastq=False):
+def simulate_phasing_data(
+    seq0: str,
+    err_sub: float,
+    ploidity: int = 2,
+    copies=List[int],
+    write_fastq: bool = False,
+    working_dir: Path = Path().cwd(),
+) -> None:
     """
     :param seq0: transcript sequence
     :param err_sub: error prob
@@ -60,38 +72,35 @@ def simulate_phasing_data(seq0, err_sub, ploidity, copies, write_fastq=False):
             count_of_vars_by_pos[p][seq[p]] += copies[i]
 
     # 1. write out fake.fasta
-    f = open("fake.fasta", "w")
-    f.write(">fake\n{}\n".format(seq0))
-    f.close()
+    working_dir.joinpath("fake.fasta").write_text(f">fake\n{seq0}\n")
+
     # 2. write fake.mapping.txt
-    f = open("fake.mapping.txt", "w")
     for i in range(n):
-        f.write("{0},fake,{0}\n".format(i))
-    f.close()
+        working_dir.joinpath("fake.mapping.txt").write_text(f"{i},fake,{i}\n")
 
     # simulate CCS reads
     if write_fastq:
-        f = open("ccs.fastq", "w")
+        f = working_dir.joinpath("ccs.fastq")
     else:
-        f = open("ccs.fasta", "w")
-    f2 = open("fake.read_stat.txt", "w")
-    f2.write("id\tlength\tis_fl\tstat\tpbid\n")
+        f = working_dir.joinpath("ccs.fasta")
+    working_dir.joinpath("fake.read_stat.txt").write_text(
+        "id\tlength\tis_fl\tstat\tpbid\n"
+    )
     profile = [err_sub, err_sub, err_sub, 1.0]
     for i, copy in enumerate(copies):
         if i >= len(new_seqs):
             break
         for c in range(copy):
             cur_seq, cur_qv = sim_seq(new_seqs[i], profile)
-            cur_id = "hap{}_{}".format(i + 1, c)
+            cur_id = f"hap{i + 1}_{c}"
             if write_fastq:
-                f.write("@{}\n{}\n".format(cur_id, cur_seq))
-                f.write("+\n{}\n".format(cur_qv))
+                f.write_text(f"@{cur_id}\n{cur_seq}\n")
+                f.write_text(f"+\n{cur_qv}\n")
             else:
-                f.write(">{}\n{}\n".format(cur_id, cur_seq))
-            f2.write("{}\t{}\tY\tunique\tPB.0.0\n".format(cur_id, n))
-
-    f.close()
-    f2.close()
+                f.write_text(f">{cur_id}\n{cur_seq}\n")
+            working_dir.joinpath("fake.read_stat.txt").write_text(
+                f"{cur_id}\t{n}\tY\tunique\tPB.0.0\n"
+            )
 
     ref_at_pos = {p: seq0[p] for p in var_positions}
     hap_obj = Haplotypes(var_positions, ref_at_pos, count_of_vars_by_pos)
@@ -104,6 +113,7 @@ def simulate_phasing_data(seq0, err_sub, ploidity, copies, write_fastq=False):
 
 
 def main():
+    setup_logging("cDNA_Cupcake.phasing.simulate_phasing_data_from_fasta")
     from argparse import ArgumentParser
 
     parser = ArgumentParser()
@@ -124,13 +134,16 @@ def main():
 
     for r in SeqIO.parse(open(args.fasta_filename), "fasta"):
         d2 = r.id.split("|")[0]
-        print("making {}".format(d2), file=sys.stderr)
-        os.makedirs(d2)
-        os.chdir(d2)
+        logging.INFO(f"making {d2}")
+        Path(d2).mkdir(parents=True, exist_ok=True)
         simulate_phasing_data(
-            r.seq.tostring(), args.err_sub, args.ploidity, copies, args.write_fastq
+            seq0=r.seq.tostring(),
+            err_sub=args.err_sub,
+            ploidity=args.ploidity,
+            copies=copies,
+            write_fastq=args.write_fastq,
+            working_dir=d2,
         )
-        os.chdir("../")
 
 
 if __name__ == "__main__":

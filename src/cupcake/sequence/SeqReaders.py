@@ -1,8 +1,11 @@
 #!/usr/bin/env python
 __author__ = "etseng@pacb.com"
 
-from Bio.SeqRecord import SeqRecord
+from pathlib import Path
+from typing import Union
+
 from Bio.Seq import Seq
+from Bio.SeqRecord import SeqRecord
 
 
 class LazyFastqReader:
@@ -10,7 +13,7 @@ class LazyFastqReader:
     Like LazyFastaReader except works with fastq!
     """
 
-    def __init__(self, fastq_filename, seqid_extraction=lambda x: x):
+    def __init__(self, fastq_filename: Union[str, Path], seqid_extraction=lambda x: x):
         self.f = open(fastq_filename)
         self.d = {}
 
@@ -62,7 +65,7 @@ class LazyFastaReader:
         r['6C_49273_NC_008578/2259031-2259297'] ==> this shows the SeqRecord
     """
 
-    def __init__(self, fasta_filename, seqid_extraction=lambda x: x):
+    def __init__(self, fasta_filename: Union[str, Path], seqid_extraction=lambda x: x):
         self.f = open(fasta_filename)
         self.d = {}
 

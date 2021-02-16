@@ -2,9 +2,10 @@
 
 __version__ = "1.0"
 
-import sys
 import random
+import sys
 from collections import defaultdict
+
 from Bio import SeqIO
 
 simType = ["sub", "ins", "del", "match"]

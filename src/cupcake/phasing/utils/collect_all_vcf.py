@@ -1,8 +1,9 @@
-import os, sys
-import vcf
 import glob
-from collections import defaultdict, Counter
+import sys
+from collections import Counter, defaultdict
 from pathlib import Path
+
+import vcf
 
 
 def collect_all_vcf(
@@ -22,35 +23,35 @@ def collect_all_vcf(
             if not no_snp_found_filename.exists():
                 print("VCF file {filename} does not exist. Skipping.", file=sys.stderr)
             continue
-        reader = vcf.VCFReader(open(filename))
+        with open(filename) as rf:
+            reader = vcf.VCFReader(rf)
 
-        for r in reader:
-            c = Counter()  # genotype -> count
-            for x in r.samples:
-                if x.data.GT.count('|') == 0:
-                    c[x.data.GT] += x.data.HQ
-                else:
-                    for i, gt in enumerate(x.data.GT.split('|')):
-                        c[gt] += x.data.HQ[i]
-            c_keys = c.keys()
-            genotype = "|".join(str(k) for k in c_keys)
-            counts = ",".join(str(c[k]) for k in c_keys)
-            r.samples = [vcf.model._Call(r, 'SAMPLE', samp_ft(*[genotype, counts]))]
-            snps_by_chrom[r.CHROM].append((r.POS, r))
+            for r in reader:
+                c = Counter()  # genotype -> count
+                for x in r.samples:
+                    if x.data.GT.count('|') == 0:
+                        c[x.data.GT] += x.data.HQ
+                    else:
+                        for i, gt in enumerate(x.data.GT.split('|')):
+                            c[gt] += x.data.HQ[i]
+                c_keys = c.keys()
+                genotype = "|".join(str(k) for k in c_keys)
+                counts = ",".join(str(c[k]) for k in c_keys)
+                r.samples = [vcf.model._Call(r, 'SAMPLE', samp_ft(*[genotype, counts]))]
+                snps_by_chrom[r.CHROM].append((r.POS, r))
 
     keys = list(snps_by_chrom.keys())
     keys.sort()
 
     if reader is not None:
         reader.samples = ['SAMPLE']
-        f = vcf.Writer(open(output, 'w'), reader)
-        for k in keys:
-            v = snps_by_chrom[k]
-            v.sort(key=lambda x: x[0])
-            for pos, rec in v:
-                f.write_record(rec)
-
-        f.close()
+        with open(output, 'w') as f:
+            f = vcf.Writer(f, reader)
+            for k in keys:
+                v = snps_by_chrom[k]
+                v.sort(key=lambda x: x[0])
+                for pos, rec in v:
+                    f.write_record(rec)
         print("Output written to:", output)
 
 

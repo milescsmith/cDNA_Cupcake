@@ -5,10 +5,12 @@ __author__ = "etseng@pacb.com"
 Given a pooled input GFF + demux CSV file, write out per-{barcode group} GFFs
 If input fasta/fastq is given, optionally also output per-{barcode group} FASTA/FASTQ
 """
-import re, sys
-import cupcake.sequence.GFF as GFF
-from csv import DictReader
+import re
+import sys
 from collections import defaultdict
+from csv import DictReader
+
+import cupcake.sequence.GFF as GFF
 from Bio import SeqIO
 
 rex_pbid = re.compile(r"(PB.\d+.\d+)(|\S+)")

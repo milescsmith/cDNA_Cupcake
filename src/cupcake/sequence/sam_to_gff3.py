@@ -19,14 +19,17 @@ ex: from GMAP
 
 import sys
 from collections import Counter
+from pathlib import Path
+from typing import Union
+
+from Bio import SeqIO
+from Bio.Seq import Seq
+from Bio.SeqFeature import FeatureLocation, SeqFeature
+from Bio.SeqRecord import SeqRecord
+from cupcake.sequence.BioReaders import GMAPSAMReader
 
 # from gtfparse.write_gtf import df_to_gtf
 from BCBio import GFF as BCBio_GFF
-from Bio import SeqIO
-from Bio.Seq import Seq
-from Bio.SeqRecord import SeqRecord
-from Bio.SeqFeature import SeqFeature, FeatureLocation
-from cupcake.sequence.BioReaders import GMAPSAMReader
 
 
 def convert_sam_rec_to_gff3_rec(r, source, qid_index_dict=None):
@@ -88,7 +91,7 @@ def convert_sam_rec_to_gff3_rec(r, source, qid_index_dict=None):
     return rec
 
 
-def convert_sam_to_gff3(sam_filename, output_gff3, source, q_dict=None):
+def convert_sam_to_gff3(sam_filename: str, output_gff3: str, source, q_dict=None):
     qid_index_dict = Counter()
     with open(output_gff3, "w") as f:
         recs = [
@@ -110,10 +113,7 @@ def main():
         help="(Optional) input fasta. If given, coverage will be calculated.",
     )
     parser.add_argument(
-        "-s",
-        "--source",
-        required=True,
-        help="source name (ex: hg38, mm10)",
+        "-s", "--source", required=True, help="source name (ex: hg38, mm10)",
     )
 
     args = parser.parse_args()
