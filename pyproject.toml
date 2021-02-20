@@ -36,7 +36,7 @@ include = [
 "bug tracker" = "https://github.com/Magdoll/cDNA_Cupcake/issues"
 
 [tool.poetry.dependencies]
-python = "~3.7.1"
+python = ">=3.7.1"
 numpy = "^1.20.1"
 biopython = "^1.78"
 bx-python = "^0.8.9"
