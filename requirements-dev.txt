@@ -7,7 +7,6 @@ pysam~=0.16
 bcbio-gff~=0.6.6
 pandas~=1.0
 pyvcf~=0.6
-networkx~=2.4
 cython~=0.29
 pre-commit~=2.5
 pbcoretools @ git+https://github.com/PacificBiosciences/pbcoretools
@@ -17,4 +16,3 @@ black
 ipython
 pylint
 mypy
-wemake-python-styleguide
