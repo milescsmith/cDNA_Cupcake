@@ -3,11 +3,12 @@ __author__ = "etseng@pacb.com"
 
 import os
 import sys
-from argparse import ArgumentParser
+import typer
 from csv import DictReader, DictWriter
 
 from Bio import SeqIO
 from cupcake.sequence import GFF
+from cupcake.logging import cupcake_logger as logger
 
 
 """
@@ -18,16 +19,27 @@ Output: <output>.min_fl_<threshold>.{group|abundance|gff|rep fq}
 """
 
 
-def filter_by_count(input_prefix, output_prefix, min_count, dun_use_group_count=False):
+app = typer.Typer(
+    name="filter_by_count",
+    help="Given the collapse script result, further filter by FL counts.",
+)
 
-    group_filename = input_prefix + ".group.txt"
-    count_filename = input_prefix + ".abundance.txt"
-    gff_filename = input_prefix + ".gff"
+
+def filter_by_count(
+    input_prefix: str,
+    output_prefix: str,
+    min_count: int,
+    dun_use_group_count: bool = False,
+):
+
+    group_filename = f"{input_prefix}.group.txt"
+    count_filename = f"{input_prefix}.abundance.txt"
+    gff_filename = f"{input_prefix}.gff"
     rep_filenames = [
-        (input_prefix + ".rep.fq", "fastq"),
-        (input_prefix + ".rep.fastq", "fastq"),
-        (input_prefix + ".rep.fa", "fasta"),
-        (input_prefix + ".rep.fasta", "fasta"),
+        (f"{input_prefix}.rep.fq", "fastq"),
+        (f"{input_prefix}.rep.fastq", "fastq"),
+        (f"{input_prefix}.rep.fa", "fasta"),
+        (f"{input_prefix}.rep.fasta", "fasta"),
     ]
 
     rep_filename = None
@@ -38,11 +50,8 @@ def filter_by_count(input_prefix, output_prefix, min_count, dun_use_group_count=
             rep_type = type
 
     if rep_filename is None:
-        print(
-            "Expected to find input fasta or fastq files {0}.rep.fa or {0}.rep.fq. Not found. Abort!".format(
-                input_prefix
-            ),
-            file=sys.stderr,
+        logger.error(
+            f"Expected to find input fasta or fastq files {input_prefix}.rep.fa or {input_prefix}.rep.fq. Not found. Abort!"
         )
         sys.exit(-1)
 
@@ -131,30 +140,27 @@ def filter_by_count(input_prefix, output_prefix, min_count, dun_use_group_count=
         writer.writerow(r)
     f.close()
 
-    print("Output written to:", output_prefix + ".gff", file=sys.stderr)
-    print("Output written to:", rep_filename, file=sys.stderr)
-    print("Output written to:", output_prefix + ".abundance.txt", file=sys.stderr)
+    logger.info(
+        f"Output written to: {output_prefix}.gff\n"
+        f"Output written to: {rep_filename}\n"
+        f"Output written to: {output_prefix}.abundance.txt"
+        )
 
 
-def main():
-    parser = ArgumentParser()
-    parser.add_argument("input_prefix")
-    parser.add_argument(
-        "--min_count", type=int, default=2, help="Minimum FL count (default: 2)"
-    )
-    parser.add_argument(
-        "--dun_use_group_count",
-        action="store_true",
-        default=False,
+@app.command(name="")
+def main(
+    input_prefix: str = typer.Argument(...),
+    min_count: int = typer.Optional(2, help="Minimum FL count (default: 2)"),
+    dun_use_group_count: bool = typer.Optional(
+        True,
+        "--dun_use-group_count",
         help="Turn off more stringent min count (default: off)",
-    )
+    ),
+) -> None:
 
-    args = parser.parse_args()
-    output_prefix = "{i}.min_fl_{c}".format(i=args.input_prefix, c=args.min_count)
-    filter_by_count(
-        args.input_prefix, output_prefix, args.min_count, args.dun_use_group_count
-    )
+    output_prefix = f"{input_prefix}.min_fl_{min_count}"
+    filter_by_count(input_prefix, output_prefix, min_count, dun_use_group_count)
 
 
 if __name__ == "__main__":
-    main()
+    typer.run(main)

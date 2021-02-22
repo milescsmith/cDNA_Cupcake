@@ -84,9 +84,7 @@ def collate_gene_info(
 
     for ccs_id, pbid in group_info.items():
         if pbid not in sqanti_info:
-            print(
-                f"ignoring ID {pbid} cuz not in classification file.", file=sys.stderr
-            )
+            logger.error(f"ignoring ID {pbid} cuz not in classification file.")
             continue
 
         if is_clustered:
@@ -97,7 +95,7 @@ def collate_gene_info(
         if no_extra_base and (
             not is_clustered and umi_bc_info[ccs_id]["extra"] != "NA"
         ):
-            print(f"ignoring ID {pbid} cuz extra bases.", file=sys.stderr)
+            logger.info(f"ignoring ID {pbid} cuz extra bases.")
             continue
         rec = {"id": ccs_id, "pbid": pbid}
         rec["length"] = sqanti_info[pbid]["length"]
@@ -170,15 +168,15 @@ def main():
         sys.exit(-1)
 
     if not os.path.exists(args.group_filename):
-        print(f"Group file {args.group_filename} not found. Abort!", file=sys.stderr)
+        logger.error(f"Group file {args.group_filename} not found. Abort!")
         sys.exit(-1)
 
     if not os.path.exists(args.csv_filename):
-        print(f"CSV file {args.csv_filename} not found. Abort!", file=sys.stderr)
+        logger.error(f"CSV file {args.csv_filename} not found. Abort!")
         sys.exit(-1)
 
     if not os.path.exists(args.class_filename):
-        print(f"Class file {args.class_filename} not found. Abort!", file=sys.stderr)
+        logger.error(f"Class file {args.class_filename} not found. Abort!")
         sys.exit(-1)
 
     if args.ontarget_filename is not None and not os.path.exists(
@@ -198,9 +196,7 @@ def main():
             )
             sys.exit(-1)
         if not os.path.exists(args.dedup_ORF_prefix + ".faa"):
-            print(
-                f"Dedup {args.dedup_ORF_prefix}.faa not found. Abort!", file=sys.stderr
-            )
+            logger.error(f"Dedup {args.dedup_ORF_prefix}.faa not found. Abort!")
             sys.exit(-1)
 
     collate_gene_info(

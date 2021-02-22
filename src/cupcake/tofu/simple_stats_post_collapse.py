@@ -13,16 +13,16 @@ def simple_stats_post_collapse(input_prefix):
         print(f"Looking for input GFF {input_gff} but not found! Abort!")
         sys.exit(-1)
 
-    with open(f'{input_prefix}.simple_stats.txt', 'w') as f1, open(
-        f'{input_prefix}.exon_stats.txt', 'w'
+    with open(f"{input_prefix}.simple_stats.txt", "w") as f1, open(
+        f"{input_prefix}.exon_stats.txt", "w"
     ) as f2:
 
         f1.write("pbid\tlocus\tlength\tnum_exon\n")
         f2.write("pbid\texon_index\texon_size\tintron_size\n")
 
         for r in collapseGFFReader(input_gff):
-            f1.write(r.seqid + '\t')
-            f1.write(r.seqid.split('.')[1] + '\t')
+            f1.write(r.seqid + "\t")
+            f1.write(r.seqid.split(".")[1] + "\t")
             sum_len = 0
             for i, e in enumerate(r.ref_exons):
                 exon_len = e.end - e.start

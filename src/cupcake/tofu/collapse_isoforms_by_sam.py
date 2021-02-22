@@ -18,6 +18,7 @@ Suggested scripts to follow up with:
 """
 
 import sys
+import typer
 from collections import defaultdict
 from gzip import open as gzopen
 from pathlib import Path
@@ -28,6 +29,7 @@ from cupcake.sequence import GFF
 from cupcake.tofu.branch import branch_simple2
 from cupcake.tofu.compare_junctions import compare_junctions
 from cupcake.tofu.utils import check_ids_unique
+from cupcake.logging import cupcake_logger as logger
 
 GFF_FIELDS = [
     "seqname",
@@ -40,6 +42,9 @@ GFF_FIELDS = [
     "frame",
     "attribute",
 ]
+
+
+app = typer.Typer(name="collapse_isoforms_by_sam", add_completion=False)
 
 
 def pick_rep(
@@ -224,111 +229,89 @@ def collapse_fuzzy_junctions(
     return fuzzy_match
 
 
-def main():
-    from argparse import ArgumentParser
-
-    parser = ArgumentParser()
-    parser.add_argument("--input", help="Input FA/FQ filename")
-    parser.add_argument(
-        "--fq",
-        default=False,
-        action="store_true",
-        help="Input is a fastq file (default is fasta)",
-    )
-    parser.add_argument("-s", "--sam", required=True, help="Sorted GMAP SAM filename")
-    parser.add_argument("-o", "--prefix", required=True, help="Output filename prefix")
-    parser.add_argument(
-        "-c",
-        "--min-coverage",
-        dest="min_aln_coverage",
-        type=float,
-        default=0.99,
-        help="Minimum alignment coverage (default: 0.99)",
-    )
-    parser.add_argument(
-        "-i",
-        "--min-identity",
-        dest="min_aln_identity",
-        type=float,
-        default=0.95,
-        help="Minimum alignment identity (default: 0.95)",
-    )
-    parser.add_argument(
-        "--max_fuzzy_junction",
-        default=5,
-        type=int,
-        help="Max fuzzy junction dist (default: 5 bp)",
-    )
-    parser.add_argument(
-        "--max_5_diff",
-        default=1000,
-        type=int,
-        help="Maximum allowed 5' difference if on same exon (default: 1000 bp)",
-    )
-    parser.add_argument(
-        "--max_3_diff",
-        default=100,
-        type=int,
-        help="Maximum allowed 3' difference if on same exon (default: 100 bp)",
-    )
-    parser.add_argument(
-        "--flnc_coverage",
-        dest="flnc_coverage",
-        type=int,
-        default=-1,
+@app.command(name="")
+def main(
+    input_filename: str = typer.Argument(..., "--input", help="Input FA/FQ filename"),
+    fq: bool = typer.Option(
+        False, "--fq", help="Input is a fastq file (default is fasta)"
+    ),  # store_true
+    sam: str = typer.Argument(..., help="Sorted GMAP SAM filename"),
+    prefix: str = typer.Argument(..., "-o", "--output", help="Output filename prefix"),
+    min_aln_coverage: float = typer.Option(
+        0.99, "--min-coverage", "-c", help="Minimum alignment coverage (default: 0.99)"
+    ),
+    min_aln_identity: float = typer.Option(
+        0.95, "--min-identity", "-i", help="Minimum alignment identity (default: 0.95)"
+    ),
+    max_fuzzy_junction: int = typer.Option(
+        5, help="Max fuzzy junction dist (default: 5 bp)"
+    ),
+    max_5_diff: int = typer.Option(
+        1000, help="Maximum allowed 5' difference if on same exon (default: 1000 bp)"
+    ),
+    max_3_diff: int = typer.Option(
+        100, help="Maximum allowed 3' difference if on same exon (default: 100 bp)"
+    ),
+    flnc_coverage: int = typer.Option(
+        -1,
         help="Minimum # of FLNC reads, only use this for aligned FLNC reads, otherwise results undefined!",
-    )
-    parser.add_argument(
+    ),
+    gen_mol_count: bool = typer.Option(
+        False,
+        "--gen_mol_count",
+        help="Generate a .abundance.txt file based on the number of input sequences collapsed. Use only if input is FLNC or UMI-dedup output (default: off)",
+    ),  # store_true
+    allow_extra_5exon: bool = typer.Option(
+        True,
         "--dun-merge-5-shorter",
-        action="store_false",
-        dest="allow_extra_5exon",
-        default=True,
         help="Don't collapse shorter 5' transcripts (default: turned off)",
-    )
+    ),  # store_false
+):
 
-    args = parser.parse_args()
     # sanity check that input file and input SAM exists
-    if not Path(args.input).exists():
-        print(f"Input file {args.input} does not exist. Abort.", file=sys.stderr)
+    if not Path(input_filename).exists():
+        logger.error(f"Input file {input_filename} does not exist. Abort.")
         sys.exit(-1)
 
-    if not Path(args.sam).exists:
-        print(f"SAM file {args.sam} does not exist. Abort.", file=sys.stderr)
+    if not Path(sam).exists:
+        logger.error(f"SAM file {sam} does not exist. Abort.")
         sys.exit(-1)
 
     # check for duplicate IDs
-    check_ids_unique(args.input, is_fq=args.fq)
+    check_ids_unique(input_filename, is_fq=fq)
 
-    ignored_fout = open(f"{args.prefix}.ignored_ids.txt", "w")
+    ignored_fout = open(f"{prefix}.ignored_ids.txt", "w")
 
-    if args.flnc_coverage > 0:
-        f_good = open(f"{args.prefix}.collapsed.good.gff", "w")
-        f_bad = open(f"{args.prefix}.collapsed.bad.gff", "w")
-        cov_threshold = args.flnc_coverage
+    if flnc_coverage > 0:
+        f_good = open(f"{prefix}.collapsed.good.gff", "w")
+        f_bad = open(f"{prefix}.collapsed.bad.gff", "w")
+        cov_threshold = flnc_coverage
     else:
-        f_good = open(f"{args.prefix}.collapsed.gff", "w")
+        f_good = open(f"{prefix}.collapsed.gff", "w")
         f_bad = f_good
         cov_threshold = 1
-    f_txt = open(f"{args.prefix}.collapsed.group.txt", "w")
+    f_txt = open(f"{prefix}.collapsed.group.txt", "w")
 
     b = branch_simple2.BranchSimple(
-        args.input,
+        transfrag_filename=input_filename,
         cov_threshold=cov_threshold,
-        min_aln_coverage=args.min_aln_coverage,
-        min_aln_identity=args.min_aln_identity,
-        is_fq=args.fq,
-        max_5_diff=args.max_5_diff,
-        max_3_diff=args.max_3_diff,
+        min_aln_coverage=min_aln_coverage,
+        min_aln_identity=min_aln_identity,
+        is_fq=fq,
+        max_5_diff=max_5_diff,
+        max_3_diff=max_3_diff,
     )
-    iter = b.iter_gmap_sam(args.sam, ignored_fout)
+    rec_iter = b.iter_gmap_sam(sam, ignored_fout)
     for (
         recs
-    ) in iter:  # recs is {'+': list of list of records, '-': list of list of records}
+    ) in (
+        rec_iter
+    ):  # recs is {'+': list of list of records, '-': list of list of records}
         for v in recs.values():
             for v2 in v:
                 if len(v2) > 0:
                     b.process_records(
-                        v2, args.allow_extra_5exon, False, f_good, f_bad, f_txt
+                        v2, allow_extra_5exon, False, f_good, f_bad, f_txt
                     )
 
     ignored_fout.close()
@@ -339,54 +322,59 @@ def main():
         pass
     f_txt.close()
 
-    if (
-        args.max_fuzzy_junction > 0
-    ):  # need to further collapse those that have fuzzy junctions!
+    # need to further collapse those that have fuzzy junctions!
+    if max_fuzzy_junction > 0:
         collapse_fuzzy_junctions(
             f_good.name,
             f_txt.name,
-            args.allow_extra_5exon,
-            internal_fuzzy_max_dist=args.max_fuzzy_junction,
-            max_5_diff=args.max_5_diff,
-            max_3_diff=args.max_3_diff,
+            allow_extra_5exon,
+            internal_fuzzy_max_dist=max_fuzzy_junction,
+            max_5_diff=max_5_diff,
+            max_3_diff=max_3_diff,
         )
         Path(f_good.name).rename(f"{f_good.name}.unfuzzy")
         Path(f_txt.name).rename(f"{f_txt.name}.unfuzzy")
         Path(f"{f_good.name}.fuzzy").rename(f_good.name)
         Path(f"{f_txt.name_}.fuzzy").rename(f_txt.name)
 
-    if args.fq:
-        outfile = f"{args.prefix}.collapsed.rep.fq"
+    if fq:
+        outfile = f"{prefix}.collapsed.rep.fq"
     else:
-        outfile = f"{args.prefix}.collapsed.rep.fa"
-    if args.allow_extra_5exon:  # 5merge, pick longest
+        outfile = f"{prefix}.collapsed.rep.fa"
+    if allow_extra_5exon:  # 5merge, pick longest
         pick_rep(
-            args.input,
-            f_good.name,
-            f_txt.name,
-            outfile,
-            is_fq=args.fq,
+            fa_fq_filename=input_filename,
+            gff_filename=f_good.name,
+            group_filename=f_txt.name,
+            output_filename=outfile,
+            is_fq=fq,
             pick_least_err_instead=False,
             bad_gff_filename=f_bad.name,
         )
     else:
         pick_rep(
-            args.input,
-            f_good.name,
-            f_txt.name,
-            outfile,
-            is_fq=args.fq,
+            fa_fq_filename=input_filename,
+            gff_filename=f_good.name,
+            group_filenanme=f_txt.name,
+            output_filename=outfile,
+            is_fq=fq,
             pick_least_err_instead=True,
             bad_gff_filename=f_bad.name,
         )
 
+    if gen_mol_count:
+        outfile = f"{prefix}.collapsed.abundance.txt"
+        with open(outfile, "w") as f:
+            f.write("pbid\tcount_fl\n")
+            for line in open(f_txt.name):
+                pbid, members = line.strip().split()
+                f.write(f"{pbid}\t{members.count(',')+1}\n")
+
     print(f"Ignored IDs written to: {ignored_fout.name}", file=sys.stdout)
-    newline = "\n"
     print(
-        f"Output written to: {f_good.name}{newline}{f_txt.name}{newline}{outfile}{newline}{args}{newline}",
-        file=sys.stdout,
+        f"Output written to: {f_good.name}\n{f_txt.name}\n{outfile}\n", file=sys.stdout
     )
 
 
 if __name__ == "__main__":
-    main()
+    typer.run(main)

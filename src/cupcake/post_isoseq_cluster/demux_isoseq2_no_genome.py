@@ -155,35 +155,29 @@ def demux_isoseq2_no_genome(
         assert os.path.exists(classify_csv)
 
     # info: dict of hq_isoform --> primer --> FL count
-    print("Reading {}....".format(classify_csv), file=sys.stderr)
+    logger.info(f"Reading {classify_csv}...")
     max_primer, classify_csv = read_classify_csv(classify_csv)
-    print("Reading {}....".format(cluster_csv), file=sys.stderr)
+    logger.info(f"Reading {cluster_csv}...")
     info = read_cluster_csv(cluster_csv, classify_csv, isoseq_version)
 
-    f = open(output_filename, "w")
-    f.write(
-        "id,{}\n".format(",".join("primer" + str(i) for i in range(max_primer + 1)))
-    )
-    print("Reading {}....".format(hq_fastq), file=sys.stderr)
-    for r in SeqIO.parse(open(hq_fastq), "fastq"):
-        if isoseq_version == "1":
-            m = hq1_id_rex.match(r.id)
-        else:
-            m = hq2_id_rex.match(r.id)
+    with open(output_filename, "w") as f:
+        f.write(f"id,{','.join('primer' + str(i) for i in range(max_primer + 1))}\n")
+        logger.info(f"Reading {hq_fastq}...")
+        for r in SeqIO.parse(open(hq_fastq), "fastq"):
+            if isoseq_version == "1":
+                m = hq1_id_rex.match(r.id)
+            else:
+                m = hq2_id_rex.match(r.id)
 
-        if m is None:
-            print(
-                "Unexpected HQ isoform ID format: {}! Abort.".format(r.id),
-                file=sys.stderr,
-            )
-            sys.exit(-1)
-        cid = m.group(1)
-        f.write(r.id)
-        for p in range(max_primer + 1):
-            f.write(",{}".format(info[cid][p]))
-        f.write("\n")
-    f.close()
-    print("Count file written to {}.".format(f.name), file=sys.stderr)
+            if m is None:
+                logger.error(f"Unexpected HQ isoform ID format: {r.id}! Abort.")
+                sys.exit(-1)
+            cid = m.group(1)
+            f.write(r.id)
+            for p in range(max_primer + 1):
+                f.write(f",{info[cid][p]}")
+            f.write("\n")
+        logger.info(f"Count file written to {f.name}.")
 
 
 def main():

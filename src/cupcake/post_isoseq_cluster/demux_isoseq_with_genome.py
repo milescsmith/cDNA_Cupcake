@@ -105,9 +105,9 @@ def demux_isoseq_with_genome(
         assert os.path.exists(classify_csv)
 
     # info: dict of hq_isoform --> primer --> FL count
-    print(f"Reading {classify_csv}...", file=sys.stderr)
+    logger.info(f"Reading {classify_csv}...")
     primer_list, classify_info = read_classify_csv(classify_csv)
-    print(f"Reading {read_stat}...", file=sys.stderr)
+    logger.info(f"Reading {read_stat}...")
     info = read_read_stat(read_stat, classify_info)
 
     primer_list = list(primer_list)
@@ -123,7 +123,7 @@ def demux_isoseq_with_genome(
 
     with open(output_filename, "w") as f:
         f.write(f"id,{','.join(list(primer_names.values()))}\n")
-        print(f"Reading {mapped_fafq}....", file=sys.stderr)
+        logger.info(f"Reading {mapped_fafq}....")
         for r in SeqIO.parse(open(mapped_fafq), type_fafq(mapped_fafq)):
             m = mapped_id_rex.match(r.id)  # expected ID: PB.X.Y|xxxx.....
             if m is None:
@@ -133,7 +133,7 @@ def demux_isoseq_with_genome(
             for p in primer_names:
                 f.write(f",{info[pbid][p]}")
             f.write("\n")
-        print(f"Count file written to {f.name}.", file=sys.stderr)
+        logger.info(f"Count file written to {f.name}.")
 
 
 def main():

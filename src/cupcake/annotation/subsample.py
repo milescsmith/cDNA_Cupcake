@@ -26,13 +26,13 @@ def get_counts(count_filename, min_fl_count=2, key="id", min_len=None, max_len=N
     return total, counts
 
 
-def subsample(total, counts, iter=100, min_fl_count=2, step=10 ** 4):
+def subsample(total: int, counts: int, iterations: int=100, min_fl_count: int=2, step: int=10 ** 4):
     sizes = list(range(0, total + 1, step))
-    print("min fl count:", min_fl_count)
+    print(f"min fl count: {min_fl_count}")
     print("size", "min", "max", "mean", "sd")
     for s in sizes:
         tmp = []
-        for i in range(iter):
+        for i in range(iterations):
             tally = defaultdict(lambda: 0)
             for k in random.sample(counts, s):
                 tally[k] += 1
@@ -42,7 +42,7 @@ def subsample(total, counts, iter=100, min_fl_count=2, step=10 ** 4):
         # tmp = [len(set(random.sample(counts, s))) for i in xrange(iter)]
         _mean = sum(tmp) * 1.0 / len(tmp)
         _std = math.sqrt(sum((x - _mean) ** 2 for x in tmp) * 1.0 / len(tmp))
-        print(s, min(tmp), max(tmp), _mean, _std)
+        logger.info(s, min(tmp), max(tmp), _mean, _std)
 
 
 def main():

@@ -6,8 +6,7 @@ from csv import DictReader
 import vcf
 from Bio import SeqIO
 from Bio.Seq import Seq
-from cupcake.phasing.io.coordinate_mapper import (
-    get_base_to_base_mapping_from_sam)
+from cupcake.phasing.io.coordinate_mapper import get_base_to_base_mapping_from_sam
 from cupcake.sequence.BioReaders import GMAPSAMReader
 
 __VCF_EXAMPLE__ = """
@@ -97,20 +96,16 @@ class VariantPhaser(object):
             query_len_dict={k: len(seq_dict[k].seq) for k in seq_dict},
         ):
             if r.sID == "*":
-                f_log.write("Ignore {} because: unmapped.\n".format(r.qID))
+                f_log.write(f"Ignore {r.qID} because: unmapped.\n")
                 continue
             if r.flag.strand != self.vc.expected_strand:
-                f_log.write(
-                    "Ignore {} because: strand is {}.\n".format(r.qID, r.flag.strand)
-                )
+                f_log.write(f"Ignore {r.qID} because: strand is {r.flag.strand}.\n")
                 continue  # ignore
             if not partial_ok and (
                 r.sStart > self.min_var_pos or r.sEnd < self.max_var_pos
             ):
                 f_log.write(
-                    "Ignore {} because: aln too short, from {}-{}.\n".format(
-                        r.qID, r.sStart + 1, r.sEnd
-                    )
+                    f"Ignore {r.qID} because: aln too short, from {r.sStart + 1}-{r.sEnd}.\n"
                 )
                 continue
 
@@ -118,13 +113,11 @@ class VariantPhaser(object):
                 r, str(seq_dict[r.qID].seq).upper(), partial_ok
             )
             if i is None:  # read is rejected for reason listed in <msg>
-                f_log.write("Ignore {} because: {}.\n".format(r.qID, msg))
+                f_log.write(f"Ignore {r.qID} because: {msg}.\n")
                 continue
             else:
-                f_log.write(
-                    "{} phased: haplotype {}={}\n".format(r.qID, i, self.haplotypes[i])
-                )
-                print("{} has haplotype {}:{}".format(r.qID, i, self.haplotypes[i]))
+                f_log.write(f"{r.qID} phased: haplotype {i}={self.haplotypes[i]}\n")
+                print(f"{r.qID} has haplotype {i}:{self.haplotypes[i]}")
                 self.seq_hap_info[r.qID] = i
 
     def match_haplotype(self, r, s, partial_ok=False):
@@ -158,7 +151,7 @@ class VariantPhaser(object):
                 ):  # read does not cover one of the SNP positions, so use "?"
                     hap += "?"
                 else:
-                    return None, "Does not have base at ref_pos {}.\n".format(ref_pos)
+                    return None, f"Does not have base at ref_pos {ref_pos}.\n"
             else:
                 base = s[ref_m[ref_pos]]
                 if (
@@ -179,7 +172,7 @@ class VariantPhaser(object):
             if impute_i is None:
                 return (
                     None,
-                    "Seq {} contained non-called variant. Impute failed.\n".format(hap),
+                    f"Seq {hap} contained non-called variant. Impute failed.\n",
                 )
             else:
                 return impute_i, "IMPUTED"
@@ -237,9 +230,13 @@ class Haplotypes(object):
         )  # haplotypes, where haplotypes[i] is the i-th distinct haplotype of all var concat
         self.hap_var_positions = var_positions
         self.ref_at_pos = ref_at_pos  # dict of (0-based) pos --> ref base
-        self.alt_at_pos = None  # init: None, later: dict of (0-based) pos --> unique list of alt bases
+        self.alt_at_pos = (
+            None
+        )  # init: None, later: dict of (0-based) pos --> unique list of alt bases
         self.count_of_vars_by_pos = count_of_vars_by_pos
-        self.haplotype_vcf_index = None  # init: None, later: dict of (hap index) --> (0-based) var pos --> phase (0 for ref, 1+ for alt)
+        self.haplotype_vcf_index = (
+            None
+        )  # init: None, later: dict of (hap index) --> (0-based) var pos --> phase (0 for ref, 1+ for alt)
 
         # sanity check: all variant positions must be present
         self.sanity_check()
@@ -397,24 +394,25 @@ class Haplotypes(object):
             f.write(__VCF_EXAMPLE__)
         reader = vcf.VCFReader(open("template.vcf"))
         reader.samples = name_isoforms
-        f_vcf = vcf.Writer(open(output_prefix + ".vcf", "w"), reader)
+        f_vcf = vcf.Writer(open(f"{output_prefix}.vcf", "w"), reader)
 
         # human readable text:
         # first line: assoc VCF filename
         # second line: haplotype, list of sorted isoforms
         # third line onwards: haplotype and assoc count
-        f_human = open(output_prefix + ".human_readable.txt", "w")
-        f_human.write("Associated VCF file: {}.vcf\n".format(output_prefix))
-        f_human.write("haplotype\t{samples}\n".format(samples="\t".join(name_isoforms)))
-        for hap_index, hap_str in enumerate(self.haplotypes):
-            f_human.write(hap_str)
-            for _iso in name_isoforms:
-                if hap_index in isoform_tally[_iso]:
-                    f_human.write("\t{}".format(isoform_tally[_iso][hap_index]))
-                else:
-                    f_human.write("\t0")
-            f_human.write("\n")
-        f_human.close()
+        with open(f"{output_prefix}.human_readable.txt", "w") as f_human:
+            f_human.write(f"Associated VCF file: {output_prefix}.vcf\n")
+            f_human.write(
+                "haplotype\t{samples}\n".format(samples="\t".join(name_isoforms))
+            )
+            for hap_index, hap_str in enumerate(self.haplotypes):
+                f_human.write(hap_str)
+                for _iso in name_isoforms:
+                    if hap_index in isoform_tally[_iso]:
+                        f_human.write(f"\t{isoform_tally[_iso][hap_index]}")
+                    else:
+                        f_human.write("\t0")
+                f_human.write("\n")
 
         # read fake genome mapping file
         fake_map = {}  # 0-based position on fake --> (chr, 0-based ref position)
@@ -431,7 +429,7 @@ class Haplotypes(object):
             ref_chr, ref_pos = fake_map[pos]
             total_count = sum(self.count_of_vars_by_pos[pos].values())
             alt_freq = [
-                "{:.2f}".format(self.count_of_vars_by_pos[pos][b] * 1.0 / total_count)
+                f"{self.count_of_vars_by_pos[pos][b] * 1.0 / total_count:.2f}"
                 for b in self.alt_at_pos[pos]
             ]
             rec = vcf.model._Record(

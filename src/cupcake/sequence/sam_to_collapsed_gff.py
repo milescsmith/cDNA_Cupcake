@@ -35,7 +35,7 @@ def main():
             r.cds_exons = None
             write_collapseGFF_format(f, r)
 
-    print(f"Output written to {output_gff}.", file=sys.stderr)
+    logger.info(f"Output written to {output_gff}.")
 
 
 if __name__ == "__main__":

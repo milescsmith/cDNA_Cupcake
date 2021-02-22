@@ -128,13 +128,17 @@ class LazyBEDPointReader(SimpleBEDReader):
             cur = self.f.tell()
             line = self.f.readline()
             if self.f.tell() == cur:
-                return "NA"  # raise Exception, "EOF reached and {0}:{1} not seen!".format(chrom, pos)
+                return (
+                    "NA"
+                )  # raise Exception, "EOF reached and {0}:{1} not seen!".format(chrom, pos)
 
             raw = line.strip().split("\t")
             _chrom, start = (raw[0], int(raw[1]) - self.start_base)
 
             if _chrom != chrom or start > pos:
-                return "NA"  # raise Exception, "End of chrom reached and {0}:{1} not seen!".format(chrom, pos)
+                return (
+                    "NA"
+                )  # raise Exception, "End of chrom reached and {0}:{1} not seen!".format(chrom, pos)
 
             if start == pos:
                 return raw[3]

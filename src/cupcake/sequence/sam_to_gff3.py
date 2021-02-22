@@ -39,7 +39,7 @@ def convert_sam_rec_to_gff3_rec(r, source, qid_index_dict=None):
     :return SeqRecord ready to be written as GFF3
     """
     if r.sID == "*":
-        print(f"Skipping {r.qID} because unmapped.", file=sys.stderr)
+        logger.info(f"Skipping {r.qID} because unmapped.")
         return None
     t_len = sum(e.end - e.start for e in r.segments)
     seq = Seq("A" * t_len)  # DO NOT CARE since sequence is not written in GFF3
@@ -113,7 +113,7 @@ def main():
         help="(Optional) input fasta. If given, coverage will be calculated.",
     )
     parser.add_argument(
-        "-s", "--source", required=True, help="source name (ex: hg38, mm10)",
+        "-s", "--source", required=True, help="source name (ex: hg38, mm10)"
     )
 
     args = parser.parse_args()
@@ -138,7 +138,7 @@ def main():
         ]
         BCBio_GFF.write([x for x in recs if x is not None], f)
 
-    print(f"Output written to {output_gff3}.", file=sys.stderr)
+    logger.info(f"Output written to {output_gff3}.")
 
 
 if __name__ == "__main__":

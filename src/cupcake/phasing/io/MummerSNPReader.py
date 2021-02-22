@@ -86,19 +86,12 @@ class SNPRecord(object):
         self.query_name = query_name
 
     def __str__(self):
-        return """
-        ref_pos: {}:{}
-        query_pos: {}:{}
-        ref_base: {}
-        query_base: {}
-        """.format(
-            self.ref_name,
-            self.ref_pos + 1,
-            self.query_name,
-            self.query_pos + 1,
-            self.ref_base,
-            self.query_base,
-        )
+        return f"""
+        ref_pos: {self.ref_name}:{self.ref_pos + 1}
+        query_pos: {self.query_name}:{self.query_pos + 1}
+        ref_base: {self.ref_base}
+        query_base: {self.query_base}
+        """
 
 
 class SNPReader(object):

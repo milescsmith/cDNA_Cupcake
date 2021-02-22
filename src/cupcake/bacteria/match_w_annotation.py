@@ -7,10 +7,10 @@ __copyright__ = "Copyright 2016, cDNA_Cupcake"
 __email__ = "etseng@pacb.com"
 __version__ = "1.3"
 
-import sys
 from collections import defaultdict, namedtuple
 from csv import DictReader
 
+from cupcake.logging import cupcake_logger as logger
 from Bio import SeqIO
 from bx.intervals import IntervalTree
 from bx.intervals.cluster import ClusterTree
@@ -221,7 +221,7 @@ def categorize_aln_by_annotation(
     # reader = DictReader(open('ProteinTable149_154224.txt'),delimiter='\t')
     for r in DictReader(open(gene_annotation_file), delimiter="\t"):
         if r["#Replicon Name"] != "chr":
-            print("Ignore", r, file=sys.stderr)
+            logger.info("Ignore", r)
             continue
         info[r["Locus tag"]] = (int(r["Start"]), int(r["Stop"]), r["Locus tag"])
         t[r["Replicon Accession"]][r["Strand"]].add(
@@ -247,99 +247,73 @@ def categorize_aln_by_annotation(
     novel_list = []
     novel_index = 0
 
-    f = open(output_prefix + ".sam", "w")
-    f.write(reader.header)
-    f1 = open(output_prefix + ".report.txt", "w")
-    f1.write("id\tread_group\tgene_name\tserial_number\tstrand\tstart\tend\n")
-    for k, v in result.items():
-        # v is: list of AMatch(name, strand, start, end, record)
-        if k.startswith("novel-unannotated"):
-            # write novel later, we are grouping them by loci first
-            # tagRG='novel'
-            for x in v:
-                novel_ct[x.record.sID][x.strand].insert(x.start, x.end, novel_index)
-                novel_index += 1
-                novel_list.append(x)
-            continue
-        elif k.startswith("novel-antisense"):
-            tagRG = "novel-antisense"
-        elif k.startswith("novel-partial"):
-            tagRG = "novel-partial"
-        elif k.startswith("poly-"):
-            tagRG = "poly"
-        else:
-            tagRG = "single"
-        v.sort(
-            key=lambda x: (x.start, x.end),
-            reverse=True if v[0].strand == "-" else False,
-        )  # sort by start, then end
-        for i, x in enumerate(v):
-            f.write(
-                "{}\tSN:Z:{:06d}\tRG:Z:{}\tgn:Z:{}\n".format(
-                    x.record.record_line, i + 1, tagRG, k
+    with open(f"{output_prefix}.sam", "w") as f, open(
+        f"{output_prefix}.report.txt", "w"
+    ) as f1:
+        f.write(reader.header)
+        f1.write("id\tread_group\tgene_name\tserial_number\tstrand\tstart\tend\n")
+        for k, v in result.items():
+            # v is: list of AMatch(name, strand, start, end, record)
+            if k.startswith("novel-unannotated"):
+                # write novel later, we are grouping them by loci first
+                # tagRG='novel'
+                for x in v:
+                    novel_ct[x.record.sID][x.strand].insert(x.start, x.end, novel_index)
+                    novel_index += 1
+                    novel_list.append(x)
+                continue
+            elif k.startswith("novel-antisense"):
+                tagRG = "novel-antisense"
+            elif k.startswith("novel-partial"):
+                tagRG = "novel-partial"
+            elif k.startswith("poly-"):
+                tagRG = "poly"
+            else:
+                tagRG = "single"
+            v.sort(
+                key=lambda x: (x.start, x.end),
+                reverse=True if v[0].strand == "-" else False,
+            )  # sort by start, then end
+            for i, x in enumerate(v):
+                f.write(
+                    f"{x.record.record_line}\tSN:Z:{i + 1:06d}\tRG:Z:{tagRG}\tgn:Z:{k}\n"
                 )
-            )
-            if x.strand == "+":
-                f1.write(
-                    "{}\t{}\t{}\t{:06d}\t{}\t{}\t{}\n".format(
-                        x.record.qID, tagRG, k, i + 1, x.strand, x.start + 1, x.end
+                if x.strand == "+":
+                    f1.write(
+                        f"{x.record.qID}\t{tagRG}\t{k}\t{i + 1:06d}\t{x.strand}\t{x.start + 1}\t{x.end}\n"
                     )
-                )
-            else:  # - strand, start is end, end is start
-                f1.write(
-                    "{}\t{}\t{}\t{:06d}\t{}\t{}\t{}\n".format(
-                        x.record.qID, tagRG, k, i + 1, x.strand, x.end, x.start + 1
+                else:  # - strand, start is end, end is start
+                    f1.write(
+                        f"{x.record.qID}\t{tagRG}\t{k}\t{i + 1:06d}\t{x.strand}\t{x.end}\t{x.start + 1}\n"
                     )
-                )
 
-    # now write the novel stuff, grouped by regions
-    novel_region_index = 1
-    for d1 in novel_ct.values():
-        for ct in d1.values():
-            gn = "novel-" + str(novel_region_index)
-            for _start, _end, _indices in ct.getregions():
-                v = [novel_list[ind] for ind in _indices]
-                v.sort(
-                    key=lambda x: (x.start, x.end),
-                    reverse=True if v[0].strand == "-" else False,
-                )  # sort by start, then end
-                for i, x in enumerate(v):
-                    f.write(
-                        "{}\tSN:Z:{:06d}\tRG:Z:{}\tgn:Z:{}\n".format(
-                            x.record.record_line, i + 1, "novel-unannotated", gn
+        # now write the novel stuff, grouped by regions
+        novel_region_index = 1
+        for d1 in novel_ct.values():
+            for ct in d1.values():
+                gn = "novel-" + str(novel_region_index)
+                for _start, _end, _indices in ct.getregions():
+                    v = [novel_list[ind] for ind in _indices]
+                    v.sort(
+                        key=lambda x: (x.start, x.end),
+                        reverse=True if v[0].strand == "-" else False,
+                    )  # sort by start, then end
+                    for i, x in enumerate(v):
+                        f.write(
+                            f"{x.record.record_line}\tSN:Z:{i + 1:06d}\tRG:Z:{'novel-unannotated'}\tgn:Z:{gn}\n"
                         )
-                    )
-                    if x.strand == "+":
-                        f1.write(
-                            "{}\t{}\t{}\t{:06d}\t{}\t{}\t{}\n".format(
-                                x.record.qID,
-                                "novel-unannotated",
-                                gn,
-                                i + 1,
-                                x.strand,
-                                x.start + 1,
-                                x.end,
+                        if x.strand == "+":
+                            f1.write(
+                                f"{x.record.qID}\t{'novel-unannotated'}\t{gn}\t{i + 1:06d}\t{x.strand}\t{x.start + 1}\t{x.end}\n"
                             )
-                        )
-                    else:
-                        f1.write(
-                            "{}\t{}\t{}\t{:06d}\t{}\t{}\t{}\n".format(
-                                x.record.qID,
-                                "novel-unannotated",
-                                gn,
-                                i + 1,
-                                x.strand,
-                                x.end,
-                                x.start + 1,
+                        else:
+                            f1.write(
+                                f"{x.record.qID}\t{'novel-unannotated'}\t{gn}\t{i + 1:06d}\t{x.strand}\t{x.end}\t{x.start + 1}\n"
                             )
-                        )
-                novel_region_index += 1
+                    novel_region_index += 1
 
-    f.close()
-    f1.close()
-
-    print("Output written to:", f.name, file=sys.stderr)
-    print("Output written to:", f1.name, file=sys.stderr)
+        logger.info(f"Output written to: {f.name}")
+        logger.info(f"Output written to: {f1.name}")
 
 
 def main():

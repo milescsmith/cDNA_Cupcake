@@ -3,7 +3,7 @@ import sys
 from collections import defaultdict
 
 from Bio import SeqIO
-
+from cupcake.logging import cupcake_logger as logger
 
 def type_fa_or_fq(file):
     file = file.upper()
@@ -24,9 +24,8 @@ def parse_matchAnnot(fa_or_fq, filename, not_pbid=False, parse_FL_coverage=False
                 cov = int(r.description.split("full_length_coverage=")[1].split(";")[0])
                 fl_cov[_id] = cov
             except:
-                print(
-                    f"WARNING: Unable to extract `full_length_coverage=` from {r.description}. Mark as NA.",
-                    file=sys.stderr,
+                logger.error(
+                    f"WARNING: Unable to extract `full_length_coverage=` from {r.description}. Mark as NA."
                 )
                 fl_cov[_id] = "NA"
 
@@ -55,9 +54,9 @@ def parse_matchAnnot(fa_or_fq, filename, not_pbid=False, parse_FL_coverage=False
             pbpre = pbid
         else:
             pbpre = pbid.split(".")[1]
-        _cov_text = "\t{}".format(fl_cov[pbid]) if parse_FL_coverage else ""
+        _cov_text = f"\t{fl_cov[pbid]}" if parse_FL_coverage else ""
         if pbid not in match:
-            f.write("{}\t{}\tNA\tNA\tNA{}\n".format(pbid, pbpre, _cov_text))
+            f.write(f"{pbid}\t{pbpre}\tNA\tNA\tNA{_cov_text}\n")
         else:
             gene, isoform, score = match[pbid]
             if gene is None:
@@ -65,7 +64,7 @@ def parse_matchAnnot(fa_or_fq, filename, not_pbid=False, parse_FL_coverage=False
             else:
                 f.write(f"{pbid}\t{pbpre}\t{isoform}\t{gene}\t{score}{_cov_text}\n")
     f.close()
-    print(f"Output written to: {f.name}", file=sys.stderr)
+    logger.info(f"Output written to: {f.name}")
 
 
 def main():

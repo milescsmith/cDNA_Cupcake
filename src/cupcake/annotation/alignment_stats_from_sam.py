@@ -24,10 +24,12 @@ Report #2. For each junction:
   (7) closest known donor site (NA if no ref)
 """
 import bisect
-import sys
 from collections import defaultdict
 from csv import DictWriter
 
+import typer
+from cupcake.logging import cupcake_logger as logger
+from typing import Optional
 from Bio import SeqIO
 from cupcake.sequence.BioReaders import GMAPSAMReader
 from cupcake.sequence.GFF import collapseGFFReader
@@ -52,6 +54,11 @@ FIELDNAMES_REPORT2 = [
 ]
 
 
+app = typer.Typer(
+    name="alignment_stats_from_sam"
+)
+
+
 def type_fa_or_fq(file):
     file = file.upper()
     if file.endswith(".FA") or file.endswith(".FASTA"):
@@ -60,7 +67,7 @@ def type_fa_or_fq(file):
         return "fastq"
 
 
-def read_annotation_for_junction_info(gff_filename):
+def read_annotation_for_junction_info(gff_filename:str) -> defaultdict:
     """
     :param gff_filename: annotation GFF
     :return: dict of (chrom, strand, 'donor' or 'acceptor') --> sorted list of donor or acceptor site. all 0-based.
@@ -190,11 +197,11 @@ def evaluate_alignment_sam(
                 r.segments[i + 1].start,
             )
             if r.flag.strand == "+":
-                rec2["donor_pos"] = "{}:+:{}".format(r.sID, r.segments[i].end - 1)
-                rec2["acceptor_pos"] = "{}:+:{}".format(r.sID, r.segments[i + 1].start)
+                rec2["donor_pos"] = f"{r.sID}:+:{r.segments[i].end - 1}"
+                rec2["acceptor_pos"] = f"{r.sID}:+:{r.segments[i + 1].start}"
             else:
-                rec2["donor_pos"] = "{}:-:{}".format(r.sID, r.segments[i + 1].start)
-                rec2["acceptor_pos"] = "{}:-:{}".format(r.sID, r.segments[i].end - 1)
+                rec2["donor_pos"] = f"{r.sID}:-:{r.segments[i + 1].start}"
+                rec2["acceptor_pos"] = f"{r.sID}:-:{r.segments[i].end - 1}"
             rec2["donor_seq"] = seq1
             rec2["acceptor_seq"] = seq2
             if junction_info is not None:
@@ -211,33 +218,29 @@ def evaluate_alignment_sam(
             w2.writerow(rec2)
 
 
-def main():
-    from argparse import ArgumentParser
-
-    parser = ArgumentParser()
-    parser.add_argument("-i", "--input", required=True, help="Input fasta or fastq.")
-    parser.add_argument(
-        "-s", "--sam_filename", required=True, help="Aligned SAM filename."
-    )
-    parser.add_argument("-g", "--genome_filename", required=True, help="Genome fasta.")
-    parser.add_argument("-o", "--output_prefix", required=True, help="Output prefix.")
-    parser.add_argument("--gff", default=None, help="Annotation GFF (optional).")
-
-    args = parser.parse_args()
+@app.command(name="")
+def main(
+    input_file: str = typer.Argument(..., "--input", "-i", help="Input fasta or fastq."),
+    sam_filename: str = typer.Argument(..., "--sam_filename", "-s", help="Aligned SAM filename."),
+    genome_filename: str = typer.Argument(..., "--genome_filename", "-g", help="Genome fasta."),
+    output_prefix: str = typer.Argument(..., "--output_prefix", "-o", help="Output prefix."),
+    gff: Optional[str] = typer.Option(None, "--gff", help="Annotation GFF.")
+):
+    
 
     # read genome
-    print("Reading genome {}...".format(args.genome_filename), file=sys.stderr)
-    genome_d = SeqIO.to_dict(SeqIO.parse(open(args.genome_filename), "fasta"))
+    logger.info(f"Reading genome {genome_filename}...")
+    genome_d = SeqIO.to_dict(SeqIO.parse(open(genome_filename), "fasta"))
 
     # read gff
-    if args.gff is not None:
-        print("Reading annotation {}...".format(args.gff), file=sys.stderr)
-        junction_info = read_annotation_for_junction_info(args.gff)
+    if gff is not None:
+        logger.info(f"Reading annotation {gff}...")
+        junction_info = read_annotation_for_junction_info(gff)
     else:
         junction_info = None
 
     evaluate_alignment_sam(
-        args.input, args.sam_filename, genome_d, args.output_prefix, junction_info
+        input_file, sam_filename, genome_d, output_prefix, junction_info
     )
 
 

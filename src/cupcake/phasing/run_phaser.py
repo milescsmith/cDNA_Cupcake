@@ -21,9 +21,13 @@ from cupcake.phasing.io.SAMMPileUpReader import MPileUpReader
 MIN_COVERAGE = 10  # minimum number of FL reads for a gene to do SNP calling and phasing
 ERR_SUB = 0.005
 MAX_DIFF_ALLOWED = 3  # maximum difference in bases allowed for two haplotype strings
-MIN_PERC_ALLOWED = 0.25  # minimum percent of total count for an allele, can be adjusted by ploidy (ex: n=6, means this goes down to 1/6)
+MIN_PERC_ALLOWED = (
+    0.25
+)  # minimum percent of total count for an allele, can be adjusted by ploidy (ex: n=6, means this goes down to 1/6)
 PVAL_CUTOFF = 0.01
-MIN_AF_AT_ENDS = 0.10  # minimum minor allele frequency for SNPs at ends, which tend to have unreliable alignments
+MIN_AF_AT_ENDS = (
+    0.10
+)  # minimum minor allele frequency for SNPs at ends, which tend to have unreliable alignments
 
 
 def set_to_kill(
@@ -69,7 +73,7 @@ def set_to_kill(
 
     if len(vc.variant) == 0:
         check_output(["touch", f"{output_prefix}.NO_SNPS_FOUND"])
-        print("No SNPs found. END.", file=sys.stderr)
+        logger.critical("No SNPs found. END.")
         sys.exit(0)
 
     # (2) for each CCS read, assign a haplotype (or discard if outlier)
@@ -88,7 +92,7 @@ def set_to_kill(
     isoform_tally = VariantPhaser.phase_isoforms(read_stat, seqids, pp)
     if len(isoform_tally) == 0:
         check_output(["touch", f"{output_prefix}.NO_HAPS_FOUND"])
-        print("No good haps found. END.", file=sys.stderr)
+        logger.critical("No good haps found. END.")
         sys.exit(0)
     pp.haplotypes.write_haplotype_to_vcf(mapping_filename, isoform_tally, output_prefix)
 
@@ -123,7 +127,7 @@ def set_to_kill(
 
     if diff_arr is None:
         check_output(["touch", f"{output_prefix}.cleaned.NO_HAPS_FOUND"])
-        print("No good haps found. END.", file=sys.stderr)
+        logger.critical("No good haps found. END.")
         sys.exit(0)
 
     m, new_hap, new_isoform_tally = VariantPhaseCleaner.error_correct_haplotypes(

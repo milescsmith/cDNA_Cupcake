@@ -219,8 +219,7 @@ def error_correct_haplotypes(hap_obj, isoform_tally, diff_arr, hap_count_ordered
         for old_hap_index, count in v.items():
             if old_hap_index not in old_to_new_map:
                 print(
-                    "Discarding: {}".format(hap_obj.haplotypes[old_hap_index]),
-                    file=sys.stderr,
+                    f"Discarding: {hap_obj.haplotypes[old_hap_index]}", file=sys.stderr
                 )
                 continue
             new_hap_index = old_to_new_map[old_hap_index]

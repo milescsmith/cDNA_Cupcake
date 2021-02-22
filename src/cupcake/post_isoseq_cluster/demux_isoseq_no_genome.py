@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 __author__ = "etseng@pacb.com"
 
+from typing import Dict, Any, Union
+
 """
 Demultiplex IsoSeq (SMRT Link 8.0) job output (without genome mapping)
 """
@@ -26,9 +28,7 @@ def type_fafq(fafq):
         return "fastq"
     else:
         raise Exception(
-            "HQ fasta/fastq filename must end with .fasta or .fastq! Saw {} instead, abort!".format(
-                fafq
-            )
+            f"HQ fasta/fastq filename must end with .fasta or .fastq! Saw {fafq} instead, abort!"
         )
 
 
@@ -86,9 +86,7 @@ def read_classify_csv(classify_csv):
         p = r["primer"]
         primer_list.add(p)
         if r["id"] in info:
-            raise Exception(
-                "{} listed more than once in {}!".format(r["id"], classify_csv)
-            )
+            raise Exception(f"{r['id']} listed more than once in {classify_csv}!")
         info[r["id"]] = p
     return primer_list, info
 
@@ -109,10 +107,12 @@ def demux_isoseq_no_genome(
         assert os.path.exists(classify_csv)
 
     # info: dict of hq_isoform --> primer --> FL count
-    print("Reading {}....".format(classify_csv), file=sys.stderr)
+    logger.info(f"Reading {classify_csv}....")
     primer_list, classify_csv = read_classify_csv(classify_csv)
-    print("Reading {}....".format(cluster_csv), file=sys.stderr)
-    info = read_cluster_csv(cluster_csv, classify_csv)
+    logger.info(f"Reading {cluster_csv}....")
+    info: Union[Dict[Any, Counter[Any]], Dict[Any, Any]] = read_cluster_csv(
+        cluster_csv, classify_csv
+    )
 
     primer_list = list(primer_list)
     primer_list.sort()
@@ -126,17 +126,17 @@ def demux_isoseq_no_genome(
                 primer_names[k] = v
 
     f = open(output_filename, "w")
-    f.write("id,{}\n".format(",".join(list(primer_names.keys()))))
-    print("Reading {}....".format(hq_fafq), file=sys.stderr)
+    f.write(f"id,{','.join(list(primer_names.keys()))}\n")
+    logger.info(f"Reading {hq_fafq}....")
     for r in SeqIO.parse(open(hq_fafq), type_fafq(hq_fafq)):
         f.write(r.id)
         m = hq3_id_rex.match(r.id)
         cid = m.group(1)
         for p in primer_names:
-            f.write(",{}".format(info[cid][p]))
+            f.write(f",{info[cid][p]}")
         f.write("\n")
     f.close()
-    print("Count file written to {}.".format(f.name), file=sys.stderr)
+    logger.info(f"Count file written to {f.name}.")
 
 
 def main():

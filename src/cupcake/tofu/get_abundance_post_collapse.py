@@ -37,23 +37,31 @@ PBfusion.2      HQ_sample0ZPg9hS7|cb7607_c16635/f3p0/810,HQ_sample0ZPg9hS7|cb760
 import os
 import re
 import sys
+import typer
+from typing import Optional, List
 from collections import Counter
 from csv import DictReader, DictWriter
+from cupcake.logging import cupcake_logger as logger
 
 
-def get_roi_len(seqid):
+app = typer.Typer(
+    name="get_abundance_post_collapse",
+    add_completion=False,
+    help="Get abundance/read stat information after running collapse script. Works for Iso-Seq1, 2, and 3 output.",
+)
+
+
+def get_roi_len(seqid: str):
     # before isoseq3: <movie>/<zmw>/<start>_<end>_CCS
     # for isoseq3: <movie>/<zmw>/ccs
     if seqid.endswith("/ccs"):
-        print(
-            "WARNING: isoseq3 format detected. Output `length` column will be `NA`.",
-            file=sys.stderr,
+        logger.info(
+            "WARNING: isoseq3 format detected. Output `length` column will be `NA`."
         )
         return "NA"
     elif not seqid.endswith("_CCS"):
-        print(
-            "Sequence ID format must be <movie>/<zmw>/<start>_<end>_CCS or <movie>/<zmw>/ccs! Abort!",
-            file=sys.stderr,
+        logger.error(
+            "Sequence ID format must be <movie>/<zmw>/<start>_<end>_CCS or <movie>/<zmw>/ccs! Abort!"
         )
         sys.exit(-1)
     s, e, junk = seqid.split("/")[2].split("_")
@@ -72,7 +80,7 @@ cluster_rex_isoseq3_mapped = re.compile(
 )  # for isoseq post SL mapping
 
 
-def read_group_filename(group_filename, is_cid=True):
+def read_group_filename(group_filename: str, is_cid=True):
     """
     Make the connection between partitioned results and final (ex: PB.1.1)
     The partitioned results could either be ICE cluster (ex: i1_c123) or RoIs
@@ -141,7 +149,10 @@ def read_group_filename(group_filename, is_cid=True):
 
 
 def output_read_count_IsoSeq_csv(
-    cid_info, csv_filename, output_filename, output_mode="w"
+    cid_info: List[str],
+    csv_filename: str,
+    output_filename: str,
+    output_mode: Optional[str] = "w",
 ):
     """
     Turn into read_stats.txt format:
@@ -232,11 +243,11 @@ def output_read_count_IsoSeq_csv(
 
 
 def make_abundance_file(
-    read_count_filename,
-    output_filename,
-    given_total=None,
-    restricted_movies=None,
-    write_header_comments=True,
+    read_count_filename: str,
+    output_filename: str,
+    given_total: int = None,
+    restricted_movies: List[str] = None,
+    write_header_comments: bool = True,
 ):
     """
     If given_total is not None, use it instead of the total count based on <read_count_filename>
@@ -297,7 +308,10 @@ def make_abundance_file(
 
 
 def get_abundance_post_collapse(
-    collapse_prefix, cluster_report_csv, output_prefix, restricted_movies=None
+    collapse_prefix: str,
+    cluster_report_csv: str,
+    output_prefix: str,
+    restricted_movies: Optional[List[str]] = None,
 ):
     """
 
@@ -336,22 +350,19 @@ def get_abundance_post_collapse(
     )
 
 
-def main():
-    from argparse import ArgumentParser
-
-    parser = ArgumentParser(
-        "Get abundance/read stat information after running collapse script. Works for Iso-Seq1, 2, and 3 output."
-    )
-    parser.add_argument(
-        "collapse_prefix", help="Collapse prefix (must have .group.txt)"
-    )
-    parser.add_argument("cluster_report", help="Cluster CSV report")
-
-    args = parser.parse_args()
-    get_abundance_post_collapse(
-        args.collapse_prefix, args.cluster_report, args.collapse_prefix
-    )
+@app.command(name="")
+def main(
+    collapse_prefix: str = typer.Argument(
+        ..., help="Collapse prefix (must have .group.txt)"
+    ),
+    cluster_report: str = typer.Argument(..., help="Cluster CSV report"),
+) -> None:
+    """"
+    Get abundance/read stat information after running collapse script.
+    Works for Iso-Seq1, 2, and 3 output."
+    """
+    get_abundance_post_collapse(collapse_prefix, cluster_report, collapse_prefix)
 
 
 if __name__ == "__main__":
-    main()
+    typer.run(main)

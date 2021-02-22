@@ -39,8 +39,12 @@ class MPileUpRecord(object):
         self.pos = pos
         self.ref = ref.upper()  # let ref base always be upper case
         self.cov = cov
-        self.nCov = None  # this is the coverage of non-indel, non-skipped, which would be ACGTNacgtn
-        self.nType = None  # this is the number of non-indel, non-skipped bases accumulated at this record
+        self.nCov = (
+            None
+        )  # this is the coverage of non-indel, non-skipped, which would be ACGTNacgtn
+        self.nType = (
+            None
+        )  # this is the number of non-indel, non-skipped bases accumulated at this record
         self.readBase = readBase
         self.baseQuals = baseQuals
         self.alnQuals = alnQuals
@@ -49,20 +53,13 @@ class MPileUpRecord(object):
         self.parse_readBase()
 
     def __str__(self):
-        return """
-        chr: {c}
-        pos: {p} (1-based)
-        ref: {r}
-        cov: {v}
-        nCov: {n}
-        counts: {t}""".format(
-            c=self.chr,
-            p=self.pos + 1,
-            r=self.ref,
-            v=self.cov,
-            n=self.nCov,
-            t=self.counts,
-        )
+        return f"""
+        chr: {self.chr}
+        pos: {self.pos + 1} (1-based)
+        ref: {self.ref}
+        cov: {self.cov}
+        nCov: {self.nCov}
+        counts: {self.counts}"""
 
     def parse_readBase(self):
         """
@@ -83,7 +80,9 @@ class MPileUpRecord(object):
             num = int(self.readBase[m.start() : m.end()])
             return m.start(), m.end() + num
 
-        sanity_counter = 0  # use this to track how many "reads" we've parsed to make sure parsing is correct
+        sanity_counter = (
+            0
+        )  # use this to track how many "reads" we've parsed to make sure parsing is correct
         # this number should agree with self.cov which is 4-th column in mpileup
         i = 0  # pointer for current location in string self.readBase
         while i < len(self.readBase):
@@ -132,7 +131,7 @@ class MPileUpRecord(object):
                 self.counts["+" + self.readBase[start:end]] += 1
                 i = end
             else:
-                raise Exception("Unknown {} in readBase!".format(b))
+                raise Exception(f"Unknown {b} in readBase!")
 
         assert self.cov == sanity_counter or (self.readBase == "*" and self.cov == 0)
         # set nCov which is cov provided by non-indel non-skipped bases
@@ -189,8 +188,5 @@ class MPileUpReader(object):
             )
         else:
             raise Exception(
-                "Expected to have 7 cols in mpileup record \
-            but saw only {}, abort! Line was: {}".format(
-                    len(raw), line
-                )
+                f"Expected to have 7 cols in mpileup record but saw only {len(raw)}, abort! Line was: {line}"
             )

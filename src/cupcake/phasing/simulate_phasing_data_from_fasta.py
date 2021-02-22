@@ -11,14 +11,14 @@ given an input transcript sequence ---
 -> for each haplotype, simulate 100X sequences at 0%, 1%, 2%, 3% (each is a diff output fasta)
 
 """
-import logging
 import random
+import typer
 from collections import Counter
 from pathlib import Path
 from typing import List
 
 from Bio import SeqIO
-from cupcake.logging import setup_logging
+from cupcake.logging import cupcake_logger as logger
 from cupcake.phasing.io.VariantPhaser import Haplotypes
 from cupcake.simulate.simulate import sim_seq
 
@@ -29,6 +29,9 @@ base_choices = {
     "C": ("A", "T", "G"),
     "G": ("A", "T", "C"),
 }
+
+
+app = typer.Typer(name="simulate_phasing_data_from_fasta")
 
 
 def simulate_phasing_data(
@@ -112,39 +115,35 @@ def simulate_phasing_data(
     hap_obj.write_haplotype_to_vcf("fake.mapping.txt", {}, "fake.answer")
 
 
-def main():
-    setup_logging("cDNA_Cupcake.phasing.simulate_phasing_data_from_fasta")
-    from argparse import ArgumentParser
+@app.command(name="")
+def main(
+    fasta_filename: str = typer.Arguement(
+        ..., help="Fasta file from which to simulate phasing data from."
+    ),
+    ploidity: int = typer.Option(2, "-p"),
+    err_sub: float = typer.Option(...),
+    copies: str = typer.Option(...),
+    write_fastq: bool = typer.Option(False),
+) -> None:
 
-    parser = ArgumentParser()
-    parser.add_argument(
-        "fasta_filename", help="Fasta file from which to simulate phasing data from."
-    )
-    parser.add_argument("-p", "--ploidity", type=int, default=2)
-    parser.add_argument("--err_sub", type=float, required=True)
-    parser.add_argument("--copies", required=True)
-    parser.add_argument("--write_fastq", action="store_true", default=False)
+    assert 2 <= ploidity <= 6
 
-    args = parser.parse_args()
+    copies = list(map(int, copies.split(",")))
+    assert len(copies) == ploidity
 
-    assert 2 <= args.ploidity <= 6
-
-    copies = list(map(int, args.copies.split(",")))
-    assert len(copies) == args.ploidity
-
-    for r in SeqIO.parse(open(args.fasta_filename), "fasta"):
+    for r in SeqIO.parse(open(fasta_filename), "fasta"):
         d2 = r.id.split("|")[0]
-        logging.info(f"making {d2}")
+        logger.info(f"making {d2}")
         Path(d2).mkdir(parents=True, exist_ok=True)
         simulate_phasing_data(
             seq0=r.seq.tostring(),
-            err_sub=args.err_sub,
-            ploidity=args.ploidity,
+            err_sub=err_sub,
+            ploidity=ploidity,
             copies=copies,
-            write_fastq=args.write_fastq,
+            write_fastq=write_fastq,
             working_dir=d2,
         )
 
 
 if __name__ == "__main__":
-    main()
+    typer.run(main)

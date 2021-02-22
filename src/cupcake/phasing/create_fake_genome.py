@@ -5,6 +5,7 @@ import os
 import re
 import sys
 
+from cupcake.logging import cupcake_logger as logger
 import cupcake.sequence.GFF as GFF
 from Bio import SeqIO
 from bx.intervals.cluster import ClusterTree
@@ -14,7 +15,9 @@ Given a GFF file and selected loci (ex: PB.45),
 create a fake genome that is the concatenation of all seen exons.
 """
 
-extra_bp_around_junctions = 50  # get this much around junctions to be safe AND to not screw up GMAP who doesn't like microintrons....
+extra_bp_around_junctions = (
+    50
+)  # get this much around junctions to be safe AND to not screw up GMAP who doesn't like microintrons....
 __padding_before_after__ = 10  # get this much before and after the start
 
 
@@ -30,12 +33,12 @@ def make_fake_genome(
     genome_d=None,
 ):
     if genome_d is None:
-        print("Reading genome file {}...".format(genome_filename), file=sys.stderr)
+        logger.info(f"Reading genome file {genome_filename}...")
         d = SeqIO.to_dict(SeqIO.parse(open(genome_filename), "fasta"))
     else:
         d = genome_d
 
-    print("Reading GFF file {}...".format(gff_filename), file=sys.stderr)
+    logger.info(f"Reading GFF file {gff_filename}...")
     good = []
     reader = GFF.collapseGFFReader(gff_filename)
     for r in reader:
@@ -45,16 +48,11 @@ def make_fake_genome(
             and (ref_start <= r.start < r.end <= ref_end)
             and len(r.ref_exons) > 1
         ):
-            print("Adding {} to fake genome.".format(r.seqid), file=sys.stderr)
+            logger.info(f"Adding {r.seqid} to fake genome.")
             good.append(r)
 
     if len(good) == 0:
-        print(
-            "Did not find any transcripts strictly within {}:{}-{} on strand {}. Abort!".format(
-                ref_chr, ref_start, ref_end, ref_strand
-            ),
-            file=sys.stderr,
-        )
+        logger.error(f"Did not find any transcripts strictly within {ref_chr}:{ref_start}-{ref_end} on strand {ref_strand}. Abort!")
         sys.exit(-1)
 
     c = ClusterTree(0, 0)
@@ -75,24 +73,20 @@ def make_fake_genome(
         for a, b in regions:
             f.write(str(d[r.chr][a:b].seq))
         f.write("\n")
-        f.close()
 
     # for mapping, write <0-based index on fake genome>, <ref chrom>, <0-based index on ref genome>
     with open(output_prefix + ".mapping.txt", "w") as f:
         i = 0
         for a, b in regions:
             for j in range(a, b):
-                f.write("{},{},{}\n".format(i, ref_chr, j))
+                f.write(f"{i},{ref_chr},{j}\n")
                 i += 1
 
         with open(output_prefix + ".pbids.txt", "w") as f:
             f.write("\n".join(r.seqid for r in good) + "\n")
 
-    print(
-        "Output written to {0}.fasta, {0}.mapping.txt, {0}.pbids.txt.".format(
-            output_prefix
-        ),
-        file=sys.stderr,
+    logger.info(
+        f"Output written to {output_prefix}.fasta, {output_prefix}.mapping.txt, {output_prefix}.pbids.txt.",
     )
 
 
@@ -115,10 +109,7 @@ def main():
     rex = re.compile(r"(\S+):(\d+)-(\d+)")
     m = rex.match(args.locus)
     if m is None:
-        print(
-            "{} is not a defined chr location! Abort.".format(args.locus),
-            file=sys.stderr,
-        )
+        logger.info(f"{args.locus} is not a defined chr location! Abort.")
         sys.exit(-1)
 
     ref_chr = m.group(1)
@@ -126,15 +117,12 @@ def main():
     ref_end = int(m.group(3))  # keep it 1-based
 
     if not os.path.exists(args.genome_filename):
-        print(
-            "Genome file {} does not exist! Abort.".format(args.genome_filename),
-            file=sys.stderr,
+        logger.error(
+            f"Genome file {args.genome_filename} does not exist! Abort."
         )
         sys.exit(-1)
     if not os.path.exists(args.gff_filename):
-        print(
-            "GFF {} does not exist! Abort.".format(args.gff_filename), file=sys.stderr
-        )
+        logger.critical(f"GFF {args.gff_filename} does not exist! Abort.")
         sys.exit(-1)
 
     make_fake_genome(

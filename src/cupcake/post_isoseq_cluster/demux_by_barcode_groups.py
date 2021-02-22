@@ -54,10 +54,10 @@ def regroup_gff(
     handles = {}
     handles_fafq = {}
     for g in out_group_dict.values():
-        handles[g] = open("{o}_{g}_only.gff".format(o=output_prefix, g=g), "w")
+        handles[g] = open(f"{output_prefix}_{g}_only.gff", "w")
         if in_fafq is not None:
             handles_fafq[g] = open(
-                "{o}_{g}_only.{t}".format(o=output_prefix, g=g, t=type_fafq), "w"
+                f"{output_prefix}_{g}_only.{type_fafq}", "w"
             )
 
     if in_fafq is not None:
@@ -72,12 +72,7 @@ def regroup_gff(
         groups_to_write_in = set()
         pbid = r.seqid
         if pbid not in in_tissue:
-            print(
-                "WARNING: {} does not belong to any group indicated by outgroup_dict".format(
-                    pbid
-                ),
-                file=sys.stderr,
-            )
+            logger.info(f"WARNING: {pbid} does not belong to any group indicated by outgroup_dict")
         for tissue in in_tissue[pbid]:
             groups_to_write_in.add(out_group_dict[tissue])
 

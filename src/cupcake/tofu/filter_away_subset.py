@@ -23,12 +23,17 @@ Example:
 
 import os
 import sys
+import typer
 from collections import defaultdict
 from csv import DictReader, DictWriter
 
 from Bio import SeqIO
 from cupcake.sequence import GFF
 from cupcake.tofu import compare_junctions
+from cupcake.logging import cupcake_logger as logger
+
+
+app = typer.Typer(name="filer_away_subset")
 
 
 def sanity_check_collapse_input(input_prefix):
@@ -172,25 +177,20 @@ def filter_out_subsets(recs, internal_fuzzy_max_dist):
             i += 1
 
 
-def main():
-    from argparse import ArgumentParser
+@app.command(name="")
+def main(
+    input_prefix: str = typer.Argument(
+        ..., help="Input prefix (ex: test.collapsed.min_fl_2)"
+    ),
+    fuzzy_junction: int = typer.Option(
+        5, help="Fuzzy junction max dist (default: 5bp)"
+    ),
+) -> None:
 
-    parser = ArgumentParser()
-    parser.add_argument(
-        "input_prefix", help="Input prefix (ex: test.collapsed.min_fl_2)"
-    )
-    parser.add_argument(
-        "--fuzzy_junction",
-        type=int,
-        default=5,
-        help="Fuzzy junction max dist (default: 5bp)",
-    )
-
-    args = parser.parse_args()
-    output_prefix = args.input_prefix + ".filtered"
+    output_prefix = f"{input_prefix}.filtered"
 
     count_filename, gff_filename, rep_filename, rep_type = sanity_check_collapse_input(
-        args.input_prefix
+        input_prefix
     )
 
     recs = defaultdict(lambda: [])
@@ -200,54 +200,55 @@ def main():
         recs[int(r.seqid.split(".")[1])].append(r)
 
     good = []
-    f = open(output_prefix + ".gff", "w")
-    keys = list(recs.keys())
-    keys.sort()
-    for k in recs:
-        xxx = recs[k]
-        filter_out_subsets(xxx, args.fuzzy_junction)
-        for r in xxx:
-            GFF.write_collapseGFF_format(f, r)
-            good.append(r.seqid)
-    f.close()
+    with open(f"{output_prefix}.gff", "w") as f:
+        keys = list(recs.keys())
+        keys.sort()
+        for k in recs:
+            xxx = recs[k]
+            filter_out_subsets(xxx, fuzzy_junction)
+            for r in xxx:
+                GFF.write_collapseGFF_format(f, r)
+                good.append(r.seqid)
 
     # read abundance first
     d, count_header = read_count_file(count_filename)
 
     # write output rep.fq
-    f = open(output_prefix + ".rep." + ("fq" if rep_type == "fastq" else "fa"), "w")
-    for r in SeqIO.parse(open(rep_filename), rep_type):
-        if r.name.split("|")[0] in good:
-            SeqIO.write(r, f, rep_type)
-    f.close()
+    with open(
+        f"{output_prefix}.rep.{('fq' if rep_type == 'fastq' else 'a')}", "w"
+    ) as f:
+        for r in SeqIO.parse(open(rep_filename), rep_type):
+            if r.name.split("|")[0] in good:
+                SeqIO.write(r, f, rep_type)
 
     # write output to .abundance.txt
-    f = open(output_prefix + ".abundance.txt", "w")
-    f.write(count_header)
-    writer = DictWriter(
-        f,
-        fieldnames=[
-            "pbid",
-            "count_fl",
-            "count_nfl",
-            "count_nfl_amb",
-            "norm_fl",
-            "norm_nfl",
-            "norm_nfl_amb",
-        ],
-        delimiter="\t",
-        lineterminator="\n",
-    )
-    writer.writeheader()
-    for k in good:
-        r = d[k]
-        writer.writerow(r)
-    f.close()
+    with open(f"{output_prefix}.abundance.txt", "w") as f:
+        f.write(count_header)
+        writer = DictWriter(
+            f,
+            fieldnames=[
+                "pbid",
+                "count_fl",
+                "count_nfl",
+                "count_nfl_amb",
+                "norm_fl",
+                "norm_nfl",
+                "norm_nfl_amb",
+            ],
+            delimiter="\t",
+            lineterminator="\n",
+        )
+        writer.writeheader()
+        for k in good:
+            r = d[k]
+            writer.writerow(r)
 
-    print("Output written to:", output_prefix + ".gff", file=sys.stderr)
-    print("Output written to:", rep_filename, file=sys.stderr)
-    print("Output written to:", output_prefix + ".gff", file=sys.stderr)
+    logger.info(
+        f"Output written to: {output_prefix}.gff\n"
+        f"Output written to: {rep_filename}\n"
+        f"Output written to: {output_prefix}.gff"
+    )
 
 
 if __name__ == "__main__":
-    main()
+    typer.run(main)

@@ -62,7 +62,9 @@ class BranchSimple:
             )
         }
 
-        self.cov_threshold = cov_threshold  # only output GTF records if >= this many GMAP records support it (this must be if I'm running non-clustered fasta on GMAP)
+        self.cov_threshold = (
+            cov_threshold
+        )  # only output GTF records if >= this many GMAP records support it (this must be if I'm running non-clustered fasta on GMAP)
 
         self.min_aln_coverage = min_aln_coverage
         self.min_aln_identity = min_aln_identity
@@ -107,7 +109,7 @@ class BranchSimple:
             records = [next(quality_alignments)]
             max_end = records[0].sEnd
         except StopIteration:
-            print(f"No valid records from {gmap_sam_filename}!", file=sys.stderr)
+            logger.error(f"No valid records from {gmap_sam_filename}!")
             return
         # go through remainder of alignments and group by subject ID
         for r in quality_alignments:

@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 import sys
-import logging
+from cupcake.logging import cupcake_logger as logger
 from pathlib import Path
-from cupcake.logging import setup_logging
 from csv import DictReader
 
 from Bio import SeqIO
@@ -47,7 +46,7 @@ def make_file_for_subsample(
             rep_type = type
 
     if rep_filename is None:
-        logging.critical(
+        logger.error(
             "Expected to find input fasta or fastq files {input_prefix}.rep.fa or {input_prefix}.rep.fq. Not found. Abort!"
         )
         sys.exit(-1)
@@ -56,37 +55,31 @@ def make_file_for_subsample(
         from cupcake.sequence.GFF import collapseGFFReader
 
         gff_filename = input_prefix + ".gff"
-        logging.info(
-            f"Reading {gff_filename} to exclude single exons..."
-        )
+        logger.info(f"Reading {gff_filename} to exclude single exons...")
         good_ids = []
         for r in collapseGFFReader(gff_filename):
             if len(r.ref_exons) >= 2:
                 good_ids.append(r.seqid)
 
     if demux_file is None and not Path(count_filename).exists():
-        logging.error(f"Cannot find {count_filename}. Abort!")
+        logger.error(f"Cannot find {count_filename}. Abort!")
         sys.exit(-1)
 
     if matchAnnot_parsed is not None and not Path(matchAnnot_parsed).exists():
-        logging.error(f"Cannot find {matchAnnot_parsed}. Abort!")
+        logger.error(f"Cannot find {matchAnnot_parsed}. Abort!")
         sys.exit(-1)
 
     if sqanti_class is not None and not Path(sqanti_class).exists():
-        logging.error(f"Cannot find {sqanti_class}. Abort!")
+        logger.error(f"Cannot find {sqanti_class}. Abort!")
         sys.exit(-1)
 
     if matchAnnot_parsed is not None:
         with open(matchAnnot_parsed) as ma:
-            match_dict = {
-                r["pbid"]: r for r in DictReader(ma, delimiter="\t")
-            }
+            match_dict = {r["pbid"]: r for r in DictReader(ma, delimiter="\t")}
         for k in match_dict:
             match_dict[k]["category"] = match_dict[k]["score"]
     elif sqanti_class is not None:
-        logging.info(
-            f"Reading {sqanti_class} to get gene/isoform assignment..."
-        )
+        logger.info(f"Reading {sqanti_class} to get gene/isoform assignment...")
         match_dict = {}
         with open(sqanti_class) as sc:
             for r in DictReader(sc, delimiter="\t"):
@@ -103,8 +96,7 @@ def make_file_for_subsample(
         match_dict = None
     with open(rep_filename) as rf:
         seqlen_dict = {
-            r.id.split("|")[0]: len(r.seq)
-            for r in SeqIO.parse(rf, rep_type)
+            r.id.split("|")[0]: len(r.seq) for r in SeqIO.parse(rf, rep_type)
         }
 
     to_write = {}
@@ -133,32 +125,26 @@ def make_file_for_subsample(
         if matchAnnot_parsed is None and sqanti_class is None:
             h.write_text("pbid\tpbgene\tlength\tfl_count\n")
         else:
-            h.write_text("pbid\tpbgene\tlength\trefisoform\trefgene\tcategory\tfl_count\n")
+            h.write_text(
+                "pbid\tpbgene\tlength\trefisoform\trefgene\tcategory\tfl_count\n"
+            )
         for pbid in to_write[sample]:
             if matchAnnot_parsed is not None or sqanti_class is not None:
                 if pbid not in match_dict:
-                    logging.critical(
+                    logger.critical(
                         f"Ignoring {pbid} because not on annotation (SQANTI/MatchAnnot) file."
                     )
                     continue
                 m = match_dict[pbid]
-                h.write_text(
-                    f"{pbid}\t{pbid.split(".")[1]}\t{seqlen_dict[pbid]}\t"
-                )
-                h.write_text(
-                    f"{m["refisoform"]}\t{m["refgene"]}\t{m["category"]}\t"
-                )
+                h.write_text(f"{pbid}\t{pbid.split('.')[1]}\t{seqlen_dict[pbid]}\t")
+                h.write_text(f'{m["refisoform"]}\t{m["refgene"]}\t{m["category"]}\t')
             else:
-                h.write_text(
-                    f"{pbid}\t{pbid.split(".")[1]}\t{seqlen_dict[pbid]}\t"
-                )
+                h.write_text(f'{pbid}\t{pbid.split(".")[1]}\t{seqlen_dict[pbid]}\t')
             h.write_text(f"{to_write[sample][pbid]}\n")
-        logging.info(f"Output written to {h.absolute()}.")
+        logger.info(f"Output written to {h.absolute()}.")
 
 
 def main():
-    setup_logging("cupcake.annotation.make_file_for_subsampling_from_collapsed")
-
     from argparse import ArgumentParser
 
     parser = ArgumentParser("Make subsample-ready file from Iso-Seq collapsed output")
@@ -172,7 +158,7 @@ def main():
         "-o",
         "--output_prefix",
         default="output.for_subsampling",
-        help="Output prefix (default: output.for_subsampling",
+        help="Output prefix (default: output.for_subsampling"),
     )
     parser.add_argument(
         "-m1",

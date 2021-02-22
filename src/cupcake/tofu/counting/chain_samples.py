@@ -8,10 +8,20 @@ from collections import OrderedDict, defaultdict
 from csv import DictReader, DictWriter
 from multiprocessing import Process
 
+import typer
+from enum import Enum
 from Bio import SeqIO
 from bx.intervals.cluster import ClusterTree
 from cupcake.sequence import GFF
 from cupcake.tofu.counting import combine_abundance_across_samples as sp
+
+
+app = typer.Typer(name="chain_samples")
+
+
+class fl_fields(str, Enum):
+    norm_fl = "norm_fl"
+    count_fl = "count_fl"
 
 
 def sample_sanity_check(
@@ -723,44 +733,34 @@ def chain_samples_multithread(
         print("all_samples.chained.rep.fq", file=sys.stdout)
 
 
-def main():
-    from argparse import ArgumentParser
-
-    parser = ArgumentParser()
-    parser.add_argument("config_file")
-    parser.add_argument(
-        "field_to_use",
-        choices=["norm_fl", "count_fl"],
-        default="count_fl",
+@app.command(name="")
+def main(
+    config_file: str = typer.Argument(...),
+    field_to_use: fl_fields = typer.Option(
+        fl_fields.count_fl,
+        show_default=False,
         help="Which count field to use for chained sample (default: count_fl)",
-    )
-    parser.add_argument(
-        "--fuzzy_junction",
-        default=0,
-        type=int,
+    ),
+    fuzzy_junction: int = typer.Option(
+        0,
+        show_default=False,
         help="Max allowed distance in junction to be considered identical (default: 0 bp)",
-    )
-    parser.add_argument(
+    ),
+    allow_5merge: bool = typer.Option(
+        True,
         "--dun-merge-5-shorter",
-        action="store_false",
-        dest="allow_5merge",
-        default=True,
+        show_default=False,
         help="Don't collapse shorter 5' transcripts (default: off)",
-    )
-    parser.add_argument(
-        "--max_3_diff",
-        type=int,
-        default=30,
-        help="Maximum 3' difference allowed (default: 30bp)",
-    )
-    parser.add_argument(
-        "--cpus",
-        type=int,
-        default=8,
+    ),  # store_false
+    max_3_diff: int = typer.Option(
+        30, show_default=False, help="Maximum 3' difference allowed (default: 30bp)"
+    ),
+    cpus: int = typer.Option(
+        8,
+        show_default=False,
         help="Number of CPUs to use for multi-threading (default: 8)",
-    )
-    args = parser.parse_args()
-
+    ),
+) -> None:
     (
         sample_dirs,
         sample_names,
@@ -768,21 +768,21 @@ def main():
         gff_filename,
         count_filename,
         fastq_filename,
-    ) = read_config(args.config_file)
+    ) = read_config(config_file)
     chain_samples_multithread(
         sample_dirs,
         sample_names,
         group_filename,
         gff_filename,
         count_filename,
-        args.field_to_use,
-        args.fuzzy_junction,
-        args.allow_5merge,
-        args.max_3_diff,
+        field_to_use.value,
+        fuzzy_junction,
+        allow_5merge,
+        max_3_diff,
         fastq_filename,
         cpus=args.cpus,
     )
 
 
 if __name__ == "__main__":
-    main()
+    typer.run(main)

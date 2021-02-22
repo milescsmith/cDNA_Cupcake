@@ -50,6 +50,7 @@ pyvcf = "*"
 pbcommand = {git = "https://github.com/PacificBiosciences/pbcommand"}
 pbcore = {git = "https://github.com/PacificBiosciences/pbcore"}
 pbcoretools = {git = "https://github.com/PacificBiosciences/pbcoretools"}
+typer = "^0.3.2"
 
 [tool.poetry.dev-dependencies]
 black = "^20.8b1"

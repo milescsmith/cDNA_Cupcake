@@ -69,7 +69,7 @@ def sim_seq(seq, profile):
             elif type == "del":  # skip over this
                 break
             else:
-                raise KeyError("Invalid type {}".format(type))
+                raise KeyError(f"Invalid type {type}")
 
     return sim, qv
 

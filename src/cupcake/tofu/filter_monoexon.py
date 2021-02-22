@@ -31,13 +31,13 @@ def sanity_check_collapse_input(input_prefix):
     gff_filename = f"{input_prefix}.gff"
     rep_filename = f"{input_prefix}.rep.fq"
     if not os.path.exists(count_filename):
-        print("File {} does not exist. Abort!".format(count_filename), file=sys.stderr)
+        logger.error(f"File {count_filename} does not exist. Abort!")
         sys.exit(-1)
     if not os.path.exists(gff_filename):
-        print("File {} does not exist. Abort!".format(gff_filename), file=sys.stderr)
+        logger.error(f"File {gff_filename} does not exist. Abort!")
         sys.exit(-1)
     if not os.path.exists(rep_filename):
-        print("File {} does not exist. Abort!".format(rep_filename), file=sys.stderr)
+        logger.error(f"File {rep_filename} does not exist. Abort!")
         sys.exit(-1)
 
     pbids1 = {[r.id for r in SeqIO.parse(open(rep_filename), "fastq")]}
@@ -53,11 +53,9 @@ def sanity_check_collapse_input(input_prefix):
             "The number of PBID records in the files disagree! Sanity check failed.",
             file=sys.stderr,
         )
-        print("# of PBIDs in {}: {}".format(rep_filename, len(pbids1)), file=sys.stderr)
-        print("# of PBIDs in {}: {}".format(gff_filename, len(pbids2)), file=sys.stderr)
-        print(
-            "# of PBIDs in {}: {}".format(count_filename, len(pbids3)), file=sys.stderr
-        )
+        print(f"# of PBIDs in {rep_filename}: {len(pbids1)}", file=sys.stderr)
+        print(f"# of PBIDs in {gff_filename}: {len(pbids2)}", file=sys.stderr)
+        print(f"# of PBIDs in {count_filename}: {len(pbids3)}", file=sys.stderr)
         sys.exit(-1)
 
     return count_filename, gff_filename, rep_filename

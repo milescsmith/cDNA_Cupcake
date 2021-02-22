@@ -145,57 +145,56 @@ def main_brangus(vcf_filename, out_filename, unzip_snps=None):
             unzip_snps[r.CHROM][r.POS] = r
 
     print("Finished reading " + vcf_filename, file=sys.stderr)
-    out_f = open(out_filename, "w")
-    FIELDS = [
-        "dir",
-        "chrom",
-        "pos",
-        "strand",
-        "ref",
-        "alt_Short",
-        "alt_PB",
-        "in_Short",
-        "in_PB",
-        "cov_Short",
-        "cov_PB",
-        "genomic_HP",
-    ]
-    writer = DictWriter(out_f, FIELDS, delimiter="\t")
-    writer.writeheader()
-    dirs = glob.glob("by_loci/*size*/")
-    for d1 in dirs:
-        mpileup = os.path.join(d1, "ccs.mpileup")
-        mapfile = os.path.join(d1, "fake.mapping.txt")
-        vcffile = os.path.join(d1, "phased.partial.vcf")
-        config = os.path.join(d1, "config")
-        nosnp = os.path.join(d1, "phased.partial.NO_SNPS_FOUND")
-        if not os.path.exists(vcffile):
-            assert os.path.exists(nosnp)
-            print(("Skipping {} because no SNPs found.").format(d1), file=sys.stderr)
-        else:
-            print(("Evaluating {}.").format(d1), file=sys.stderr)
-            strand = "NA"
-            if os.path.exists(config):  # find the strand this gene family is on
-                for line in open(config):
-                    if line.startswith("ref_strand="):
-                        strand = line.strip().split("=")[1]
-            good_positions, cov_at_pos = get_positions_to_recover(
-                mapfile, mpileup, unzip_snps, min_cov=30
-            )
-            name = d1.split("/")[1]
-            eval_isophase(
-                vcffile,
-                unzip_snps,
-                good_positions,
-                cov_at_pos,
-                {},
-                {},
-                writer,
-                name,
-                strand,
-            )
+    with open(out_filename, "w") as out_f:
+        FIELDS = [
+            "dir",
+            "chrom",
+            "pos",
+            "strand",
+            "ref",
+            "alt_Short",
+            "alt_PB",
+            "in_Short",
+            "in_PB",
+            "cov_Short",
+            "cov_PB",
+            "genomic_HP",
+        ]
+        writer = DictWriter(out_f, FIELDS, delimiter="\t")
+        writer.writeheader()
+        dirs = glob.glob("by_loci/*size*/")
+        for d1 in dirs:
+            mpileup = os.path.join(d1, "ccs.mpileup")
+            mapfile = os.path.join(d1, "fake.mapping.txt")
+            vcffile = os.path.join(d1, "phased.partial.vcf")
+            config = os.path.join(d1, "config")
+            nosnp = os.path.join(d1, "phased.partial.NO_SNPS_FOUND")
+            if not os.path.exists(vcffile):
+                assert os.path.exists(nosnp)
+                logger.info(f"Skipping {d1} because no SNPs found.")
+            else:
+                logger.info(f"Evaluating {d1}.")
+                strand = "NA"
+                if os.path.exists(config):  # find the strand this gene family is on
+                    for line in open(config):
+                        if line.startswith("ref_strand="):
+                            strand = line.strip().split("=")[1]
+                good_positions, cov_at_pos = get_positions_to_recover(
+                    mapfile, mpileup, unzip_snps, min_cov=30
+                )
+                name = d1.split("/")[1]
+                eval_isophase(
+                    vcffile,
+                    unzip_snps,
+                    good_positions,
+                    cov_at_pos,
+                    {},
+                    {},
+                    writer,
+                    name,
+                    strand,
+                )
 
-    out_f.close()
     return
 
 
@@ -255,9 +254,9 @@ def main_maize(ki11_snps=None, dirs=None):
         nosnp = os.path.join(d1, "phased.partial.NO_SNPS_FOUND")
         if not os.path.exists(vcffile):
             assert os.path.exists(nosnp)
-            print(("Skipping {} because no SNPs found.").format(d1), file=sys.stderr)
+            logger.info(f"Skipping {d1} because no SNPs found.")
         else:
-            print(("Evaluating {}.").format(d1), file=sys.stderr)
+            logger.info(f"Evaluating {d1}.")
             good_positions, cov_at_pos = get_positions_to_recover(
                 mapfile, mpileup, ki11_snps, min_cov=30
             )  # use lower min cov here becuz a few close cases where BQ filtering lowered cov

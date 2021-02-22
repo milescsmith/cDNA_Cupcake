@@ -8,16 +8,16 @@ from multiprocessing import Process
 import parasail
 from Bio import SeqIO
 
-ScoreTuple = namedtuple('ScoreTuple', ['score5', 'end5', 'score3', 'end3', 'endA'])
+ScoreTuple = namedtuple("ScoreTuple", ["score5", "end5", "score3", "end3", "endA"])
 
 # for ONT using Clontech
-SEQ_5P = 'AAGCAGTGGTATCAACGCAGAGTACATGGGG'
-SEQ_3P_REV = 'GTATCAACGCAGAGTAC'
+SEQ_5P = "AAGCAGTGGTATCAACGCAGAGTACATGGGG"
+SEQ_3P_REV = "GTATCAACGCAGAGTAC"
 
 # SEQ_5P = 'GCAATGAAGTCGCAGGGTTGGGG'
 # SEQ_5P = 'CAGGAAACAGCTATGACC'	#SEQ_5P = 'CAGGAAACAGCTATGACC'
 # SEQ_5P = 'AAGCAGTGGTATCAACGCAGAGTACATGGGG'	#SEQ_3P_REV = 'AAGCAGTGGTATCAACGCAGAGTAC'
-SEQ_3P_REV = 'AAGCAGTGGTATCAACGCAGAGTAC'  # SEQ_3P_REV = 'ACTGGCCGTCGTTTTAC'
+SEQ_3P_REV = "AAGCAGTGGTATCAACGCAGAGTAC"  # SEQ_3P_REV = 'ACTGGCCGTCGTTTTAC'
 
 MINSCORE_5P = 20
 MINSCORE_3P = 20
@@ -64,7 +64,7 @@ def trimA(rev_seq):
     mismatch = 0
     i = 0
     while mismatch < 2 and i < n_rev_seq:
-        if rev_seq[i] != 'T':
+        if rev_seq[i] != "T":
             mismatch += 1
         i += 1
     i -= 1
@@ -77,7 +77,7 @@ def trimA(rev_seq):
 def trim5p3p_multithreaded(fastq_filename, output_prefix, chunks):
     # first figure out how many records there are and record positions
     num_lines = 0
-    for line in open(fastq_filename, 'r'):
+    for line in open(fastq_filename, "r"):
         num_lines += 1
     num_records = num_lines // 4
     chunk_size = (num_records // chunks) + (num_records % chunks > 0)
@@ -87,18 +87,18 @@ def trim5p3p_multithreaded(fastq_filename, output_prefix, chunks):
     records = []
     count = 0
     i = 1
-    for r in SeqIO.parse(open(fastq_filename), 'fastq'):
+    for r in SeqIO.parse(open(fastq_filename), "fastq"):
         count += 1
         records.append(r)
         if count >= chunk_size:
-            p = Process(target=trim5p3p, args=(records, output_prefix + '.' + str(i)))
+            p = Process(target=trim5p3p, args=(records, output_prefix + "." + str(i)))
             p.start()
             print("Starting worker {i}...")
             pools.append(p)
             records = []
             count = 0
             i += 1
-    p = Process(target=trim5p3p, args=(records, output_prefix + '.' + str(i)))
+    p = Process(target=trim5p3p, args=(records, output_prefix + "." + str(i)))
     p.start()
     print("Starting worker {i}...")
     pools.append(p)
@@ -108,11 +108,11 @@ def trim5p3p_multithreaded(fastq_filename, output_prefix, chunks):
 
 
 def trim5p3p(records, output_prefix):
-    f_FL = open(output_prefix + '.fl.fasta', 'w')
-    f_FL_clips = open(output_prefix + '.fl.clips', 'w')
-    f_nFL = open(output_prefix + '.nfl.fasta', 'w')
-    f_csv = open(output_prefix + '.csv', 'w')
-    writer = DictWriter(f_csv, fieldnames=['id', 'end5', 'end3', 'endA', 'strand'])
+    f_FL = open(output_prefix + ".fl.fasta", "w")
+    f_FL_clips = open(output_prefix + ".fl.clips", "w")
+    f_nFL = open(output_prefix + ".nfl.fasta", "w")
+    f_csv = open(output_prefix + ".csv", "w")
+    writer = DictWriter(f_csv, fieldnames=["id", "end5", "end3", "endA", "strand"])
     writer.writeheader()
 
     for r in records:
@@ -135,23 +135,23 @@ def trim5p3p(records, output_prefix):
         if is_fl_flag1:
             if is_fl_flag2:
                 if t1.score5 + t1.score3 > t2.score5 + t2.score3:
-                    strand = '+'
+                    strand = "+"
                 else:
-                    strand = '-'
+                    strand = "-"
             else:  # pick t1
-                strand = '+'
+                strand = "+"
         elif is_fl_flag2:
-            strand = '-'
+            strand = "-"
         else:
-            strand = 'NA'
+            strand = "NA"
 
-        info = {'id': r.id, 'end5': 'NA', 'end3': 'NA', 'endA': 'NA', 'strand': 'NA'}
+        info = {"id": r.id, "end5": "NA", "end3": "NA", "endA": "NA", "strand": "NA"}
 
-        if strand == '+':
-            info['strand'] = '+'
-            info['end5'] = t1.end5
-            info['end3'] = t1.end3
-            info['endA'] = t1.endA
+        if strand == "+":
+            info["strand"] = "+"
+            info["end5"] = t1.end5
+            info["end3"] = t1.end3
+            info["endA"] = t1.endA
             f_FL.write(f">{r.id}\n{r.seq[t1.end5:t1.endA]}\n")
             f_FL_clips.write(
                 f">{r.id}_5p strand:+ score:{t1.score5}\n{r.seq[:t1.end5]}\n"
@@ -159,11 +159,11 @@ def trim5p3p(records, output_prefix):
             f_FL_clips.write(
                 f">{r.id}_3p strand:+ score:{t1.score3}\n{r.seq[t1.endA:]}\n"
             )
-        elif strand == '-':
-            info['strand'] = '-'
-            info['end5'] = t2.end5
-            info['end3'] = t2.end3
-            info['endA'] = t2.endA
+        elif strand == "-":
+            info["strand"] = "-"
+            info["end5"] = t2.end5
+            info["end3"] = t2.end3
+            info["endA"] = t2.endA
             f_FL.write(f">{r2.id}\n{r2.seq[t2.end5:t2.endA]}\n")
             f_FL_clips.write(
                 f">{r.id}_5p strand:- score:{t2.score5}\n{r2.seq[:t2.end5]}\n"

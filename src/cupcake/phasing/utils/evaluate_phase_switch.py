@@ -102,9 +102,9 @@ def main_eval():
             if not vcffile.exists():
                 # no SNP, just skip
                 assert nosnp.exists() or nohap.exists()
-                print(f"Skipping {d1} because no SNPs found.", file=sys.stderr)
+                logger.info(f"Skipping {d1} because no SNPs found.")
             else:
-                print(f"Evaluating {d1}.", file=sys.stderr)
+                logger.info(f"Evaluating {d1}.")
                 name = d1.split("/")[1]
                 eval_isophase_phaseswitch(vcffile, configfile, out_f, name)
 

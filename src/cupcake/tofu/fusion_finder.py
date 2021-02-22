@@ -3,6 +3,7 @@ __author__ = "etseng@pacb.com"
 
 import itertools
 import sys
+
 # from pickle import *
 from collections import defaultdict, namedtuple
 
@@ -13,8 +14,7 @@ from cupcake.sequence import BioReaders
 from cupcake.sequence.SeqReaders import LazyFastaReader, LazyFastqReader
 from cupcake.tofu.branch import branch_simple2
 from cupcake.tofu.compare_junctions import compare_junctions
-from cupcake.tofu.get_abundance_post_collapse import (
-    get_abundance_post_collapse)
+from cupcake.tofu.get_abundance_post_collapse import get_abundance_post_collapse
 from cupcake.tofu.utils import check_ids_unique
 
 
@@ -97,15 +97,15 @@ def pick_rep(
         for i, r in enumerate(records):
             isoform_index = i + 1
             f_gff.write(
-                f'{r.sID}\tPacBio\ttranscript\t{r.segments[0].start + 1}\t'
-                f'{r.segments[-1].end}\t.\t{r.flag.strand}\t.\t'
+                f"{r.sID}\tPacBio\ttranscript\t{r.segments[0].start + 1}\t"
+                f"{r.segments[-1].end}\t.\t{r.flag.strand}\t.\t"
                 f'gene_id "{pb_id}"; '
                 f'transcript_id "{pb_id}.{isoform_index}";\n'
             )
             for s in r.segments:
                 f_gff.write(
-                    f'{r.sID}\tPacBio\texon\t'
-                    f'{s.start+1}\t{s.end}\t.\t{r.flag.strand}\t.\t'
+                    f"{r.sID}\tPacBio\texon\t"
+                    f"{s.start+1}\t{s.end}\t.\t{r.flag.strand}\t.\t"
                     f'gene_id "{pb_id}"; '
                     f'transcript_id "{pb_id}.{isoform_index}";\n'
                 )

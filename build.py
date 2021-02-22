@@ -15,8 +15,16 @@ from distutils.errors import DistutilsPlatformError
 # C Extensions
 
 extensions = [
-    Extension("cupcake.tofu.branch.intersection_unique", include_dirs=[np.get_include()], sources=["src/cupcake/tofu/branch/intersection_unique.pyx"]),
-    Extension("cupcake.tofu.branch.c_branch", include_dirs=[np.get_include()], sources=["src/cupcake/tofu/branch/c_branch.pyx"]),
+    Extension(
+        "cupcake.tofu.branch.intersection_unique",
+        include_dirs=[np.get_include()],
+        sources=["src/cupcake/tofu/branch/intersection_unique.pyx"],
+    ),
+    Extension(
+        "cupcake.tofu.branch.c_branch",
+        include_dirs=[np.get_include()],
+        sources=["src/cupcake/tofu/branch/c_branch.pyx"],
+    ),
 ]
 
 
@@ -43,10 +51,7 @@ class ExtBuilder(build_ext):
             build_ext.build_extension(self, ext)
         except (CCompilerError, DistutilsExecError, DistutilsPlatformError, ValueError):
             print(
-                '  Unable to build the "{}" C extension, '
-                "cDNA_Cupcake will use the pure python version of the extension.".format(
-                    ext.name
-                )
+                f"  Unable to build the '{ext.name}' C extension, cDNA_Cupcake will use the pure python version of the extension."
             )
 
 
@@ -54,7 +59,9 @@ def build(setup_kwargs):
     """
     This function is mandatory in order to build the extensions.
     """
-    distribution = Distribution({"name": "src/cupcake", "ext_modules": cythonize(extensions)})
+    distribution = Distribution(
+        {"name": "src/cupcake", "ext_modules": cythonize(extensions)}
+    )
     distribution.package_dir = "cupcake"
 
     cmd = ExtBuilder(distribution)

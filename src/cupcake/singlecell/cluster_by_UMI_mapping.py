@@ -28,9 +28,7 @@ def collect_cluster_results_multithreaded(
 
     pools = []
     for i in range(chunks):
-        print(
-            "collection worker {}, starting from {}".format(i, indices[i * chunk_size])
-        )
+        print(f"collection worker {i}, starting from {indices[i * chunk_size]}")
         p = Process(
             target=collect_cluster_results,
             args=(
@@ -57,28 +55,24 @@ def collect_cluster_results_multithreaded(
         for i in range(chunks)
     ]
 
-    cmd_cat_fasta = "cat {} > {}.clustered_transcript.rep.fasta".format(
-        " ".join(fasta_files), output_prefix
+    cmd_cat_fasta = (
+        f"cat {' '.join(fasta_files)} > {output_prefix}.clustered_transcript.rep.fasta"
     )
-    cmd_cat_csv1 = 'echo "index,UMI,BC,locus,cluster,ccs_id" > {}.clustered_transcript.header'.format(
-        output_prefix
-    )
-    cmd_cat_csv2 = "cat {0}.clustered_transcript.header {1} > {0}.clustered_transcript.csv".format(
-        output_prefix, " ".join(csv_files)
-    )
+    cmd_cat_csv1 = f'echo "index,UMI,BC,locus,cluster,ccs_id" > {output_prefix}.clustered_transcript.header'
+    cmd_cat_csv2 = f"cat {output_prefix}.clustered_transcript.header {' '.join(csv_files)} > {output_prefix}.clustered_transcript.csv"
 
     try:
         subprocess.check_call(cmd_cat_fasta, shell=True)
     except subprocess.CalledProcessError:
-        print("Trouble running CMD: {}".format(cmd_cat_fasta), file=sys.stderr)
+        logger.error(f"Trouble running CMD: {cmd_cat_fasta}")
     try:
         subprocess.check_call(cmd_cat_csv1, shell=True)
     except subprocess.CalledProcessError:
-        print("Trouble running CMD: {}".format(cmd_cat_csv1), file=sys.stderr)
+        logger.error(f"Trouble running CMD: {cmd_cat_csv1}")
     try:
         subprocess.check_call(cmd_cat_csv2, shell=True)
     except subprocess.CalledProcessError:
-        print("Trouble running CMD: {}".format(cmd_cat_csv2), file=sys.stderr)
+        logger.error(f"Trouble running CMD: {cmd_cat_csv2}")
 
 
 def collect_cluster_results(
@@ -119,12 +113,12 @@ def collect_cluster_results(
         report = os.path.join(d, "output.cluster_report.csv")
 
         if not os.path.exists(d):
-            print("{} does not exist! DEBUG mode, ok for now".format(d))
+            print(f"{d} does not exist! DEBUG mode, ok for now")
             bad.append(d)
             continue
 
         if not os.path.exists(report):
-            print("{} does not exist! DEBUG mode, ok for now".format(report))
+            print(f"{report} does not exist! DEBUG mode, ok for now")
             bad.append(report)
             continue
 
@@ -134,26 +128,18 @@ def collect_cluster_results(
                 for seqrec in SeqIO.parse(handle, "fasta"):
                     if hq_count == 0:
                         f_out_rep.write(
-                            ">{i}-{u}-{n}\n{s}\n".format(
-                                i=index, u=umi_key, n=seqrec.id, s=seqrec.seq
-                            )
+                            f">{index}-{umi_key}-{seqrec.id}\n{seqrec.seq}\n"
                         )
                     else:
                         f_out_not.write(
-                            ">{i}-{u}-{n}\n{s}\n".format(
-                                i=index, u=umi_key, n=seqrec.id, s=seqrec.seq
-                            )
+                            f">{index}-{umi_key}-{seqrec.id}\n{seqrec.seq}\n"
                         )
                     hq_count += 1
 
         if os.path.exists(lq):
             with gzip.open(lq, "rt") as handle:
                 for seqrec in SeqIO.parse(handle, "fasta"):
-                    f_out_not.write(
-                        ">{i}-{u}-{n}\n{s}\n".format(
-                            i=index, u=umi_key, n=seqrec.id, s=seqrec.seq
-                        )
-                    )
+                    f_out_not.write(f">{index}-{umi_key}-{seqrec.id}\n{seqrec.seq}\n")
 
         info = {
             "index": index,
@@ -174,11 +160,7 @@ def collect_cluster_results(
         if os.path.exists(single):
             with gzip.open(single, "rt") as handle:
                 for seqrec in SeqIO.parse(handle, "fasta"):
-                    f_out_not.write(
-                        ">{i}-{u}-{n}\n{s}\n".format(
-                            i=index, u=umi_key, n=seqrec.id, s=seqrec.seq
-                        )
-                    )
+                    f_out_not.write(f">{index}-{umi_key}-{seqrec.id}\n{seqrec.seq}\n")
                     info["ccs_id"] = seqrec.id
                     writer.writerow(info)
 
@@ -192,7 +174,7 @@ def write_records_to_bam_multithreaded(
     flnc_tagged_bam, map_seqid_to_group, output_prefix, cpus=1, chunks=4
 ):
 
-    print("Reading {}...".format(flnc_tagged_bam), file=sys.stdout)
+    print(f"Reading {flnc_tagged_bam}...", file=sys.stdout)
     reader = pysam.AlignmentFile(flnc_tagged_bam, "rb", check_sq=False)
     read_dict = {r.qname: r for r in reader}
 
@@ -251,11 +233,7 @@ def write_records_to_bam(
             set(group_map[group_name])
         )  # DEBUG only can remove later
         single += len(group_map[group_name]) == 1
-    print(
-        "{}-single:{},not single:{}".format(
-            cmd_filename, single, len(group_map) - single
-        )
-    )
+    print(f"{cmd_filename}-single:{single},not single:{len(group_map) - single}")
     # return
 
     for group_name in group_map_keys:
@@ -264,12 +242,10 @@ def write_records_to_bam(
             _outdir, _index, _umi_bc = group_name.split("/")
             r = read_dict[seqids[0]]
             # ex: newid 1-TGATACCAC-TGCTTAAAAAAA-m64019_190830_195852/130941517/ccs
-            newid = "{i}-{u}-{d}".format(i=_index, u=_umi_bc, d=r.qname)
-            f_singleton.write(">{}\n{}\n".format(newid, r.seq))
+            newid = f"{_index}-{_umi_bc}-{r.qname}"
+            f_singleton.write(f">{newid}\n{r.seq}\n")
         else:
-            print(
-                "Writing to {}/flnc_tagged.bam...".format(group_name), file=sys.stdout
-            )
+            print(f"Writing to {group_name}/flnc_tagged.bam...", file=sys.stdout)
             os.makedirs(group_name)
             f_out = pysam.AlignmentFile(
                 os.path.join(group_name, "flnc_tagged.bam"), "wb", header=reader_header
@@ -278,9 +254,7 @@ def write_records_to_bam(
                 f_out.write(read_dict[seqid])
             f_out.close()
             f_cmd.write(
-                "isoseq3 cluster {d}/flnc_tagged.bam {d}/output.bam --use-qvs --singletons -j {cpus}\n".format(
-                    d=group_name, cpus=cpus
-                )
+                f"isoseq3 cluster {group_name}/flnc_tagged.bam {group_name}/output.bam --use-qvs --singletons -j {cpus}\n"
             )
     f_cmd.close()
     f_singleton.close()

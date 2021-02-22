@@ -1,8 +1,13 @@
 #!/usr/bin/env python
 import math
 import random
+import typer
+from cupcake.logging import cupcake_logger as logger
 from collections import defaultdict
 from csv import DictReader
+
+
+app = typer.Typer(name="cupcake.annotation.subsample_with_category")
 
 
 def get_counts(count_filename, min_fl_count=2, key="id", min_len=None, max_len=None):
@@ -28,8 +33,8 @@ def get_counts(count_filename, min_fl_count=2, key="id", min_len=None, max_len=N
 
 def subsample(total, counts, iter=100, min_fl_count=2, step=10 ** 4):
     sizes = list(range(100, total + 1, step))
-    print("min fl count:", min_fl_count)
-    print("size", "category", "min", "max", "mean", "sd")
+    logger.info(f"min fl count: {min_fl_count}")
+    logger.info("size\tcategory\tmin\tmax\tmean\tsd")
     for s in sizes:
         tmp = defaultdict(lambda: [])  # category --> N iterations
         for i in range(iter):
@@ -50,42 +55,29 @@ def subsample(total, counts, iter=100, min_fl_count=2, step=10 ** 4):
             _std = math.sqrt(
                 sum((x - _mean) ** 2 for x in tmp[_cat]) * 1.0 / len(tmp[_cat])
             )
-            print(s, _cat, min(tmp[_cat]), max(tmp[_cat]), _mean, _std)
+            logger.info(f"{s}\t{_cat}\t{min(tmp[_cat])}\t{max(tmp[_cat])}\t{_mean}\t{_std}")
 
 
-def main():
-    from argparse import ArgumentParser
-
-    parser = ArgumentParser()
-    parser.add_argument("count_filename")
-    parser.add_argument("--by", default="id", help="Unique specifier name(default: id)")
-    parser.add_argument(
-        "--iterations",
-        type=int,
-        default=100,
-        help="Number of iterations (default: 100)",
-    )
-    parser.add_argument(
-        "--range", default=None, help="Length range (ex: (1000,2000), default None)"
-    )
-    parser.add_argument(
-        "--min_fl_count", default=1, type=int, help="Minimum FL count (default: 1)"
-    )
-    parser.add_argument(
-        "--step", default=10000, type=int, help="Step size (default: 10000)"
-    )
-    args = parser.parse_args()
+@app.command(name="")
+def main(
+    count_filename: str = typer.Argument(...),
+    by: str = typer.Option("id", help="Unique specifier name"),
+    iterations: int = typer.Option(100, help="Number of iterations"),
+    len_range: int = typer.Option(None, "--range", help="Length range (ex: (1000,2000), default None)"),
+    min_fl_count: int = typer.Option(1, help="Minimum FL count"),
+    step: int = typer.Option(10000, help="Step size"),
+) -> None:
 
     min_len, max_len = None, None
-    if args.range is not None:
-        min_len, max_len = eval(args.range)
+    if len_range is not None:
+        min_len, max_len = eval(len_range)
         assert 0 <= min_len < max_len
 
     total, counts = get_counts(
-        args.count_filename, args.min_fl_count, args.by, min_len, max_len
+        count_filename, min_fl_count, by, min_len, max_len
     )
-    subsample(total, counts, args.iterations, args.min_fl_count, args.step)
+    subsample(total, counts, iterations, min_fl_count, step)
 
 
 if __name__ == "__main__":
-    main()
+    typer.run(main)

@@ -35,9 +35,7 @@ def demux_for_subsamping(
     out_groups = set(out_group_dict.values())
     for g in out_groups:
         handles[g] = open(
-            "{o}_{g}_only.{i}.for_subsampling.txt".format(
-                o=output_prefix, g=g, i="ignore_novel" if ignore_novel else "use_novel"
-            ),
+            f"{output_prefix}_{g}_only.{'ignore_novel' if ignore_novel else 'use_novel'}.for_subsampling.txt",
             "w",
         )
         writers[g] = DictWriter(handles[g], FIELDNAMES, delimiter="\t")
@@ -47,9 +45,7 @@ def demux_for_subsamping(
     for r in reader:
         if r["id"] not in d:
             print(
-                "WARNING: skipping {} because not in {}".format(
-                    r["id"], class_filename
-                ),
+                f"WARNING: skipping {r['id']} because not in {class_filename}",
                 file=sys.stderr,
             )
             continue
@@ -57,7 +53,7 @@ def demux_for_subsamping(
         m = pbid_rex.match(r["id"])
         if m is None:
             print(
-                "ERROR: unable to parse ID {}. Expected format PB.X.Y!".format(r["id"]),
+                f"ERROR: unable to parse ID {r['id']}. Expected format PB.X.Y!",
                 file=sys.stderr,
             )
             sys.exit(-1)
