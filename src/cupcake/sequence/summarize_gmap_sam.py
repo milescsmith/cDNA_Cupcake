@@ -4,6 +4,7 @@ import sys
 from collections import defaultdict
 
 from Bio import SeqIO
+
 from cupcake.sequence import BioReaders
 
 

@@ -6,15 +6,15 @@ import shutil
 import sys
 from collections import OrderedDict, defaultdict
 from csv import DictReader, DictWriter
+from enum import Enum
 from multiprocessing import Process
 
 import typer
-from enum import Enum
 from Bio import SeqIO
 from bx.intervals.cluster import ClusterTree
+
 from cupcake.sequence import GFF
 from cupcake.tofu.counting import combine_abundance_across_samples as sp
-
 
 app = typer.Typer(name="chain_samples")
 

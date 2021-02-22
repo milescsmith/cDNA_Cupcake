@@ -26,7 +26,13 @@ def get_counts(count_filename, min_fl_count=2, key="id", min_len=None, max_len=N
     return total, counts
 
 
-def subsample(total: int, counts: int, iterations: int=100, min_fl_count: int=2, step: int=10 ** 4):
+def subsample(
+    total: int,
+    counts: int,
+    iterations: int = 100,
+    min_fl_count: int = 2,
+    step: int = 10 ** 4,
+):
     sizes = list(range(0, total + 1, step))
     print(f"min fl count: {min_fl_count}")
     print("size", "min", "max", "mean", "sd")

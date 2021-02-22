@@ -10,10 +10,11 @@ __version__ = "1.3"
 from collections import defaultdict, namedtuple
 from csv import DictReader
 
-from cupcake.logging import cupcake_logger as logger
 from Bio import SeqIO
 from bx.intervals import IntervalTree
 from bx.intervals.cluster import ClusterTree
+
+from cupcake.logging import cupcake_logger as logger
 from cupcake.sequence import BioReaders
 
 """

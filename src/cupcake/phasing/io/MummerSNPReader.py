@@ -53,6 +53,7 @@ import sys
 from pathlib import Path
 
 import vcf
+
 from cupcake.logging import setup_logging
 from cupcake.sequence.SeqReaders import LazyFastaReader
 

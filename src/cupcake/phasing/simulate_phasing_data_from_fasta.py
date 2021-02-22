@@ -12,12 +12,13 @@ given an input transcript sequence ---
 
 """
 import random
-import typer
 from collections import Counter
 from pathlib import Path
 from typing import List
 
+import typer
 from Bio import SeqIO
+
 from cupcake.logging import cupcake_logger as logger
 from cupcake.phasing.io.VariantPhaser import Haplotypes
 from cupcake.simulate.simulate import sim_seq

@@ -9,6 +9,7 @@ from csv import DictWriter
 from Bio import SeqIO
 from bx.intervals import IntervalTree
 from bx.intervals.cluster import ClusterTree
+
 from cupcake.sequence import GFF
 from cupcake.tofu import compare_junctions
 

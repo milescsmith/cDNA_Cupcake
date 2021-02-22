@@ -16,10 +16,11 @@ import sys
 from collections import defaultdict
 from csv import DictWriter
 
-import cupcake.sequence.GFF as GFF
 import numpy as np
 from Bio import SeqIO
 from sklearn.cluster import Birch
+
+import cupcake.sequence.GFF as GFF
 
 
 def sanity_check(

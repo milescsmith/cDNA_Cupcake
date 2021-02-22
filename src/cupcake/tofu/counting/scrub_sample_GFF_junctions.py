@@ -19,10 +19,11 @@ import sys
 from collections import defaultdict
 from csv import DictReader, DictWriter
 
-import cupcake.sequence.GFF as GFF
-import cupcake.tofu.counting.chain_samples as sp
 from Bio import SeqIO
 from bx.intervals import Interval, IntervalTree
+
+import cupcake.sequence.GFF as GFF
+import cupcake.tofu.counting.chain_samples as sp
 
 fields_to_add = [
     "count_fl",

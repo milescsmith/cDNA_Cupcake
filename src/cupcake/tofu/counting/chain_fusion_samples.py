@@ -19,8 +19,9 @@ import sys
 from collections import defaultdict
 from csv import DictReader
 
-import cupcake.sequence.GFF as GFF
 from Bio import SeqIO
+
+import cupcake.sequence.GFF as GFF
 from cupcake.tofu.counting import combine_abundance_across_samples as sp
 from cupcake.tofu.counting.chain_samples import read_config, read_count_info
 

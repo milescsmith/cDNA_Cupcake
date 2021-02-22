@@ -1,7 +1,10 @@
 import numpy as np
+
 cimport numpy as np
 from cpython cimport bool
-from cupcake.tofu.branch.intersection_unique import IntervalTreeUnique, Interval
+
+from cupcake.tofu.branch.intersection_unique import (Interval,
+                                                     IntervalTreeUnique)
 
 DTYPE = np.int
 ctypedef np.int_t DTYPE_t

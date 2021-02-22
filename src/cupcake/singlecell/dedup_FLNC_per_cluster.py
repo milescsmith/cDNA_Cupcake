@@ -29,6 +29,7 @@ from collections import Counter, defaultdict
 from csv import DictReader, DictWriter
 
 from Bio import SeqIO
+
 from cupcake.sequence.GFF import collapseGFFReader, write_collapseGFF_format
 
 CORRECTED_CSV_FILELDS = [

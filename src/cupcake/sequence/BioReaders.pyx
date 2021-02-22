@@ -1,5 +1,7 @@
-import re, sys
+import re
+import sys
 from collections import namedtuple
+
 from exceptions import StopIteration
 
 Interval = namedtuple('Interval', ['start', 'end'])

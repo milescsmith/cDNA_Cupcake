@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 import math
 import random
-import typer
-from cupcake.logging import cupcake_logger as logger
 from collections import defaultdict
 from csv import DictReader
 
+import typer
+
+from cupcake.logging import cupcake_logger as logger
 
 app = typer.Typer(name="cupcake.annotation.subsample_with_category")
 
@@ -55,7 +56,9 @@ def subsample(total, counts, iter=100, min_fl_count=2, step=10 ** 4):
             _std = math.sqrt(
                 sum((x - _mean) ** 2 for x in tmp[_cat]) * 1.0 / len(tmp[_cat])
             )
-            logger.info(f"{s}\t{_cat}\t{min(tmp[_cat])}\t{max(tmp[_cat])}\t{_mean}\t{_std}")
+            logger.info(
+                f"{s}\t{_cat}\t{min(tmp[_cat])}\t{max(tmp[_cat])}\t{_mean}\t{_std}"
+            )
 
 
 @app.command(name="")
@@ -63,7 +66,9 @@ def main(
     count_filename: str = typer.Argument(...),
     by: str = typer.Option("id", help="Unique specifier name"),
     iterations: int = typer.Option(100, help="Number of iterations"),
-    len_range: int = typer.Option(None, "--range", help="Length range (ex: (1000,2000), default None)"),
+    len_range: int = typer.Option(
+        None, "--range", help="Length range (ex: (1000,2000), default None)"
+    ),
     min_fl_count: int = typer.Option(1, help="Minimum FL count"),
     step: int = typer.Option(10000, help="Step size"),
 ) -> None:
@@ -73,9 +78,7 @@ def main(
         min_len, max_len = eval(len_range)
         assert 0 <= min_len < max_len
 
-    total, counts = get_counts(
-        count_filename, min_fl_count, by, min_len, max_len
-    )
+    total, counts = get_counts(count_filename, min_fl_count, by, min_len, max_len)
     subsample(total, counts, iterations, min_fl_count, step)
 
 

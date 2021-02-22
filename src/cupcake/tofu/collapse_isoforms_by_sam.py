@@ -18,18 +18,19 @@ Suggested scripts to follow up with:
 """
 
 import sys
-import typer
 from collections import defaultdict
 from gzip import open as gzopen
 from pathlib import Path
 
+import typer
 from Bio import SeqIO
 from bx.intervals import IntervalTree
+
+from cupcake.logging import cupcake_logger as logger
 from cupcake.sequence import GFF
 from cupcake.tofu.branch import branch_simple2
 from cupcake.tofu.compare_junctions import compare_junctions
 from cupcake.tofu.utils import check_ids_unique
-from cupcake.logging import cupcake_logger as logger
 
 GFF_FIELDS = [
     "seqname",

@@ -26,11 +26,12 @@ Report #2. For each junction:
 import bisect
 from collections import defaultdict
 from csv import DictWriter
+from typing import Optional
 
 import typer
-from cupcake.logging import cupcake_logger as logger
-from typing import Optional
 from Bio import SeqIO
+
+from cupcake.logging import cupcake_logger as logger
 from cupcake.sequence.BioReaders import GMAPSAMReader
 from cupcake.sequence.GFF import collapseGFFReader
 
@@ -54,9 +55,7 @@ FIELDNAMES_REPORT2 = [
 ]
 
 
-app = typer.Typer(
-    name="alignment_stats_from_sam"
-)
+app = typer.Typer(name="alignment_stats_from_sam")
 
 
 def type_fa_or_fq(file):
@@ -67,7 +66,7 @@ def type_fa_or_fq(file):
         return "fastq"
 
 
-def read_annotation_for_junction_info(gff_filename:str) -> defaultdict:
+def read_annotation_for_junction_info(gff_filename: str) -> defaultdict:
     """
     :param gff_filename: annotation GFF
     :return: dict of (chrom, strand, 'donor' or 'acceptor') --> sorted list of donor or acceptor site. all 0-based.
@@ -220,13 +219,20 @@ def evaluate_alignment_sam(
 
 @app.command(name="")
 def main(
-    input_file: str = typer.Argument(..., "--input", "-i", help="Input fasta or fastq."),
-    sam_filename: str = typer.Argument(..., "--sam_filename", "-s", help="Aligned SAM filename."),
-    genome_filename: str = typer.Argument(..., "--genome_filename", "-g", help="Genome fasta."),
-    output_prefix: str = typer.Argument(..., "--output_prefix", "-o", help="Output prefix."),
-    gff: Optional[str] = typer.Option(None, "--gff", help="Annotation GFF.")
+    input_file: str = typer.Argument(
+        ..., "--input", "-i", help="Input fasta or fastq."
+    ),
+    sam_filename: str = typer.Argument(
+        ..., "--sam_filename", "-s", help="Aligned SAM filename."
+    ),
+    genome_filename: str = typer.Argument(
+        ..., "--genome_filename", "-g", help="Genome fasta."
+    ),
+    output_prefix: str = typer.Argument(
+        ..., "--output_prefix", "-o", help="Output prefix."
+    ),
+    gff: Optional[str] = typer.Option(None, "--gff", help="Annotation GFF."),
 ):
-    
 
     # read genome
     logger.info(f"Reading genome {genome_filename}...")

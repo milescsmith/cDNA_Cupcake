@@ -7,6 +7,7 @@ from csv import DictReader, DictWriter
 
 import vcf
 from bx.intervals import IntervalTree
+
 from cupcake.phasing.io.SAMMPileUpReader import MPileUpReader
 
 

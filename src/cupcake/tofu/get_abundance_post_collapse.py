@@ -37,12 +37,13 @@ PBfusion.2      HQ_sample0ZPg9hS7|cb7607_c16635/f3p0/810,HQ_sample0ZPg9hS7|cb760
 import os
 import re
 import sys
-import typer
-from typing import Optional, List
 from collections import Counter
 from csv import DictReader, DictWriter
-from cupcake.logging import cupcake_logger as logger
+from typing import List, Optional
 
+import typer
+
+from cupcake.logging import cupcake_logger as logger
 
 app = typer.Typer(
     name="get_abundance_post_collapse",

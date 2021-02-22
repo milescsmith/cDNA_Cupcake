@@ -10,8 +10,9 @@ import sys
 from collections import defaultdict
 from csv import DictReader
 
-import cupcake.sequence.GFF as GFF
 from Bio import SeqIO
+
+import cupcake.sequence.GFF as GFF
 
 rex_pbid = re.compile(r"(PB.\d+.\d+)(|\S+)")
 
@@ -46,8 +47,8 @@ def regroup_gff(
 
     for r in DictReader(open(demux_count_file), delimiter=","):
         for k, v in r.items():
-            if k != 'id' and int(v) > 0:
-                in_tissue[r['id']].add(k)
+            if k != "id" and int(v) > 0:
+                in_tissue[r["id"]].add(k)
 
     # in_tissue = dict(in_tissue)
 
@@ -56,9 +57,7 @@ def regroup_gff(
     for g in out_group_dict.values():
         handles[g] = open(f"{output_prefix}_{g}_only.gff", "w")
         if in_fafq is not None:
-            handles_fafq[g] = open(
-                f"{output_prefix}_{g}_only.{type_fafq}", "w"
-            )
+            handles_fafq[g] = open(f"{output_prefix}_{g}_only.{type_fafq}", "w")
 
     if in_fafq is not None:
         fafq_dict = SeqIO.to_dict(SeqIO.parse(open(in_fafq), type_fafq))
@@ -72,7 +71,9 @@ def regroup_gff(
         groups_to_write_in = set()
         pbid = r.seqid
         if pbid not in in_tissue:
-            logger.info(f"WARNING: {pbid} does not belong to any group indicated by outgroup_dict")
+            logger.info(
+                f"WARNING: {pbid} does not belong to any group indicated by outgroup_dict"
+            )
         for tissue in in_tissue[pbid]:
             groups_to_write_in.add(out_group_dict[tissue])
 

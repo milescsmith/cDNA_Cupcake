@@ -24,6 +24,7 @@ from collections import Counter
 
 # import networkx as nx
 import numpy as np
+
 from cupcake.phasing.io.VariantPhaser import Haplotypes
 
 

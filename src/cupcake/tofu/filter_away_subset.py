@@ -23,15 +23,15 @@ Example:
 
 import os
 import sys
-import typer
 from collections import defaultdict
 from csv import DictReader, DictWriter
 
+import typer
 from Bio import SeqIO
+
+from cupcake.logging import cupcake_logger as logger
 from cupcake.sequence import GFF
 from cupcake.tofu import compare_junctions
-from cupcake.logging import cupcake_logger as logger
-
 
 app = typer.Typer(name="filer_away_subset")
 

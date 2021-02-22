@@ -3,18 +3,19 @@ __author__ = "etseng@pacb.com"
 
 import itertools
 import sys
-
 # from pickle import *
 from collections import defaultdict, namedtuple
 
 from Bio import SeqIO
 from Bio.SeqIO import SeqRecord
 from bx.intervals.cluster import ClusterTree
+
 from cupcake.sequence import BioReaders
 from cupcake.sequence.SeqReaders import LazyFastaReader, LazyFastqReader
 from cupcake.tofu.branch import branch_simple2
 from cupcake.tofu.compare_junctions import compare_junctions
-from cupcake.tofu.get_abundance_post_collapse import get_abundance_post_collapse
+from cupcake.tofu.get_abundance_post_collapse import \
+    get_abundance_post_collapse
 from cupcake.tofu.utils import check_ids_unique
 
 

@@ -8,6 +8,7 @@ from pathlib import Path
 from subprocess import check_output
 
 from Bio import SeqIO
+
 from cupcake.phasing.io import VariantPhaseCleaner, VariantPhaser
 from cupcake.phasing.io.MPileUpVariantCaller import MPileUPVariant
 from cupcake.phasing.io.SAMMPileUpReader import MPileUpReader

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 __author__ = "etseng@pacb.com"
 
-from typing import Dict, Any, Union
+from typing import Any, Dict, Union
 
 """
 Demultiplex IsoSeq (SMRT Link 8.0) job output (without genome mapping)

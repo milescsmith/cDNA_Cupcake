@@ -22,14 +22,14 @@ from collections import Counter
 from pathlib import Path
 from typing import Union
 
+# from gtfparse.write_gtf import df_to_gtf
+from BCBio import GFF as BCBio_GFF
 from Bio import SeqIO
 from Bio.Seq import Seq
 from Bio.SeqFeature import FeatureLocation, SeqFeature
 from Bio.SeqRecord import SeqRecord
-from cupcake.sequence.BioReaders import GMAPSAMReader
 
-# from gtfparse.write_gtf import df_to_gtf
-from BCBio import GFF as BCBio_GFF
+from cupcake.sequence.BioReaders import GMAPSAMReader
 
 
 def convert_sam_rec_to_gff3_rec(r, source, qid_index_dict=None):

@@ -1,10 +1,18 @@
 #!/usr/bin/env python
 import sys
-from cupcake.logging import cupcake_logger as logger
-from pathlib import Path
 from csv import DictReader
+from pathlib import Path
+from typing import Optional
 
+import typer
 from Bio import SeqIO
+
+from cupcake.logging import cupcake_logger as logger
+
+app = typer.Typer(
+    name="cupcake.annotation.make_file_for_subsampling_from_collapsed",
+    help="Make subsample-ready file from Iso-Seq collapsed output",
+)
 
 
 def read_demux_fl_count_file(filename):
@@ -144,56 +152,39 @@ def make_file_for_subsample(
         logger.info(f"Output written to {h.absolute()}.")
 
 
-def main():
-    from argparse import ArgumentParser
-
-    parser = ArgumentParser("Make subsample-ready file from Iso-Seq collapsed output")
-    parser.add_argument(
+@app.command(name="")
+def main(
+    input_prefix: str = typer.Option(
+        "hq_isoforms.fastq.no5merge.collapsed.min_fl_2.filtered",
         "-i",
-        "--input_prefix",
-        default="hq_isoforms.fastq.no5merge.collapsed.min_fl_2.filtered",
-        help="Collapsed prefix (default: hq_isoforms.fastq.no5merge.collapsed.min_fl_2.filtered)",
-    )
-    parser.add_argument(
-        "-o",
-        "--output_prefix",
-        default="output.for_subsampling",
-        help="Output prefix (default: output.for_subsampling"),
-    )
-    parser.add_argument(
-        "-m1",
-        "--matchAnnot_parsed",
-        default=None,
-        help="MatchAnnot parsed output (default: None)",
-    )
-    parser.add_argument(
-        "-m2",
-        "--sqanti_class",
-        default=None,
-        help="SQANTI classification file (default: None)",
-    )
-    parser.add_argument(
-        "--demux",
-        default=None,
+        help="Collapsed prefix",
+    ),
+    output_prefix: str = typer.Option(
+        "output.for_subsampling", "-o", help="Output prefix"
+    ),
+    matchAnnot_parsed: Optional[str] = typer.Option(
+        None, "-m1", help="MatchAnnot parsed output"
+    ),
+    sqanti_class: Optional[str] = typer.Option(
+        None, "-m2", help="SQANTI classification file"
+    ),
+    demux: Optional[str] = typer.Option(
+        None,
         help="Demuxed FL count file - if provided, will be used instead of the <input_prefix>.abundance.txt file",
-    )
-    parser.add_argument(
-        "--include_single_exons",
-        default=False,
-        action="store_true",
-        help="Include single exons (default: OFF)",
-    )
-
-    args = parser.parse_args()
+    ),
+    include_single_exons: bool = typer.Option(
+        True, show_default=False, help="Include single exons [default: OFF]"
+    ),
+) -> None:
     make_file_for_subsample(
-        args.input_prefix,
-        args.output_prefix,
-        args.demux,
-        args.matchAnnot_parsed,
-        args.sqanti_class,
-        args.include_single_exons,
+        input_prefix,
+        output_prefix,
+        demux,
+        matchAnnot_parsed,
+        sqanti_class,
+        include_single_exons,
     )
 
 
 if __name__ == "__main__":
-    main()
+    typer.run(main)

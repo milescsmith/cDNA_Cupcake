@@ -7,10 +7,11 @@ from collections import defaultdict
 from csv import DictReader, DictWriter
 from multiprocessing import Process
 
-import cupcake.sequence.BioReaders as BioReaders
 import pysam
 from Bio import SeqIO
 from bx.intervals.cluster import ClusterTree
+
+import cupcake.sequence.BioReaders as BioReaders
 
 csv.field_size_limit(100000000)
 

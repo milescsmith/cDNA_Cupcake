@@ -3,7 +3,9 @@ import sys
 from collections import defaultdict
 
 from Bio import SeqIO
+
 from cupcake.logging import cupcake_logger as logger
+
 
 def type_fa_or_fq(file):
     file = file.upper()

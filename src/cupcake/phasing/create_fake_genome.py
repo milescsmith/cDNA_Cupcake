@@ -5,10 +5,11 @@ import os
 import re
 import sys
 
-from cupcake.logging import cupcake_logger as logger
-import cupcake.sequence.GFF as GFF
 from Bio import SeqIO
 from bx.intervals.cluster import ClusterTree
+
+import cupcake.sequence.GFF as GFF
+from cupcake.logging import cupcake_logger as logger
 
 """
 Given a GFF file and selected loci (ex: PB.45),
@@ -52,7 +53,9 @@ def make_fake_genome(
             good.append(r)
 
     if len(good) == 0:
-        logger.error(f"Did not find any transcripts strictly within {ref_chr}:{ref_start}-{ref_end} on strand {ref_strand}. Abort!")
+        logger.error(
+            f"Did not find any transcripts strictly within {ref_chr}:{ref_start}-{ref_end} on strand {ref_strand}. Abort!"
+        )
         sys.exit(-1)
 
     c = ClusterTree(0, 0)
@@ -86,7 +89,7 @@ def make_fake_genome(
             f.write("\n".join(r.seqid for r in good) + "\n")
 
     logger.info(
-        f"Output written to {output_prefix}.fasta, {output_prefix}.mapping.txt, {output_prefix}.pbids.txt.",
+        f"Output written to {output_prefix}.fasta, {output_prefix}.mapping.txt, {output_prefix}.pbids.txt."
     )
 
 
@@ -117,9 +120,7 @@ def main():
     ref_end = int(m.group(3))  # keep it 1-based
 
     if not os.path.exists(args.genome_filename):
-        logger.error(
-            f"Genome file {args.genome_filename} does not exist! Abort."
-        )
+        logger.error(f"Genome file {args.genome_filename} does not exist! Abort.")
         sys.exit(-1)
     if not os.path.exists(args.gff_filename):
         logger.critical(f"GFF {args.gff_filename} does not exist! Abort.")

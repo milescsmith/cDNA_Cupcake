@@ -1,16 +1,13 @@
 # lifted from https://github.com/sdispater/pendulum
 import shutil
-import numpy as np
-from Cython.Build import cythonize
+from distutils.command.build_ext import build_ext
+from distutils.core import Distribution, Extension
+from distutils.errors import (CCompilerError, DistutilsExecError,
+                              DistutilsPlatformError)
 from pathlib import Path
 
-from distutils.command.build_ext import build_ext
-from distutils.core import Distribution
-from distutils.core import Extension
-from distutils.errors import CCompilerError
-from distutils.errors import DistutilsExecError
-from distutils.errors import DistutilsPlatformError
-
+import numpy as np
+from Cython.Build import cythonize
 
 # C Extensions
 

@@ -7,6 +7,7 @@ from collections import defaultdict
 from csv import DictReader, DictWriter
 
 from Bio import SeqIO
+
 from cupcake.io.GFF import collapseGFFReader
 
 fusion_pbid = re.compile("PBfusion.(\d+).(\d+)")

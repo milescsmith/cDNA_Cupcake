@@ -1,13 +1,14 @@
 import copy
 from csv import DictReader, DictWriter
 from multiprocessing import Process
-from cupcake.logging import cupcake_logger as logger
 
-import typer
 import parasail
 import pysam
+import typer
 from Bio import SeqIO
 from Bio.Seq import Seq
+
+from cupcake.logging import cupcake_logger as logger
 
 SCOREMAT = parasail.matrix_create("ACGT", 2, -5)
 MIN_SCORE = 80
@@ -24,9 +25,13 @@ CSV_FIELDS = ["zmw", "split", "length", "flag"]
 app = typer.Typer(name="cupcake.beta.deconcat")
 
 
-def deconcat_worker(input_bam:str, offset_start: int, offset_end:int, output_prefix:str, info:):
+def deconcat_worker(
+    input_bam: str, offset_start: int, offset_end: int, output_prefix: str, info
+):
     reader = pysam.AlignmentFile(input_bam, "rb", check_sq=False)
-    with open(f"{output_prefix}.csv", "w") as f1, pysam.AlignmentFile(f"{output_prefix}.bam", "wb", header=reader.header) as f2:
+    with open(f"{output_prefix}.csv", "w") as f1, pysam.AlignmentFile(
+        f"{output_prefix}.bam", "wb", header=reader.header
+    ) as f2:
         writer = DictWriter(f1, CSV_FIELDS, delimiter=",")
         writer.writeheader()
         counter = -1
@@ -108,8 +113,8 @@ def deconcat(sequence, prev):
 def main(
     input_prefix: str = typer.Argument(...),
     output_prefix: str = typer.Argument(...),
-    cpus:int = typer.Option(10, "--cpus", "-n", help="Number of CPUS")
-    ) -> None:
+    cpus: int = typer.Option(10, "--cpus", "-n", help="Number of CPUS"),
+) -> None:
 
     info = {}
     for r in SeqIO.parse(open(f"{input_prefix}.lima.clips"), "fasta"):

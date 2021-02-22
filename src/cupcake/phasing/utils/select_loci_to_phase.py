@@ -18,6 +18,7 @@ from csv import DictReader
 
 from Bio import SeqIO
 from bx.intervals.cluster import ClusterTree
+
 from cupcake.sequence.GFF import collapseGFFReader
 from cupcake.sequence.SeqReaders import LazyFastqReader
 

@@ -6,6 +6,7 @@ from csv import DictWriter
 
 from Bio import SeqIO
 from bx.intervals import Interval, IntervalTree
+
 from cupcake.sequence.GFF import collapseGFFReader
 
 try:

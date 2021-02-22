@@ -3,13 +3,13 @@ __author__ = "etseng@pacb.com"
 
 import os
 import sys
-import typer
 from csv import DictReader, DictWriter
 
+import typer
 from Bio import SeqIO
-from cupcake.sequence import GFF
-from cupcake.logging import cupcake_logger as logger
 
+from cupcake.logging import cupcake_logger as logger
+from cupcake.sequence import GFF
 
 """
 Given the collapse script result, further filter by FL counts.
@@ -144,7 +144,7 @@ def filter_by_count(
         f"Output written to: {output_prefix}.gff\n"
         f"Output written to: {rep_filename}\n"
         f"Output written to: {output_prefix}.abundance.txt"
-        )
+    )
 
 
 @app.command(name="")
