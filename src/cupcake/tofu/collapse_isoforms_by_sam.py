@@ -18,6 +18,7 @@ Suggested scripts to follow up with:
 """
 
 import sys
+from typing import Optional
 from collections import defaultdict
 from gzip import open as gzopen
 from pathlib import Path
@@ -49,14 +50,14 @@ app = typer.Typer(name="collapse_isoforms_by_sam", add_completion=False)
 
 
 def pick_rep(
-    fa_fq_filename,
-    gff_filename,
-    group_filename,
-    output_filename,
-    is_fq=False,
-    pick_least_err_instead=False,
-    bad_gff_filename=None,
-):
+    fa_fq_filename: str,
+    gff_filename: str,
+    group_filename: str,
+    output_filename: str,
+    is_fq: bool = False,
+    pick_least_err_instead: bool = False,
+    bad_gff_filename: Optional[str] = None,
+) -> None:
     """
     For each group, select the representative record
 
@@ -73,7 +74,6 @@ def pick_rep(
         fd = SeqIO.to_dict(
             SeqIO.parse(open(fa_fq_filename), "fastq" if is_fq else "fasta")
         )
-    fout = open(output_filename, "w")
 
     coords = {}
     for line in open(gff_filename):
@@ -97,47 +97,47 @@ def pick_rep(
                     tid
                 ] = f'{raw["seqname"]}:{raw["start"]}-{raw["end"]}({raw["strand"]})'
 
-    for line in open(group_filename):
-        pb_id, members = line.strip().split("\t")
-        print(f"Picking representative sequence for {pb_id}", file=sys.stdout)
-        best_rec = None
-        # best_id = None
-        # best_seq = None
-        # best_qual = None
-        best_err = 9999999
-        err = 9999999
-        max_len = 0
-        for x in members.split(","):
-            if is_fq and pick_least_err_instead:
-                err = sum(
-                    i ** -(i / 10.0) for i in fd[x].letter_annotations["phred_quality"]
-                )
-            if (is_fq and pick_least_err_instead and err < best_err) or (
-                (not is_fq or not pick_least_err_instead) and len(fd[x].seq) >= max_len
-            ):
-                best_rec = fd[x]
-                # best_id = x
-                # best_seq = fd[x].seq
-                # if is_fq:
-                #    best_qual = fd[x].quality
-                #    best_err = err
-                max_len = len(fd[x].seq)
 
-        _id_ = f"{pb_id}|{coords[pb_id]}|{best_rec.id}"
-        best_rec.id = _id_
-        SeqIO.write(best_rec, fout, "fastq" if is_fq else "fasta")
+    with open(output_filename, "w") as fout:
+        for line in open(group_filename):
+            pb_id, members = line.strip().split("\t")
+            print(f"Picking representative sequence for {pb_id}", file=sys.stdout)
+            best_rec = None
+            # best_id = None
+            # best_seq = None
+            # best_qual = None
+            best_err = 9999999
+            err = 9999999
+            max_len = 0
+            for x in members.split(","):
+                if is_fq and pick_least_err_instead:
+                    err = sum(
+                        i ** -(i / 10.0) for i in fd[x].letter_annotations["phred_quality"]
+                    )
+                if (is_fq and pick_least_err_instead and err < best_err) or (
+                    (not is_fq or not pick_least_err_instead) and len(fd[x].seq) >= max_len
+                ):
+                    best_rec = fd[x]
+                    # best_id = x
+                    # best_seq = fd[x].seq
+                    # if is_fq:
+                    #    best_qual = fd[x].quality
+                    #    best_err = err
+                    max_len = len(fd[x].seq)
 
-    fout.close()
+            _id_ = f"{pb_id}|{coords[pb_id]}|{best_rec.id}"
+            best_rec.id = _id_
+            SeqIO.write(best_rec, fout, "fastq" if is_fq else "fasta")
 
 
 def collapse_fuzzy_junctions(
-    gff_filename,
-    group_filename,
-    allow_extra_5exon,
-    internal_fuzzy_max_dist,
-    max_5_diff,
-    max_3_diff,
-):
+    gff_filename: str,
+    group_filename: str,
+    allow_extra_5exon: bool,
+    internal_fuzzy_max_dist: int,
+    max_5_diff: int,
+    max_3_diff: int,
+) -> defaultdict:
     def can_merge(m, r1, r2):
         if m == "exact":
             return True
@@ -281,41 +281,38 @@ def main(
     # check for duplicate IDs
     check_ids_unique(input_filename, is_fq=fq)
 
-    ignored_fout = open(f"{prefix}.ignored_ids.txt", "w")
+    
+    with open(f"{prefix}.ignored_ids.txt", "w") as ignored_fout:
 
-    if flnc_coverage > 0:
-        f_good = open(f"{prefix}.collapsed.good.gff", "w")
-        f_bad = open(f"{prefix}.collapsed.bad.gff", "w")
-        cov_threshold = flnc_coverage
-    else:
-        f_good = open(f"{prefix}.collapsed.gff", "w")
-        f_bad = f_good
-        cov_threshold = 1
-    f_txt = open(f"{prefix}.collapsed.group.txt", "w")
+        if flnc_coverage > 0:
+            f_good = open(f"{prefix}.collapsed.good.gff", "w")
+            f_bad = open(f"{prefix}.collapsed.bad.gff", "w")
+            cov_threshold = flnc_coverage
+        else:
+            f_good = open(f"{prefix}.collapsed.gff", "w")
+            f_bad = f_good
+            cov_threshold = 1
+        f_txt = open(f"{prefix}.collapsed.group.txt", "w")
 
-    b = branch_simple2.BranchSimple(
-        transfrag_filename=input_filename,
-        cov_threshold=cov_threshold,
-        min_aln_coverage=min_aln_coverage,
-        min_aln_identity=min_aln_identity,
-        is_fq=fq,
-        max_5_diff=max_5_diff,
-        max_3_diff=max_3_diff,
-    )
-    rec_iter = b.iter_gmap_sam(sam, ignored_fout)
-    for (
-        recs
-    ) in (
-        rec_iter
-    ):  # recs is {'+': list of list of records, '-': list of list of records}
-        for v in recs.values():
-            for v2 in v:
-                if len(v2) > 0:
-                    b.process_records(
-                        v2, allow_extra_5exon, False, f_good, f_bad, f_txt
-                    )
+        b = branch_simple2.BranchSimple(
+            transfrag_filename=input_filename,
+            cov_threshold=cov_threshold,
+            min_aln_coverage=min_aln_coverage,
+            min_aln_identity=min_aln_identity,
+            is_fq=fq,
+            max_5_diff=max_5_diff,
+            max_3_diff=max_3_diff,
+        )
+        rec_iter = b.iter_gmap_sam(sam, ignored_fout)
+        # recs is {'+': list of list of records, '-': list of list of records}
+        for recs in rec_iter:  
+            for v in recs.values():
+                for v2 in v:
+                    if len(v2) > 0:
+                        b.process_records(
+                            v2, allow_extra_5exon, False, f_good, f_bad, f_txt
+                        )
 
-    ignored_fout.close()
     f_good.close()
     try:
         f_bad.close()

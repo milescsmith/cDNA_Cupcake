@@ -2,12 +2,13 @@
 import sys
 from csv import DictReader
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Tuple, Dict
 
 import typer
 from Bio import SeqIO
 
 from cupcake.logging import cupcake_logger as logger
+
 
 app = typer.Typer(
     name="cupcake.annotation.make_file_for_subsampling_from_collapsed",
@@ -15,7 +16,7 @@ app = typer.Typer(
 )
 
 
-def read_demux_fl_count_file(filename):
+def read_demux_fl_count_file(filename: str) -> Tuple[Dict[str,str], str]:
     d = {}
     reader = DictReader(open(filename), delimiter=",")
     assert "id" in reader.fieldnames
