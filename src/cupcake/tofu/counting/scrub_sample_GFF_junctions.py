@@ -38,7 +38,7 @@ fields_to_add = [
 def read_junction_report(filename):
     """
     tab-delimited with header:
-           chr     left    right   strand  num_transcript  num_sample      genome  annotation      label
+        chr     left    right   strand  num_transcript  num_sample      genome  annotation      label
 
     return: dict of label --> records with that label
     """

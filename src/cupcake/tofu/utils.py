@@ -3,7 +3,7 @@ __author__ = "etseng@pacb.com"
 from Bio import SeqIO
 
 
-def check_ids_unique(fa_or_fq_filename, is_fq=False):
+def check_ids_unique(fa_or_fq_filename: str, is_fq: bool = False) -> None:
     """
     Confirm that a FASTA/FASTQ file has all unique IDs
     (used probably by collapse or fusion finding script)

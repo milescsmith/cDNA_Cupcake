@@ -44,10 +44,10 @@ def filter_by_count(
 
     rep_filename = None
     rep_type = None
-    for x, type in rep_filenames:
+    for x, feature in rep_filenames:
         if os.path.exists(x):
             rep_filename = x
-            rep_type = type
+            rep_type = feature
 
     if rep_filename is None:
         logger.error(
@@ -59,8 +59,7 @@ def filter_by_count(
         # read group
         group_max_count_fl = {}
         group_max_count_p = {}
-        f = open(group_filename)
-        for line in f:
+        for line in open(group_filename):
             # ex: PB.1.1  i0HQ_54b0ca|c58773/f30p16/700
             pbid, members = line.strip().split("\t")
             group_max_count_fl[pbid] = 0
@@ -77,23 +76,21 @@ def filter_by_count(
                 p_count = int(p_count)
                 group_max_count_fl[pbid] = max(group_max_count_fl[pbid], fl_count)
                 group_max_count_p[pbid] = max(group_max_count_p[pbid], p_count)
-        f.close()
 
     # read abundance first
-    f = open(count_filename)
-    count_header = ""
-    while True:
-        cur_pos = f.tell()
-        line = f.readline()
-        if not line.startswith("#"):
-            f.seek(cur_pos)
-            break
-        else:
-            count_header += line
-    d = {r["pbid"]: r for r in DictReader(f, delimiter="\t")}
-    for k, v in d.items():
-        print(k, v)
-    f.close()
+    with open(count_filename) as f:
+        count_header = ""
+        while True:
+            cur_pos = f.tell()
+            line = f.readline()
+            if not line.startswith("#"):
+                f.seek(cur_pos)
+                break
+            else:
+                count_header += line
+        d = {r["pbid"]: r for r in DictReader(f, delimiter="\t")}
+        for k, v in d.items():
+            print(k, v)
 
     # group_max_count_p NOT used for now
     good = [
@@ -104,41 +101,40 @@ def filter_by_count(
     ]
 
     # write output GFF
-    f = open(output_prefix + ".gff", "w")
-    for r in GFF.collapseGFFReader(gff_filename):
-        if r.seqid in good:
-            GFF.write_collapseGFF_format(f, r)
-    f.close()
+    with open(f"{output_prefix}.gff", "w") as f:
+        for r in GFF.collapseGFFReader(gff_filename):
+            if r.seqid in good:
+                GFF.write_collapseGFF_format(f, r)
 
     # write output rep.fq
-    f = open(output_prefix + ".rep." + ("fq" if rep_type == "fastq" else "fa"), "w")
-    for r in SeqIO.parse(open(rep_filename), rep_type):
-        if r.name.split("|")[0] in good:
-            SeqIO.write(r, f, rep_type)
-    f.close()
+    with open(
+        f"{output_prefix}.rep.{('fq' if rep_type == 'fastq' else 'fa')}", "w"
+    ) as f:
+        for r in SeqIO.parse(open(rep_filename), rep_type):
+            if r.name.split("|")[0] in good:
+                SeqIO.write(r, f, rep_type)
 
     # write output to .abundance.txt
-    f = open(output_prefix + ".abundance.txt", "w")
-    f.write(count_header)
-    writer = DictWriter(
-        f,
-        fieldnames=[
-            "pbid",
-            "count_fl",
-            "count_nfl",
-            "count_nfl_amb",
-            "norm_fl",
-            "norm_nfl",
-            "norm_nfl_amb",
-        ],
-        delimiter="\t",
-        lineterminator="\n",
-    )
-    writer.writeheader()
-    for k in good:
-        r = d[k]
-        writer.writerow(r)
-    f.close()
+    with open("{output_prefix}.abundance.txt", "w") as f:
+        f.write(count_header)
+        writer = DictWriter(
+            f,
+            fieldnames=[
+                "pbid",
+                "count_fl",
+                "count_nfl",
+                "count_nfl_amb",
+                "norm_fl",
+                "norm_nfl",
+                "norm_nfl_amb",
+            ],
+            delimiter="\t",
+            lineterminator="\n",
+        )
+        writer.writeheader()
+        for k in good:
+            r = d[k]
+            writer.writerow(r)
 
     logger.info(
         f"Output written to: {output_prefix}.gff\n"

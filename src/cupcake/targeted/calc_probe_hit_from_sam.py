@@ -3,26 +3,13 @@ __author__ = "etseng@pacb.com"
 
 import sys
 from csv import DictWriter
+from pathlib import Path
 
 from Bio import SeqIO
 from bx.intervals import Interval, IntervalTree
 
+from cupcake.sequence import BED, BioReaders
 from cupcake.sequence.GFF import collapseGFFReader
-
-try:
-    import BED
-except ImportError:
-    print(
-        "Cannot find BED.py! Please make sure you have cDNA_Cupcake/sequence in $PYTHONPATH.",
-        file=sys.stderr,
-    )
-try:
-    import BioReaders
-except ImportError:
-    print(
-        "Cannot find BioReaders.py! Please make sure you have cDNA_Cupcake/sequence in $PYTHONPATH.",
-        file=sys.stderr,
-    )
 
 
 def get_probe_hit(tree, gene_info, r, is_gtf=False):
@@ -74,17 +61,17 @@ def calc_ontarget_rate(
     tree, gene_info, input_fasta, is_gtf, sam_or_gtf, output_filename=None
 ):
 
-    type = (
+    feature = (
         "fasta"
         if input_fasta.upper().endswith(".FA") or input_fasta.upper().endswith(".FASTA")
         else "fastq"
     )
-    query_len_dict = {r.id: len(r.seq) for r in SeqIO.parse(open(input_fasta), type)}
+    query_len_dict = {r.id: len(r.seq) for r in SeqIO.parse(open(input_fasta), feature)}
 
     if output_filename is None:
         f = sys.stdout
     else:
-        f = open(output_filename, "w")
+        f = Path(output_filename)
 
     FIELDS = ["read_id", "read_len", "num_probe", "num_base_overlap", "loci", "genes"]
     writer = DictWriter(f, FIELDS, delimiter="\t")
@@ -99,7 +86,7 @@ def calc_ontarget_rate(
                 "read_len": "NA",
                 "num_probe": num_probe,
                 "num_base_overlap": base_hit,
-                "loci": "{}:{}-{}".format(r.chr, r.start, r.end),
+                "loci": f"{r.chr}:{r.start}-{r.end}",
                 "genes": ",".join(genes_seen),
             }
             writer.writerow(rec)
@@ -116,12 +103,10 @@ def calc_ontarget_rate(
                 "read_len": r.qLen,
                 "num_probe": num_probe,
                 "num_base_overlap": base_hit,
-                "loci": "{}:{}-{}".format(r.sID, r.sStart, r.sEnd),
+                "loci": f"{r.sID}:{r.sStart}-{r.sEnd}",
                 "genes": ",".join(genes_seen),
             }
             writer.writerow(rec)
-
-    f.close()
 
 
 def main():

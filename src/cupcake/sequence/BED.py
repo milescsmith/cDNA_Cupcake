@@ -11,7 +11,7 @@ SimpleBED --- chr, 0-based start, 1-based end
 from sys import stdout
 
 
-class SimpleBED(object):
+class SimpleBED:
     def __init__(self, chrom, start, end, name=None):
         self.chr = chrom
         self.start = start
@@ -19,9 +19,7 @@ class SimpleBED(object):
         self.name = name
 
     def __str__(self):
-        return "{c}:{s}-{e} (name:{n})".format(
-            c=self.chr, s=self.start, e=self.end, n=self.name
-        )
+        return f"{self.chr}:{self.start}-{self.end} (name:{self.name})"
 
 
 class SimpleBEDReader:
@@ -68,11 +66,9 @@ class SimpleBEDWriter:
 
     def writerow(self, r):
         if r.name is not None:
-            self.handle.write(
-                "{c}\t{s}\t{e}\t{n}\n".format(c=r.chrom, s=r.start, e=r.end, n=r.name)
-            )
+            self.handle.write(f"{r.chrom}\t{r.start}\t{r.end}\t{r.name}\n")
         else:
-            self.handle.write("{c}\t{s}\t{e}\n".format(c=r.chrom, s=r.start, e=r.end))
+            self.handle.write(f"{r.chrom}\t{r.start}\t{r.end}\n")
 
     def writerows(self, rows):
         for r in rows:
@@ -128,17 +124,13 @@ class LazyBEDPointReader(SimpleBEDReader):
             cur = self.f.tell()
             line = self.f.readline()
             if self.f.tell() == cur:
-                return (
-                    "NA"
-                )  # raise Exception, "EOF reached and {0}:{1} not seen!".format(chrom, pos)
+                return "NA"  # raise Exception, "EOF reached and {0}:{1} not seen!".format(chrom, pos)
 
             raw = line.strip().split("\t")
             _chrom, start = (raw[0], int(raw[1]) - self.start_base)
 
             if _chrom != chrom or start > pos:
-                return (
-                    "NA"
-                )  # raise Exception, "End of chrom reached and {0}:{1} not seen!".format(chrom, pos)
+                return "NA"  # raise Exception, "End of chrom reached and {0}:{1} not seen!".format(chrom, pos)
 
             if start == pos:
                 return raw[3]

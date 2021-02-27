@@ -15,12 +15,19 @@ Optional input: primer names in a text file where each line is:
 
 """
 
-import sys
 from collections import Counter, defaultdict
 from csv import DictReader
+from pathlib import Path
+from typing import List, Optional, Tuple
+
+import typer
+
+from cupcake.logging import cupcake_logger as logger
+
+app = typer.Typer(name="cupcake.tofu.get_counts_by_barcode")
 
 
-def read_classify_csv(csv_filename):
+def read_classify_csv(csv_filename: str) -> Tuple[list, str]:
     """
     :param csv_filename: CSV file from IsoSeq classify, must have "id" and "primer" field
     :return: primer_ranges (list of indices), primer_info which is dict of read_id --> primer (all strings)
@@ -39,8 +46,11 @@ def read_classify_csv(csv_filename):
 
 
 def get_fl_count_by_barcode(
-    collapse_prefix, classify_csv, cluster_csv, primer_names=None
-):
+    collapse_prefix: str,
+    classify_csv: str,
+    cluster_csv: str,
+    primer_names: Optional[List[str]] = None,
+) -> None:
 
     primer_ranges, primer_info = read_classify_csv(classify_csv)
     if primer_names is None:
@@ -50,49 +60,44 @@ def get_fl_count_by_barcode(
     for r in DictReader(open(cluster_csv), delimiter=","):
         cluster_info[r["cluster_id"]].append(r)
 
-    group_filename = collapse_prefix + ".group.txt"
-    print("Reading {}....".format(group_filename), file=sys.stderr)
+    group_filename = f"{collapse_prefix}.group.txt"
+    logger.info(f"Reading {group_filename}...")
 
-    f = open(collapse_prefix + ".fl_count_by_barcode.txt", "w")
-    f.write("pbid")
-    for p in primer_ranges:
-        f.write("\t" + str(primer_names[int(p)]))
-    f.write("\n")
-    for line in open(group_filename):
-        pbid, members = line.strip().split("\t")
-        tally = Counter()
-        for m in members.split(","):
-            cid = m.split("/")[0]
-            for r in cluster_info[cid]:
-                if r["read_type"] == "FL":
-                    tally[primer_info[r["read_id"]]] += 1
-        f.write(pbid)
+    fl = Path(f"{collapse_prefix}.fl_count_by_barcode.txt")
+    with fl.open(mode="w") as f:
+        f.write("pbid")
         for p in primer_ranges:
-            f.write("\t" + str(tally[p]))
+            f.write(f"\t{str(primer_names[int(p)])}")
         f.write("\n")
-    f.close()
-    print("Output written to: {}.".format(f.name), file=sys.stderr)
+        for line in open(group_filename):
+            pbid, members = line.strip().split("\t")
+            tally = Counter()
+            for m in members.split(","):
+                cid = m.split("/")[0]
+                for r in cluster_info[cid]:
+                    if r["read_type"] == "FL":
+                        tally[primer_info[r["read_id"]]] += 1
+            f.write(pbid)
+            for p in primer_ranges:
+                f.write(f"\t{str(tally[p])}")
+            f.write("\n")
+
+    logger.info(f"Output written to: {fl.name}.")
 
 
-def main():
-    from argparse import ArgumentParser
-
-    parser = ArgumentParser()
-    parser.add_argument(
-        "collapse_prefix",
-        help="Collapse prefix (ex: hq_isoforms.fastq.no5merge.collapsed)",
-    )
-    parser.add_argument(
-        "classify_csv", help="Classify output CSV (ex: classify.primer_info.csv)"
-    )
-    parser.add_argument(
-        "cluster_csv", help="Cluster output CSV (ex: cluster_report.csv)"
-    )
-
-    args = parser.parse_args()
-
-    get_fl_count_by_barcode(args.collapse_prefix, args.classify_csv, args.cluster_csv)
+def main(
+    collapse_prefix: str = typer.Argument(
+        ..., help="Collapse prefix (ex: hq_isoforms.fastq.no5merge.collapsed)"
+    ),
+    classify_csv: str = typer.Argument(
+        ..., help="Classify output CSV (ex: classify.primer_info.csv)"
+    ),
+    cluster_csv: str = typer.Argument(
+        ..., help="Cluster output CSV (ex: cluster_report.csv)"
+    ),
+) -> None:
+    get_fl_count_by_barcode(collapse_prefix, classify_csv, cluster_csv)
 
 
 if __name__ == "__main__":
-    main()
+    typer.run(main)

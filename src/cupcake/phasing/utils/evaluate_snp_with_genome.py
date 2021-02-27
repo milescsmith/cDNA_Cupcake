@@ -8,6 +8,7 @@ from csv import DictReader, DictWriter
 import vcf
 from bx.intervals import IntervalTree
 
+from cupcake.logging import cupcake_logger as logger
 from cupcake.phasing.io.SAMMPileUpReader import MPileUpReader
 
 

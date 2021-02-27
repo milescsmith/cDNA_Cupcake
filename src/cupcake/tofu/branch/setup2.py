@@ -3,7 +3,7 @@ from distutils.extension import Extension
 
 from Cython.Distutils import build_ext
 
-ext_modules = [  # Extension("BioReaders", ["BioReaders.pyx"]), \
+ext_modules = [
     Extension("c_branch", ["c_branch.pyx"]),
     Extension("intersection_unique", ["intersection_unique.pyx"]),
 ]

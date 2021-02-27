@@ -23,13 +23,14 @@ We would get the loci (chr:start-end strand) from the config file in each direct
 
 
 import glob
-import sys
 from io import TextIOWrapper
 from pathlib import Path
 from typing import Tuple
 
 # from collections import defaultdict
 import vcf
+
+from cupcake.logging import cupcake_logger as logger
 
 
 def read_config(config_filename: Path) -> Tuple[str, str, str, str]:

@@ -115,12 +115,12 @@ def read_annotation_junction_bed(junction_filename):
     """
     junction.bed is in format:
 
-    chr, left (0-based), right (0-based), +/-
+    seqname, left (0-based), right (0-based), +/-
 
     following junction.bed format from TopHat
     http://ccb.jhu.edu/software/tophat/manual.shtml
     """
-    junction = defaultdict(lambda: {})  # (chr, strand) --> (start, end)
+    junction = defaultdict(lambda: {})  # (seqname, strand) --> (start, end)
     for line in open(junction_filename):
         chrom, left, right, strand = line.strip().split("\t")
         junction[chrom, strand][(int(left), int(right))] = 1
@@ -141,7 +141,7 @@ def summarize_junctions(
     """
     junc_by_chr_strand = defaultdict(
         lambda: defaultdict(lambda: [])
-    )  # (chr,strand) --> (donor,acceptor) --> samples it show up in (more than once possible)
+    )  # (seqname,strand) --> (donor,acceptor) --> samples it show up in (more than once possible)
 
     for sample_name, d in sample_dirs.items():
         for r in GFF.collapseGFFReader(os.path.join(d, gff_filename)):
@@ -151,14 +151,16 @@ def summarize_junctions(
             for i in range(n - 1):
                 donor = r.ref_exons[i].end - 1  # make it 0-based
                 accep = r.ref_exons[i + 1].start  # start is already 0-based
-                junc_by_chr_strand[r.chr, r.strand][donor, accep].append(sample_name)
+                junc_by_chr_strand[r.seqname, r.strand][donor, accep].append(
+                    sample_name
+                )
 
     # write junction report
     f1 = open(output_prefix + ".junction.bed", "w")
     f1.write('track name=junctions description="{}" useScore=1\n'.format(output_prefix))
 
     JUNC_DETAIL_FIELDS = [
-        "chr",
+        "seqname",
         "left",
         "right",
         "strand",
@@ -169,7 +171,7 @@ def summarize_junctions(
         "label",
     ]
 
-    with open(output_prefix + ".junction_detail.txt", "w") as f:
+    with open(f"{output_prefix}.junction_detail.txt", "w") as f:
         writer = DictWriter(f, JUNC_DETAIL_FIELDS, delimiter="\t")
         writer.writeheader()
         keys = list(junc_by_chr_strand.keys())
@@ -181,7 +183,7 @@ def summarize_junctions(
             labels = cluster_junctions(v_keys)
             for i, (_donor, _accep) in enumerate(v_keys):
                 rec = {
-                    "chr": _chr,
+                    "seqname": _seqname,
                     "left": _donor,
                     "right": _accep,
                     "strand": _strand,

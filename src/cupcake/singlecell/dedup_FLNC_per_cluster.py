@@ -43,7 +43,7 @@ CORRECTED_CSV_FILELDS = [
     "UMI_ed",
     "BC_ed",
 ]
-# PBID_FORMAT = re.compile("PB.(\d+).(\d+)")
+# PBID_FORMAT = re.compile(r"PB.(\d+).(\d+)")
 
 
 def dedup_FLNC_per_cluster(

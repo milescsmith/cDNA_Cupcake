@@ -260,19 +260,13 @@ def make_abundance_file(
         movie = r["id"].split("/")[0]
         if restricted_movies is None or movie in restricted_movies:
             if r["is_fl"] != "Y":
-                print(
-                    "sequence {} has `is_fl` field set to `{}`. Ignoring this read.".format(
-                        r["id"], r["is_fl"]
-                    ),
-                    file=sys.stderr,
+                logger.info(
+                    f'sequence {r["id"]} has `is_fl` field set to `{r["is_fl"]}`. Ignoring this read.'
                 )
                 continue
             if r["pbid"] == "NA":
-                print(
-                    "sequence {} has `pbid` field set to `{}`. Ignoring this read.".format(
-                        r["id"], r["pbid"]
-                    ),
-                    file=sys.stderr,
+                logger.info(
+                    f'sequence {r["id"]} has `pbid` field set to `{r["pbid"]}`. Ignoring this read.'
                 )
                 continue
             assert r["stat"] == "unique"
@@ -292,7 +286,7 @@ def make_abundance_file(
         f.write("# -----------------\n")
         f.write("# count_fl: Number of associated FL reads\n")
         f.write("# norm_fl: count_fl / total number of FL reads, mapped or unmapped\n")
-        f.write("# Total Number of FL reads: {}\n".format(use_total_fl))
+        f.write(f"# Total Number of FL reads: {use_total_fl}\n")
         f.write("#\n")
 
     writer = DictWriter(f, COUNT_FIELDS, delimiter="\t")
@@ -322,33 +316,27 @@ def get_abundance_post_collapse(
     :param restricted_movies:
     :return:
     """
-    group_filename = collapse_prefix + ".group.txt"
+    group_filename = f"{collapse_prefix}.group.txt"
     if not os.path.exists(group_filename):
-        print("File {} does not exist. Abort!".format(group_filename), file=sys.stderr)
+        logger.error(f"File {group_filename} does not exist. Abort!")
         sys.exit(-1)
 
     if not os.path.exists(cluster_report_csv):
-        print(
-            "File {} does not exist. Abort!".format(cluster_report_csv), file=sys.stderr
-        )
+        logger.error(f"File {cluster_report_csv} does not exist. Abort!")
         sys.exit(-1)
 
-    cid_info = read_group_filename(collapse_prefix + ".group.txt", is_cid=True)
+    cid_info = read_group_filename(f"{collapse_prefix}.group.txt", is_cid=True)
 
     output_read_count_IsoSeq_csv(
-        cid_info, cluster_report_csv, output_prefix + ".read_stat.txt"
+        cid_info, cluster_report_csv, f"{output_prefix}.read_stat.txt"
     )
-    print(
-        "Read stat file written to", output_prefix + ".read_stat.txt", file=sys.stderr
-    )
+    logger.info("Read stat file written to", f"{output_prefix}.read_stat.txt")
     make_abundance_file(
-        output_prefix + ".read_stat.txt",
-        output_prefix + ".abundance.txt",
+        f"{output_prefix}.read_stat.txt",
+        f"{output_prefix}.abundance.txt",
         restricted_movies=restricted_movies,
     )
-    print(
-        "Abundance file written to", output_prefix + ".abundance.txt", file=sys.stderr
-    )
+    logger.info(f"Abundance file written to {output_prefix}.abundance.txt")
 
 
 @app.command(name="")
@@ -358,8 +346,7 @@ def main(
     ),
     cluster_report: str = typer.Argument(..., help="Cluster CSV report"),
 ) -> None:
-    """"
-    Get abundance/read stat information after running collapse script.
+    """Get abundance/read stat information after running collapse script.
     Works for Iso-Seq1, 2, and 3 output."
     """
     get_abundance_post_collapse(collapse_prefix, cluster_report, collapse_prefix)

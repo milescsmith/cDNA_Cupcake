@@ -6,20 +6,24 @@ import sys
 # from pickle import *
 from collections import defaultdict, namedtuple
 
+import typer
 from Bio import SeqIO
 from Bio.SeqIO import SeqRecord
 from bx.intervals.cluster import ClusterTree
 
+from cupcake.logging import cupcake_logger as logger
 from cupcake.sequence import BioReaders
 from cupcake.sequence.SeqReaders import LazyFastaReader, LazyFastqReader
 from cupcake.tofu.branch import branch_simple2
 from cupcake.tofu.compare_junctions import compare_junctions
-from cupcake.tofu.get_abundance_post_collapse import \
-    get_abundance_post_collapse
+from cupcake.tofu.get_abundance_post_collapse import (
+    get_abundance_post_collapse)
 from cupcake.tofu.utils import check_ids_unique
 
+app = typer.Typer(name="cupcake.tofy.fusion_finder")
 
-def get_isoform_index(in_order_ranges, chrom, start, end):
+
+def get_isoform_index(in_order_ranges, chrom: str, start: int, end: int):
     """
     in_order_ranges: list of in order (chrom, start, end)
 
@@ -60,7 +64,7 @@ def pick_rep(
     id_to_rep = {}
     for line in open(group_filename):
         pb_id, members = line.strip().split("\t")
-        print(f"Picking representative sequence for {pb_id}", file=sys.stdout)
+        logger.info(f"Picking representative sequence for {pb_id}")
         best_id = None
         best_seq = None
         best_qual = None
@@ -166,8 +170,8 @@ def is_fusion_compatible(
 
     r1.strand = r1.flag.strand
     r2.strand = r2.flag.strand
-    type = compare_junctions(r1, r2)
-    if type == "exact":
+    feature = compare_junctions(r1, r2)
+    if feature == "exact":
         if len(r1.segments) == 1:
             if len(r2.segments) == 1:
                 # single exon case, check fusion point is close enough
@@ -183,7 +187,7 @@ def is_fusion_compatible(
                 )
         else:  # multi-exon case, must be OK
             return True
-    elif type == "super" or type == "subset":
+    elif feature == "super" or feature == "subset":
         if allow_extra_5_exons:
             # check that the 3' junction is identical
             # also check that the 3' end is relatively close
@@ -264,19 +268,19 @@ def iter_gmap_sam_for_fusion(gmap_sam_filename, fusion_candidates, transfrag_len
     Continuously yield a group of overlapping records {'+': [r1, r2, ...], '-': [r3, r4....]}
     """
     records = []
-    iter = BioReaders.GMAPSAMReader(
+    iterator = BioReaders.GMAPSAMReader(
         gmap_sam_filename, True, query_len_dict=transfrag_len_dict
     )
-    for r in iter:
+    for r in iterator:
         if r.qID in fusion_candidates:
             records = [r]
             break
 
-    for r in iter:
+    for r in iterator:
         if len(records) >= 1 and (
             r.sID == records[-1].sID and r.sStart < records[-1].sStart
         ):
-            print("ERROR: SAM file is NOT sorted. ABORT!", file=sys.stderr)
+            logger.error("ERROR: SAM file is NOT sorted. ABORT!")
             sys.exit(-1)
         if len(records) >= 1 and (
             r.sID != records[0].sID or r.sStart > records[-1].sEnd
@@ -435,7 +439,6 @@ def fusion_main(
     for qid, indices in compressed_records_pointer_dict.items():
         combo = tuple(indices)
         if combo in already_seen:
-            # print("combo seen:", combo)
             continue
         already_seen.add(combo)
 
@@ -500,124 +503,82 @@ def fusion_main(
         is_fq=is_fq,
     )
 
-    print(f"{count} fusion candidates identified.", file=sys.stdout)
-    print(
+    logger.info(f"{count} fusion candidates identified.")
+    logger.info(
         f"Output written to: {output_prefix}.gff, "
-        f"{output_prefix}.group.txt, {output_filename}",
-        file=sys.stdout,
+        f"{output_prefix}.group.txt, {output_filename}"
     )
 
     # (optional) step 5. get count information
     if cluster_report_csv is not None:
         get_abundance_post_collapse(output_prefix, cluster_report_csv, output_prefix)
-        print(
-            f"Count information written to: {output_prefix}.abundance.txt",
-            file=sys.stdout,
-        )
+        logger.info(f"Count information written to: {output_prefix}.abundance.txt")
     elif is_flnc:
-        print("Input is FLNC. Outputting FLNC counts per fusion.")
+        logger.info("Input is FLNC. Outputting FLNC counts per fusion.")
         with open(output_prefix + ".abundance.txt", "w") as f:
             f.write("pbid\tcount_fl\n")
             for pbid, members in group_info.items():
                 f.write(f"{pbid}\t{len(members)}\n")
-        print(
+        logger.info(
             f"Count information written to: {output_prefix}.abundance.txt",
-            file=sys.stdout,
         )
 
 
-def main():
-    from argparse import ArgumentParser
-
-    parser = ArgumentParser()
-    parser.add_argument("--input", help="Input FA/FQ filename")
-    parser.add_argument(
-        "--fq",
-        default=False,
-        action="store_true",
-        help="Input is a fastq file (default is fasta)",
-    )
-    parser.add_argument("-s", "--sam", required=True, help="Sorted GMAP SAM filename")
-    parser.add_argument("-o", "--prefix", required=True, help="Output filename prefix")
-    parser.add_argument(
-        "--cluster_report_csv",
-        help="cluster_report.csv, optional, if given will generate count info.",
-    )
-    parser.add_argument(
-        "--is_flnc",
-        action="store_true",
-        default=False,
-        help="Input are individual FLNC reads. If this option used, --cluster_report_csv should not be called. An FLNC-based count file will be output. (default: off)",
-    )
-    parser.add_argument(
+@app.command(name="")
+def main(
+    input_filename: str = typer.Argument("--input", help="Input FA/FQ filename"),
+    fq: bool = typer.Option(False, help="Input is a fastq file"),
+    sam: str = typer.Argument(..., "-s", help="Sorted GMAP SAM filename"),
+    prefix: str = typer.Argument(..., "-o", help="Output filename prefix"),
+    cluster_report_csv: str = typer.Option(
+        "cluster_report.csv", help="if given will generate count info."
+    ),
+    is_flnc: bool = typer.Option(
+        False,
+        help="Input are individual FLNC reads. If this option used, --cluster_report_csv should not be called. An FLNC-based count file will be output.",
+    ),
+    allow_extra_5exon: bool = typer.Option(
+        True,
         "--dun-merge-5-shorter",
-        action="store_false",
-        dest="allow_extra_5exon",
-        default=True,
+        show_default=False,
         help="Don't collapse shorter 5' transcripts (default: turned off)",
-    )
-    parser.add_argument(
-        "-c",
-        "--min_locus_coverage",
-        type=float,
-        default=0.05,
-        help="Minimum per-locus coverage in percentage (default: 0.05)",
-    )
-    parser.add_argument(
-        "--min_locus_coverage_bp",
-        type=int,
-        default=1,
-        help="Minimum per-locus coverage in bp (default: 1 bp)",
-    )
-    parser.add_argument(
-        "-t",
-        "--min_total_coverage",
-        type=float,
-        default=0.99,
-        help="Minimum total coverage (default: 0.99)",
-    )
-    parser.add_argument(
-        "-d",
-        "--min_dist_between_loci",
-        type=int,
-        default=10000,
-        help="Minimum distance between loci, in bp (default: 10000)",
-    )
-    parser.add_argument(
-        "-i",
-        "--min_identity",
-        type=float,
-        default=0.95,
-        help="Minimum alignment identity (default: 0.95)",
-    )
+    ),
+    min_locus_coverage: float = typer.Option(
+        0.05, "-c", help="Minimum per-locus coverage in percentage"
+    ),
+    min_locus_coverage_bp: int = typer.Option(
+        1, help="Minimum per-locus coverage in bp"
+    ),
+    min_total_coverage: float = typer.Option(0.99, "-t", help="Minimum total coverage"),
+    min_dist_between_loci: int = typer.Option(
+        10000, "-d", help="Minimum distance between loci, in bp"
+    ),
+    min_identity: float = typer.Option(0.95, "-i", help="Minimum alignment identity"),
+):
+    assert 0 < min_identity <= 1
 
-    args = parser.parse_args()
-
-    assert 0 < args.min_identity <= 1
-
-    if args.is_flnc and args.cluster_report_csv is not None:
-        print(
-            "ERROR: Cannot use both --is_flnc and --cluster_report_csv at the same time. Abort!",
-            file=sys.stderr,
+    if is_flnc and cluster_report_csv is not None:
+        logger.error(
+            "ERROR: Cannot use both --is_flnc and --cluster_report_csv at the same time. Abort!"
         )
         sys.exit(-1)
 
     fusion_main(
-        args.input,
-        args.sam,
-        args.prefix,
-        args.cluster_report_csv,
-        is_fq=args.fq,
-        allow_extra_5_exons=args.allow_extra_5exon,
+        input_filename,
+        sam,
+        prefix,
+        cluster_report_csv,
+        is_fq=fq,
+        allow_extra_5_exons=allow_extra_5exon,
         skip_5_exon_alt=False,
-        min_locus_coverage=args.min_locus_coverage,
-        min_locus_coverage_bp=args.min_locus_coverage_bp,
-        min_total_coverage=args.min_total_coverage,
-        min_dist_between_loci=args.min_dist_between_loci,
-        min_identity=args.min_identity,
-        is_flnc=args.is_flnc,
+        min_locus_coverage=min_locus_coverage,
+        min_locus_coverage_bp=min_locus_coverage_bp,
+        min_total_coverage=min_total_coverage,
+        min_dist_between_loci=min_dist_between_loci,
+        min_identity=min_identity,
+        is_flnc=is_flnc,
     )
 
 
 if __name__ == "__main__":
-    main()
+    typer.run(main)

@@ -3,20 +3,25 @@
 import sys
 from pathlib import Path
 
-from ..sequence.GFF import collapseGFFReader
+import typer
+
+from cupcake.logging import cupcake_logger as logger
+from cupcake.sequence.GFF import collapseGFFReader
+
+app = typer.Typer(name="cupcake.tofu.simple_stats_post_collapse")
 
 
-def simple_stats_post_collapse(input_prefix):
+def simple_stats_post_collapse(input_prefix: str) -> None:
     input_gff = f"{input_prefix}.gff"
 
     if not Path(input_gff).exists():
-        print(f"Looking for input GFF {input_gff} but not found! Abort!")
+        logger.error(f"Looking for input GFF {input_gff} but not found! Abort!")
         sys.exit(-1)
 
-    with open(f"{input_prefix}.simple_stats.txt", "w") as f1, open(
-        f"{input_prefix}.exon_stats.txt", "w"
-    ) as f2:
+    simple_stats = Path(f"{input_prefix}.simple_stats.txt")
+    exon_stats = Path(f"{input_prefix}.exon_stats.txt")
 
+    with simple_stats.open("w") as f1, exon_stats.open("w") as f2:
         f1.write("pbid\tlocus\tlength\tnum_exon\n")
         f2.write("pbid\texon_index\texon_size\tintron_size\n")
 
@@ -35,18 +40,17 @@ def simple_stats_post_collapse(input_prefix):
 
             f1.write(f"{str(sum_len)}\t")
             f1.write(f"{str(len(r.ref_exons))}\n")
-        print(f"Output written to: {f1.name},{f2.name}\n")
+    logger.info(f"Output written to: {simple_stats.name},{exon_stats.name}\n")
 
 
-def main():
-    from argparse import ArgumentParser
-
-    parser = ArgumentParser()
-    parser.add_argument("input_prefix", help="Input prefix, ex: hq.5merge.collapsed")
-
-    args = parser.parse_args()
-    simple_stats_post_collapse(args.input_prefix)
+@app.command(name="")
+def main(
+    input_prefix: str = typer.Argument(
+        ..., help="Input prefix, ex: hq.5merge.collapsed"
+    )
+) -> None:
+    simple_stats_post_collapse(input_prefix)
 
 
 if __name__ == "__main__":
-    main()
+    typer.run(main)

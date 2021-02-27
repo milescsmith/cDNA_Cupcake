@@ -11920,7 +11920,7 @@ static PyTypeObject __pyx_type_7cupcake_7cupcake_4tofu_6branch_19intersection_un
   0, /*tp_setattro*/
   0, /*tp_as_buffer*/
   Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_CHECKTYPES|Py_TPFLAGS_HAVE_NEWBUFFER|Py_TPFLAGS_BASETYPE|Py_TPFLAGS_HAVE_GC, /*tp_flags*/
-  "\n    Basic feature, with required integer start and end properties.\n    Also accepts optional strand as +1 or -1 (used for up/downstream queries),\n    a name, and any arbitrary data is sent in on the info keyword argument\n\n    >>> from bx.intervals.intersection import Interval\n\n    >>> f1 = Interval(23, 36)\n    >>> f2 = Interval(34, 48, value={'chr':12, 'anno':'transposon'})\n    >>> f2\n    Interval(34, 48, value={'anno': 'transposon', 'chr': 12})\n\n    ", /*tp_doc*/
+  "\n    Basic feature, with required integer start and end properties.\n    Also accepts optional strand as +1 or -1 (used for up/downstream queries),\n    a name, and any arbitrary data is sent in on the info keyword argument\n\n    >>> from bx.intervals.intersection import Interval\n\n    >>> f1 = Interval(23, 36)\n    >>> f2 = Interval(34, 48, value={'':12, 'anno':'transposon'})\n    >>> f2\n    Interval(34, 48, value={'anno': 'transposon', '': 12})\n\n    ", /*tp_doc*/
   __pyx_tp_traverse_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_Interval, /*tp_traverse*/
   __pyx_tp_clear_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_Interval, /*tp_clear*/
   __pyx_pw_7cupcake_7cupcake_4tofu_6branch_19intersection_unique_8Interval_5__richcmp__, /*tp_richcompare*/

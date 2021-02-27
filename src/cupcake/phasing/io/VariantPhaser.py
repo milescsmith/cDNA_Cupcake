@@ -7,8 +7,8 @@ import vcf
 from Bio import SeqIO
 from Bio.Seq import Seq
 
-from cupcake.phasing.io.coordinate_mapper import \
-    get_base_to_base_mapping_from_sam
+from cupcake.phasing.io.coordinate_mapper import (
+    get_base_to_base_mapping_from_sam)
 from cupcake.sequence.BioReaders import GMAPSAMReader
 
 __VCF_EXAMPLE__ = """
@@ -57,13 +57,15 @@ class VariantPhaser(object):
         # seq base is 'T' on the sense strand
         # this converts to self.accepted_vars_by_pos[1565] = ['A', 'G']
         # later, when we are matchin back to transcript seq, need to watch for strand!
-        for pos, vars in vc.variant.items():
-            self.accepted_vars_by_pos[pos] = [_base.upper() for _base, _count in vars]
+        for pos, variants in vc.variant.items():
+            self.accepted_vars_by_pos[pos] = [
+                _base.upper() for _base, _count in variants
+            ]
             self.count_of_vars_by_pos[pos] = {
-                _base.upper(): _count for _base, _count in vars
+                _base.upper(): _count for _base, _count in variants
             }
 
-        self.accepted_pos = list(self.accepted_vars_by_pos.keys())
+        self.accepted_pos = list(self.accepted_vars_by_pos)
         self.accepted_pos.sort()
 
         self.haplotypes = Haplotypes(
@@ -232,13 +234,9 @@ class Haplotypes(object):
         )  # haplotypes, where haplotypes[i] is the i-th distinct haplotype of all var concat
         self.hap_var_positions = var_positions
         self.ref_at_pos = ref_at_pos  # dict of (0-based) pos --> ref base
-        self.alt_at_pos = (
-            None
-        )  # init: None, later: dict of (0-based) pos --> unique list of alt bases
+        self.alt_at_pos = None  # init: None, later: dict of (0-based) pos --> unique list of alt bases
         self.count_of_vars_by_pos = count_of_vars_by_pos
-        self.haplotype_vcf_index = (
-            None
-        )  # init: None, later: dict of (hap index) --> (0-based) var pos --> phase (0 for ref, 1+ for alt)
+        self.haplotype_vcf_index = None  # init: None, later: dict of (hap index) --> (0-based) var pos --> phase (0 for ref, 1+ for alt)
 
         # sanity check: all variant positions must be present
         self.sanity_check()
@@ -417,7 +415,7 @@ class Haplotypes(object):
                 f_human.write("\n")
 
         # read fake genome mapping file
-        fake_map = {}  # 0-based position on fake --> (chr, 0-based ref position)
+        fake_map = {}  # 0-based position on fake --> (, 0-based ref position)
         with open(fake_genome_mapping_filename) as f:
             for line in f:
                 fake_pos, ref_chr, ref_pos = line.strip().split(",")

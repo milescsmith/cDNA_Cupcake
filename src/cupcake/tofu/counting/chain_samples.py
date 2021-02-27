@@ -780,7 +780,7 @@ def main(
         allow_5merge,
         max_3_diff,
         fastq_filename,
-        cpus=args.cpus,
+        cpus=cpus,
     )
 
 

@@ -97,32 +97,36 @@ def get_closest_junction_dist(junction_info, chrom, strand, pos1, pos2):
     :return: (dist to closest donor, dist to closest acceptor)
     """
 
-    def get_min_dist(list, index, pos):
+    def get_min_dist(distlist, index, pos):
         if index == 0:
-            return list[0] - pos
-        elif index == len(list):
-            return pos - list[-1]
+            return distlist[0] - pos
+        elif index == len(distlist):
+            return pos - distlist[-1]
         else:
-            return min(list[index] - pos, pos - list[index - 1])
+            return min(distlist[index] - pos, pos - distlist[index - 1])
 
     if strand == "+":
-        list1 = junction_info[(chrom, strand, "donor")]
-        list2 = junction_info[(chrom, strand, "acceptor")]
-        if len(list1) == 0 or len(list2) == 0:  # the list is empty, no junctions
+        distlist1 = junction_info[(chrom, strand, "donor")]
+        distlist2 = junction_info[(chrom, strand, "acceptor")]
+        if (
+            len(distlist1) == 0 or len(distlist2) == 0
+        ):  # the list is empty, no junctions
             return "NA", "NA"
         else:
-            i = bisect.bisect_left(list1, pos1)
-            j = bisect.bisect_left(list2, pos2)
-            return get_min_dist(list1, i, pos1), get_min_dist(list2, j, pos2)
+            i = bisect.bisect_left(distlist1, pos1)
+            j = bisect.bisect_left(distlist2, pos2)
+            return get_min_dist(distlist1, i, pos1), get_min_dist(distlist2, j, pos2)
     else:
-        list1 = junction_info[(chrom, strand, "acceptor")]
-        list2 = junction_info[(chrom, strand, "donor")]
-        if len(list1) == 0 or len(list2) == 0:  # the list is empty, no junctions
+        distlist1 = junction_info[(chrom, strand, "acceptor")]
+        distlist2 = junction_info[(chrom, strand, "donor")]
+        if (
+            len(distlist1) == 0 or len(distlist2) == 0
+        ):  # the list is empty, no junctions
             return "NA", "NA"
         else:
-            i = bisect.bisect_left(list1, pos1)
-            j = bisect.bisect_left(list2, pos2)
-            return get_min_dist(list2, j, pos2), get_min_dist(list1, i, pos1)
+            i = bisect.bisect_left(distlist1, pos1)
+            j = bisect.bisect_left(distlist2, pos2)
+            return get_min_dist(distlist2, j, pos2), get_min_dist(distlist1, i, pos1)
 
 
 def get_donor_acceptor(genome_d, chrom, strand, pos1, pos2):

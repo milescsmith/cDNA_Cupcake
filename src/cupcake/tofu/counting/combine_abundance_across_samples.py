@@ -13,7 +13,7 @@ from bx.intervals.cluster import ClusterTree
 from cupcake.sequence import GFF
 from cupcake.tofu import compare_junctions
 
-seqid_rex = re.compile("(\\S+\\.\\d+)\\.(\\d+)")
+seqid_rex = re.compile(r"(\\S+\\.\\d+)\\.(\\d+)")
 
 MatchRecord = namedtuple(
     "MatchRecord", ["ref_id", "addon_id", "rec", "members", "seqrec"]
@@ -68,7 +68,7 @@ def write_reclist_to_gff_n_info(
             tree_keys_numeric.add(k)
         except ValueError:
             tree_keys_alpha.add(chrom)
-    tree_keys = sorted(list(tree_keys_numeric)) + sorted(list(tree_keys_alpha))
+    tree_keys = sorted(tree_keys_numeric) + sorted(tree_keys_alpha)
 
     f_gff = open(final_prefix + ".gff", "w")
     f_info = open(final_prefix + ".mega_info.txt", "w")
@@ -181,7 +181,7 @@ class MegaPBTree(object):
             for line in f:
                 pbid, members = line.strip().split("\t")
                 if group_prefix is None:
-                    group_info[pbid] = [x for x in members.split(",")]
+                    group_info[pbid] = list(members.split(","))
                 else:
                     group_info[pbid] = [
                         group_prefix + "|" + x for x in members.split(",")
@@ -278,7 +278,7 @@ class MegaPBTree(object):
         unmatched_recs = set(self.record_d.keys())
 
         for r in GFF.collapseGFFReader(gff_filename):
-            match_rec_list = [r for r in self.match_record_to_tree(r)]
+            match_rec_list = list(self.match_record_to_tree(r))
             if len(match_rec_list) > 0:  # found match(es)! put longer of r1/r2 in
                 # if len(match_rec_list) > 1: pdb.set_trace()  #DEBUG
                 combined.append((match_rec_list, r))

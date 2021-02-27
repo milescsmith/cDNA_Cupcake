@@ -5,14 +5,13 @@ A temporary CSV file for isoseq3 (v3.4+) dedup output
 INPUT: dedup.fasta
 OUTPUT: dedup.info.csv
 """
-import os
 import re
 
 from Bio import SeqIO
 from Bio.Seq import Seq
 
-rex = re.compile("(\S+) full_length_coverage=(\d+);length=(\d+);XM=(\S+);XC=(\S+)")
-rex_umi_only = re.compile("(\S+) full_length_coverage=(\d+);length=(\d+);XM=(\S+)")
+rex = re.compile(r"(\S+) full_length_coverage=(\d+);length=(\d+);XM=(\S+);XC=(\S+)")
+rex_umi_only = re.compile(r"(\S+) full_length_coverage=(\d+);length=(\d+);XM=(\S+)")
 
 reader = SeqIO.parse(open("dedup.fasta"), "fasta")
 f = open("dedup.info.csv", "w")

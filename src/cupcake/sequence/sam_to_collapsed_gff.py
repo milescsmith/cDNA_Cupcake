@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import sys
 
+from cupcake.logging import cupcake_logger as logger
 from cupcake.sequence.BioReaders import GMAPSAMReader
 from cupcake.sequence.GFF import write_collapseGFF_format
 
