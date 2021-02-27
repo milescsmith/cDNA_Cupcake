@@ -6,6 +6,8 @@ import sys
 from collections import Counter, defaultdict
 from csv import DictReader
 
+import typer
+
 """
 Based on the script by Gloria Sheynkman for creating a BED12 file where
 isoforms are shaded by abundances
@@ -39,6 +41,9 @@ RGB_SCALE = [
     "255,230,230",
 ]
 NUM_RGB = len(RGB_SCALE)
+
+
+app = typer.Typer(name="cupcake.tofu.color_bet12_post_sqanti")
 
 
 def shade_isoforms_for_gene_group(records, bed_info, bed_writers, ok_to_ignore=False):
@@ -134,26 +139,19 @@ def shaded_bed12_post_sqanti(
         shade_isoforms_for_gene_group(records, bed_info, bed_writers, ok_to_ignore)
 
 
-def main():
-    from argparse import ArgumentParser
-
-    parser = ArgumentParser()
-    parser.add_argument("class_filename", help="SQANTI(3) classification filename")
-    parser.add_argument(
-        "bed12_filename",
-        help="Input BED12 filename (converted from same SQANTI3 input GTF)",
-    )
-    parser.add_argument("output_prefix")
-    parser.add_argument(
-        "--ok_to_ignore",
-        action="store_true",
-        help="OK to ignore entries missing in bed file (default: off)",
-    )
-
-    args = parser.parse_args()
-
+@app.command(name="")
+def main(
+    class_filename: str = typer.Argument(..., help="SQANTI(3) classification filename"),
+    bed12_filename: str = typer.Argument(
+        ..., help="Input BED12 filename (converted from same SQANTI3 input GTF)"
+    ),
+    output_prefix: str = typer.Argument(...),
+    ok_to_ignore: bool = typer.Option(
+        False, help="OK to ignore entries missing in bed file"
+    ),
+):
     fl_fieldnames = []
-    reader = DictReader(open(args.class_filename), delimiter="\t")
+    reader = DictReader(open(class_filename), delimiter="\t")
     for x in reader.fieldnames:
         if x.startswith("FL"):
             fl_fieldnames.append(x)
@@ -163,13 +161,13 @@ def main():
         sys.exit(-1)
 
     shaded_bed12_post_sqanti(
-        args.class_filename,
-        args.bed12_filename,
-        args.output_prefix,
+        class_filename,
+        bed12_filename,
+        output_prefix,
         fl_fieldnames,
-        args.ok_to_ignore,
+        ok_to_ignore,
     )
 
 
 if __name__ == "__main__":
-    main()
+    typer.run(main)

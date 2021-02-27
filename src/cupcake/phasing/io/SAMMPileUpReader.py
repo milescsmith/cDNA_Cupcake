@@ -29,22 +29,18 @@ from collections import Counter
 
 
 class MPileUpRecord(object):
-    def __init__(self, chr, pos, ref, cov, readBase, baseQuals, alnQuals):
+    def __init__(self, chrom, pos, ref, cov, readBase, baseQuals, alnQuals):
         """
         In addition to storing the 7 cols from mpileup,
         nalso stores
         counter: Counter of (key) -> (obs count in pileup)
         """
-        self.chr = chr
+        self.chr = chrom
         self.pos = pos
         self.ref = ref.upper()  # let ref base always be upper case
         self.cov = cov
-        self.nCov = (
-            None
-        )  # this is the coverage of non-indel, non-skipped, which would be ACGTNacgtn
-        self.nType = (
-            None
-        )  # this is the number of non-indel, non-skipped bases accumulated at this record
+        self.nCov = None  # this is the coverage of non-indel, non-skipped, which would be ACGTNacgtn
+        self.nType = None  # this is the number of non-indel, non-skipped bases accumulated at this record
         self.readBase = readBase
         self.baseQuals = baseQuals
         self.alnQuals = alnQuals
@@ -80,9 +76,7 @@ class MPileUpRecord(object):
             num = int(self.readBase[m.start() : m.end()])
             return m.start(), m.end() + num
 
-        sanity_counter = (
-            0
-        )  # use this to track how many "reads" we've parsed to make sure parsing is correct
+        sanity_counter = 0  # use this to track how many "reads" we've parsed to make sure parsing is correct
         # this number should agree with self.cov which is 4-th column in mpileup
         i = 0  # pointer for current location in string self.readBase
         while i < len(self.readBase):

@@ -19,6 +19,7 @@ from csv import DictReader
 from Bio import SeqIO
 from bx.intervals.cluster import ClusterTree
 
+from cupcake.logging import cupcake_logger as logger
 from cupcake.sequence.GFF import collapseGFFReader
 from cupcake.sequence.SeqReaders import LazyFastqReader
 
@@ -32,9 +33,7 @@ rex_flnc3 = re.compile(
 rex_pbid = re.compile(r"(PB.\d+).\d+")
 
 
-extra_bp_around_junctions = (
-    50
-)  # get this much around junctions to be safe AND to not screw up GMAP who doesn't like microintrons....
+extra_bp_around_junctions = 50  # get this much around junctions to be safe AND to not screw up GMAP who doesn't like microintrons....
 __padding_before_after__ = 10  # get this much before and after the start
 
 

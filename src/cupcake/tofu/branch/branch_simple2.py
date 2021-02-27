@@ -1,12 +1,13 @@
 import sys
+from pathlib import Path
 
 import numpy as np
 from Bio import SeqIO
 from bx.intervals.cluster import ClusterTree
 
+from cupcake.logging import cupcake_logger as logger
 from cupcake.sequence import BioReaders
 from cupcake.tofu.branch import c_branch
-from cupcake.logging import cupcake_logger as logger
 
 # from cupcake.tofu.branch.intersection_unique import IntervalTreeUnique, Interval, IntervalNodeUnique
 
@@ -64,9 +65,7 @@ class BranchSimple:
             )
         }
 
-        self.cov_threshold = (
-            cov_threshold
-        )  # only output GTF records if >= this many GMAP records support it (this must be if I'm running non-clustered fasta on GMAP)
+        self.cov_threshold = cov_threshold  # only output GTF records if >= this many GMAP records support it (this must be if I'm running non-clustered fasta on GMAP)
 
         self.min_aln_coverage = min_aln_coverage
         self.min_aln_identity = min_aln_identity
@@ -116,7 +115,7 @@ class BranchSimple:
         # go through remainder of alignments and group by subject ID
         for r in quality_alignments:
             if r.sID == records[0].sID and r.sStart < records[-1].sStart:
-                print("SAM file is NOT sorted. ABORT!", file=sys.stderr)
+                logger.error("SAM file is NOT sorted. ABORT!")
                 sys.exit(-1)
             if r.sID != records[0].sID or r.sStart > max_end:
                 yield sep_by_strand(records)
@@ -331,12 +330,12 @@ class BranchSimple:
         records,
         allow_extra_5_exons,
         skip_5_exon_alt,
-        f_good,
-        f_bad,
-        f_group,
-        tolerate_end=100,
-        starting_isoform_index=0,
-        gene_prefix="PB",
+        f_good: Path,
+        f_bad: Path,
+        f_group: Path,
+        tolerate_end: int = 100,
+        starting_isoform_index: int = 0,
+        gene_prefix: str = "PB",
     ):
         """
         Given a set of records
@@ -361,7 +360,7 @@ class BranchSimple:
             stuff = self.match_record(
                 r, tolerate_end=tolerate_end
             )  # , tolerate_middle=self.MIN_EXON_SIZE)
-            m = np.zeros((1, mat_size), dtype=np.int)
+            m = np.zeros((1, mat_size), dtype=np.int64)
             for x in stuff:
                 m[0, x.value] = 1
             result.append((r.qID, r.flag.strand, m))
@@ -371,10 +370,7 @@ class BranchSimple:
             result_merged, node_d, allow_extra_5_exons, self.max_5_diff, self.max_3_diff
         )
 
-        print(
-            f"merged {len(result)} down to {len(result_merged)} transcripts",
-            file=sys.stderr,
-        )
+        logger.info(f"merged {len(result)} down to {len(result_merged)} transcripts")
 
         self.isoform_index = starting_isoform_index
         # make the exon value --> interval dictionary
@@ -385,28 +381,31 @@ class BranchSimple:
                 f_out = f_bad
             else:
                 f_out = f_good
-            self.isoform_index += 1
-            segments = [node_d[x] for x in m.nonzero()[1]]
-            newline = "\n"
-            tab = "\t"
-            f_group.write(
-                f"{gene_prefix}.{self.cuff_index}.{self.isoform_index}{tab}{ids}{newline}"
-            )
-            f_out.write(
-                f'{self.chrom}{tab}PacBio{tab}transcript{tab}{segments[0].start + 1}{tab}{segments[-1].end}{tab}.{tab}{self.strand}{tab}.{tab}gene_id "{gene_prefix}.{self.cuff_index}"; transcript_id "{gene_prefix}.{self.cuff_index}.{self.isoform_index}";{newline}'
-            )
 
-            i = 0
-            j = 0
-            for j in range(1, len(segments)):
-                if segments[j].start != segments[j - 1].end:
-                    f_out.write(
-                        f'{self.chrom}{tab}PacBio{tab}exon{tab}{segments[i].start + 1}{tab}{segments[j - 1].end}{tab}.{tab}{self.strand}{tab}.{tab}gene_id "{gene_prefix}.{self.cuff_index}"; transcript_id "{gene_prefix}.{self.cuff_index}.{self.isoform_index}";{newline}'
-                    )
-                    i = j
-            f_out.write(
-                f'{self.chrom}{tab}PacBio{tab}exon{tab}{segments[i].start + 1}{tab}{segments[j].end}{tab}.{tab}{self.strand}{tab}.{tab}gene_id "{gene_prefix}.{self.cuff_index}"; transcript_id "{gene_prefix}.{self.cuff_index}.{self.isoform_index}";{newline}'
-            )
+            with f_out.open("w") as fo, f_group.open("w") as fg:
+                self.isoform_index += 1
+                segments = [node_d[x] for x in m.nonzero()[1]]
+                newline = "\n"
+                tab = "\t"
+                fg.write(
+                    f"{gene_prefix}.{self.cuff_index}.{self.isoform_index}{tab}{ids}{newline}"
+                )
+
+                fo.write(
+                    f'{self.chrom}{tab}PacBio{tab}transcript{tab}{segments[0].start + 1}{tab}{segments[-1].end}{tab}.{tab}{self.strand}{tab}.{tab}gene_id "{gene_prefix}.{self.cuff_index}"; transcript_id "{gene_prefix}.{self.cuff_index}.{self.isoform_index}";{newline}'
+                )
+
+                i = 0
+                j = 0
+                for j in range(1, len(segments)):
+                    if segments[j].start != segments[j - 1].end:
+                        fo.write(
+                            f'{self.chrom}{tab}PacBio{tab}exon{tab}{segments[i].start + 1}{tab}{segments[j - 1].end}{tab}.{tab}{self.strand}{tab}.{tab}gene_id "{gene_prefix}.{self.cuff_index}"; transcript_id "{gene_prefix}.{self.cuff_index}.{self.isoform_index}";{newline}'
+                        )
+                        i = j
+                fo.write(
+                    f'{self.chrom}{tab}PacBio{tab}exon{tab}{segments[i].start + 1}{tab}{segments[j].end}{tab}.{tab}{self.strand}{tab}.{tab}gene_id "{gene_prefix}.{self.cuff_index}"; transcript_id "{gene_prefix}.{self.cuff_index}.{self.isoform_index}";{newline}'
+                )
 
         self.cuff_index += 1
 

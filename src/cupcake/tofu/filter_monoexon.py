@@ -12,36 +12,41 @@ Example:
 
 """
 
-import os
 import sys
 from csv import DictReader, DictWriter
+from pathlib import Path
+from typing import Dict, Tuple
 
+import typer
 from Bio import SeqIO
 
+from cupcake.logging import cupcake_logger as logger
 from cupcake.sequence import GFF
 
+app = typer.Typer(name="cupcake.tofu.filter_monoexon")
 
-def sanity_check_collapse_input(input_prefix):
+
+def sanity_check_collapse_input(input_prefix: str) -> Tuple[Path, Path, Path]:
     """
     Check that
     1. the count, gff, rep files exist
     2. the number of records agree among the three
     """
     # group_filename =  f"{input_prefix}.group.txt"
-    count_filename = f"{input_prefix}.abundance.txt"
-    gff_filename = f"{input_prefix}.gff"
-    rep_filename = f"{input_prefix}.rep.fq"
-    if not os.path.exists(count_filename):
+    count_filename = Path(f"{input_prefix}.abundance.txt")
+    gff_filename = Path(f"{input_prefix}.gff")
+    rep_filename = Path(f"{input_prefix}.rep.fq")
+    if not count_filename.exists():
         logger.error(f"File {count_filename} does not exist. Abort!")
         sys.exit(-1)
-    if not os.path.exists(gff_filename):
+    if not gff_filename.exists():
         logger.error(f"File {gff_filename} does not exist. Abort!")
         sys.exit(-1)
-    if not os.path.exists(rep_filename):
+    if not rep_filename.exists():
         logger.error(f"File {rep_filename} does not exist. Abort!")
         sys.exit(-1)
 
-    pbids1 = {[r.id for r in SeqIO.parse(open(rep_filename), "fastq")]}
+    pbids1 = {[r.id for r in SeqIO.parse(rep_filename.open(), "fastq")]}
     pbids2 = {[r.seqid for r in GFF.collapseGFFReader(gff_filename)]}
     pbids3 = {read_count_file(count_filename)[0].keys()}
 
@@ -50,95 +55,90 @@ def sanity_check_collapse_input(input_prefix):
         or len(pbids2) != len(pbids3)
         or len(pbids1) != len(pbids3)
     ):
-        print(
+        logger.error(
             "The number of PBID records in the files disagree! Sanity check failed.",
             file=sys.stderr,
         )
-        print(f"# of PBIDs in {rep_filename}: {len(pbids1)}", file=sys.stderr)
-        print(f"# of PBIDs in {gff_filename}: {len(pbids2)}", file=sys.stderr)
-        print(f"# of PBIDs in {count_filename}: {len(pbids3)}", file=sys.stderr)
+        logger.error(f"# of PBIDs in {rep_filename}: {len(pbids1)}")
+        logger.error(f"# of PBIDs in {gff_filename}: {len(pbids2)}")
+        logger.error(f"# of PBIDs in {count_filename}: {len(pbids3)}")
         sys.exit(-1)
 
     return count_filename, gff_filename, rep_filename
 
 
-def read_count_file(count_filename):
-    f = open(count_filename)
-    count_header = ""
-    while True:
-        cur_pos = f.tell()
-        line = f.readline()
-        if not line.startswith("#"):
-            f.seek(cur_pos)
-            break
-        else:
-            count_header += line
-    d = {r["pbid"]: r for r in DictReader(f, delimiter="\t")}
-    f.close()
+def read_count_file(count_filename: Path) -> Tuple[Dict[str, str], str]:
+    with count_filename.open() as f:
+        count_header = ""
+        while True:
+            cur_pos = f.tell()
+            line = f.readline()
+            if not line.startswith("#"):
+                f.seek(cur_pos)
+                break
+            else:
+                count_header += line
+        d = {r["pbid"]: r for r in DictReader(f, delimiter="\t")}
+
     return d, count_header
 
 
-def main():
-    from argparse import ArgumentParser
-
-    parser = ArgumentParser()
-    parser.add_argument(
-        "input_prefix", help="Input prefix (ex: test.collapsed.min_fl_2)"
+@app.command(name="")
+def main(
+    input_prefix: str = typer.Argument(
+        ..., help="Input prefix (ex: test.collapsed.min_fl_2)"
     )
+) -> None:
 
-    args = parser.parse_args()
-    output_prefix = args.input_prefix + ".nomono"
+    output_prefix = f"{input_prefix}.nomono"
 
     count_filename, gff_filename, rep_filename = sanity_check_collapse_input(
-        args.input_prefix
+        input_prefix
     )
 
     good = []
-    f = open(output_prefix + ".gff", "w")
-    reader = GFF.collapseGFFReader(gff_filename)
-    for r in reader:
-        assert r.seqid.startswith("PB.")
-        if len(r.ref_exons) > 1:
-            good.append(r.seqid)
-            GFF.write_collapseGFF_format(f, r)
+    with open(f"{output_prefix}.gff", "w") as f:
+        reader = GFF.collapseGFFReader(gff_filename)
+        for r in reader:
+            assert r.seqid.startswith("PB.")
+            if len(r.ref_exons) > 1:
+                good.append(r.seqid)
+                GFF.write_collapseGFF_format(f, r)
 
     # read abundance first
     d, count_header = read_count_file(count_filename)
 
     # write output rep.fq
-    f = open(output_prefix + ".rep.fq", "w")
-    for r in SeqIO.parse(open(rep_filename), "fastq"):
-        if r.name.split("|")[0] in good:
-            SeqIO.write(r, f, "fastq")
-    f.close()
+    with open(f"{output_prefix}.rep.fq", "w") as f:
+        for r in SeqIO.parse(rep_filename.open(), "fastq"):
+            if r.name.split("|")[0] in good:
+                SeqIO.write(r, f, "fastq")
 
     # write output to .abundance.txt
-    f = open(output_prefix + ".abundance.txt", "w")
-    f.write(count_header)
-    writer = DictWriter(
-        f,
-        fieldnames=[
-            "pbid",
-            "count_fl",
-            "count_nfl",
-            "count_nfl_amb",
-            "norm_fl",
-            "norm_nfl",
-            "norm_nfl_amb",
-        ],
-        delimiter="\t",
-        lineterminator="\n",
-    )
-    writer.writeheader()
-    for k in good:
-        r = d[k]
-        writer.writerow(r)
-    f.close()
+    with open(f"{output_prefix}.abundance.txt", "w") as f:
+        f.write(count_header)
+        writer = DictWriter(
+            f,
+            fieldnames=[
+                "pbid",
+                "count_fl",
+                "count_nfl",
+                "count_nfl_amb",
+                "norm_fl",
+                "norm_nfl",
+                "norm_nfl_amb",
+            ],
+            delimiter="\t",
+            lineterminator="\n",
+        )
+        writer.writeheader()
+        for k in good:
+            r = d[k]
+            writer.writerow(r)
 
-    print("Output written to:", output_prefix + ".gff", file=sys.stderr)
-    print("Output written to:", output_prefix + ".rep.fq", file=sys.stderr)
-    print("Output written to:", output_prefix + ".gff", file=sys.stderr)
+    logger.info(f"Output written to:{output_prefix}.gff")
+    logger.info(f"Output written to:{output_prefix}.rep.fq")
 
 
 if __name__ == "__main__":
-    main()
+    typer.run(main)

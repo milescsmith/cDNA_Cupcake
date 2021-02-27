@@ -3,6 +3,7 @@ import sys
 
 from cupcake.sequence.BioReaders import GMAPSAMReader
 from cupcake.sequence.GFF import write_collapseGFF_format
+from cupcake.logging import cupcake_logger as logger
 
 
 def main():

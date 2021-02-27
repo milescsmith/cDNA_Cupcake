@@ -18,10 +18,10 @@ Suggested scripts to follow up with:
 """
 
 import sys
-from typing import Optional
 from collections import defaultdict
 from gzip import open as gzopen
 from pathlib import Path
+from typing import Optional, Union
 
 import typer
 from Bio import SeqIO
@@ -51,9 +51,9 @@ app = typer.Typer(name="collapse_isoforms_by_sam", add_completion=False)
 
 def pick_rep(
     fa_fq_filename: str,
-    gff_filename: str,
-    group_filename: str,
-    output_filename: str,
+    gff_filename: Union[str, Path],
+    group_filename: Union[str, Path],
+    output_filename: Union[str, Path],
     is_fq: bool = False,
     pick_least_err_instead: bool = False,
     bad_gff_filename: Optional[str] = None,
@@ -97,11 +97,10 @@ def pick_rep(
                     tid
                 ] = f'{raw["seqname"]}:{raw["start"]}-{raw["end"]}({raw["strand"]})'
 
-
     with open(output_filename, "w") as fout:
         for line in open(group_filename):
             pb_id, members = line.strip().split("\t")
-            print(f"Picking representative sequence for {pb_id}", file=sys.stdout)
+            logger.info(f"Picking representative sequence for {pb_id}")
             best_rec = None
             # best_id = None
             # best_seq = None
@@ -112,10 +111,12 @@ def pick_rep(
             for x in members.split(","):
                 if is_fq and pick_least_err_instead:
                     err = sum(
-                        i ** -(i / 10.0) for i in fd[x].letter_annotations["phred_quality"]
+                        i ** -(i / 10.0)
+                        for i in fd[x].letter_annotations["phred_quality"]
                     )
                 if (is_fq and pick_least_err_instead and err < best_err) or (
-                    (not is_fq or not pick_least_err_instead) and len(fd[x].seq) >= max_len
+                    (not is_fq or not pick_least_err_instead)
+                    and len(fd[x].seq) >= max_len
                 ):
                     best_rec = fd[x]
                     # best_id = x
@@ -131,8 +132,8 @@ def pick_rep(
 
 
 def collapse_fuzzy_junctions(
-    gff_filename: str,
-    group_filename: str,
+    gff_filename: Union[str, Path],
+    group_filename: Union[str, Path],
     allow_extra_5exon: bool,
     internal_fuzzy_max_dist: int,
     max_5_diff: int,
@@ -170,9 +171,10 @@ def collapse_fuzzy_junctions(
         return False
 
     d = {}
+    # chr --> strand --> tree
     recs = defaultdict(
         lambda: {"+": IntervalTree(), "-": IntervalTree()}
-    )  # chr --> strand --> tree
+    )
     fuzzy_match = defaultdict(lambda: [])
     for r in GFF.collapseGFFReader(gff_filename):
         d[r.seqid] = r
@@ -199,7 +201,7 @@ def collapse_fuzzy_junctions(
     with open(group_filename) as f:
         for line in f:
             pbid, members = line.strip().split("\t")
-            group_info[pbid] = [x for x in members.split(",")]
+            group_info[pbid] = members.split(",")
 
     # pick for each fuzzy group the one that has the most exons
     keys = list(fuzzy_match.keys())
@@ -274,25 +276,25 @@ def main(
         logger.error(f"Input file {input_filename} does not exist. Abort.")
         sys.exit(-1)
 
-    if not Path(sam).exists:
+    if not Path(sam).exists():
         logger.error(f"SAM file {sam} does not exist. Abort.")
         sys.exit(-1)
 
     # check for duplicate IDs
     check_ids_unique(input_filename, is_fq=fq)
 
-    
     with open(f"{prefix}.ignored_ids.txt", "w") as ignored_fout:
 
         if flnc_coverage > 0:
-            f_good = open(f"{prefix}.collapsed.good.gff", "w")
-            f_bad = open(f"{prefix}.collapsed.bad.gff", "w")
+            # keep these files closed *until* we need to write to them
+            f_good = Path(f"{prefix}.collapsed.good.gff")
+            f_bad = Path(f"{prefix}.collapsed.bad.gff")
             cov_threshold = flnc_coverage
         else:
-            f_good = open(f"{prefix}.collapsed.gff", "w")
+            f_good = Path(f"{prefix}.collapsed.gff")
             f_bad = f_good
             cov_threshold = 1
-        f_txt = open(f"{prefix}.collapsed.group.txt", "w")
+        f_txt = Path(f"{prefix}.collapsed.group.txt")
 
         b = branch_simple2.BranchSimple(
             transfrag_filename=input_filename,
@@ -305,26 +307,24 @@ def main(
         )
         rec_iter = b.iter_gmap_sam(sam, ignored_fout)
         # recs is {'+': list of list of records, '-': list of list of records}
-        for recs in rec_iter:  
+        for recs in rec_iter:
             for v in recs.values():
                 for v2 in v:
                     if len(v2) > 0:
                         b.process_records(
-                            v2, allow_extra_5exon, False, f_good, f_bad, f_txt
+                            records=v2,
+                            allow_extra_5_exons=allow_extra_5exon,
+                            skip_5_exon_alt=False,
+                            f_good=f_good,
+                            f_bad=f_bad,
+                            f_group=f_txt,
                         )
-
-    f_good.close()
-    try:
-        f_bad.close()
-    except:
-        pass
-    f_txt.close()
 
     # need to further collapse those that have fuzzy junctions!
     if max_fuzzy_junction > 0:
         collapse_fuzzy_junctions(
-            f_good.name,
-            f_txt.name,
+            f_good,
+            f_txt,
             allow_extra_5exon,
             internal_fuzzy_max_dist=max_fuzzy_junction,
             max_5_diff=max_5_diff,
@@ -333,7 +333,7 @@ def main(
         Path(f_good.name).rename(f"{f_good.name}.unfuzzy")
         Path(f_txt.name).rename(f"{f_txt.name}.unfuzzy")
         Path(f"{f_good.name}.fuzzy").rename(f_good.name)
-        Path(f"{f_txt.name_}.fuzzy").rename(f_txt.name)
+        Path(f"{f_txt.name}.fuzzy").rename(f_txt.name)
 
     if fq:
         outfile = f"{prefix}.collapsed.rep.fq"
@@ -342,8 +342,8 @@ def main(
     if allow_extra_5exon:  # 5merge, pick longest
         pick_rep(
             fa_fq_filename=input_filename,
-            gff_filename=f_good.name,
-            group_filename=f_txt.name,
+            gff_filename=f_good,
+            group_filename=f_txt,
             output_filename=outfile,
             is_fq=fq,
             pick_least_err_instead=False,
@@ -352,8 +352,8 @@ def main(
     else:
         pick_rep(
             fa_fq_filename=input_filename,
-            gff_filename=f_good.name,
-            group_filenanme=f_txt.name,
+            gff_filename=f_good,
+            group_filename=f_txt,
             output_filename=outfile,
             is_fq=fq,
             pick_least_err_instead=True,
@@ -368,10 +368,8 @@ def main(
                 pbid, members = line.strip().split()
                 f.write(f"{pbid}\t{members.count(',')+1}\n")
 
-    print(f"Ignored IDs written to: {ignored_fout.name}", file=sys.stdout)
-    print(
-        f"Output written to: {f_good.name}\n{f_txt.name}\n{outfile}\n", file=sys.stdout
-    )
+    logger.info(f"Ignored IDs written to: {ignored_fout.name}")
+    logger.info(f"Output written to: {f_good.name}\n{f_txt.name}\n{outfile}\n")
 
 
 if __name__ == "__main__":

@@ -9,6 +9,7 @@ from subprocess import check_output
 
 from Bio import SeqIO
 
+from cupcake.logging import cupcake_logger as logger
 from cupcake.phasing.io import VariantPhaseCleaner, VariantPhaser
 from cupcake.phasing.io.MPileUpVariantCaller import MPileUPVariant
 from cupcake.phasing.io.SAMMPileUpReader import MPileUpReader
@@ -22,13 +23,9 @@ from cupcake.phasing.io.SAMMPileUpReader import MPileUpReader
 MIN_COVERAGE = 10  # minimum number of FL reads for a gene to do SNP calling and phasing
 ERR_SUB = 0.005
 MAX_DIFF_ALLOWED = 3  # maximum difference in bases allowed for two haplotype strings
-MIN_PERC_ALLOWED = (
-    0.25
-)  # minimum percent of total count for an allele, can be adjusted by ploidy (ex: n=6, means this goes down to 1/6)
+MIN_PERC_ALLOWED = 0.25  # minimum percent of total count for an allele, can be adjusted by ploidy (ex: n=6, means this goes down to 1/6)
 PVAL_CUTOFF = 0.01
-MIN_AF_AT_ENDS = (
-    0.10
-)  # minimum minor allele frequency for SNPs at ends, which tend to have unreliable alignments
+MIN_AF_AT_ENDS = 0.10  # minimum minor allele frequency for SNPs at ends, which tend to have unreliable alignments
 
 
 def set_to_kill(
@@ -61,7 +58,7 @@ def set_to_kill(
 
     # (1) read the mpileup and vall variants
     reader = MPileUpReader(mpileup_filename)
-    recs = [r for r in reader]
+    recs = list(reader)
     vc = MPileUPVariant(
         recs,
         min_cov=MIN_COVERAGE,
@@ -107,7 +104,7 @@ def set_to_kill(
         [base.upper() for base, count in vc.variant[pos]] for pos in pp.accepted_pos
     ]
 
-    if ploidy == 2 and all(len(vars) == 2 for vars in variants):
+    if ploidy == 2 and all(len(_) == 2 for _ in variants):
         (
             diff_arr,
             hap_count_ordered,

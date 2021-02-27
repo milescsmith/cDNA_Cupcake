@@ -1,14 +1,21 @@
 #!/usr/bin/env python
 __author__ = "etseng@pacb.com"
+from typing import Any
+
+from cupcake.sequence import BioReaders
 
 
-def overlaps(s1, s2):
+def overlaps(s1: dict, s2: dict) -> Any:
     return max(0, min(s1.end, s2.end) - max(s1.start, s2.start))
 
 
 def compare_junctions(
-    r1, r2, internal_fuzzy_max_dist=0, max_5_diff=999999, max_3_diff=999999
-):
+    r1: BioReaders.GMAPSAMRecord,
+    r2: BioReaders.GMAPSAMRecord,
+    internal_fuzzy_max_dist: int = 0,
+    max_5_diff: int = 999999,
+    max_3_diff: int = 999999,
+) -> str:
     """
     r1, r2 should both be BioReaders.GMAPSAMRecord
 
