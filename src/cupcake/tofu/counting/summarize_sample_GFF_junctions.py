@@ -30,23 +30,21 @@ def sanity_check(
         file = os.path.join(d, gff_filename)
         if not os.path.exists(file):
             print(
-                "Expected GFF file {} does not exist. Abort!".format(file),
+                f"Expected GFF file {file} does not exist. Abort!",
                 file=sys.stderr,
             )
             sys.exit(-1)
 
     if genome_filename is not None and not os.path.exists(genome_filename):
         print(
-            "Genome file {} given but does not exist. Abort!".format(genome_filename),
+            f"Genome file {genome_filename} given but does not exist. Abort!",
             file=sys.stderr,
         )
         sys.exit(-1)
 
     if junction_filename is not None and not os.path.exists(junction_filename):
         print(
-            "Junction file {} given but does not exist. Abort!".format(
-                junction_filename
-            ),
+            f"Junction file {junction_filename} given but does not exist. Abort!",
             file=sys.stderr,
         )
         sys.exit(-1)
@@ -101,7 +99,7 @@ def read_config(filename):
 
     if gff_filename is None:
         raise Exception(
-            "Expected GFF_FILENAME= but not in config file {}! Abort.".format(filename)
+            f"Expected GFF_FILENAME= but not in config file {filename}! Abort."
         )
 
     if len(sample_names) == 0:
@@ -157,7 +155,7 @@ def summarize_junctions(
 
     # write junction report
     f1 = open(output_prefix + ".junction.bed", "w")
-    f1.write('track name=junctions description="{}" useScore=1\n'.format(output_prefix))
+    f1.write(f'track name=junctions description="{output_prefix}" useScore=1\n')
 
     JUNC_DETAIL_FIELDS = [
         "seqname",
@@ -211,9 +209,7 @@ def summarize_junctions(
                         genome_d[_chr][(_accep - 2) : _accep],
                     )
                     if _strand == "+":
-                        rec["genome"] = "{}-{}".format(
-                            str(up.seq).upper(), str(down.seq).upper()
-                        )
+                        rec["genome"] = f"{str(up.seq).upper()}-{str(down.seq).upper()}"
                         # f.write("{0}-{1}\t".format(str(up.seq).upper(), str(down.seq).upper()))
                     else:
                         rec["genome"] = "{}-{}".format(
@@ -235,7 +231,7 @@ def summarize_junctions(
                     else:
                         rec["annotation"] = "N"
                         # f.write("N\t")
-                rec["label"] = "{c}_{s}_{lab}".format(c=_chr, s=_strand, lab=labels[i])
+                rec["label"] = f"{_chr}_{_strand}_{labels[i]}"
                 writer.writerow(rec)
                 # f.write("{c}_{s}_{lab}\n".format(c=_chr, s=_strand, lab=labels[i]))
     f1.close()
@@ -271,14 +267,14 @@ def main():
     sanity_check(sample_dirs, gff_filename, genome_filename, junction_filename)
 
     if genome_filename is not None:
-        print("Reading genome file {}...".format(genome_filename), file=sys.stderr)
+        print(f"Reading genome file {genome_filename}...", file=sys.stderr)
         genome_d = SeqIO.to_dict(SeqIO.parse(open(genome_filename), "fasta"))
     else:
         print("No genome file given. Ignore.", file=sys.stderr)
         genome_d = None
 
     if junction_filename is not None:
-        print("Reading junction file {}....".format(junction_filename), file=sys.stderr)
+        print(f"Reading junction file {junction_filename}....", file=sys.stderr)
         junction_bed = read_annotation_junction_bed(junction_filename)
     else:
         print("No junction file given. Ignore.", file=sys.stderr)

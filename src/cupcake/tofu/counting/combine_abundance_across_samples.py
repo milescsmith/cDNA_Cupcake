@@ -97,7 +97,7 @@ def write_reclist_to_gff_n_info(
                 )
                 pb_i += 1
                 for pb_j, recs_index in enumerate(_indices):
-                    pbid = "PB.{}.{}".format(pb_i, pb_j + 1)
+                    pbid = f"PB.{pb_i}.{pb_j + 1}"
                     match_rec = rec_list[recs_index]
                     new_group_info[pbid] = match_rec.members
                     match_rec.rec.seqid = pbid
@@ -109,7 +109,7 @@ def write_reclist_to_gff_n_info(
                             addon_name: match_rec.addon_id,
                         }
                     )
-                    f_group.write("{}\t{}\n".format(pbid, ",".join(match_rec.members)))
+                    f_group.write(f"{pbid}\t{','.join(match_rec.members)}\n")
                     if use_fq:
                         match_rec.seqrec.id = pbid
                         match_rec.seqrec.description = ""
@@ -122,7 +122,7 @@ def write_reclist_to_gff_n_info(
     return new_group_info
 
 
-class MegaPBTree(object):
+class MegaPBTree:
     """
     Structure for maintaining a non-redundant set of gene annotations
     Used to combine with different collapsed GFFs from different samples
@@ -362,7 +362,7 @@ class MegaPBTree(object):
             else:
                 for r1 in r1s:
                     if len(r1s) > 1:
-                        print("matching {} to {}".format(r1, r2), file=sys.stderr)
+                        print(f"matching {r1} to {r2}", file=sys.stderr)
                     rep = find_representative_in_iso_list([r1, r2])
                     new_rec_list.append(
                         MatchRecord(
@@ -403,7 +403,7 @@ class MegaPBTreeFusion(MegaPBTree):
         1. allow_5merge is always FALSE. Not a parameter.
         2. fusion_max_dist --- maximum allowed distance on internal fusion sites to be called as equivalent fusions
         """
-        super(MegaPBTreeFusion, self).__init__(
+        super().__init__(
             gff_filename,
             group_filename,
             internal_fuzzy_max_dist,
@@ -609,7 +609,7 @@ class MegaPBTreeFusion(MegaPBTree):
         f_out = open(output_prefix + ".gff", "w")
         f_group = open(output_prefix + ".group.txt", "w")
         f_mgroup = open(output_prefix + ".mega_info.txt", "w")
-        f_mgroup.write("pbid\t{}\t{}\n".format(self.self_prefix, sample_prefix2))
+        f_mgroup.write(f"pbid\t{self.self_prefix}\t{sample_prefix2}\n")
         fusion_index = 0
         chroms = list(cluster_tree.keys())
         chroms.sort()
@@ -622,16 +622,14 @@ class MegaPBTreeFusion(MegaPBTree):
                 for _s, _e, rec_indices in cluster_tree[k][strand].getregions():
                     for i in rec_indices:
                         fusion_index += 1
-                        tID = "PBfusion.{i}".format(i=fusion_index)
+                        tID = f"PBfusion.{fusion_index}"
                         r1s, r2s = rec_list[i]
                         if r1s is None:  # r2s is not None
                             recs = r2s
                             r2_fusion_id = get_fusion_id(r2s[0].seqid)
                             new_group_info[tID] = group_info2[r2_fusion_id]
                             f_mgroup.write(
-                                "{tID}\tNA\t{group}\n".format(
-                                    tID=tID, group=r2_fusion_id
-                                )
+                                f"{tID}\tNA\t{r2_fusion_id}\n"
                             )
                             if fastq_filename2 is not None:
                                 seqrec = fastq_dict2[r2_fusion_id]
@@ -640,9 +638,7 @@ class MegaPBTreeFusion(MegaPBTree):
                             r1_fusion_id = get_fusion_id(r1s[0].seqid)
                             new_group_info[tID] = self.group_info[r1_fusion_id]
                             f_mgroup.write(
-                                "{tID}\t{group}\tNA\n".format(
-                                    tID=tID, group=r1_fusion_id
-                                )
+                                f"{tID}\t{r1_fusion_id}\tNA\n"
                             )
                             if fastq_filename2 is not None:
                                 seqrec = self.fastq_dict[r1_fusion_id]
@@ -664,18 +660,14 @@ class MegaPBTreeFusion(MegaPBTree):
                                 + group_info2[r2_fusion_id]
                             )
                             f_mgroup.write(
-                                "{tID}\t{group1}\t{group2}\n".format(
-                                    tID=tID, group1=r1_fusion_id, group2=r2_fusion_id
-                                )
+                                f"{tID}\t{r1_fusion_id}\t{r2_fusion_id}\n"
                             )
 
                         if fastq_filename2 is not None:
                             seqrec.id = tID
                             SeqIO.write(seqrec, f_fastq, "fastq")
                         f_group.write(
-                            "{tID}\t{members}\n".format(
-                                tID=tID, members=",".join(new_group_info[tID])
-                            )
+                            f"{tID}\t{','.join(new_group_info[tID])}\n"
                         )
 
                         # now write out the fusion transcript

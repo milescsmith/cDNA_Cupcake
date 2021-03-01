@@ -168,9 +168,7 @@ def scrub_junctions(
         for r in good:
             a, b = int(r["left"]), int(r["right"])  # 0-based start, 0-basde end
             f.write(
-                "{chrom}\t{left}\t{right}\t{strand}\n".format(
-                    chrom=r["chr"], left=r["left"], right=r["right"], strand=r["strand"]
-                )
+                f"{r['chr']}\t{r['left']}\t{r['right']}\t{r['strand']}\n"
             )
             tree[r["chr"], r["strand"]].add(a, b, Interval(a, b))
     f.close()
@@ -275,7 +273,7 @@ def cleanup_scrubbed_files_redundancy(
                         r = r2
                 GFF.write_collapseGFF_format(outf, r)
                 merged[r.seqid] = [x.seqid for x in bunch]
-            outf2.write("{}\t{}\n".format(r.seqid, ",".join(merged[r.seqid])))
+            outf2.write(f"{r.seqid}\t{','.join(merged[r.seqid])}\n")
     outf.close()
     outf2.close()
 
@@ -318,7 +316,7 @@ def cleanup_scrubbed_files_redundancy(
         g = [group_info[bunch[0]]]
         for _id in bunch[1:]:
             g.append(group_info[_id])
-        outf.write("{}\t{}\n".format(pbid, ",".join(g)))
+        outf.write(f"{pbid}\t{','.join(g)}\n")
     outf.close()
 
     # write out fastq file if present
