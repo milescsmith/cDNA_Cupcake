@@ -12,6 +12,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Function args and return have typing values
   - context managers and pathlib.Path for file handling
   - linting
+- cupcake.tofu.counting.scrub_sample_GFF_junctions:
+  - Function args and return have typing values
+  - context managers and pathlib.Path for file handling
+  - linting
+  - replace argparse for typer
 
 ## [19.1.1] - 2021-03-01
 
