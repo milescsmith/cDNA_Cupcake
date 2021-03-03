@@ -8,17 +8,16 @@ from collections import OrderedDict, defaultdict
 from csv import DictReader, DictWriter
 from enum import Enum
 from multiprocessing import Process
-from typing import Union, List, Tuple
 from pathlib import Path
+from typing import List, Tuple, Union
 
 import typer
 from Bio import SeqIO
 from bx.intervals.cluster import ClusterTree
 
+from cupcake.logging import cupcake_logger as logger
 from cupcake.sequence import GFF
 from cupcake.tofu.counting import combine_abundance_across_samples as sp
-from cupcake.logging import cupcake_logger as logger
-
 
 app = typer.Typer(name="cupcake.tofu.counting.chain_samples")
 

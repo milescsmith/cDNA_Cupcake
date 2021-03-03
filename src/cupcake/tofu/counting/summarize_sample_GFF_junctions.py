@@ -11,46 +11,47 @@ Suggested process is:
 3. run scrubber on all sample GFFs
 4. run chaining using scrubbed (cleaned) sample GFFs
 """
-import os
 import sys
 from collections import defaultdict
 from csv import DictWriter
+from pathlib import Path
+from typing import Dict, List, Optional, Tuple, Union
 
 import numpy as np
+import typer
 from Bio import SeqIO
 from sklearn.cluster import Birch
 
 import cupcake.sequence.GFF as GFF
+from cupcake.logging import cupcake_logger as logger
+
+app = typer.Typer(name="cupcake.tofu.counting.summarize_sample_GFF_junctions")
 
 
 def sanity_check(
-    sample_dirs, gff_filename, genome_filename=None, junction_filename=None
-):
+    sample_dirs: List[Dict[str, Union[str, Path]]],
+    gff_filename: Union[str, Path],
+    genome_filename: Optional[Union[str, Path]] = None,
+    junction_filename: Optional[Union[str, Path]] = None,
+) -> None:
     for d in sample_dirs.values():
-        file = os.path.join(d, gff_filename)
-        if not os.path.exists(file):
-            print(
-                f"Expected GFF file {file} does not exist. Abort!",
-                file=sys.stderr,
-            )
+        file = Path(d, gff_filename)
+        if not file.exists():
+            logger.error(f"Expected GFF file {file} does not exist. Abort!")
             sys.exit(-1)
 
-    if genome_filename is not None and not os.path.exists(genome_filename):
-        print(
-            f"Genome file {genome_filename} given but does not exist. Abort!",
-            file=sys.stderr,
-        )
+    if genome_filename is not None and not Path(genome_filename).exists():
+        logger.error(f"Genome file {genome_filename} given but does not exist. Abort!")
         sys.exit(-1)
 
-    if junction_filename is not None and not os.path.exists(junction_filename):
-        print(
-            f"Junction file {junction_filename} given but does not exist. Abort!",
-            file=sys.stderr,
+    if junction_filename is not None and not Path(junction_filename).exists():
+        logger.error(
+            f"Junction file {junction_filename} given but does not exist. Abort!"
         )
         sys.exit(-1)
 
 
-def read_config(filename):
+def read_config(filename: Path) -> Tuple[Dict[str, Path], List[str], Path, Path, Path]:
     """
     SAMPLE=<name>;<path>
 
@@ -64,38 +65,37 @@ def read_config(filename):
 
     Everything else will be ignored (so you can re-use sample.config for chain_samples.py)
     """
-    sample_dirs = {}
-    sample_names = []
-    gff_filename = None
-    genome_filename = None
-    junction_filename = None
+    sample_dirs: Dict[str, Path] = {}
+    sample_names: List[str] = []
+    gff_filename: Optional[Union[str, Path]] = None
+    genome_filename: Optional[Union[str, Path]] = None
+    junction_filename: Optional[Union[str, Path]] = None
+
+    if not filename.exists():
+        raise FileNotFoundError(f"The config file {filename} could not be found!")
 
     with open(filename) as f:
         for line in f:
             if line.startswith("tmpSAMPLE="):
-                print(
-                    "Please only use SAMPLE=, not tmpSAMPLE= for junction reports!",
-                    file=sys.stderr,
+                logger.error(
+                    "Please only use SAMPLE=, not tmpSAMPLE= for junction reports!"
                 )
                 sys.exit(-1)
             elif line.startswith("SAMPLE="):
                 name, path = line.strip()[len("SAMPLE=") :].split(";")
                 if name.startswith("tmp_"):
-                    print(
-                        "Sample names are not allowed to start with tmp_! Please change {} to something else.".format(
-                            name
-                        ),
-                        file=sys.stderr,
+                    logger.error(
+                        f"Sample names are not allowed to start with tmp_! Please change {name} to something else."
                     )
                     sys.exit(-1)
-                sample_dirs[name] = os.path.abspath(path)
+                sample_dirs[name] = Path(path).resolve()
                 sample_names.append(name)
             elif line.startswith("GFF_FILENAME="):
-                gff_filename = line.strip()[len("GFF_FILENAME=") :]
+                gff_filename = Path(line.strip()[len("GFF_FILENAME=") :])
             elif line.startswith("GENOME_FILENAME="):
-                genome_filename = line.strip()[len("GENOME_FILENAME=") :]
+                genome_filename = Path(line.strip()[len("GENOME_FILENAME=") :])
             elif line.startswith("JUNCTION_FILENAME="):
-                junction_filename = line.strip()[len("JUNCTION_FILENAME=") :]
+                junction_filename = Path(line.strip()[len("JUNCTION_FILENAME=") :])
 
     if gff_filename is None:
         raise Exception(
@@ -103,13 +103,13 @@ def read_config(filename):
         )
 
     if len(sample_names) == 0:
-        print("No samples given. Exit.", file=sys.stderr)
+        logger.error("No samples given. Exit.")
         sys.exit(-1)
 
-    return sample_dirs, sample_names, gff_filename, genome_filename, junction_filename
+    return sample_dirs, gff_filename, genome_filename, junction_filename
 
 
-def read_annotation_junction_bed(junction_filename):
+def read_annotation_junction_bed(junction_filename: Union[str, Path]) -> defaultdict:
     """
     junction.bed is in format:
 
@@ -118,31 +118,30 @@ def read_annotation_junction_bed(junction_filename):
     following junction.bed format from TopHat
     http://ccb.jhu.edu/software/tophat/manual.shtml
     """
-    junction = defaultdict(lambda: {})  # (seqname, strand) --> (start, end)
+    junction = defaultdict(dict)  # (seqname, strand) --> (start, end)
     for line in open(junction_filename):
         chrom, left, right, strand = line.strip().split("\t")
         junction[chrom, strand][(int(left), int(right))] = 1
-    return junction
 
 
 def summarize_junctions(
-    sample_dirs,
-    sample_names,
-    gff_filename,
-    output_prefix,
-    genome_d=None,
-    junction_known=None,
-):
+    sample_dirs: Dict[str, Path],
+    # sample_names: List[str],
+    gff_filename: Union[str, Path],
+    output_prefix: Union[str, Path],
+    genome_d: Optional[Union[str, Path]] = None,
+    junction_known: Optional[Union[str, Path]] = None,
+) -> defaultdict:
     """
     1. for each sample, read all the GFF, store the junction information (both 0-based)
 
     """
     junc_by_chr_strand = defaultdict(
-        lambda: defaultdict(lambda: [])
+        lambda: defaultdict(list)
     )  # (seqname,strand) --> (donor,acceptor) --> samples it show up in (more than once possible)
 
     for sample_name, d in sample_dirs.items():
-        for r in GFF.collapseGFFReader(os.path.join(d, gff_filename)):
+        for r in GFF.collapseGFFReader(Path(d, gff_filename)):
             n = len(r.ref_exons)
             if n == 1:
                 continue  # ignore single exon transcripts
@@ -154,34 +153,35 @@ def summarize_junctions(
                 )
 
     # write junction report
-    f1 = open(output_prefix + ".junction.bed", "w")
-    f1.write(f'track name=junctions description="{output_prefix}" useScore=1\n')
+    with open(f"{output_prefix}.junction.bed", "w") as f1, open(
+        f"{output_prefix}.junction_detail.txt", "w"
+    ) as f:
+        f1.write(f'track name=junctions description="{output_prefix}" useScore=1\n')
 
-    JUNC_DETAIL_FIELDS = [
-        "seqname",
-        "left",
-        "right",
-        "strand",
-        "num_transcript",
-        "num_sample",
-        "genome",
-        "annotation",
-        "label",
-    ]
+        JUNC_DETAIL_FIELDS = [
+            "seqname",
+            "left",
+            "right",
+            "strand",
+            "num_transcript",
+            "num_sample",
+            "genome",
+            "annotation",
+            "label",
+        ]
 
-    with open(f"{output_prefix}.junction_detail.txt", "w") as f:
         writer = DictWriter(f, JUNC_DETAIL_FIELDS, delimiter="\t")
         writer.writeheader()
-        keys = list(junc_by_chr_strand.keys())
+        keys = list(junc_by_chr_strand)
         keys.sort()
         for _chr, _strand in keys:
             v = junc_by_chr_strand[_chr, _strand]
-            v_keys = list(v.keys())
+            v_keys = list(v)
             v_keys.sort()
             labels = cluster_junctions(v_keys)
             for i, (_donor, _accep) in enumerate(v_keys):
                 rec = {
-                    "seqname": _seqname,
+                    "seqname": _seqname,  # TODO: where is this supposed to come from?
                     "left": _donor,
                     "right": _accep,
                     "strand": _strand,
@@ -190,14 +190,7 @@ def summarize_junctions(
                 }
                 # f.write("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t".format(_chr, _donor, _accep, _strand, len(v[_donor,_accep]), len(set(v[_donor,_accep]))))
                 f1.write(
-                    "{}\t{}\t{}\t{}\t{}\t{}\n".format(
-                        _chr,
-                        _donor,
-                        _accep + 1,
-                        output_prefix,
-                        len(v[_donor, _accep]),
-                        _strand,
-                    )
+                    f"{_chr}\t{_donor}\t{_accep + 1}\t{output_prefix}\t{len(v[_donor, _accep])}\t{_strand}\n"
                 )
                 # if genome is given, write acceptor-donor site
                 if genome_d is None or _chr not in genome_d:
@@ -212,10 +205,9 @@ def summarize_junctions(
                         rec["genome"] = f"{str(up.seq).upper()}-{str(down.seq).upper()}"
                         # f.write("{0}-{1}\t".format(str(up.seq).upper(), str(down.seq).upper()))
                     else:
-                        rec["genome"] = "{}-{}".format(
-                            str(down.reverse_complement().seq).upper(),
-                            str(up.reverse_complement().seq).upper(),
-                        )
+                        rec[
+                            "genome"
+                        ] = f"{str(down.reverse_complement().seq).upper()}-{str(up.reverse_complement().seq).upper()}"
                         # f.write("{0}-{1}\t".format(str(down.reverse_complement().seq).upper(), str(up.reverse_complement().seq).upper()))
                 # if annotation is given, check if matches with annotation
                 if junction_known is None:
@@ -233,13 +225,12 @@ def summarize_junctions(
                         # f.write("N\t")
                 rec["label"] = f"{_chr}_{_strand}_{labels[i]}"
                 writer.writerow(rec)
-                # f.write("{c}_{s}_{lab}\n".format(c=_chr, s=_strand, lab=labels[i]))
-    f1.close()
+            # f.write("{c}_{s}_{lab}\n".format(c=_chr, s=_strand, lab=labels[i]))
 
     return junc_by_chr_strand
 
 
-def cluster_junctions(juncs):
+def cluster_junctions(juncs: List[int]) -> np.ndarray:
     birch_model = Birch(threshold=3, n_clusters=None)
     X = np.array(juncs)
     birch_model.fit(X)
@@ -247,48 +238,46 @@ def cluster_junctions(juncs):
     return birch_model.labels_
 
 
-def main():
-    from argparse import ArgumentParser
+@app.command(name="")
+def main(
+    config: Union[str, Path] = typer.Argument(..., help="Config filename"),
+    output_prefix: str = typer.Argument(..., help="Output prefix"),
+):
 
-    parser = ArgumentParser()
-    parser.add_argument("config", help="Config filename")
-    parser.add_argument("output_prefix", help="Output prefix")
-
-    args = parser.parse_args()
-
-    (
-        sample_dirs,
-        sample_names,
-        gff_filename,
-        genome_filename,
-        junction_filename,
-    ) = read_config(args.config)
+    try:
+        (
+            sample_dirs,
+            gff_filename,
+            genome_filename,
+            junction_filename,
+        ) = read_config(config)
+    except FileNotFoundError as error:
+        logger.error(error)
 
     sanity_check(sample_dirs, gff_filename, genome_filename, junction_filename)
 
     if genome_filename is not None:
-        print(f"Reading genome file {genome_filename}...", file=sys.stderr)
+        logger.info(f"Reading genome file {genome_filename}...")
         genome_d = SeqIO.to_dict(SeqIO.parse(open(genome_filename), "fasta"))
     else:
-        print("No genome file given. Ignore.", file=sys.stderr)
+        logger.info("No genome file given. Ignore.")
         genome_d = None
 
     if junction_filename is not None:
-        print(f"Reading junction file {junction_filename}....", file=sys.stderr)
+        logger.info(f"Reading junction file {junction_filename}....")
         junction_bed = read_annotation_junction_bed(junction_filename)
     else:
-        print("No junction file given. Ignore.", file=sys.stderr)
+        logger.info("No junction file given. Ignore.")
         junction_bed = None
 
     summarize_junctions(
         sample_dirs,
-        sample_names,
         gff_filename,
-        args.output_prefix,
+        output_prefix,
         genome_d,
         junction_bed,
     )
 
 
 if __name__ == "__main__":
-    main()
+    typer.run(main)

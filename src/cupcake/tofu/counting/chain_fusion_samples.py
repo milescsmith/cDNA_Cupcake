@@ -18,7 +18,7 @@ from collections import defaultdict
 from csv import DictReader
 from enum import Enum
 from pathlib import Path
-from typing import Optional, Union, List
+from typing import List, Optional, Union
 
 import typer
 from Bio import SeqIO

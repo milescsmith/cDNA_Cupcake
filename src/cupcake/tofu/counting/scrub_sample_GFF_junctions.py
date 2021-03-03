@@ -19,7 +19,8 @@ import sys
 from collections import defaultdict
 from csv import DictReader, DictWriter
 from pathlib import Path
-from typing import Union, Optional, Tuple, List, Dict, Any
+from typing import Any, Dict, List, Optional, Tuple, Union
+
 import typer
 from Bio import SeqIO
 from bx.intervals import Interval, IntervalTree
@@ -63,7 +64,10 @@ def read_junction_report(filename: Union[str, Path]) -> Tuple[str, List[str]]:
 
 
 def scrub_junction_by_label(
-    junctions: List[Dict[str, Any]], min_sample: int = 2, min_transcript: int = 2, accept_all_canonical: bool = False
+    junctions: List[Dict[str, Any]],
+    min_sample: int = 2,
+    min_transcript: int = 2,
+    accept_all_canonical: bool = False,
 ) -> List[Dict[str, Any]]:
     """
     input: a list of junctions (records) that are of the same label
@@ -132,7 +136,9 @@ def scrub_ref_exons(r: Dict[str, Any], tree: IntervalTree) -> Optional[List[Inte
         accep = r.ref_exons[i + 1].start  # start is already 0-based
         match = find_best_match_junction(tree[r.chr, r.strand], donor, accep)
         if match is None:
-            logger.info(f"donor-acceptor site {r.chr},{r.strand},{donor}-{accep} has no hit in tree!")
+            logger.info(
+                f"donor-acceptor site {r.chr},{r.strand},{donor}-{accep} has no hit in tree!"
+            )
             return None
 
         new_ref_exons.append(Interval(cur_start, match.start + 1))
@@ -153,7 +159,9 @@ def read_scrubbed_junction_to_tree(junction_filename: Union[str, Path]) -> Inter
             elif len(raw) == 6:
                 chrom, left, right, _name, _count, strand = raw
             else:
-                raise Exception(f"Expects junction BED file to have either 4 or 6 columns! Saw {len(raw)}!")
+                raise Exception(
+                    f"Expects junction BED file to have either 4 or 6 columns! Saw {len(raw)}!"
+                )
             left, right = int(left), int(right)  # already 0-based start, 0-based end
             tree[chrom, strand].add(left, right, Interval(left, right))
     return tree
@@ -164,7 +172,7 @@ def scrub_junctions(
     output_filename: Union[str, Path],
     min_sample: int,
     min_transcript: int,
-    accept_all_canonical: bool
+    accept_all_canonical: bool,
 ) -> IntervalTree:
     tree = defaultdict(lambda: IntervalTree())
     with open(output_filename, "w") as f:
@@ -174,9 +182,7 @@ def scrub_junctions(
             )
             for r in good:
                 a, b = int(r["left"]), int(r["right"])  # 0-based start, 0-basde end
-                f.write(
-                    f"{r['chr']}\t{r['left']}\t{r['right']}\t{r['strand']}\n"
-                )
+                f.write(f"{r['chr']}\t{r['left']}\t{r['right']}\t{r['strand']}\n")
                 tree[r["chr"], r["strand"]].add(a, b, Interval(a, b))
     return tree
 
@@ -215,7 +221,9 @@ def scrub_sample_GFFs(
         )
 
 
-def read_count_file(count_filename: Union[str, Path]) -> Tuple[Dict[str, Dict[str, Any]]]:
+def read_count_file(
+    count_filename: Union[str, Path]
+) -> Tuple[Dict[str, Dict[str, Any]]]:
     with open(count_filename) as f:
         count_header = ""
         while True:
@@ -243,7 +251,7 @@ def cleanup_scrubbed_files_redundancy(
     group_filename: Union[str, Path],
     count_filename: Union[str, Path],
     fastq_filename: Union[str, Path],
-    output_prefix: str
+    output_prefix: str,
 ):
 
     junction_seen = defaultdict(
@@ -262,7 +270,9 @@ def cleanup_scrubbed_files_redundancy(
             junction_seen[r.chr, r.strand][junc_str].append(r)
 
     # write out cleaned GFF
-    with open(f"{output_prefix}.gff", "w") as outf, open(f"{output_prefix}.merged_ids.txt", "w") as outf2:
+    with open(f"{output_prefix}.gff", "w") as outf, open(
+        f"{output_prefix}.merged_ids.txt", "w"
+    ) as outf2:
         merged = {}
         keys = list(junction_seen.keys())
         keys.sort()
@@ -329,7 +339,9 @@ def cleanup_scrubbed_files_redundancy(
                 if r.id.split("|")[0] in merged or r.id in merged:
                     SeqIO.write(r, outf, "fastq")
 
-    logger.info(f"scrubbed files written: {output_prefix}.gff, {output_prefix}.group.txt, {output_prefix}.abundance.txt, {output_prefix}.merged_ids.txt")
+    logger.info(
+        f"scrubbed files written: {output_prefix}.gff, {output_prefix}.group.txt, {output_prefix}.abundance.txt, {output_prefix}.merged_ids.txt"
+    )
 
 
 @app.command(name="")
@@ -337,10 +349,16 @@ def main(
     sample_config: str = typer.Argument(...),
     summary_report: str = typer.Argument(...),
     output_prefix: str = typer.Argument(...),
-    min_sample: int = typer.Option(1, "-S", help="Minimum number of samples as evidence (default: 1)"),
-    min_transcript: int = typer.Option(2, "-T", help="Minimum number of transcripts as evidence (default: 2)"),
+    min_sample: int = typer.Option(
+        1, "-S", help="Minimum number of samples as evidence (default: 1)"
+    ),
+    min_transcript: int = typer.Option(
+        2, "-T", help="Minimum number of transcripts as evidence (default: 2)"
+    ),
     # parser.add_argument("-C", "--accept_all_canonical", action="store_true", default=False, help="Accept all canonical jucntions (default: false)")
-    scrubbed_junction_file: Union[str, Path] = typer.Option(help="Scrubbed junction bed --- if given, directly use it to scrub GFFs.")
+    scrubbed_junction_file: Union[str, Path] = typer.Option(
+        help="Scrubbed junction bed --- if given, directly use it to scrub GFFs."
+    ),
 ):
     (
         sample_dirs,

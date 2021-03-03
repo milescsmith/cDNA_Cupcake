@@ -8,15 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [19.1.2] - 2021-03-01
 
 ### Changed
-- cupcake.tofu.counting.combine_abundance_across_samples:
+- submodules in cupcake.tofu.counting:
   - Function args and return have typing values
   - context managers and pathlib.Path for file handling
   - linting
-- cupcake.tofu.counting.scrub_sample_GFF_junctions:
-  - Function args and return have typing values
-  - context managers and pathlib.Path for file handling
-  - linting
-  - replace argparse for typer
+
 
 ## [19.1.1] - 2021-03-01
 
