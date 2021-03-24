@@ -19,11 +19,16 @@ ORFgroup_<index> \t comma-sep list of IDs with the same ORF
 import re
 from collections import Counter, OrderedDict
 
+import typer
 from Bio import SeqIO
-
 from cupcake.logging import cupcake_logger as logger
 
 rex_pbid = re.compile(r"(PB.\d+).(\d+)")
+
+
+app = typer.Typer(
+    name="cupcake.sequence.group_ORF_sequences", help="De-duplicate ORF FAA file."
+)
 
 
 def dedup_ORFs(faa_filename, output_prefix, is_pbid):
@@ -38,7 +43,9 @@ def dedup_ORFs(faa_filename, output_prefix, is_pbid):
             seq_dict[s] = []
         seq_dict[s].append(r.id)
 
-    with open(f"{output_prefix}.faa", "w") as f1, open(f"{output_prefix}.group.txt", "w") as f2:
+    with open(f"{output_prefix}.faa", "w") as f1, open(
+        f"{output_prefix}.group.txt", "w"
+    ) as f2:
 
         for i, s in enumerate(seq_dict):
             newid = None
@@ -62,23 +69,18 @@ def dedup_ORFs(faa_filename, output_prefix, is_pbid):
     logger.info(f"Output written to: {f1.name},{f2.name}")
 
 
-def main():
-    from argparse import ArgumentParser
-
-    parser = ArgumentParser("De-duplicate ORF FAA file.")
-    parser.add_argument("input_faa", help="Input FAA filename")
-    parser.add_argument("output_prefix", help="Output prefix")
-    parser.add_argument(
-        "--is_pbid",
-        action="store_true",
-        default=False,
+@app.command(name="")
+def main(
+    input_faa: str = typer.Argument(..., help="Input FAA filename"),
+    output_prefix: str = typer.Argument(..., help="Output prefix"),
+    is_pbid: bool = typer.Option(
+        False,
         help="FAA IDs are in PB.X.Y format (default: off)",
-    )
+    ),
+) -> None:
 
-    args = parser.parse_args()
-
-    dedup_ORFs(args.input_faa, args.output_prefix, args.is_pbid)
+    dedup_ORFs(input_faa, output_prefix, is_pbid)
 
 
 if __name__ == "__main__":
-    main()
+    typer.run(main)

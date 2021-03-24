@@ -8,8 +8,8 @@ from pathlib import Path
 from typing import Dict, List, Union
 
 import typer
-
 from cupcake.logging import cupcake_logger as logger
+
 """
 Based on the script by Gloria Sheynkman for creating a BED12 file where
 isoforms are shaded by abundances
@@ -118,7 +118,9 @@ def shaded_bed12_post_sqanti(
 
     for cpm_k in total_fl_count_dict:
         if total_fl_count_dict[cpm_k] == 0:
-            raise RuntimeError(f"No counts observed in column `{CPM_fieldnames[cpm_k]}`. Ignore!".format()
+            raise RuntimeError(
+                f"No counts observed in column `{CPM_fieldnames[cpm_k]}`. Ignore!"
+            )
 
     logger.info(f"Generating count RGB for columns: {', '.join(CPM_fieldnames.keys())}")
     bed_writers = {}

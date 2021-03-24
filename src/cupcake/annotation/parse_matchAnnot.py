@@ -1,9 +1,13 @@
 #!/usr/bin/env python
-import sys
 from collections import defaultdict
 
+import typer
 from Bio import SeqIO
 from cupcake.logging import cupcake_logger as logger
+
+app = typer.Typer(
+    name="cupcake.annotation.parse_matchAnnot", help="Parse MatchAnnot result"
+)
 
 
 def type_fa_or_fq(file):
@@ -68,33 +72,24 @@ def parse_matchAnnot(fa_or_fq, filename, not_pbid=False, parse_FL_coverage=False
     logger.info(f"Output written to: {f.name}")
 
 
-def main():
-    from argparse import ArgumentParser
-
-    parser = ArgumentParser("Parse MatchAnnot result")
-    parser.add_argument(
-        "fa_or_fq",
+@app.command(name="")
+def main(
+    fa_or_fq: str = typer.Argument(
+        ...,
         help="Fasta/Fastq filename used to create the SAM file for matchAnnot",
-    )
-    parser.add_argument("match_filename", help="MatchAnnot filename")
-    parser.add_argument(
-        "--not_pbid",
-        action="store_true",
-        default=False,
+    ),
+    match_filename: str = typer.Argument(..., help="MatchAnnot filename"),
+    not_pbid: bool = typer.Option(
+        False,
         help="Turn this on if not sequence ID is not PB.X.Y (default: off)",
-    )
-    parser.add_argument(
-        "--parse_FL_coverage",
-        action="store_true",
-        default=False,
+    ),
+    parse_FL_coverage: bool = typer.Option(
+        False,
         help="Parse `full_length_coverage=` from sequence ID.",
-    )
-
-    args = parser.parse_args()
-    parse_matchAnnot(
-        args.fa_or_fq, args.match_filename, args.not_pbid, args.parse_FL_coverage
-    )
+    ),
+) -> None:
+    parse_matchAnnot(fa_or_fq, match_filename, not_pbid, parse_FL_coverage)
 
 
 if __name__ == "__main__":
-    main()
+    typer.run(main)

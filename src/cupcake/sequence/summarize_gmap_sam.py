@@ -5,13 +5,12 @@ from pathlib import Path
 
 import typer
 from Bio import SeqIO
-from cupcake.sequence import BioReaders
 from cupcake.logging import cupcake_logger as logger
-
+from cupcake.sequence import BioReaders
 
 app = typer.Typer(
     name="cupcake.sequence.summarize_gmap_sam",
-    help="Summarize GMAP SAM file in tab-delimited file."
+    help="Summarize GMAP SAM file in tab-delimited file.",
 )
 
 
@@ -57,7 +56,7 @@ def summarize_GMAP_sam(input_fa_or_fq, input_sam):
 @app.command(name="")
 def main(
     input_fa_or_fq: str = typer.Argument(..., help="Input fasta/fastq filename"),
-    sam_file: str = typer.Argument(..., help="(GMAP) SAM filename")
+    sam_file: str = typer.Argument(..., help="(GMAP) SAM filename"),
 ) -> None:
     summarize_GMAP_sam(input_fa_or_fq, sam_file)
 

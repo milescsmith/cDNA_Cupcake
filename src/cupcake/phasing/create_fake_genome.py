@@ -4,8 +4,10 @@ __author__ = "etseng@pacb.com"
 import os
 import re
 import sys
+from enum import Enum
 
 import cupcake.sequence.GFF as GFF
+import typer
 from Bio import SeqIO
 from bx.intervals.cluster import ClusterTree
 from cupcake.logging import cupcake_logger as logger
@@ -17,6 +19,14 @@ create a fake genome that is the concatenation of all seen exons.
 
 extra_bp_around_junctions = 50  # get this much around junctions to be safe AND to not screw up GMAP who doesn't like microintrons....
 __padding_before_after__ = 10  # get this much before and after the start
+
+
+class strand_direction(str, Enum):
+    plus = "+"
+    minus = "-"
+
+
+app = typer.Typer(name="cupcake.phasing.create_fake_genome")
 
 
 def make_fake_genome(
@@ -90,47 +100,42 @@ def make_fake_genome(
     )
 
 
-def main():
-    from argparse import ArgumentParser
-
-    parser = ArgumentParser()
-    parser.add_argument("genome_filename")
-    parser.add_argument("gff_filename")
-    parser.add_argument(
-        "--locus", required=True, help="locus in format <chr>:<start>-<end>"
-    )
-    parser.add_argument(
-        "--strand", required=True, choices=["+", "-"], help="strand of locus"
-    )
-    parser.add_argument("-o", "--output_prefix", help="Output prefix")
-
-    args = parser.parse_args()
+@app.command(name="")
+def main(
+    genome_filename: str = typer.Argument(...),
+    gff_filename: str = typer.Argument(...),
+    locus: str = typer.Option(..., help="locus in format <chr>:<start>-<end>"),
+    strand: strand_direction = typer.Option(..., help="strand of locus"),
+    output_prefix: str = typer.Option(
+        ..., "--output_prefix", "-o", help="Output prefix"
+    ),
+) -> None:
 
     rex = re.compile(r"(\S+):(\d+)-(\d+)")
-    m = rex.match(args.locus)
+    m = rex.match(locus)
     if m is None:
-        logger.info(f"{args.locus} is not a defined chr location! Abort.")
+        logger.info(f"{locus} is not a defined chr location! Abort.")
         sys.exit(-1)
 
     ref_chr = m.group(1)
     ref_start = int(m.group(2)) - 1  # make it 0-based
     ref_end = int(m.group(3))  # keep it 1-based
 
-    if not os.path.exists(args.genome_filename):
-        logger.error(f"Genome file {args.genome_filename} does not exist! Abort.")
+    if not os.path.exists(genome_filename):
+        logger.error(f"Genome file {genome_filename} does not exist! Abort.")
         sys.exit(-1)
-    if not os.path.exists(args.gff_filename):
-        logger.critical(f"GFF {args.gff_filename} does not exist! Abort.")
+    if not os.path.exists(gff_filename):
+        logger.critical(f"GFF {gff_filename} does not exist! Abort.")
         sys.exit(-1)
 
     make_fake_genome(
-        args.genome_filename,
-        args.gff_filename,
+        genome_filename,
+        gff_filename,
         ref_chr,
         ref_start,
         ref_end,
-        args.strand,
-        args.output_prefix,
+        strand,
+        output_prefix,
     )
 
 

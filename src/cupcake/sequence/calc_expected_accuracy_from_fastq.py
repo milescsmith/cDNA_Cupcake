@@ -8,7 +8,10 @@ ex:
 i0_LQ_sample32f89e|c32/f1p0/929 isoform=c32;full_length_coverage=1;non_full_length_coverage=0;isoform_length=929;expected_accuracy=1.0
 """
 
+import typer
 from Bio import SeqIO
+
+app = typer.Typer(name="cupcake.sequence.calc_expected_accuracy_from_fastq")
 
 
 def phred_to_qv(phred):
@@ -36,38 +39,32 @@ def calc_exp_acc(r, qv_trim_5, qv_trim_3):
 def cal_expected_accuracy_from_fastq(
     fastq_filename, output_filename, qv_trim_5, qv_trim_3
 ):
-    f = open(output_filename, "w")
-    for r in SeqIO.parse(open(fastq_filename), "fastq"):
-        exp_acc = calc_exp_acc(r, qv_trim_5, qv_trim_3)
-        r.description += f";expected_accuracy={exp_acc:.3f}"
-        SeqIO.write(r, f, "fastq")
-    f.close()
+    with open(output_filename, "w") as f:
+        for r in SeqIO.parse(open(fastq_filename), "fastq"):
+            exp_acc = calc_exp_acc(r, qv_trim_5, qv_trim_3)
+            r.description += f";expected_accuracy={exp_acc:.3f}"
+            SeqIO.write(r, f, "fastq")
 
 
-def main():
-    from argparse import ArgumentParser
-
-    parser = ArgumentParser()
-    parser.add_argument("fastq_filename", help="FASTQ filename (ex: lq_isoforms.fastq")
-    parser.add_argument("output_filename", help="Output FASTQ filename")
-    parser.add_argument(
-        "--qv_trim_5",
-        default=100,
-        type=int,
+@app.command(name="")
+def main(
+    fastq_filename: str = typer.Argument(
+        ..., help="FASTQ filename (ex: lq_isoforms.fastq"
+    ),
+    output_filename: str = typer.Argument(..., help="Output FASTQ filename"),
+    qv_trim_5: int = typer.Option(
+        100,
         help="Ignore length on 5' for QV calculation (default: 100 bp)",
-    )
-    parser.add_argument(
-        "--qv_trim_3",
-        default=30,
-        type=int,
+    ),
+    qv_trim_3: int = typer.Option(
+        30,
         help="Ignore length on 3' for QV calculation (default: 30 bp)",
-    )
-
-    args = parser.parse_args()
+    ),
+) -> None:
     cal_expected_accuracy_from_fastq(
-        args.fastq_filename, args.output_filename, args.qv_trim_5, args.qv_trim_3
+        fastq_filename, output_filename, qv_trim_5, qv_trim_3
     )
 
 
 if __name__ == "__main__":
-    main()
+    typer.run(main)

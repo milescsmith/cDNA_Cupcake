@@ -10,11 +10,10 @@ import sys
 from collections import Counter, defaultdict
 from csv import DictReader
 from pathlib import Path
-from Bio import SeqIO
-from typing import Tuple, Dict, Optional, Set
+from typing import Dict, Optional, Set, Tuple
 
 import typer
-
+from Bio import SeqIO
 from cupcake.logging import cupcake_logger as logger
 
 mapped_id_rex = re.compile(r"(PB.\d+.\d+)")
@@ -44,7 +43,9 @@ def link_files(src_dir: str, out_dir=Path.cwd()) -> Tuple[Path, Path, Path, Path
     src_dir = Path(src_dir)
     # location for mapped fastq in IsoSeq3
     mapped_fastq = src_dir.joinpath("outputs", "collapse_isoforms.fastq")  # for <SL8
-    mapped_fasta = src_dir.joinpath("outputs", "collapse_isoforms.fasta")  # SL8+ only fasta
+    mapped_fasta = src_dir.joinpath(
+        "outputs", "collapse_isoforms.fasta"
+    )  # SL8+ only fasta
     # mapped_gff = os.path.join(
     #     os.path.abspath(src_dir), "outputs", "collapse_isoforms.gff"
     # )
@@ -58,7 +59,9 @@ def link_files(src_dir: str, out_dir=Path.cwd()) -> Tuple[Path, Path, Path, Path
         logger.info("Detecting IsoSeq task directories...")
         return out_dir, mapped_fasta, read_stat, primer_csv
     else:
-        raise FileNotFoundError("Cannot find expected files (ex: collapse_isoforms.fastq) in job directory! Does not look like a Iso-Seq job!")
+        raise FileNotFoundError(
+            "Cannot find expected files (ex: collapse_isoforms.fastq) in job directory! Does not look like a Iso-Seq job!"
+        )
 
 
 def read_read_stat(read_stat: Path, classify_info: Dict[str, int]):
@@ -147,11 +150,20 @@ def main(
         "-j",
         help="Job directory (if given, automatically finds required files)",
     ),
-    mapped_fafq: str = typer.Argument(..., help="mapped fasta/fastq (overridden by --job_dir if given)"),
-    read_stat: str = typer.Argument(..., help="read_stat txt (overridden by --job_dir if given)"),
-    classify_csv: str = typer.Argument(..., help="Classify report CSV (overriden by --job_dir if given)"),
-    primer_names: Optional[str] = typer.Option(None, help="Text file showing primer sample names (default: None)",),
-    output: str = typer.Argument(..., "--output", "-o", help="Output count filename")
+    mapped_fafq: str = typer.Argument(
+        ..., help="mapped fasta/fastq (overridden by --job_dir if given)"
+    ),
+    read_stat: str = typer.Argument(
+        ..., help="read_stat txt (overridden by --job_dir if given)"
+    ),
+    classify_csv: str = typer.Argument(
+        ..., help="Classify report CSV (overriden by --job_dir if given)"
+    ),
+    primer_names: Optional[str] = typer.Option(
+        None,
+        help="Text file showing primer sample names (default: None)",
+    ),
+    output: str = typer.Argument(..., "--output", "-o", help="Output count filename"),
 ):
     if primer_names is not None:
         primer_names = {}

@@ -205,6 +205,7 @@ def trim5p3p(records: List[SeqRecord], output_prefix: str) -> None:
             writer.writerow(info)
 
 
+@app.command(name="")
 def main(
     fastq_filename: str = typer.Argument(...),
     output_prefix: str = typer.Argument(...),

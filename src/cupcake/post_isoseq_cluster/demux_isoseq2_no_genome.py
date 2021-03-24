@@ -39,7 +39,6 @@ from typing import Optional
 
 import typer
 from Bio import SeqIO
-
 from cupcake.logging import cupcake_logger as logger
 
 hq1_id_rex = re.compile(r"i\d+_HQ_\S+\|(\S+)\/f\d+p\d+\/\d+")
@@ -56,14 +55,30 @@ def link_files(src_dir, out_dir=Path.cwd()):
     """
     src_dir = Path(src_dir)
     # location for HQ fastq in IsoSeq1
-    hq_fastq = src_dir.joinpath("tasks","pbtranscript.tasks.combine_cluster_bins-0","hq_isoforms.fastq",)
+    hq_fastq = src_dir.joinpath(
+        "tasks",
+        "pbtranscript.tasks.combine_cluster_bins-0",
+        "hq_isoforms.fastq",
+    )
     # location for HQ fastq in IsoSeq2
-    hq_fastq2 = src_dir.joinpath("tasks","pbtranscript2tools.tasks.collect_polish-0","all_arrowed_hq.fastq",)
+    hq_fastq2 = src_dir.joinpath(
+        "tasks",
+        "pbtranscript2tools.tasks.collect_polish-0",
+        "all_arrowed_hq.fastq",
+    )
     # location for cluster report in IsoSeq1
-    cluster_csv = src_dir.joinpath("tasks","pbtranscript.tasks.combine_cluster_bins-0","cluster_report.csv",)
-    cluster_csv2 = src_dir.joinpath("tasks","pbtranscript2tools.tasks.collect_polish-0","report.csv",)
+    cluster_csv = src_dir.joinpath(
+        "tasks",
+        "pbtranscript.tasks.combine_cluster_bins-0",
+        "cluster_report.csv",
+    )
+    cluster_csv2 = src_dir.joinpath(
+        "tasks",
+        "pbtranscript2tools.tasks.collect_polish-0",
+        "report.csv",
+    )
     # location for classify report in IsoSeq1 and 2
-    primer_csv = src_dir.joinpath( "tasks", "pbcoretools.tasks.gather_csv-1", "file.csv")
+    primer_csv = src_dir.joinpath("tasks", "pbcoretools.tasks.gather_csv-1", "file.csv")
 
     if hq_fastq.exists():
         logger.info("Detecting IsoSeq1 task directories...")
@@ -137,7 +152,11 @@ def demux_isoseq2_no_genome(
         ) = link_files(job_dir)
         assert isoseq_version in ("1", "2")
     else:
-        for _ in (hq_fastq, cluster_csv, classify_csv,):
+        for _ in (
+            hq_fastq,
+            cluster_csv,
+            classify_csv,
+        ):
             if not _.exists():
                 raise FileNotFoundError(f"{_.name} was not found!")
 
@@ -168,11 +187,24 @@ def demux_isoseq2_no_genome(
 
 @app.command(name="")
 def main(
-    job_dir: Optional[str] = typer.Option(None, "--job_dir", "-j", help="Job directory (if given, automatically finds required files)",),
-    hq_fastq: Optional[str] = typer.Option(None, help="HQ isoform fastq (overridden by --job_dir if given)"),
-    cluster_csv: Optional[str] = typer.Option(None, help="Cluster report CSV (overridden by --job_dir if given)"),
-    classify_csv: Optional[str] = typer.Option(None, help="Classify report CSV (overriden by --job_dir if given)"),
-    output: Optional[str] = typer.Option(None, "--output", "-o", help="Output count filename", required=True)
+    job_dir: Optional[str] = typer.Option(
+        None,
+        "--job_dir",
+        "-j",
+        help="Job directory (if given, automatically finds required files)",
+    ),
+    hq_fastq: Optional[str] = typer.Option(
+        None, help="HQ isoform fastq (overridden by --job_dir if given)"
+    ),
+    cluster_csv: Optional[str] = typer.Option(
+        None, help="Cluster report CSV (overridden by --job_dir if given)"
+    ),
+    classify_csv: Optional[str] = typer.Option(
+        None, help="Classify report CSV (overriden by --job_dir if given)"
+    ),
+    output: Optional[str] = typer.Option(
+        None, "--output", "-o", help="Output count filename", required=True
+    ),
 ):
 
     job_dir = Path(job_dir) if job_dir is not None else job_dir
@@ -180,9 +212,7 @@ def main(
     cluster_csv = Path(cluster_csv) if cluster_csv is not None else cluster_csv
     classify_csv = Path(classify_csv) if classify_csv is not None else classify_csv
 
-    demux_isoseq2_no_genome(
-        job_dir, hq_fastq, cluster_csv, classify_csv, output
-    )
+    demux_isoseq2_no_genome(job_dir, hq_fastq, cluster_csv, classify_csv, output)
 
 
 if __name__ == "__main__":

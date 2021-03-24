@@ -1,22 +1,19 @@
 #!/usr/bin/env python
 from pathlib import Path
-import typer
 
+import typer
 from cupcake.logging import cupcake_logger as logger
 from cupcake.sequence.BioReaders import GMAPSAMReader
 from cupcake.sequence.GFF import write_collapseGFF_format
 
-
 app = typer.Typer(
     name="cupcake.sequence.sam_to_collapsed_gff",
-    help="Convert SAM to collapsed GFF format"
+    help="Convert SAM to collapsed GFF format",
 )
 
 
 @app.command(name="")
-def main(
-    sam_filename: str = typer.Argument(...)
-) -> None:
+def main(sam_filename: str = typer.Argument(...)) -> None:
     sam_filename = Path(sam_filename)
     if sam_filename.suffix != ".sam":
         raise RuntimeError("Only accepts files ending in .sam. Abort!")

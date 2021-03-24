@@ -1,10 +1,22 @@
 import glob
-import sys
 from collections import Counter, defaultdict
+from enum import Enum
 from pathlib import Path
+from typing import Optional
 
+import typer
 import vcf
 from cupcake.logging import cupcake_logger as logger
+
+
+class vcf_phasing(str, Enum):
+    phased_partial_vcf = "phased.partial.vcf"
+    phased_partial_cleaned_vcf = "phased.partial.cleaned.vcf"
+    phased_nopartial_vcf = "phased.nopartial.vcf"
+    phased_nopartial_cleaned_vcf = "phased.nopartial.cleaned.vcf"
+
+
+app = typer.Typer(name="cupcake.phasing.utils.collect_all_vcf")
 
 
 def collect_all_vcf(
@@ -51,58 +63,49 @@ def collect_all_vcf(
             for k in keys:
                 v = snps_by_chrom[k]
                 v.sort(key=lambda x: x[0])
-                for pos, rec in v:
+                for _, rec in v:
                     f.write_record(rec)
         print("Output written to:", output)
 
 
-def main():
-    from argparse import ArgumentParser
-
-    parser = ArgumentParser()
-    parser.add_argument(
-        "-d",
+@app.command(name="")
+def main(
+    directory: str = typer.Option(
+        "by_loci/",
         "--dir",
-        default="by_loci/",
-        help="Directory containing the subdirs of IsoPhase (default: by_loci/)",
-    )
-    parser.add_argument(
-        "-o",
+        "-d",
+        help="Directory containing the subdirs of IsoPhase",
+    ),
+    output: str = typer.Option(
+        "IsoSeq_IsoPhase.vcf",
         "--output",
-        default="IsoSeq_IsoPhase.vcf",
+        "-o",
         help="Output VCF filename (default: IsoSeq_IsoPhase.vcf)",
-    )
-    parser.add_argument(
-        "--vcf",
-        default="phased.partial.cleaned.vcf",
-        choices=[
-            "phased.partial.vcf",
-            "phased.partial.cleaned.vcf",
-            "phased.nopartial.vcf",
-            "phased.nopartial.cleaned.vcf",
-        ],
+    ),
+    vcf: vcf_phasing = typer.Option(
+        vcf_phasing.phased_partial_cleaned_vcf,
         help="VCF to use per directory (default: phased.partial.cleaned.vcf)",
-    )
-    parser.add_argument(
-        "-s",
+    ),
+    select_dirs: Optional[str] = typer.Option(
+        None,
         "--select_dirs",
-        default=None,
+        "-s",
         help="Comma separate list of directories to tally - if this is used, <dir> is ignored",
-    )
+    ),
+) -> None:
 
-    args = parser.parse_args()
-
-    if args.select_dirs is None:
-        dirs = glob.glob(f"{args.dir}/*size*")
+    if select_dirs is None:
+        dirs = glob.glob(f"{directory}/*size*")
     else:
-        dirs = args.select_dirs.split(",")
+        dirs = select_dirs.split(",")
         for d in dirs:
             if not Path(d).is_dir() or not Path(d).exists():
-                logger.error(f"{d} is not a directory or does not exist! Abort!")
-                sys.exit(-1)
+                raise FileNotFoundError(
+                    f"{d} is not a directory or does not exist! Abort!"
+                )
 
-    collect_all_vcf(dirs, args.vcf, args.output)
+    collect_all_vcf(dirs, vcf, output)
 
 
 if __name__ == "__main__":
-    main()
+    typer.run(main)

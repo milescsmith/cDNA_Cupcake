@@ -2,11 +2,12 @@
 
 __version__ = "1.0"
 
-import sys
 from pathlib import Path
 from typing import Dict
 
+import typer
 from Bio import SeqIO
+from cupcake.logging import cupcake_logger as logger
 from cupcake.sequence import BioReaders
 from cupcake.sequence.coordinate_mapper import consistute_genome_seq_from_exons
 
@@ -17,6 +18,12 @@ from cupcake.sequence.coordinate_mapper import consistute_genome_seq_from_exons
 # output_err_corrected_fasta = 'alz.rep.genome_corrected.fasta'
 # output_err_corrected_fasta = 'isoseq_flnc.genome_corrected.fasta'
 ####################################
+
+
+app = typer.Typer(
+    name="cupcake.sequence.err_correct_w_genome",
+    help="Generate sequences using genome bases and SAM alignment file",
+)
 
 
 def err_correct(
@@ -44,19 +51,14 @@ def err_correct(
     logger.info(f"output written to {output_err_corrected_fasta}")
 
 
-def main():
-    from argparse import ArgumentParser
-
-    parser = ArgumentParser(
-        "Generate sequences using genome bases and SAM alignment file"
-    )
-    parser.add_argument("genome_file", help="Genome Fasta File")
-    parser.add_argument("sam_file", help="GMAP SAM File")
-    parser.add_argument("output_file", help="Output Fasta File")
-    args = parser.parse_args()
-
-    err_correct(Path(args.genome_file), Path(args.sam_file), Path(args.output_file))
+@app.command(name="")
+def main(
+    genome_file: str = typer.Argument(..., help="Genome Fasta File"),
+    sam_file: str = typer.Argument(..., help="GMAP SAM File"),
+    output_file: str = typer.Argument(..., help="Output Fasta File"),
+) -> None:
+    err_correct(Path(genome_file), Path(sam_file), Path(output_file))
 
 
 if __name__ == "__main__":
-    main()
+    typer.run(main)

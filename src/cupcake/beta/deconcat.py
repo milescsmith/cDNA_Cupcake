@@ -110,6 +110,7 @@ def deconcat(sequence, prev):
         )
 
 
+@app.command(name="")
 def main(
     input_prefix: str = typer.Argument(...),
     output_prefix: str = typer.Argument(...),

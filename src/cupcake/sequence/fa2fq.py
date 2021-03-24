@@ -3,16 +3,10 @@
 __version__ = "1.0"
 
 import typer
-
 from Bio import SeqIO
-
 from cupcake.logging import cupcake_logger as logger
 
-
-app = typer.Typer(
-    name="cupcake.sequence.fa2fq",
-    help="Convert fasta to fastq"
-)
+app = typer.Typer(name="cupcake.sequence.fa2fq", help="Convert fasta to fastq")
 
 
 def fa2fq(input):
@@ -32,7 +26,9 @@ def fa2fq(input):
 
 @app.command(name="")
 def main(
-    fasta_filename: str = typer.Argument(..., help="input fasta (must end with .fasta or .fa)")
+    fasta_filename: str = typer.Argument(
+        ..., help="input fasta (must end with .fasta or .fa)"
+    )
 ) -> None:
     fa2fq(fasta_filename)
 

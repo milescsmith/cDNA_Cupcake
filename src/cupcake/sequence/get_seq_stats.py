@@ -1,36 +1,42 @@
 #!/usr/bin/env python
 
 __version__ = "1.0"
+from pathlib import Path
 
 import numpy as np
+import typer
 from Bio import SeqIO
+from cupcake.logging import cupcake_logger as logger
+
+app = typer.Typer(
+    name="cupcake.sequence.get_seq_stats",
+    help="Summarize sequence lengths in fasta/fastq",
+)
 
 
-def type_fa_or_fq(file):
-    file = file.upper()
-    if file.endswith(".FA") or file.endswith(".FASTA") or file.endswith("CLIPS"):
+def type_fa_or_fq(filename):
+    if filename.suffix.upper() in (".FA", ".FASTA", "CLIPS"):
         return "fasta"
     else:
         return "fastq"
 
 
-def get_seq_stats(file, binwidth):
-    print("file type is:", type_fa_or_fq(file))
+def get_seq_stats(filename, binwidth):
+    print("file type is:", type_fa_or_fq(filename))
 
-    f = open(f"{file}.seqlengths.txt", "w")
-    lens = []
-    for r in SeqIO.parse(open(file), type_fa_or_fq(file)):
-        f.write(f"{r.id}	{str(len(r.seq))}\n")
-        lens.append(len(r.seq))
-    f.close()
+    with open(f"{filename.name}.seqlengths.txt", "w") as f:
+        lens = []
+        for r in SeqIO.parse(open(filename), type_fa_or_fq(filename)):
+            f.write(f"{r.id}	{str(len(r.seq))}\n")
+            lens.append(len(r.seq))
 
-    print(f"{len(lens)} sequences")
-    print("min:", min(lens))
-    print("max:", max(lens))
-    print("avg:", sum(lens) * 1.0 / len(lens))
+    logger.info(f"{len(lens)} sequences")
+    logger.info("min:", min(lens))
+    logger.info("max:", max(lens))
+    logger.info("avg:", sum(lens) * 1.0 / len(lens))
 
     # print by 1 kb bins
-    print("Length Breakdown by kb range:")
+    logger.info("Length Breakdown by kb range:")
 
     _max = (max(lens) // binwidth) + 1
     bin = [0] * _max
@@ -46,23 +52,18 @@ def get_seq_stats(file, binwidth):
     print("5-95% percentile:", np.percentile(lens, 5), np.percentile(lens, 95))
 
 
-def main():
-    from argparse import ArgumentParser
-
-    parser = ArgumentParser("Summarize sequence lengths in fasta/fastq")
-    parser.add_argument("filename", help="Input fasta/fastq filename")
-    parser.add_argument(
-        "-b",
+@app.command(name="")
+def main(
+    filename: str = typer.Argument(..., help="Input fasta/fastq filename"),
+    binwidth: int = typer.Option(
+        1000,
         "--binwidth",
-        default=1000,
-        type=int,
+        "-b",
         help="Bin width, in bp (default: 1000 bp)",
-    )
-    args = parser.parse_args()
+    ),
+) -> None:
 
-    file = args.filename
-
-    get_seq_stats(file, args.binwidth)
+    get_seq_stats(Path(filename), binwidth)
 
 
 if __name__ == "__main__":

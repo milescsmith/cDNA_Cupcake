@@ -121,7 +121,7 @@ def calc_ontarget_rate(
             writer.writerow(rec)
 
 
-@app.command()
+@app.command(name="")
 def main(
     bed_filename: str = typer.Argument(...),
     input_fasta_or_fastq: str = typer.Argument(...),

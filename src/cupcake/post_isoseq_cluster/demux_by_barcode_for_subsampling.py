@@ -90,6 +90,7 @@ def demux_for_subsamping(
         h.close()
 
 
+@app.command(name="")
 def main(
     class_filename: str = typer.Argument(..., help="SQANTI classification file"),
     fasta_filename: str = typer.Argument(..., help="FASTA filename"),

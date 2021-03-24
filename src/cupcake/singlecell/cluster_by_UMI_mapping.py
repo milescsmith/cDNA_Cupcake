@@ -88,8 +88,14 @@ def collect_cluster_results(
     # however singletons (shouldn't have much post cluster) will keep the CCS ID which is ok
     """
     out_dir = Path(out_dir)
-    with open(f"{output_prefix}.clustered_transcript.rep.fasta", "w") as f_out_rep, open(f"{output_prefix}.clustered_transcript.not_rep.fasta", "w") as f_out_not, open(f"{output_prefix}.clustered_transcript.csv", "w") as f_csv:
-        
+    with open(
+        f"{output_prefix}.clustered_transcript.rep.fasta", "w"
+    ) as f_out_rep, open(
+        f"{output_prefix}.clustered_transcript.not_rep.fasta", "w"
+    ) as f_out_not, open(
+        f"{output_prefix}.clustered_transcript.csv", "w"
+    ) as f_csv:
+
         writer = DictWriter(
             f_csv,
             fieldnames=["index", "UMI", "BC", "locus", "cluster", "ccs_id"],
@@ -142,7 +148,9 @@ def collect_cluster_results(
             if lq.exists():
                 with gzip.open(lq, "rt") as handle:
                     for seqrec in SeqIO.parse(handle, "fasta"):
-                        f_out_not.write(f">{index}-{umi_key}-{seqrec.id}\n{seqrec.seq}\n")
+                        f_out_not.write(
+                            f">{index}-{umi_key}-{seqrec.id}\n{seqrec.seq}\n"
+                        )
 
             info = {
                 "index": index,
@@ -163,7 +171,9 @@ def collect_cluster_results(
             if single.exists():
                 with gzip.open(single, "rt") as handle:
                     for seqrec in SeqIO.parse(handle, "fasta"):
-                        f_out_not.write(f">{index}-{umi_key}-{seqrec.id}\n{seqrec.seq}\n")
+                        f_out_not.write(
+                            f">{index}-{umi_key}-{seqrec.id}\n{seqrec.seq}\n"
+                        )
                         info["ccs_id"] = seqrec.id
                         writer.writerow(info)
 
@@ -220,8 +230,10 @@ def write_records_to_bam(
     cpus,
     group_map_keys=None,
 ):
-    with open(cmd_filename, "w") as f_cmd, open(singleton_out_fasta, "w") as f_singleton:
-    # make the directories + write out flnc.bam
+    with open(cmd_filename, "w") as f_cmd, open(
+        singleton_out_fasta, "w"
+    ) as f_singleton:
+        # make the directories + write out flnc.bam
 
         if group_map_keys is None:
             group_map_keys = group_map.keys()
@@ -237,7 +249,9 @@ def write_records_to_bam(
 
         for group_name in group_map_keys:
             seqids = group_map[group_name]
-            if len(seqids) == 1:  # singleton, just write to the output fasta to save time
+            if (
+                len(seqids) == 1
+            ):  # singleton, just write to the output fasta to save time
                 _outdir, _index, _umi_bc = group_name.split("/")
                 r = read_dict[seqids[0]]
                 # ex: newid 1-TGATACCAC-TGCTTAAAAAAA-m64019_190830_195852/130941517/ccs
@@ -246,7 +260,7 @@ def write_records_to_bam(
             else:
                 group_name = Path(group_name)
                 logger.info(f"Writing to {group_name}/flnc_tagged.bam...")
-                
+
                 group_name.mkdir()
                 f_out = pysam.AlignmentFile(
                     group_name.joinpath("flnc_tagged.bam"), "wb", header=reader_header

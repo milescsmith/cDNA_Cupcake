@@ -8,11 +8,8 @@ Sequence headers must have:
 
 """
 import typer
-
 from Bio import SeqIO
-
 from cupcake.logging import cupcake_logger as logger
-
 
 app = typer.Typer(name="cupcake.sequence.filter_lq_isoforms")
 
@@ -32,25 +29,39 @@ def func(r):
 
 
 def filter_lq_isoforms(
-    fastq_filename: str, output_filename: str, min_fl_count: int, min_exp_acc: float, is_flnc: bool
+    fastq_filename: str,
+    output_filename: str,
+    min_fl_count: int,
+    min_exp_acc: float,
+    is_flnc: bool,
 ) -> None:
     for r in SeqIO.parse(open(fastq_filename), "fastq"):
         fl_count, exp_acc = func(r)
         if not is_flnc and fl_count is None:
-            raise RuntimeError("Sequence header does not include field `full_length_coverage=`. Abort!")
+            raise RuntimeError(
+                "Sequence header does not include field `full_length_coverage=`. Abort!"
+            )
         if exp_acc is None:
-            raise RuntimeError("Sequence header does not include field `expected_accuracy=`. Please run calc_expected_accuracy_from_fastq.py script first!")
+            raise RuntimeError(
+                "Sequence header does not include field `expected_accuracy=`. Please run calc_expected_accuracy_from_fastq.py script first!"
+            )
         if (is_flnc or fl_count >= min_fl_count) and exp_acc >= min_exp_acc:
-            logger.info(f"Including {r.id} into output file (FL: {fl_count}, acc: {exp_acc}).")
+            logger.info(
+                f"Including {r.id} into output file (FL: {fl_count}, acc: {exp_acc})."
+            )
             SeqIO.write(r, output_filename, "fastq")
 
 
 @app.command(name="")
 def main(
-    fastq_filename: str = typer.Argument(..., help="LQ FASTQ filename (ex: lq_isoforms.fastq"),
+    fastq_filename: str = typer.Argument(
+        ..., help="LQ FASTQ filename (ex: lq_isoforms.fastq"
+    ),
     output_filename: str = typer.Argument(..., help="Output FASTQ filename"),
     min_fl_count: int = typer.Option(2, help="Minimum FL count (default: 2)."),
-    min_exp_acc: float = typer.Option(0.99, help="Minimum predicted accuracy (default: 0.99)."),
+    min_exp_acc: float = typer.Option(
+        0.99, help="Minimum predicted accuracy (default: 0.99)."
+    ),
     is_flnc: bool = typer.Option(False, help="Input FASTQ is FLNC, not LQ"),
 ) -> None:
     if not 0 <= min_exp_acc <= 1:

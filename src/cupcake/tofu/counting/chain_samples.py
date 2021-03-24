@@ -310,12 +310,10 @@ def combine_split_chained_results(
         gff_file = Path(f"tmp_{o}.gff")
         mega_file = Path(f"tmp_{o}.mega_info.txt")
         group_file = Path(f"tmp_{o}.group.txt")
-        if (
-            not gff_file.exists()
-            or not mega_file.exists()
-            or not group_file.exists()
-        ):
-            raise RuntimeError(f"Expects to see {gff_file},{mega_file},{group_file} but one or more files are missing! Abort!")
+        if not gff_file.exists() or not mega_file.exists() or not group_file.exists():
+            raise RuntimeError(
+                f"Expects to see {gff_file},{mega_file},{group_file} but one or more files are missing! Abort!"
+            )
         split_files.append((ref_name, o, gff_file, group_file, mega_file))
 
     use_fq = False
@@ -493,10 +491,12 @@ def chain_samples(
         for r in DictReader(open(f"tmp_{c}.mega_info.txt"), delimiter="\t"):
             d[f"tmp_{c}", r["superPBID"]] = r
 
-    with open("all_samples.chained_ids.txt", "w") as f1, open("all_samples.chained_count.txt", "w") as f2:
+    with open("all_samples.chained_ids.txt", "w") as f1, open(
+        "all_samples.chained_count.txt", "w"
+    ) as f2:
         writer1 = DictWriter(f1, fieldnames=["superPBID"] + chain, delimiter="\t")
         writer1.writeheader()
-        
+
         writer2 = DictWriter(f2, fieldnames=["superPBID"] + chain, delimiter="\t")
         writer2.writeheader()
 
@@ -596,9 +596,7 @@ def chain_samples_multithread(
             ref_gff = ref_d.joinpath(gff_filename)
             ref_group = ref_d.joinpath(group_filename)
             ref_fq = (
-                ref_d.joinpath(fastq_filename)
-                if fastq_filename is not None
-                else None
+                ref_d.joinpath(fastq_filename) if fastq_filename is not None else None
             )
         else:
             ref_name = f"tmp_{ref_name}"
@@ -609,9 +607,7 @@ def chain_samples_multithread(
         addon_gff = addon_d.joinpath(gff_filename)
         addon_group = addon_d.joinpath(group_filename)
         addon_fq = (
-            addon_d.joinpath(fastq_filename)
-            if fastq_filename is not None
-            else None
+            addon_d.joinpath(fastq_filename) if fastq_filename is not None else None
         )
         split_outs, split_ins = chain_split_file(
             ref_gff=ref_gff,
@@ -652,10 +648,12 @@ def chain_samples_multithread(
         for r in DictReader(open(f"tmp_{c}.mega_info.txt"), delimiter="\t"):
             d[f"tmp_{c}", r["superPBID"]] = r
 
-    with open("all_samples.chained_ids.txt", "w") as f1, open("all_samples.chained_count.txt", "w") as f2:
+    with open("all_samples.chained_ids.txt", "w") as f1, open(
+        "all_samples.chained_count.txt", "w"
+    ) as f2:
         writer1 = DictWriter(f1, fieldnames=["superPBID"] + chain, delimiter="\t")
         writer1.writeheader()
-        
+
         writer2 = DictWriter(f2, fieldnames=["superPBID"] + chain, delimiter="\t")
         writer2.writeheader()
 

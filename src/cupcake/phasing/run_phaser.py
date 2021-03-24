@@ -3,10 +3,11 @@
 __author__ = "etseng@pacb.com"
 
 import sys
-from argparse import ArgumentParser
+from enum import Enum
 from pathlib import Path
 from subprocess import check_output
 
+import typer
 from Bio import SeqIO
 from cupcake.logging import cupcake_logger as logger
 from cupcake.phasing.io import VariantPhaseCleaner, VariantPhaser
@@ -25,6 +26,14 @@ MAX_DIFF_ALLOWED = 3  # maximum difference in bases allowed for two haplotype st
 MIN_PERC_ALLOWED = 0.25  # minimum percent of total count for an allele, can be adjusted by ploidy (ex: n=6, means this goes down to 1/6)
 PVAL_CUTOFF = 0.01
 MIN_AF_AT_ENDS = 0.10  # minimum minor allele frequency for SNPs at ends, which tend to have unreliable alignments
+
+
+class strand_direction(str, Enum):
+    plus = "+"
+    minus = "-"
+
+
+app = typer.Typer(name="cupcake.phasing.run_phase")
 
 
 def set_to_kill(
@@ -144,34 +153,43 @@ def set_to_kill(
     )
 
 
-def main():
-    parser = ArgumentParser()
-    parser.add_argument("fastx_filename", type=str, help="Input FLNC fasta or fastq")
-    parser.add_argument("sam_filename", type=str)
-    parser.add_argument("mpileup_filename", type=str)
-    parser.add_argument("read_stat", type=str)
-    parser.add_argument("mapping_filename", type=str)
-    parser.add_argument("-o", "--output_prefix", type=str, required=True)
-    parser.add_argument("--strand", choices=["+", "-"], type=str, required=True)
-    parser.add_argument("--partial_ok", default=False, type=bool, action="store_true")
-    parser.add_argument("-p", "--pval_cutoff", default=PVAL_CUTOFF, type=float)
-    parser.add_argument("-n", "--ploidy", type=int, default=2)
+@app.command(name="")
+def main(
+    fastx_filename: str = typer.Argument(..., help="Input FLNC fasta or fastq"),
+    sam_filename: str = typer.Argument(...),
+    mpileup_filename: str = typer.Argument(
+        ...,
+    ),
+    read_stat: str = typer.Argument(
+        ...,
+    ),
+    mapping_filename: str = typer.Argument(..., type=str),
+    output_prefix: str = typer.Argument(..., "--output_prefix", "-o"),
+    strand: strand_direction = typer.Option(...),
+    partial_ok: bool = typer.Option(
+        False,
+    ),
+    pval_cutoff: float = typer.Option(
+        PVAL_CUTOFF,
+        "--pval_cutoff",
+        "-p",
+    ),
+    ploidy: int = typer.Option(2),
     # parser.add_argument("-e", "--err_sub", default=ERR_SUB, type=float, help="Estimated substitution error rate (default: 0.005)")
-
-    args = parser.parse_args()
+) -> None:
     set_to_kill(
-        fastx_filename=args.fastx_filename,
-        sam_filename=args.sam_filename,
-        mpileup_filename=args.mpileup_filename,
-        read_stat=args.read_stat,
-        mapping_filename=args.mapping_filename,
-        output_prefix=args.output_prefix,
-        strand=args.strand,
-        partial_ok=args.partial_ok,
-        pval_cutoff=args.pval_cutoff,
-        ploidy=args.ploidy,
+        fastx_filename=fastx_filename,
+        sam_filename=sam_filename,
+        mpileup_filename=mpileup_filename,
+        read_stat=read_stat,
+        mapping_filename=mapping_filename,
+        output_prefix=output_prefix,
+        strand=strand,
+        partial_ok=partial_ok,
+        pval_cutoff=pval_cutoff,
+        ploidy=ploidy,
     )
 
 
 if __name__ == "main":
-    main()
+    typer.run(main)

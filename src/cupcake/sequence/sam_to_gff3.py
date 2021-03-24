@@ -27,16 +27,15 @@ from Bio import SeqIO
 from Bio.Seq import Seq
 from Bio.SeqFeature import FeatureLocation, SeqFeature
 from Bio.SeqRecord import SeqRecord
-from cupcake.sequence.BioReaders import GMAPSAMReader
 from cupcake.logging import cupcake_logger as logger
+from cupcake.sequence.BioReaders import GMAPSAMReader
 
 # from gtfparse.write_gtf import df_to_gtf
 from BCBio import GFF as BCBio_GFF
 
-
 app = typer.Typer(
     name="cupcake.sequence.sam_to_gff3",
-    help="Convert SAM to GFF3 format using BCBio GFF"
+    help="Convert SAM to GFF3 format using BCBio GFF",
 )
 
 
@@ -99,11 +98,7 @@ def convert_sam_rec_to_gff3_rec(r, source, qid_index_dict=None):
     return rec
 
 
-def convert_sam_to_gff3(
-    sam_filename: str,
-    output_gff3: str,
-    source,
-    q_dict=None):
+def convert_sam_to_gff3(sam_filename: str, output_gff3: str, source, q_dict=None):
     qid_index_dict = Counter()
     with open(output_gff3, "w") as f:
         recs = [
@@ -116,8 +111,15 @@ def convert_sam_to_gff3(
 @app.command(name="")
 def main(
     sam_filename: str = typer.Argument(...),
-    input_fasta: Optional[str] = typer.Option(None, "--input_fasta", "-i", help="(Optional) input fasta. If given, coverage will be calculated.",),
-    source: str = typer.Option(..., "--source", "-s", help="source name (ex: hg38, mm10)"),
+    input_fasta: Optional[str] = typer.Option(
+        None,
+        "--input_fasta",
+        "-i",
+        help="(Optional) input fasta. If given, coverage will be calculated.",
+    ),
+    source: str = typer.Option(
+        ..., "--source", "-s", help="source name (ex: hg38, mm10)"
+    ),
 ):
     sam_filename = Path(sam_filename)
 
@@ -129,9 +131,7 @@ def main(
 
     q_dict = None
     if input_fasta is not None:
-        q_dict = {
-            r.id: len(r.seq) for r in SeqIO.parse(open(input_fasta), "fasta")
-        }
+        q_dict = {r.id: len(r.seq) for r in SeqIO.parse(open(input_fasta), "fasta")}
 
     with open(output_gff3, "w") as f:
         recs = [

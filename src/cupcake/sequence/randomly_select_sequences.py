@@ -4,11 +4,15 @@ __version__ = "1.0"
 
 
 import random
-import sys
 
+import typer
 from Bio import SeqIO
-
 from cupcake.logging import cupcake_logger as logger
+
+app = typer.Typer(
+    name="cupcake.sequence.randomly_select_sequences",
+    help="Randomly select N sequences from fasta/fastq files",
+)
 
 
 def type_fa_or_fq(file):
@@ -26,7 +30,9 @@ def sep_by_primer(filename, output_prefix, sample_size):
 
     n = len(ids)
     if sample_size > n:
-        logger.warning(f"WARNING: {filename} contains only {n} sequences but subsample size at {sample_size}! Simply output whole file.")
+        logger.warning(
+            f"WARNING: {filename} contains only {n} sequences but subsample size at {sample_size}! Simply output whole file."
+        )
 
     chosen_ids = random.sample(ids, min(n, sample_size))
 
@@ -38,17 +44,15 @@ def sep_by_primer(filename, output_prefix, sample_size):
         logger.info(f"Randomly selected sequences written to {f.name}.")
 
 
-def main():
-    from argparse import ArgumentParser
+@app.command(name="")
+def main(
+    filename: str = typer.Argument(..., help="Input fasta/fastq filename"),
+    output_prefix: str = typer.Argument(..., help="Output file prefix"),
+    sample_size: int = typer.Argument(..., help="Subsample size"),
+) -> None:
 
-    parser = ArgumentParser("Randomly select N sequences from fasta/fastq files")
-    parser.add_argument("filename", help="Input fasta/fastq filename")
-    parser.add_argument("output_prefix", help="Output file prefix")
-    parser.add_argument("sample_size", type=int, help="Subsample size")
-    args = parser.parse_args()
-
-    sep_by_primer(args.filename, args.output_prefix, args.sample_size)
+    sep_by_primer(filename, output_prefix, sample_size)
 
 
 if __name__ == "__main__":
-    main()
+    typer.run(main)

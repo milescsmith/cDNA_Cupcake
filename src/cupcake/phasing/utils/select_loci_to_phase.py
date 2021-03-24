@@ -261,6 +261,7 @@ def select_loci_to_phase(
                 h.write(f"{zmw}\t{len(rec.seq)}\tY\tunique\t{pbid}\n")
 
 
+@app.command(name="")
 def main(
     genome_fasta: str = typer.Argument(..., help="Reference genome fasta"),
     flnc_filename: str = typer.Argument(..., help="FLNC fastq file"),

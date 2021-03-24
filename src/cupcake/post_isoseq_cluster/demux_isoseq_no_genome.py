@@ -167,7 +167,9 @@ def main(
         None,
         help="Text file showing primer sample names (default: None)",
     ),
-    output: str = typer.Option(sys.stdout, "--output", "-o", help="Output count filename"),
+    output: str = typer.Option(
+        sys.stdout, "--output", "-o", help="Output count filename"
+    ),
 ) -> None:
 
     job_dir = Path(job_dir) if job_dir is not None else job_dir

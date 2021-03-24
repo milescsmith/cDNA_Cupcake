@@ -166,11 +166,15 @@ def main(
         raise FileNotFoundError(f"Class file {class_filename} not found. Abort!")
 
     if ontarget_filename is not None and not Path(ontarget_filename).exists():
-        raise FileNotFoundError(f"Ontarget file {ontarget_filename} given but not found. Abort!")
+        raise FileNotFoundError(
+            f"Ontarget file {ontarget_filename} given but not found. Abort!"
+        )
 
     if dedup_ORF_prefix is not None:
         if not Path(f"{dedup_ORF_prefix}.group.txt").exists():
-            raise FileNotFoundError(f"Dedup {dedup_ORF_prefix}.group.txt not found. Abort!")
+            raise FileNotFoundError(
+                f"Dedup {dedup_ORF_prefix}.group.txt not found. Abort!"
+            )
         if not Path(f"{dedup_ORF_prefix}.faa").exists():
             raise FileNotFoundError(f"Dedup {dedup_ORF_prefix}.faa not found. Abort!")
 

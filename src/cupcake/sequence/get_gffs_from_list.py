@@ -1,7 +1,13 @@
 #!/usr/bin/env python
 import sys
 
+import typer
 from cupcake.sequence import GFF
+
+app = typer.Typer(
+    name="cupcake.sequence.get_gffs_from_list",
+    help="Get records from a GFF file from a list",
+)
 
 
 def get_gff_from_list(gff_filename, listfile, partial_ok=False):
@@ -15,25 +21,20 @@ def get_gff_from_list(gff_filename, listfile, partial_ok=False):
             GFF.write_collapseGFF_format(sys.stdout, r)
 
 
-def main():
-    from argparse import ArgumentParser
-
-    parser = ArgumentParser("Get records from a GFF file from a list")
-    parser.add_argument(
-        "gff_filename", help="Input gff filename to extract sequences from"
-    )
-    parser.add_argument("list_filename", help="List of sequence IDs to extract")
-    parser.add_argument(
-        "--partial",
-        action="store_true",
-        default=False,
+@app.command(name="")
+def main(
+    gff_filename: str = typer.Argument(
+        ..., help="Input gff filename to extract sequences from"
+    ),
+    list_filename: str = typer.Argument(..., help="List of sequence IDs to extract"),
+    partial: bool = typer.Option(
+        False,
         help="OK if seq IDs only match the beginning",
-    )
+    ),
+) -> None:
 
-    args = parser.parse_args()
-
-    get_gff_from_list(args.gff_filename, args.list_filename, args.partial)
+    get_gff_from_list(gff_filename, list_filename, partial)
 
 
 if __name__ == "__main__":
-    main()
+    typer.run(main)

@@ -6,14 +6,18 @@ Given a pooled input GFF + demux CSV file, write out per-{barcode group} GFFs
 If input fasta/fastq is given, optionally also output per-{barcode group} FASTA/FASTQ
 """
 import re
-import sys
 from collections import defaultdict
 from csv import DictReader
+from typing import Optional
 
 import cupcake.sequence.GFF as GFF
+import typer
 from Bio import SeqIO
 
 rex_pbid = re.compile(r"(PB.\d+.\d+)(|\S+)")
+
+
+app = typer.Typer(name="cupcake.post_isoseq_cluster.demux_by_barcode_groups")
 
 
 def get_type_fafq(in_filename):
@@ -82,29 +86,25 @@ def regroup_gff(
                 SeqIO.write(fafq_dict[pbid], handles_fafq[g], type_fafq)
 
 
-def main():
-    from argparse import ArgumentParser
-
-    parser = ArgumentParser()
-    parser.add_argument(
-        "--pooled_fastx",
-        default=None,
+@app.command(name="")
+def main(
+    pooled_gff: str = typer.Argument(..., help="Pooled GFF file"),
+    demux_count_file: str = typer.Argument(..., help="Demux count file"),
+    output_prefix: str = typer.Argument(..., help="Output prefix for GFF outputs"),
+    outgroup_dict: str = typer.Argument(..., help="Tuples indicating barcode grouping"),
+    pooled_fastx: Optional[str] = typer.Option(
+        None,
         help="Pooled FASTA/FASTQ (optional, if given, will also output demux fa/fq)",
-    )
-    parser.add_argument("pooled_gff", help="Pooled GFF file")
-    parser.add_argument("demux_count_file", help="Demux count file")
-    parser.add_argument("output_prefix", help="Output prefix for GFF outputs")
-    parser.add_argument("outgroup_dict", help="Tuples indicating barcode grouping")
-
-    args = parser.parse_args()
-    tmp = eval(args.outgroup_dict)
+    ),
+) -> None:
+    tmp = eval(outgroup_dict)
     out_group_dict = dict([tmp]) if len(tmp) == 1 else dict(tmp)
     regroup_gff(
-        args.pooled_gff,
-        args.demux_count_file,
-        args.output_prefix,
+        pooled_gff,
+        demux_count_file,
+        output_prefix,
         out_group_dict,
-        args.pooled_fastx,
+        pooled_fastx,
     )
 
 

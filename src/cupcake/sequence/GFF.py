@@ -5,8 +5,8 @@ from csv import DictReader
 from pathlib import Path
 
 from bx.intervals.intersection import Interval, IntervalTree
-
 from cupcake.logging import cupcake_logger as logger
+
 
 class GTF:
     def __init__(self, gtf_filename):

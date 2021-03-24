@@ -84,6 +84,7 @@ def get_fl_count_by_barcode(
     logger.info(f"Output written to: {fl.name}.")
 
 
+@app.command(name="")
 def main(
     collapse_prefix: str = typer.Argument(
         ..., help="Collapse prefix (ex: hq_isoforms.fastq.no5merge.collapsed)"

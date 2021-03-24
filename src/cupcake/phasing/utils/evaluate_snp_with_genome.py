@@ -1,14 +1,16 @@
 __author__ = "etseng@pacb.com"
 import glob
-import os
-import sys
 from collections import defaultdict
 from csv import DictReader, DictWriter
+from pathlib import Path
 
+import typer
 import vcf
 from bx.intervals import IntervalTree
 from cupcake.logging import cupcake_logger as logger
 from cupcake.phasing.io.SAMMPileUpReader import MPileUpReader
+
+app = typer.Typer(name="cupcake.phasing.util.evaluate_snp_with_genome")
 
 
 def read_fake_mapping(fake_genome_mapping_filename):
@@ -139,7 +141,7 @@ def eval_isophase(
         writer_f.writerow(out)
 
 
-def main_brangus(vcf_filename, out_filename, unzip_snps=None):
+def brangus(vcf_filename, out_filename, unzip_snps=None):
     if unzip_snps is None:
         unzip_snps = defaultdict(lambda: {})
         for r in vcf.VCFReader(open(vcf_filename)):
@@ -165,18 +167,18 @@ def main_brangus(vcf_filename, out_filename, unzip_snps=None):
         writer.writeheader()
         dirs = glob.glob("by_loci/*size*/")
         for d1 in dirs:
-            mpileup = os.path.join(d1, "ccs.mpileup")
-            mapfile = os.path.join(d1, "fake.mapping.txt")
-            vcffile = os.path.join(d1, "phased.partial.vcf")
-            config = os.path.join(d1, "config")
-            nosnp = os.path.join(d1, "phased.partial.NO_SNPS_FOUND")
-            if not os.path.exists(vcffile):
-                assert os.path.exists(nosnp)
-                logger.info(f"Skipping {d1} because no SNPs found.")
+            mpileup = Path(d1, "ccs.mpileup")
+            mapfile = Path(d1, "fake.mapping.txt")
+            vcffile = Path(d1, "phased.partial.vcf")
+            config = Path(d1, "config")
+            nosnp = Path(d1, "phased.partial.NO_SNPS_FOUND")
+            if not vcffile.exists():
+                if not nosnp.exists():
+                    logger.error(f"Skipping {d1} because no SNPs found.")
             else:
                 logger.info(f"Evaluating {d1}.")
                 strand = "NA"
-                if os.path.exists(config):  # find the strand this gene family is on
+                if config.exists():  # find the strand this gene family is on
                     for line in open(config):
                         if line.startswith("ref_strand="):
                             strand = line.strip().split("=")[1]
@@ -239,49 +241,54 @@ def main_maize(ki11_snps=None, dirs=None):
         "cov_PB",
         "genomic_HP",
     ]
-    out_f = open("evaled.isophase_SNP.txt", "w")
-    writer_f = DictWriter(out_f, FIELDS, delimiter="\t")
-    writer_f.writeheader()
+    with open("evaled.isophase_SNP.txt", "w") as out_f:
+        writer_f = DictWriter(out_f, FIELDS, delimiter="\t")
+        writer_f.writeheader()
 
-    debug_count = 0
-    if dirs is None:
-        dirs = glob.glob("by_loci/*size*/")
-    for d1 in dirs:
-        # if debug_count > 100: break
-        debug_count += 1
-        mpileup = os.path.join(d1, "ccs.mpileup")
-        mapfile = os.path.join(d1, "fake.mapping.txt")
-        vcffile = os.path.join(d1, "phased.partial.vcf")
-        nosnp = os.path.join(d1, "phased.partial.NO_SNPS_FOUND")
-        if not os.path.exists(vcffile):
-            assert os.path.exists(nosnp)
-            logger.info(f"Skipping {d1} because no SNPs found.")
-        else:
-            logger.info(f"Evaluating {d1}.")
-            good_positions, cov_at_pos = get_positions_to_recover(
-                mapfile, mpileup, ki11_snps, min_cov=30
-            )  # use lower min cov here becuz a few close cases where BQ filtering lowered cov
-            name = d1.split("/")[1]
-            eval_isophase(
-                vcffile,
-                ki11_snps,
-                good_positions,
-                cov_at_pos,
-                repeat_by_chrom,
-                ki11_shortread_cov,
-                writer_f,
-                name,
-            )
+        debug_count = 0
+        if dirs is None:
+            dirs = glob.glob("by_loci/*size*/")
+        for d1 in dirs:
+            # if debug_count > 100: break
+            debug_count += 1
+            mpileup = Path(d1, "ccs.mpileup")
+            mapfile = Path(d1, "fake.mapping.txt")
+            vcffile = Path(d1, "phased.partial.vcf")
+            nosnp = Path(d1, "phased.partial.NO_SNPS_FOUND")
+            if not vcffile.exists():
+                assert nosnp.exists()
+                logger.info(f"Skipping {d1} because no SNPs found.")
+            else:
+                logger.info(f"Evaluating {d1}.")
+                good_positions, cov_at_pos = get_positions_to_recover(
+                    mapfile, mpileup, ki11_snps, min_cov=30
+                )  # use lower min cov here becuz a few close cases where BQ filtering lowered cov
+                name = d1.split("/")[1]
+                eval_isophase(
+                    vcffile,
+                    ki11_snps,
+                    good_positions,
+                    cov_at_pos,
+                    repeat_by_chrom,
+                    ki11_shortread_cov,
+                    writer_f,
+                    name,
+                )
 
-    out_f.close()
     return ki11_snps
 
 
+@app.command(name="")
+def main(
+    vcf_filename: str = typer.Argument(...), out_filename: str = typer.Argument(...)
+) -> None:
+    brangus(vcf_filename, out_filename)
+
+
 if __name__ == "__main__":
+    typer.run(main)
     # from csv import DictReader
 
-    main_brangus(
-        sys.argv[1], sys.argv[2]
-    )  # main_brangus('combined_97_1modi.vcf', 'evaled.isophase.combined_97_1modi.txt')
+    # main_brangus('combined_97_1modi.vcf', 'evaled.isophase.combined_97_1modi.txt')
     # dirs = ['by_loci/'+r['locus'] for r in DictReader(open('evaled_isophase.demux_hap_count.txt'),delimiter='\t')]
     # main_maize(None, dirs)

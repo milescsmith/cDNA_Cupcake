@@ -48,13 +48,13 @@ __VCF_EXAMPLE__ = """
 20      1       .       G       A,T     .       PASS    AF=0.5       GT
 """
 
-import logging
-import sys
 from pathlib import Path
 
+import typer
 import vcf
-from cupcake.logging import setup_logging
+from cupcake.logging import cupcake_logger as logger
 from cupcake.sequence.SeqReaders import LazyFastaReader
+from typer.params import Argument
 
 
 class SNPRecord(object):
@@ -128,6 +128,12 @@ class SNPReader(object):
             ref_name=raw[10],
             query_name=raw[11],
         )
+
+
+app = typer.Typer(
+    name="cupcake.phasing.io.MummerSNPReader",
+    help="Process one or more .snps_files files from dnadiff to VCF format.",
+)
 
 
 def write_snp_to_vcf(
@@ -209,42 +215,34 @@ def write_snp_to_vcf(
                 cur_recs = [r1]
 
 
-def main():
-    setup_logging("cDNA_Cupcake.phasing.io.MummerSNPReader")
-    from argparse import ArgumentParser
-
-    parser = ArgumentParser(
-        "Process one or more .snps_files files from dnadiff to VCF format."
-    )
-    parser.add_argument(
-        "snps_filename", help="Filename containing list of .snps_files to process."
-    )
-    parser.add_argument(
-        "genome_filename",
+@app.command(name="")
+def main(
+    snps_filename: str = typer.Argument(
+        ..., help="Filename containing list of .snps_files to process."
+    ),
+    genome_filename: str = typer.Argument(
+        ...,
         help="Genome fasta. Chromosome IDs must agree with .snps_files files!",
-    )
-
-    args = parser.parse_args()
-
-    snps_filename = Path(args.snps_filename)
-    genome_filename = Path(args.genome_filename)
+    ),
+):
+    snps_filename = Path(snps_filename)
+    genome_filename = Path(genome_filename)
 
     snps_files = []
     # sanity checking of input files
     for filename in snps_filename.open():
         if not filename.suffix(".snps"):
-            logging.critical(
+            raise FileNotFoundError(
                 f"Input files listed in {snps_filename} must end with .snps_files!"
             )
-            sys.exit(-1)
         if not filename.exists():
-            logging.critical(f"{filename} does not exist! Abort.")
+            raise FileNotFoundError(f"{filename} does not exist! Abort.")
         snps_files.append(filename)
 
     if not genome_filename.exists():
-        logging.critical(f"Genome file {genome_filename} does not exist!")
+        raise FileNotFoundError(f"Genome file {genome_filename} does not exist!")
 
-    logging.info(f"Reading genome file {genome_filename}....")
+    logger.info(f"Reading genome file {genome_filename}....")
     genome_d = LazyFastaReader(genome_filename)
 
     # quick checking if the genome chromosomes have the |arrow|arrow style suffix, if they do, process it
@@ -253,15 +251,15 @@ def main():
         k2 = k.split("|")[0]
         if k2 != k and k2 not in keys:
             genome_d.d[k2] = genome_d.d[k]
-            logging.info(
+            logger.info(
                 f"Detected | string in chromosome ID, stripping {k} to {k2}...."
             )
-    logging.info("Finished reading genome.")
+    logger.info("Finished reading genome.")
 
     for snp_file in snps_files:
         assert snp_file.suffix(".snps")
         vcf_file = snp_file.with_suffix(".vcf")
-        logging.info(f"Processing {snp_file} --> {vcf_file}")
+        logger.info(f"Processing {snp_file} --> {vcf_file}")
         write_snp_to_vcf(snp_file, vcf_file, genome_filename, genome_d)
 
 
