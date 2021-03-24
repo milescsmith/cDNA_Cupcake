@@ -65,9 +65,7 @@ class STARJunctionRecord:
         raw = line.strip().split()
         if len(raw) != 9:
             raise Exception(
-                "Expected 9 columns for STAR junction file! Got {} instead!".format(
-                    len(raw)
-                )
+                f"Expected 9 columns for STAR junction file! Got {len(raw)} instead!"
             )
 
         chrom = raw[0]

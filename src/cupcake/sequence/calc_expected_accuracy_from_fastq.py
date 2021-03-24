@@ -39,7 +39,7 @@ def cal_expected_accuracy_from_fastq(
     f = open(output_filename, "w")
     for r in SeqIO.parse(open(fastq_filename), "fastq"):
         exp_acc = calc_exp_acc(r, qv_trim_5, qv_trim_3)
-        r.description += ";expected_accuracy={:.3f}".format(exp_acc)
+        r.description += f";expected_accuracy={exp_acc:.3f}"
         SeqIO.write(r, f, "fastq")
     f.close()
 

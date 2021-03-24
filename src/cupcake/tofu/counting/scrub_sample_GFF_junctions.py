@@ -21,12 +21,11 @@ from csv import DictReader, DictWriter
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Union
 
+import cupcake.sequence.GFF as GFF
+import cupcake.tofu.counting.chain_samples as sp
 import typer
 from Bio import SeqIO
 from bx.intervals import Interval, IntervalTree
-
-import cupcake.sequence.GFF as GFF
-import cupcake.tofu.counting.chain_samples as sp
 from cupcake.logging import cupcake_logger as logger
 
 fields_to_add = [
@@ -206,7 +205,7 @@ def scrub_sample_GFFs(
 
                 new_ref_exons = scrub_ref_exons(r, tree)
                 if new_ref_exons is None:
-                    print("No changes made due to error:", r.seqid, file=sys.stderr)
+                    logger.info("No changes made due to error:", r.seqid)
                 else:
                     # print "before:", r.ref_exons
                     # print "after :", new_ref_exons

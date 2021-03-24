@@ -1,16 +1,23 @@
 #!/usr/bin/env python
 
-import sys
 from collections import defaultdict
+from pathlib import Path
 
+import typer
 from Bio import SeqIO
-
 from cupcake.sequence import BioReaders
+from cupcake.logging import cupcake_logger as logger
 
 
-def type_fa_or_fq(file):
-    file = file.upper()
-    if file.endswith(".FA") or file.endswith(".FASTA"):
+app = typer.Typer(
+    name="cupcake.sequence.summarize_gmap_sam",
+    help="Summarize GMAP SAM file in tab-delimited file."
+)
+
+
+def type_fa_or_fq(filename):
+    filename = Path(filename)
+    if filename.stem.upper() not in (".FA", ".FASTA"):
         return "fasta"
     else:
         return "fastq"
@@ -27,36 +34,32 @@ def summarize_GMAP_sam(input_fa_or_fq, input_sam):
         map_count[r.qID] += 1
     multi = [x for x in map_count if map_count[x] > 1]
 
-    f = open(input_sam + ".summary.txt", "w")
-    f.write(
-        "id\tqLength\tqCoverage\tidentity\tnum_nonmatch\tnum_ins\tnum_del\tunique\n"
-    )
-    for r in BioReaders.GMAPSAMReader(input_sam, True, query_len_dict=d):
-        if r.sID == "*":
-            continue
-        if r.qID in multi:
-            uni = "N"
-        else:
-            uni = "Y"
+    with open(f"{input_sam}.summary.txt", "w") as f:
         f.write(
-            f"{r.qID}\t{d[r.qID]}\t{r.qCoverage:.4f}\t"
-            f"{r.identity:.4f}\t\t{r.num_nonmatches}\t"
-            f"{r.num_ins}\t{r.num_del}\t{uni}\n"
+            "id\tqLength\tqCoverage\tidentity\tnum_nonmatch\tnum_ins\tnum_del\tunique\n"
         )
-    f.close()
+        for r in BioReaders.GMAPSAMReader(input_sam, True, query_len_dict=d):
+            if r.sID == "*":
+                continue
+            if r.qID in multi:
+                uni = "N"
+            else:
+                uni = "Y"
+            f.write(
+                f"{r.qID}\t{d[r.qID]}\t{r.qCoverage:.4f}\t"
+                f"{r.identity:.4f}\t\t{r.num_nonmatches}\t"
+                f"{r.num_ins}\t{r.num_del}\t{uni}\n"
+            )
 
-    print("Output written to: {}".format(f.name), file=sys.stderr)
+        logger.info(f"Output written to: {f.name}")
 
 
-def main():
-    from argparse import ArgumentParser
-
-    parser = ArgumentParser("Summarize GMAP SAM file in tab-delimited file.")
-    parser.add_argument("input_fa_or_fq", help="Input fasta/fastq filename")
-    parser.add_argument("sam_file", help="(GMAP) SAM filename")
-
-    args = parser.parse_args()
-    summarize_GMAP_sam(args.input_fa_or_fq, args.sam_file)
+@app.command(name="")
+def main(
+    input_fa_or_fq: str = typer.Argument(..., help="Input fasta/fastq filename"),
+    sam_file: str = typer.Argument(..., help="(GMAP) SAM filename")
+) -> None:
+    summarize_GMAP_sam(input_fa_or_fq, sam_file)
 
 
 if __name__ == "__main__":

@@ -4,7 +4,6 @@ import sys
 from pathlib import Path
 
 import typer
-
 from cupcake.logging import cupcake_logger as logger
 from cupcake.sequence.GFF import collapseGFFReader
 
@@ -26,8 +25,8 @@ def simple_stats_post_collapse(input_prefix: str) -> None:
         f2.write("pbid\texon_index\texon_size\tintron_size\n")
 
         for r in collapseGFFReader(input_gff):
-            f1.write(r.seqid + "\t")
-            f1.write(r.seqid.split(".")[1] + "\t")
+            f1.write(f"{r.seqid}	")
+            f1.write(f"{r.seqid.split('.')[1]}	")
             sum_len = 0
             for i, e in enumerate(r.ref_exons):
                 exon_len = e.end - e.start

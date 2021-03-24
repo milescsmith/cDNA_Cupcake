@@ -1,28 +1,31 @@
 #!/usr/bin/env python
-import sys
+from pathlib import Path
+import typer
 
 from cupcake.logging import cupcake_logger as logger
 from cupcake.sequence.BioReaders import GMAPSAMReader
 from cupcake.sequence.GFF import write_collapseGFF_format
 
 
-def main():
-    from argparse import ArgumentParser
+app = typer.Typer(
+    name="cupcake.sequence.sam_to_collapsed_gff",
+    help="Convert SAM to collapsed GFF format"
+)
 
-    parser = ArgumentParser("Convert SAM to collapsed GFF format")
-    parser.add_argument("sam_filename")
 
-    args = parser.parse_args()
+@app.command(name="")
+def main(
+    sam_filename: str = typer.Argument(...)
+) -> None:
+    sam_filename = Path(sam_filename)
+    if sam_filename.suffix != ".sam":
+        raise RuntimeError("Only accepts files ending in .sam. Abort!")
 
-    if not args.sam_filename.endswith(".sam"):
-        print("Only accepts files ending in .sam. Abort!", file=sys.stderr)
-        sys.exit(-1)
-
-    prefix = args.sam_filename[:-4]
-    output_gff = prefix + ".collapsed.gff"
+    prefix = sam_filename.stem
+    output_gff = f"{prefix}.collapsed.gff"
 
     with open(output_gff, "w") as f:
-        reader = GMAPSAMReader(args.sam_filename, True)
+        reader = GMAPSAMReader(sam_filename, True)
         for r in reader:
             if r.sID == "*":
                 continue

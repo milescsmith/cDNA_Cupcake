@@ -17,13 +17,12 @@ from csv import DictWriter
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple, Union
 
+import cupcake.sequence.GFF as GFF
 import numpy as np
 import typer
 from Bio import SeqIO
-from sklearn.cluster import Birch
-
-import cupcake.sequence.GFF as GFF
 from cupcake.logging import cupcake_logger as logger
+from sklearn.cluster import Birch
 
 app = typer.Typer(name="cupcake.tofu.counting.summarize_sample_GFF_junctions")
 

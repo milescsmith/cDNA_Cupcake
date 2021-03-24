@@ -17,14 +17,14 @@ def type_fa_or_fq(file):
 def get_seq_stats(file, binwidth):
     print("file type is:", type_fa_or_fq(file))
 
-    f = open(file + ".seqlengths.txt", "w")
+    f = open(f"{file}.seqlengths.txt", "w")
     lens = []
     for r in SeqIO.parse(open(file), type_fa_or_fq(file)):
-        f.write(r.id + "\t" + str(len(r.seq)) + "\n")
+        f.write(f"{r.id}	{str(len(r.seq))}\n")
         lens.append(len(r.seq))
     f.close()
 
-    print("{} sequences".format(len(lens)))
+    print(f"{len(lens)} sequences")
     print("min:", min(lens))
     print("max:", max(lens))
     print("avg:", sum(lens) * 1.0 / len(lens))
@@ -39,9 +39,9 @@ def get_seq_stats(file, binwidth):
 
     for i in range(0, _max):
         if binwidth == 1000:
-            print("{}-{} kb: {}".format(i, i + 1, bin[i]))
+            print(f"{i}-{i + 1} kb: {bin[i]}")
         else:
-            print("{}-{}: {}".format(i * binwidth, (i + 1) * binwidth, bin[i]))
+            print(f"{i * binwidth}-{(i + 1) * binwidth}: {bin[i]}")
 
     print("5-95% percentile:", np.percentile(lens, 5), np.percentile(lens, 95))
 

@@ -4,6 +4,7 @@ from collections import Counter, defaultdict
 from pathlib import Path
 
 import vcf
+from cupcake.logging import cupcake_logger as logger
 
 
 def collect_all_vcf(
@@ -21,7 +22,7 @@ def collect_all_vcf(
         filename = Path(d, vcf_filename)
         if not filename.exists():
             if not no_snp_found_filename.exists():
-                print("VCF file {filename} does not exist. Skipping.", file=sys.stderr)
+                logger.info("VCF file {filename} does not exist. Skipping.")
             continue
         with open(filename) as rf:
             reader = vcf.VCFReader(rf)
@@ -92,12 +93,12 @@ def main():
     args = parser.parse_args()
 
     if args.select_dirs is None:
-        dirs = glob.glob(args.dir + "/*size*")
+        dirs = glob.glob(f"{args.dir}/*size*")
     else:
         dirs = args.select_dirs.split(",")
         for d in dirs:
             if not Path(d).is_dir() or not Path(d).exists():
-                logger.error(f"{f} is not a directory or does not exist! Abort!")
+                logger.error(f"{d} is not a directory or does not exist! Abort!")
                 sys.exit(-1)
 
     collect_all_vcf(dirs, args.vcf, args.output)

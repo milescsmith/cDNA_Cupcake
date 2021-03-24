@@ -64,21 +64,13 @@ class SimpleSAMRecord:
         self.process(record_line)
 
     def __str__(self):
-        msg = """
-        qID: {q}
-        sID: {s}
-        sStart-sEnd: {ss}-{se}
-        qStart-qEnd: {qs}-{qe}
-        cigar: {c}
-        """.format(
-            q=self.qID,
-            s=self.sID,
-            ss=self.sStart,
-            se=self.sEnd,
-            qs=self.qStart,
-            qe=self.qEnd,
-            c=self.cigar,
-        )
+        msg = f"""
+        qID: {self.qID}
+        sID: {self.sID}
+        sStart-sEnd: {self.sStart}-{self.sEnd}
+        qStart-qEnd: {self.qStart}-{self.qEnd}
+        cigar: {self.cigar}
+        """
         return msg
 
     def parse_cigar(self, cigar, start):
@@ -340,7 +332,7 @@ class SAMRecord:
                 cur_start = cur_end + num
                 cur_end = cur_start
             else:
-                raise Exception("Unrecognized cigar character {}!".format(type))
+                raise Exception(f"Unrecognized cigar character {type}!")
             first_thing = False
         if cur_start != cur_end:
             segments.append(Interval(cur_start, cur_end))
@@ -479,6 +471,6 @@ class GMAPSAMRecord(SAMRecord):
                 self.qLen = query_len_dict[self.qID]
             except KeyError:  # HACK for blasr's extended qID
                 raise Exception(
-                    "Unable to find qID {} in the input fasta/fastq!".format(self.qID)
+                    f"Unable to find qID {self.qID} in the input fasta/fastq!"
                 )
             self.qCoverage = (self.qEnd - self.qStart) * 1.0 / self.qLen

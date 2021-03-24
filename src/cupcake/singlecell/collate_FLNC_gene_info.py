@@ -12,11 +12,15 @@ Output a collated infor file that is:
    <ccs>, <pbid>, <transcript>, <gene>, <category>, <ontarget Y|N|NA>, <UMI>, <BC>, <UMIrev>, <BCrev>
 """
 
-import os
 import sys
 from csv import DictReader, DictWriter
+from pathlib import Path
 
+import typer
 from Bio.Seq import Seq
+from cupcake.logging import cupcake_logger as logger
+
+app = typer.Typer(name="cupcake.singlecell.collate_FLNC_gene_info")
 
 
 def read_group_info(group_filename):
@@ -128,88 +132,59 @@ def collate_gene_info(
     f.close()
 
 
-def main():
-    from argparse import ArgumentParser
-
-    parser = ArgumentParser()
-    parser.add_argument("group_filename", help="Collapse .group.txt")
-    parser.add_argument("csv_filename", help="Trimmed UMI/BC CSV info")
-    parser.add_argument("class_filename", help="SQANTI classification.txt")
-    parser.add_argument("output_filename", help="Output filename")
-    parser.add_argument(
-        "-i", "--ontarget_filename", help="(Optional) on target information text"
-    )
-    parser.add_argument(
+@app.command(name="")
+def main(
+    group_filename: str = typer.Argument(..., help="Collapse .group.txt"),
+    csv_filename: str = typer.Argument(..., help="Trimmed UMI/BC CSV info"),
+    class_filename: str = typer.Argument(..., help="SQANTI classification.txt"),
+    output_filename: str = typer.Argument(..., help="Output filename"),
+    ontarget_filename: str = typer.Argument(
+        ..., "-i", help="(Optional) on target information text"
+    ),
+    dedup_ORF_prefix: str = typer.Argument(
+        ...,
         "-p",
-        "--dedup_ORF_prefix",
         help="(Optional) dedup-ed ORF group prefix, must have <pre>.faa and <pre>.group.txt",
-    )
-    parser.add_argument(
-        "--no-extra-base",
-        dest="no_extra_base",
-        action="store_true",
-        default=False,
-        help="Drop all reads where there are extra bases",
-    )
-    parser.add_argument(
-        "--is_clustered",
-        action="store_true",
-        default=False,
-        help="group.txt contains post-UMI clustering result",
-    )
+    ),
+    no_extra_base: bool = typer.Option(
+        False, help="Drop all reads where there are extra bases"
+    ),
+    is_clustered: bool = typer.Option(
+        False, default=False, help="group.txt contains post-UMI clustering result"
+    ),
+):
+    if Path(output_filename).exists():
+        raise FileExistsError(f"Output file {output_filename} already exists. Abort!")
 
-    args = parser.parse_args()
+    if not Path(group_filename).exists():
+        raise FileNotFoundError(f"Group file {group_filename} not found. Abort!")
 
-    if os.path.exists(args.output_filename):
-        print(
-            f"Output file {args.output_filename} already exists. Abort!",
-            file=sys.stderr,
-        )
-        sys.exit(-1)
+    if not Path(csv_filename).exists():
+        raise FileNotFoundError(f"CSV file {csv_filename} not found. Abort!")
 
-    if not os.path.exists(args.group_filename):
-        logger.error(f"Group file {args.group_filename} not found. Abort!")
-        sys.exit(-1)
+    if not Path(class_filename).exists():
+        raise FileNotFoundError(f"Class file {class_filename} not found. Abort!")
 
-    if not os.path.exists(args.csv_filename):
-        logger.error(f"CSV file {args.csv_filename} not found. Abort!")
-        sys.exit(-1)
+    if ontarget_filename is not None and not Path(ontarget_filename).exists():
+        raise FileNotFoundError(f"Ontarget file {ontarget_filename} given but not found. Abort!")
 
-    if not os.path.exists(args.class_filename):
-        logger.error(f"Class file {args.class_filename} not found. Abort!")
-        sys.exit(-1)
-
-    if args.ontarget_filename is not None and not os.path.exists(
-        args.ontarget_filename
-    ):
-        print(
-            f"Ontarget file {args.ontarget_filename} given but not found. Abort!",
-            file=sys.stderr,
-        )
-        sys.exit(-1)
-
-    if args.dedup_ORF_prefix is not None:
-        if not os.path.exists(args.dedup_ORF_prefix + ".group.txt"):
-            print(
-                f"Dedup {args.dedup_ORF_prefix}.group.txt not found. Abort!",
-                file=sys.stderr,
-            )
-            sys.exit(-1)
-        if not os.path.exists(args.dedup_ORF_prefix + ".faa"):
-            logger.error(f"Dedup {args.dedup_ORF_prefix}.faa not found. Abort!")
-            sys.exit(-1)
+    if dedup_ORF_prefix is not None:
+        if not Path(f"{dedup_ORF_prefix}.group.txt").exists():
+            raise FileNotFoundError(f"Dedup {dedup_ORF_prefix}.group.txt not found. Abort!")
+        if not Path(f"{dedup_ORF_prefix}.faa").exists():
+            raise FileNotFoundError(f"Dedup {dedup_ORF_prefix}.faa not found. Abort!")
 
     collate_gene_info(
-        args.group_filename,
-        args.csv_filename,
-        args.class_filename,
-        args.output_filename,
-        args.ontarget_filename,
-        args.dedup_ORF_prefix,
-        args.no_extra_base,
-        args.is_clustered,
+        group_filename,
+        csv_filename,
+        class_filename,
+        output_filename,
+        ontarget_filename,
+        dedup_ORF_prefix,
+        no_extra_base,
+        is_clustered,
     )
 
 
 if __name__ == "__main__":
-    main()
+    typer.run(main)

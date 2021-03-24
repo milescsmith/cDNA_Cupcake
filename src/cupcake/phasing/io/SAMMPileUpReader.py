@@ -118,11 +118,11 @@ class MPileUpRecord(object):
                 b == "-"
             ):  # DO NOT ADVANCE the sanity counter! otherwise double counting
                 start, end = read_indel(i + 1)
-                self.counts["-" + self.readBase[start:end]] += 1
+                self.counts[f"-{self.readBase[start:end]}"] += 1
                 i = end
             elif b == "+":  # insertion should be +{number}{bases}
                 start, end = read_indel(i + 1)
-                self.counts["+" + self.readBase[start:end]] += 1
+                self.counts[f"+{self.readBase[start:end]}"] += 1
                 i = end
             else:
                 raise Exception(f"Unknown {b} in readBase!")

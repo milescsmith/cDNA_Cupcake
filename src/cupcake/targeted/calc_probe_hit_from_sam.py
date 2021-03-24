@@ -3,13 +3,25 @@ __author__ = "etseng@pacb.com"
 
 import sys
 from csv import DictWriter
+from enum import Enum
 from pathlib import Path
 
+import typer
 from Bio import SeqIO
 from bx.intervals import Interval, IntervalTree
-
 from cupcake.sequence import BED, BioReaders
 from cupcake.sequence.GFF import collapseGFFReader
+
+
+class index_base(int, Enum):
+    zero = (0,)
+    one = 1
+
+
+app = typer.Typer(
+    name="cupcake.targeted.calc_probe_hit_from_sam",
+    help="Calculate Probe Hit from SAM alignment + probe BED",
+)
 
 
 def get_probe_hit(tree, gene_info, r, is_gtf=False):
@@ -109,45 +121,30 @@ def calc_ontarget_rate(
             writer.writerow(rec)
 
 
-def main():
-    from argparse import ArgumentParser
+@app.command()
+def main(
+    bed_filename: str = typer.Argument(...),
+    input_fasta_or_fastq: str = typer.Argument(...),
+    sam_or_gtf: str = typer.Argument(...),
+    gtf: bool = typer.Option(False, help="Input is GTF instead of SAM"),
+    start_base: index_base = typer.Option(..., help="Start base is 0 or 1-based index"),
+    end_base: index_base = typer.Option(..., help="End base is 0 or 1-based index"),
+    output: str = typer.Option(
+        "stdout", "-o", "--output", help="Output filename (default: stdout)"
+    ),
+):
 
-    parser = ArgumentParser("Calculate Probe Hit from SAM alignment + probe BED")
-    parser.add_argument("bed_filename")
-    parser.add_argument("input_fasta_or_fastq")
-    parser.add_argument("sam_or_gtf")
-    parser.add_argument(
-        "--gtf", action="store_true", default=False, help="Input is GTF instead of SAM"
-    )
-    parser.add_argument(
-        "--start_base",
-        choices=["0", "1"],
-        required=True,
-        help="Start base is 0 or 1-based index",
-    )
-    parser.add_argument(
-        "--end_base",
-        choices=["0", "1"],
-        required=True,
-        help="End base is 0 or 1-based index",
-    )
-    parser.add_argument("-o", "--output", help="Output filename (default: stdout)")
-
-    args = parser.parse_args()
-
-    tree, gene_info = read_probe_bed(
-        args.bed_filename, int(args.start_base), int(args.end_base)
-    )
+    tree, gene_info = read_probe_bed(bed_filename, int(start_base), int(end_base))
 
     calc_ontarget_rate(
         tree,
         gene_info,
-        args.input_fasta_or_fastq,
-        args.gtf,
-        args.sam_or_gtf,
-        args.output,
+        input_fasta_or_fastq,
+        gtf,
+        sam_or_gtf,
+        output,
     )
 
 
 if __name__ == "__main__":
-    main()
+    typer.run(main)

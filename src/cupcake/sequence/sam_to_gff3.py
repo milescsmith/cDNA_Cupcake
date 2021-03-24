@@ -17,19 +17,27 @@ ex: from GMAP
      ID=myid.mrna1;Name=myid;Parent=myid.path1;coverage=29.5;identity=98.3;matches=116;mismatches=2;indels=0;unknowns=0
 """
 
-import sys
+
 from collections import Counter
 from pathlib import Path
-from typing import Union
+from typing import Optional
 
-# from gtfparse.write_gtf import df_to_gtf
-from BCBio import GFF as BCBio_GFF
+import typer
 from Bio import SeqIO
 from Bio.Seq import Seq
 from Bio.SeqFeature import FeatureLocation, SeqFeature
 from Bio.SeqRecord import SeqRecord
-
 from cupcake.sequence.BioReaders import GMAPSAMReader
+from cupcake.logging import cupcake_logger as logger
+
+# from gtfparse.write_gtf import df_to_gtf
+from BCBio import GFF as BCBio_GFF
+
+
+app = typer.Typer(
+    name="cupcake.sequence.sam_to_gff3",
+    help="Convert SAM to GFF3 format using BCBio GFF"
+)
 
 
 def convert_sam_rec_to_gff3_rec(r, source, qid_index_dict=None):
@@ -53,7 +61,7 @@ def convert_sam_rec_to_gff3_rec(r, source, qid_index_dict=None):
     if qid_index_dict is not None:
         if r.qID in qid_index_dict:
             qid_index_dict[r.qID] += 1
-            r.qID += "_dup" + str(qid_index_dict[r.qID])
+            r.qID += f"_dup{str(qid_index_dict[r.qID])}"
         else:
             qid_index_dict[r.qID] += 1
 
@@ -91,7 +99,11 @@ def convert_sam_rec_to_gff3_rec(r, source, qid_index_dict=None):
     return rec
 
 
-def convert_sam_to_gff3(sam_filename: str, output_gff3: str, source, q_dict=None):
+def convert_sam_to_gff3(
+    sam_filename: str,
+    output_gff3: str,
+    source,
+    q_dict=None):
     qid_index_dict = Counter()
     with open(output_gff3, "w") as f:
         recs = [
@@ -101,40 +113,30 @@ def convert_sam_to_gff3(sam_filename: str, output_gff3: str, source, q_dict=None
         BCBio_GFF.write([x for x in recs if x is not None], f)
 
 
-def main():
-    from argparse import ArgumentParser
+@app.command(name="")
+def main(
+    sam_filename: str = typer.Argument(...),
+    input_fasta: Optional[str] = typer.Option(None, "--input_fasta", "-i", help="(Optional) input fasta. If given, coverage will be calculated.",),
+    source: str = typer.Option(..., "--source", "-s", help="source name (ex: hg38, mm10)"),
+):
+    sam_filename = Path(sam_filename)
 
-    parser = ArgumentParser("Convert SAM to GFF3 format using BCBio GFF")
-    parser.add_argument("sam_filename")
-    parser.add_argument(
-        "-i",
-        "--input_fasta",
-        default=None,
-        help="(Optional) input fasta. If given, coverage will be calculated.",
-    )
-    parser.add_argument(
-        "-s", "--source", required=True, help="source name (ex: hg38, mm10)"
-    )
+    if sam_filename.suffix != (".sam"):
+        raise RuntimeError("Only accepts files ending in .sam. Abort!")
 
-    args = parser.parse_args()
-
-    if not args.sam_filename.endswith(".sam"):
-        print("Only accepts files ending in .sam. Abort!", file=sys.stderr)
-        sys.exit(-1)
-
-    prefix = args.sam_filename[:-4]
-    output_gff3 = prefix + ".gff3"
+    prefix = sam_filename.stem
+    output_gff3 = f"{prefix}.gff3"
 
     q_dict = None
-    if args.input_fasta is not None:
+    if input_fasta is not None:
         q_dict = {
-            r.id: len(r.seq) for r in SeqIO.parse(open(args.input_fasta), "fasta")
+            r.id: len(r.seq) for r in SeqIO.parse(open(input_fasta), "fasta")
         }
 
     with open(output_gff3, "w") as f:
         recs = [
-            convert_sam_rec_to_gff3_rec(r0, args.source)
-            for r0 in GMAPSAMReader(args.sam_filename, True, query_len_dict=q_dict)
+            convert_sam_rec_to_gff3_rec(r0, source)
+            for r0 in GMAPSAMReader(sam_filename, True, query_len_dict=q_dict)
         ]
         BCBio_GFF.write([x for x in recs if x is not None], f)
 
@@ -142,4 +144,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    typer.run(main)

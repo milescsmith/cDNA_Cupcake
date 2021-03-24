@@ -8,7 +8,6 @@ from pathlib import Path
 from subprocess import check_output
 
 from Bio import SeqIO
-
 from cupcake.logging import cupcake_logger as logger
 from cupcake.phasing.io import VariantPhaseCleaner, VariantPhaser
 from cupcake.phasing.io.MPileUpVariantCaller import MPileUPVariant
@@ -132,7 +131,7 @@ def set_to_kill(
         pp.haplotypes, isoform_tally, diff_arr, hap_count_ordered
     )
     # write out the mapping relationship between: FL CCS --> (pre-corrected) hap --> error-corrected hap
-    with open(output_prefix + ".cleaned.hap_info.txt", "w") as f:
+    with open(f"{output_prefix}.cleaned.hap_info.txt", "w") as f:
         f.write("id,hap_preclean,hap_postclean\n")
         for seqid, old_i in pp.seq_hap_info.items():
             f.write(

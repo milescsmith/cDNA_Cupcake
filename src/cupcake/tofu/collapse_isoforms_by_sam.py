@@ -26,7 +26,6 @@ from typing import Optional, Union
 import typer
 from Bio import SeqIO
 from bx.intervals import IntervalTree
-
 from cupcake.logging import cupcake_logger as logger
 from cupcake.sequence import GFF
 from cupcake.tofu.branch import branch_simple2

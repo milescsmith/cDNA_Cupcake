@@ -5,11 +5,17 @@ import re
 import sys
 from collections import Counter
 from csv import DictReader, DictWriter
+from typing import Tuple
 
+import typer
 from Bio import SeqIO
+from cupcake.logging import cupcake_logger as logger
 
 FIELDNAMES = ["pbid", "pbgene", "length", "refisoform", "refgene", "fl_count"]
 pbid_rex = re.compile(r"PB.(\d+).\d+")
+
+
+app = typer.Typing(name="cupcake.post_isoseq_cluster.demux_by_barcode_for_subsampling")
 
 
 def demux_for_subsamping(
@@ -44,17 +50,15 @@ def demux_for_subsamping(
     reader = DictReader(open(demux_count_file), delimiter=",")
     for r in reader:
         if r["id"] not in d:
-            print(
+            logger.info(
                 f"WARNING: skipping {r['id']} because not in {class_filename}",
-                file=sys.stderr,
             )
             continue
 
         m = pbid_rex.match(r["id"])
         if m is None:
-            print(
+            logger.error(
                 f"ERROR: unable to parse ID {r['id']}. Expected format PB.X.Y!",
-                file=sys.stderr,
             )
             sys.exit(-1)
 
@@ -86,33 +90,29 @@ def demux_for_subsamping(
         h.close()
 
 
-def main():
-    from argparse import ArgumentParser
-
-    parser = ArgumentParser()
-    parser.add_argument("class_filename", help="SQANTI classification file")
-    parser.add_argument("fasta_filename", help="FASTA filename")
-    parser.add_argument("demux_count_file", help="Demux count file")
-    parser.add_argument("output_prefix", help="Output prefix for GFF outputs")
-    parser.add_argument("outgroup_dict", help="Tuples indicating barcode grouping")
-    parser.add_argument(
-        "--ignore_novel",
-        action="store_true",
-        default=False,
+def main(
+    class_filename: str = typer.Argument(..., help="SQANTI classification file"),
+    fasta_filename: str = typer.Argument(..., help="FASTA filename"),
+    demux_count_file: str = typer.Argument(..., help="Demux count file"),
+    output_prefix: str = typer.Argument(..., help="Output prefix for GFF outputs"),
+    outgroup_dict: Tuple[str, str] = typer.Argument(
+        ..., help="Tuples indicating barcode grouping"
+    ),
+    ignore_novel: bool = typer.Option(
+        False,
         help="Ignore novel genes/transcripts (default: off)",
-    )
-
-    args = parser.parse_args()
-    out_group_dict = dict(eval(args.outgroup_dict))
+    ),
+) -> None:
+    out_group_dict = dict(eval(outgroup_dict))
     demux_for_subsamping(
-        args.class_filename,
-        args.fasta_filename,
-        args.demux_count_file,
-        args.output_prefix,
+        class_filename,
+        fasta_filename,
+        demux_count_file,
+        output_prefix,
         out_group_dict,
-        args.ignore_novel,
+        ignore_novel,
     )
 
 
 if __name__ == "__main__":
-    main()
+    typer.run(main)

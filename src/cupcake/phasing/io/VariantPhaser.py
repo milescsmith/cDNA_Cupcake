@@ -6,8 +6,8 @@ from csv import DictReader
 import vcf
 from Bio import SeqIO
 from Bio.Seq import Seq
-
-from cupcake.phasing.io.coordinate_mapper import get_base_to_base_mapping_from_sam
+from cupcake.phasing.io.coordinate_mapper import (
+    get_base_to_base_mapping_from_sam,)
 from cupcake.sequence.BioReaders import GMAPSAMReader
 
 __VCF_EXAMPLE__ = """
@@ -88,7 +88,7 @@ class VariantPhaser(object):
         2. discard if did not map to the full range of variants (unless <partial_ok> is True)
         3. discard if at var positions have non-called bases (outliers)
         """
-        f_log = open(output_prefix + ".log", "w")
+        f_log = open(f"{output_prefix}.log", "w")
 
         seq_dict = SeqIO.to_dict(
             SeqIO.parse(open(input_fa_or_fq), type_fa_or_fq(input_fa_or_fq))

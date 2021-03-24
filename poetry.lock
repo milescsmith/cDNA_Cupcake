@@ -339,6 +339,17 @@ pytz = ">=2017.3"
 test = ["pytest (>=5.0.1)", "pytest-xdist", "hypothesis (>=3.58)"]
 
 [[package]]
+name = "parasail"
+version = "1.2.4"
+description = "pairwise sequence alignment library"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+numpy = "*"
+
+[[package]]
 name = "parso"
 version = "0.8.1"
 description = "A Python Parser"
@@ -386,7 +397,7 @@ resolved_reference = "e5974b56baf90d27ed6f0cf20c2ff7583f6b03c3"
 
 [[package]]
 name = "pbcore"
-version = "2.3.0"
+version = "2.3.1"
 description = ""
 category = "main"
 optional = false
@@ -405,11 +416,11 @@ test = ["coverage", "pbtestdata", "pylint", "pytest", "pytest-cov", "pytest-xdis
 type = "git"
 url = "https://github.com/PacificBiosciences/pbcore"
 reference = "master"
-resolved_reference = "72ea37c3234c1ec48b5d0e292c35c90ada5a6317"
+resolved_reference = "7957d7ababf17660af3bd5db7d57af933475de54"
 
 [[package]]
 name = "pbcoretools"
-version = "0.8.15"
+version = "0.8.16"
 description = ""
 category = "main"
 optional = false
@@ -429,7 +440,7 @@ test = ["coverage", "jinja2", "jsonschema", "pbtestdata", "pytest", "pytest-cov"
 type = "git"
 url = "https://github.com/PacificBiosciences/pbcoretools"
 reference = "master"
-resolved_reference = "0121cf96f0b60eb7b015140aecb9c4a9192c5cfa"
+resolved_reference = "0984c8f4bbbfac5fc1d1a6d49e64fe211018d5d0"
 
 [[package]]
 name = "pexpect"
@@ -714,7 +725,7 @@ testing = ["pytest (>=3.5,!=3.7.3)", "pytest-checkdocs (>=1.2.3)", "pytest-flake
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.7.1"
-content-hash = "2c7feb499990058057099a01e386369b432fdbda68ff1d488946d0297e8b9f84"
+content-hash = "a6e59066f5493fdf9f9402d3115b3403183487ff32bedb564488d06e3410a0bc"
 
 [metadata.files]
 appdirs = [
@@ -991,6 +1002,14 @@ pandas = [
     {file = "pandas-1.2.2-cp39-cp39-win32.whl", hash = "sha256:e3c250faaf9979d0ec836d25e420428db37783fa5fed218da49c9fc06f80f51c"},
     {file = "pandas-1.2.2-cp39-cp39-win_amd64.whl", hash = "sha256:e9bbcc7b5c432600797981706f5b54611990c6a86b2e424329c995eea5f9c42b"},
     {file = "pandas-1.2.2.tar.gz", hash = "sha256:14ed84b463e9b84c8ff9308a79b04bf591ae3122a376ee0f62c68a1bd917a773"},
+]
+parasail = [
+    {file = "parasail-1.2.4-py2.py3-none-macosx_10_9_x86_64.whl", hash = "sha256:35bebac42193a0608fa59a42f34a3b393010d4d425a0c40a7bf3419ea7a0b2fe"},
+    {file = "parasail-1.2.4-py2.py3-none-manylinux2010_i686.whl", hash = "sha256:fd940a737507e1980d3c08982f0c3aef084515c059daff39e1ebd370db2f5fa3"},
+    {file = "parasail-1.2.4-py2.py3-none-manylinux2010_x86_64.whl", hash = "sha256:37d17536b37886dcf87883f56c04ff614fec780e111db5a0cedd791c586ef252"},
+    {file = "parasail-1.2.4-py2.py3-none-win32.whl", hash = "sha256:500a181b5c8f96083423913efdb3070fde7ca8e1bb2de222d03e2ef1c37bec2c"},
+    {file = "parasail-1.2.4-py2.py3-none-win_amd64.whl", hash = "sha256:5324e87262ae456a5c7165394734eda60f9b8927eb4bf6b88f6fe5f55c404e66"},
+    {file = "parasail-1.2.4.tar.gz", hash = "sha256:8e6e0762924a461bb437cbb71122765c6912dace880e338bd19c7f9d12efead2"},
 ]
 parso = [
     {file = "parso-0.8.1-py2.py3-none-any.whl", hash = "sha256:15b00182f472319383252c18d5913b69269590616c947747bc50bf4ac768f410"},

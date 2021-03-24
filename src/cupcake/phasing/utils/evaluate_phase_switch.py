@@ -29,7 +29,6 @@ from typing import Tuple
 
 # from collections import defaultdict
 import vcf
-
 from cupcake.logging import cupcake_logger as logger
 
 

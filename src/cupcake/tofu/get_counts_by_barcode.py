@@ -21,7 +21,6 @@ from pathlib import Path
 from typing import List, Optional, Tuple
 
 import typer
-
 from cupcake.logging import cupcake_logger as logger
 
 app = typer.Typer(name="cupcake.tofu.get_counts_by_barcode")

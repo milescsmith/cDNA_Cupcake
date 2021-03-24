@@ -1,20 +1,22 @@
 import csv
 import gzip
-import os
 import subprocess
-import sys
 from collections import defaultdict
 from csv import DictReader, DictWriter
 from multiprocessing import Process
-
-import pysam
-from Bio import SeqIO
-from bx.intervals.cluster import ClusterTree
+from pathlib import Path
 
 import cupcake.sequence.BioReaders as BioReaders
+import pysam
+import typer
+from Bio import SeqIO
+from bx.intervals.cluster import ClusterTree
 from cupcake.logging import cupcake_logger as logger
 
 csv.field_size_limit(100000000)
+
+
+app = typer.Typer(name="cupcake.singlecell.cluster_by_UMI_mapping.py")
 
 
 def collect_cluster_results_multithreaded(
@@ -36,7 +38,7 @@ def collect_cluster_results_multithreaded(
             args=(
                 group_csv,
                 out_dir,
-                output_prefix + "." + str(i),
+                f"{output_prefix}.{str(i)}",
                 use_BC,
                 indices[(i * chunk_size) : ((i + 1) * chunk_size)],
             ),
@@ -49,12 +51,11 @@ def collect_cluster_results_multithreaded(
 
     # fasta file concatenate
     fasta_files = [
-        output_prefix + "." + str(i) + ".clustered_transcript.rep.fasta"
+        f"{output_prefix}.{str(i)}.clustered_transcript.rep.fasta"
         for i in range(chunks)
     ]
     csv_files = [
-        output_prefix + "." + str(i) + ".clustered_transcript.csv"
-        for i in range(chunks)
+        f"{output_prefix}.{str(i)}.clustered_transcript.csv" for i in range(chunks)
     ]
 
     cmd_cat_fasta = (
@@ -86,97 +87,94 @@ def collect_cluster_results(
     transcript/0 --> 1-TCAAGGTC-transcript/0
     # however singletons (shouldn't have much post cluster) will keep the CCS ID which is ok
     """
-    f_out_rep = open(output_prefix + ".clustered_transcript.rep.fasta", "w")
-    f_out_not = open(output_prefix + ".clustered_transcript.not_rep.fasta", "w")
-    f_csv = open(output_prefix + ".clustered_transcript.csv", "w")
-    writer = DictWriter(
-        f_csv,
-        fieldnames=["index", "UMI", "BC", "locus", "cluster", "ccs_id"],
-        delimiter=",",
-    )
-    # writer.writeheader()
+    out_dir = Path(out_dir)
+    with open(f"{output_prefix}.clustered_transcript.rep.fasta", "w") as f_out_rep, open(f"{output_prefix}.clustered_transcript.not_rep.fasta", "w") as f_out_not, open(f"{output_prefix}.clustered_transcript.csv", "w") as f_csv:
+        
+        writer = DictWriter(
+            f_csv,
+            fieldnames=["index", "UMI", "BC", "locus", "cluster", "ccs_id"],
+            delimiter=",",
+        )
+        # writer.writeheader()
 
-    bad = []
-    for r in DictReader(open(group_csv), delimiter=","):
-        index = r["index"]
-        if indices_to_use is not None and index not in indices_to_use:
-            continue
-        umi_key = r["UMI"]
-        if use_BC:
-            umi_key += "-" + r["BC"]
-        members = list(set(r["members"].split(",")))
+        bad = []
+        for r in DictReader(open(group_csv), delimiter=","):
+            index = r["index"]
+            if indices_to_use is not None and index not in indices_to_use:
+                continue
+            umi_key = r["UMI"]
+            if use_BC:
+                umi_key += f"-{r['BC']}"
+            members = list(set(r["members"].split(",")))
 
-        if len(members) == 1:  # singleton, no directory, continue
-            continue
-        d = os.path.join(out_dir, index, umi_key)
-        hq = os.path.join(d, "output.hq.fasta.gz")
-        lq = os.path.join(d, "output.lq.fasta.gz")
-        single = os.path.join(d, "output.singletons.fasta.gz")
-        report = os.path.join(d, "output.cluster_report.csv")
+            if len(members) == 1:  # singleton, no directory, continue
+                continue
+            d = out_dir.joinpath(index, umi_key)
+            hq = d.joinpath("output.hq.fasta.gz")
+            lq = d.joinpath("output.lq.fasta.gz")
+            single = d.joinpath("output.singletons.fasta.gz")
+            report = d.joinpath("output.cluster_report.csv")
 
-        if not os.path.exists(d):
-            print(f"{d} does not exist! DEBUG mode, ok for now")
-            bad.append(d)
-            continue
+            if not d.exists():
+                print(f"{d} does not exist! DEBUG mode, ok for now")
+                bad.append(d)
+                continue
 
-        if not os.path.exists(report):
-            print(f"{report} does not exist! DEBUG mode, ok for now")
-            bad.append(report)
-            continue
+            if not report.exists():
+                print(f"{report} does not exist! DEBUG mode, ok for now")
+                bad.append(report)
+                continue
 
-        hq_count = 0
-        if os.path.exists(hq):
-            with gzip.open(hq, "rt") as handle:
-                for seqrec in SeqIO.parse(handle, "fasta"):
-                    if hq_count == 0:
-                        f_out_rep.write(
-                            f">{index}-{umi_key}-{seqrec.id}\n{seqrec.seq}\n"
-                        )
-                    else:
-                        f_out_not.write(
-                            f">{index}-{umi_key}-{seqrec.id}\n{seqrec.seq}\n"
-                        )
-                    hq_count += 1
+            hq_count = 0
+            if hq.exists():
+                with gzip.open(hq, "rt") as handle:
+                    for seqrec in SeqIO.parse(handle, "fasta"):
+                        if hq_count == 0:
+                            f_out_rep.write(
+                                f">{index}-{umi_key}-{seqrec.id}\n{seqrec.seq}\n"
+                            )
+                        else:
+                            f_out_not.write(
+                                f">{index}-{umi_key}-{seqrec.id}\n{seqrec.seq}\n"
+                            )
+                        hq_count += 1
 
-        if os.path.exists(lq):
-            with gzip.open(lq, "rt") as handle:
-                for seqrec in SeqIO.parse(handle, "fasta"):
-                    f_out_not.write(f">{index}-{umi_key}-{seqrec.id}\n{seqrec.seq}\n")
+            if lq.exists():
+                with gzip.open(lq, "rt") as handle:
+                    for seqrec in SeqIO.parse(handle, "fasta"):
+                        f_out_not.write(f">{index}-{umi_key}-{seqrec.id}\n{seqrec.seq}\n")
 
-        info = {
-            "index": index,
-            "UMI": r["UMI"],
-            "BC": r["BC"] if use_BC else "NA",
-            "locus": r["locus"],
-        }
-        for ccs_rec in DictReader(open(report), delimiter=","):
-            # cluster_id,read_id,read_type
-            # transcript/0,m64012_191109_035807/102828567/ccs,FL
-            # transcript/0,m64012_191109_035807/121700628/ccs,FL
-            info["cluster"] = ccs_rec["cluster_id"]
-            info["ccs_id"] = ccs_rec["read_id"]
-            writer.writerow(info)
+            info = {
+                "index": index,
+                "UMI": r["UMI"],
+                "BC": r["BC"] if use_BC else "NA",
+                "locus": r["locus"],
+            }
+            for ccs_rec in DictReader(open(report), delimiter=","):
+                # cluster_id,read_id,read_type
+                # transcript/0,m64012_191109_035807/102828567/ccs,FL
+                # transcript/0,m64012_191109_035807/121700628/ccs,FL
+                info["cluster"] = ccs_rec["cluster_id"]
+                info["ccs_id"] = ccs_rec["read_id"]
+                writer.writerow(info)
 
-        # NOTE: singletons are not part of output.cluster_report.csv
-        info["cluster"] = "NA"
-        if os.path.exists(single):
-            with gzip.open(single, "rt") as handle:
-                for seqrec in SeqIO.parse(handle, "fasta"):
-                    f_out_not.write(f">{index}-{umi_key}-{seqrec.id}\n{seqrec.seq}\n")
-                    info["ccs_id"] = seqrec.id
-                    writer.writerow(info)
+            # NOTE: singletons are not part of output.cluster_report.csv
+            info["cluster"] = "NA"
+            if single.exists():
+                with gzip.open(single, "rt") as handle:
+                    for seqrec in SeqIO.parse(handle, "fasta"):
+                        f_out_not.write(f">{index}-{umi_key}-{seqrec.id}\n{seqrec.seq}\n")
+                        info["ccs_id"] = seqrec.id
+                        writer.writerow(info)
 
-    f_out_not.close()
-    f_out_rep.close()
-    f_csv.close()
     return bad, f_out_rep.name, f_csv.name
 
 
 def write_records_to_bam_multithreaded(
-    flnc_tagged_bam, map_seqid_to_group, output_prefix, cpus=1, chunks=4
-):
+    flnc_tagged_bam, map_seqid_to_group, output_prefix, cpus: int = 1, chunks: int = 4
+) -> None:
 
-    print(f"Reading {flnc_tagged_bam}...", file=sys.stdout)
+    logger.info(f"Reading {flnc_tagged_bam}...")
     reader = pysam.AlignmentFile(flnc_tagged_bam, "rb", check_sq=False)
     read_dict = {r.qname: r for r in reader}
 
@@ -200,8 +198,8 @@ def write_records_to_bam_multithreaded(
                 read_dict,
                 reader.header,
                 group_map,
-                output_prefix + ".cmd_" + str(i),
-                output_prefix + ".singleton_" + str(i) + ".fasta",
+                f"{output_prefix}.cmd_{str(i)}",
+                f"{output_prefix}.singleton_{str(i)}.fasta",
                 cpus,
                 group_map_keys[(i * chunk_size) : ((i + 1) * chunk_size)],
             ),
@@ -222,44 +220,43 @@ def write_records_to_bam(
     cpus,
     group_map_keys=None,
 ):
-    f_cmd = open(cmd_filename, "w")
-    f_singleton = open(singleton_out_fasta, "w")
+    with open(cmd_filename, "w") as f_cmd, open(singleton_out_fasta, "w") as f_singleton:
     # make the directories + write out flnc.bam
 
-    if group_map_keys is None:
-        group_map_keys = group_map.keys()
+        if group_map_keys is None:
+            group_map_keys = group_map.keys()
 
-    single = 0
-    for group_name in group_map_keys:
-        assert len(group_map[group_name]) == len(
-            set(group_map[group_name])
-        )  # DEBUG only can remove later
-        single += len(group_map[group_name]) == 1
-    print(f"{cmd_filename}-single:{single},not single:{len(group_map) - single}")
-    # return
+        single = 0
+        for group_name in group_map_keys:
+            assert len(group_map[group_name]) == len(
+                set(group_map[group_name])
+            )  # DEBUG only can remove later
+            single += len(group_map[group_name]) == 1
+        print(f"{cmd_filename}-single:{single},not single:{len(group_map) - single}")
+        # return
 
-    for group_name in group_map_keys:
-        seqids = group_map[group_name]
-        if len(seqids) == 1:  # singleton, just write to the output fasta to save time
-            _outdir, _index, _umi_bc = group_name.split("/")
-            r = read_dict[seqids[0]]
-            # ex: newid 1-TGATACCAC-TGCTTAAAAAAA-m64019_190830_195852/130941517/ccs
-            newid = f"{_index}-{_umi_bc}-{r.qname}"
-            f_singleton.write(f">{newid}\n{r.seq}\n")
-        else:
-            print(f"Writing to {group_name}/flnc_tagged.bam...", file=sys.stdout)
-            os.makedirs(group_name)
-            f_out = pysam.AlignmentFile(
-                os.path.join(group_name, "flnc_tagged.bam"), "wb", header=reader_header
-            )
-            for seqid in seqids:
-                f_out.write(read_dict[seqid])
-            f_out.close()
-            f_cmd.write(
-                f"isoseq3 cluster {group_name}/flnc_tagged.bam {group_name}/output.bam --use-qvs --singletons -j {cpus}\n"
-            )
-    f_cmd.close()
-    f_singleton.close()
+        for group_name in group_map_keys:
+            seqids = group_map[group_name]
+            if len(seqids) == 1:  # singleton, just write to the output fasta to save time
+                _outdir, _index, _umi_bc = group_name.split("/")
+                r = read_dict[seqids[0]]
+                # ex: newid 1-TGATACCAC-TGCTTAAAAAAA-m64019_190830_195852/130941517/ccs
+                newid = f"{_index}-{_umi_bc}-{r.qname}"
+                f_singleton.write(f">{newid}\n{r.seq}\n")
+            else:
+                group_name = Path(group_name)
+                logger.info(f"Writing to {group_name}/flnc_tagged.bam...")
+                
+                group_name.mkdir()
+                f_out = pysam.AlignmentFile(
+                    group_name.joinpath("flnc_tagged.bam"), "wb", header=reader_header
+                )
+                for seqid in seqids:
+                    f_out.write(read_dict[seqid])
+                f_out.close()
+                f_cmd.write(
+                    f"isoseq3 cluster {group_name}/flnc_tagged.bam {group_name}/output.bam --use-qvs --singletons -j {cpus}\n"
+                )
 
 
 def sep_by_UMI(
@@ -274,6 +271,7 @@ def sep_by_UMI(
 
     later we should create <out_dir>/<unique_index>/<UMI>/flnc_tagged.bam  <-- can run isoseq3 cluster on this later
     """
+    out_dir = Path(out_dir)
     chrom = records[0].sID
     # first we separate by loci (don't worry about strand)
     tree = ClusterTree(0, 0)
@@ -317,7 +315,7 @@ def sep_by_UMI(
                 "members": ",".join(member_ids),
             }
             f_out.writerow(info)
-            d = os.path.join(out_dir, str(loci_index), umi_key)
+            d = out_dir.joinpath(str(loci_index), umi_key)
             map_seqid_to_group.update({m: d for m in member_ids})
         loci_index += 1
     return loci_index
@@ -351,13 +349,9 @@ def iter_sorted_gmap_record(sam_filename, umi_bc_dict, out_dir, f_out, use_BC=Fa
         if r.sID == "*":
             continue
         if r.sID == records[0].sID and r.sStart < records[-1].sStart:
-            print("SAM file is NOT sorted. ABORT!", file=sys.stderr)
-            sys.exit(-1)
+            raise RuntimeError("SAM file is NOT sorted. ABORT!")
         if r.sID != records[0].sID or r.sStart > max_end:
-            print(
-                "processing {}:{}...{} records".format(r.sID, max_end, len(records)),
-                file=sys.stdout,
-            )
+            logger.info(f"processing {r.sID}:{max_end}...{len(records)} records")
             loci_index = sep_by_UMI(
                 records,
                 umi_bc_dict,
@@ -376,50 +370,37 @@ def iter_sorted_gmap_record(sam_filename, umi_bc_dict, out_dir, f_out, use_BC=Fa
     return map_seqid_to_group
 
 
-def run(args):
-    print("Reading UMI-BC CSV {}...".format(args.umi_bc_csv))
-    umi_bc_dict = {
-        r["id"]: r for r in DictReader(open(args.umi_bc_csv), delimiter="\t")
-    }
+@app.command(name="")
+def main(
+    flnc_bam: str = typer.Argument(..., help="FLNC BAM filename"),
+    sorted_sam: str = typer.Argument(..., help="Mapped, sorted FLNC SAM filename"),
+    umi_bc_csv: str = typer.Argument(..., help="Clipped UMI/BC CSV filename"),
+    output_prefix: str = typer.Argument(..., help="Output prefix"),
+    out_dir: str = typer.Option(
+        "tmp", "-d", "--out_dir", help="Cluster out directory (default: tmp/)"
+    ),
+    useBC: bool = typer.Option(False, help="Has single cell BC (default: off)"),
+):
+    print(f"Reading UMI-BC CSV {umi_bc_csv}...")
+    umi_bc_dict = {r["id"]: r for r in DictReader(open(umi_bc_csv), delimiter="\t")}
 
-    f = open(args.output_prefix + "_founder_info.csv", "w")
-    f_out = DictWriter(f, fieldnames=["index", "UMI", "BC", "locus", "size", "members"])
-    f_out.writeheader()
-    m = iter_sorted_gmap_record(
-        sam_filename=args.sorted_sam,
-        umi_bc_dict=umi_bc_dict,
-        out_dir=args.out_dir,
-        f_out=f_out,
-        use_BC=args.useBC,
-    )
+    with open(f"{output_prefix}_founder_info.csv", "w") as f:
+        f_out = DictWriter(
+            f, fieldnames=["index", "UMI", "BC", "locus", "size", "members"]
+        )
+        f_out.writeheader()
+        m = iter_sorted_gmap_record(
+            sam_filename=sorted_sam,
+            umi_bc_dict=umi_bc_dict,
+            out_dir=out_dir,
+            f_out=f_out,
+            use_BC=useBC,
+        )
 
-    write_records_to_bam_multithreaded(
-        args.flnc_bam, m, args.output_prefix, cpus=1, chunks=20
-    )
-    f.close()
-
-
-def main():
-    from argparse import ArgumentParser
-
-    parser = ArgumentParser("Cluster reads by UMI/BC")
-    parser.add_argument("flnc_bam", help="FLNC BAM filename")
-    parser.add_argument("sorted_sam", help="Mapped, sorted FLNC SAM filename")
-    parser.add_argument("umi_bc_csv", help="Clipped UMI/BC CSV filename")
-    parser.add_argument("output_prefix", help="Output prefix")
-    parser.add_argument(
-        "-d", "--out_dir", default="tmp", help="Cluster out directory (default: tmp/)"
-    )
-    parser.add_argument(
-        "--useBC",
-        default=False,
-        action="store_true",
-        help="Has single cell BC (default: off)",
-    )
-
-    args = parser.parse_args()
-    run(args)
+        write_records_to_bam_multithreaded(
+            flnc_bam, m, output_prefix, cpus=1, chunks=20
+        )
 
 
 if __name__ == "__main__":
-    main()
+    typer.run(main)

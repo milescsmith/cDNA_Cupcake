@@ -11,7 +11,6 @@ from typing import Any, Dict, List, Optional, Union
 from Bio import SeqIO
 from bx.intervals import IntervalTree
 from bx.intervals.cluster import ClusterTree
-
 from cupcake.logging import cupcake_logger as logger
 from cupcake.sequence import GFF
 from cupcake.tofu import compare_junctions

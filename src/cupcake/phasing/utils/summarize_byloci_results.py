@@ -1,10 +1,10 @@
 import glob
-import sys
 from csv import DictReader, DictWriter
 from pathlib import Path
 
 import vcf
 from Bio import SeqIO
+from cupcake.logging import cupcake_logger as logger
 
 FIELDS = ["locus", "size", "num_snp", "num_hap_nopartial", "num_hap_withpartial"]
 
@@ -46,4 +46,4 @@ with open("summarized.isophase_results.txt", "w") as f:
                     )
         writer.writerow(rec)
 
-print(f"Summarized results of by_loci/<dirs> to {f.name}.", file=sys.stderr)
+logger.info(f"Summarized results of by_loci/<dirs> to {f.name}.")

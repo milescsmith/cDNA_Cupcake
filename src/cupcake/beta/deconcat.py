@@ -1,13 +1,13 @@
 import copy
 from csv import DictReader, DictWriter
 from multiprocessing import Process
+from pathlib import Path
 
 import parasail
 import pysam
 import typer
 from Bio import SeqIO
 from Bio.Seq import Seq
-
 from cupcake.logging import cupcake_logger as logger
 
 SCOREMAT = parasail.matrix_create("ACGT", 2, -5)
@@ -54,7 +54,7 @@ def deconcat_worker(
                 writer.writerow(rec)
                 # print(zmw,i,e-s,flag)
                 d2 = copy.deepcopy(d)
-                d2["name"] = d2["name"] + "/" + str(i)
+                d2["name"] = f"{d2['name']}/{str(i)}"
                 assert flag in ("F5", "R3")
                 d2["seq"] = d2["seq"][s:e]
                 d2["qual"] = d2["qual"][s:e]
@@ -78,7 +78,7 @@ def deconcat_all(sequence, start_flag, start_pos):
             yield cur_pos, cur_pos + len(cur_seq), cur_flag, cur_seq
             break
         else:
-            s, e, score, flag = out
+            s, e, _, flag = out
             yield cur_pos, cur_pos + s, cur_flag, cur_seq[:s]
             cur_seq = cur_seq[e:]
             cur_flag = flag
@@ -128,7 +128,7 @@ def main(
     chunk_size = (num_records // cpus) + (num_records % cpus)
 
     offset_start = 0
-    input_bam = input_prefix + ".bam"
+    input_bam = f"{input_prefix}.bam"
     pools = []
     onames = []
     while offset_start <= num_records:
@@ -160,7 +160,7 @@ def main(
 
     logger.info("Merging bam files...")
     reader = pysam.AlignmentFile(bams[0], "rb", check_sq=False)
-    with pysam.AlignmentFile(output_prefix + ".bam", "wb", header=reader.header) as f:
+    with pysam.AlignmentFile(f"{output_prefix}.bam", "wb", header=reader.header) as f:
         for bam in bams:
             for r in pysam.AlignmentFile(bam, "rb", check_sq=False):
                 x = pysam.AlignedSegment.from_dict(r.to_dict(), r.header)

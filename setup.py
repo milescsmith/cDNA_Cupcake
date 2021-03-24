@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from setuptools import setup
 
+from build import *
+
 package_dir = {"": "src"}
 
 packages = [
@@ -83,7 +85,6 @@ setup_kwargs = {
     "entry_points": entry_points,
     "python_requires": ">=3.7.9,<4.0.0",
 }
-from build import *
 
 build(setup_kwargs)
 

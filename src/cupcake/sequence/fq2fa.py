@@ -4,40 +4,32 @@ __version__ = "1.0"
 
 import sys
 
+import typer
 from Bio import SeqIO
 
+from cupcake.logging import cupcake_logger as logger
 
-def main():
-    from argparse import ArgumentParser
 
-    parser = ArgumentParser("Convert fastq to fasta")
-    parser.add_argument(
-        "fastq_filename", help="input fastq (must end with .fastq or .fq)"
-    )
-    args = parser.parse_args()
-
-    input = args.fastq_filename
-    fq2fa(input)
-
+app = typer.Typer(
+    name="cupcake.sequence.fq2fa",
+    help="Convert fastq to fasta"
+)
 
 def fq2fa(input):
-    try:
-        assert input.lower().endswith(".fastq") or input.lower().endswith(".fq")
-    except AssertionError:
-        print(
-            "Input {} does not end with .fastq or .fq! Abort".format(input),
-            file=sys.stderr,
-        )
-        sys.exit(-1)
-    output = input[: input.rfind(".")] + ".fasta"
+    if not input.lower().endswith(".fastq") or input.lower().endswith(".fq"):
+        raise AssertionError(f"Input {input} does not end with .fastq or .fq! Abort")
+    
+    output = f"{input[:input.rfind('.')]}.fasta"
 
-    f = open(output, "w")
     for r in SeqIO.parse(open(input), "fastq"):
-        SeqIO.write(r, f, "fasta")
-    f.close()
+        SeqIO.write(r, output, "fasta")
 
-    print("Output written to", f.name, file=sys.stderr)
+    logger.info(f"Output written to {output}")
+
+
+def main(fastq_filename: str = typer.Argument(..., help="input fastq (must end with .fastq or .fq)")):
+    fq2fa(fastq_filename)
 
 
 if __name__ == "__main__":
-    main()
+    typer.run(main)

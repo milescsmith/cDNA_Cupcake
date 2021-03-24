@@ -3,7 +3,6 @@ __author__ = "etseng@pacb.com"
 
 import itertools
 import sys
-
 # from pickle import *
 from collections import defaultdict, namedtuple
 
@@ -11,13 +10,13 @@ import typer
 from Bio import SeqIO
 from Bio.SeqIO import SeqRecord
 from bx.intervals.cluster import ClusterTree
-
 from cupcake.logging import cupcake_logger as logger
 from cupcake.sequence import BioReaders
 from cupcake.sequence.SeqReaders import LazyFastaReader, LazyFastqReader
 from cupcake.tofu.branch import branch_simple2
 from cupcake.tofu.compare_junctions import compare_junctions
-from cupcake.tofu.get_abundance_post_collapse import get_abundance_post_collapse
+from cupcake.tofu.get_abundance_post_collapse import (
+    get_abundance_post_collapse,)
 from cupcake.tofu.utils import check_ids_unique
 
 app = typer.Typer(name="cupcake.tofy.fusion_finder")
@@ -515,7 +514,7 @@ def fusion_main(
         logger.info(f"Count information written to: {output_prefix}.abundance.txt")
     elif is_flnc:
         logger.info("Input is FLNC. Outputting FLNC counts per fusion.")
-        with open(output_prefix + ".abundance.txt", "w") as f:
+        with open(f"{output_prefix}.abundance.txt", "w") as f:
             f.write("pbid\tcount_fl\n")
             for pbid, members in group_info.items():
                 f.write(f"{pbid}\t{len(members)}\n")

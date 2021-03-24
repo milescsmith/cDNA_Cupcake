@@ -3,15 +3,17 @@ import math
 import random
 from collections import defaultdict
 from csv import DictReader
+from typing import List, Tuple
 
 import typer
-
 from cupcake.logging import cupcake_logger as logger
 
 app = typer.Typer(name="cupcake.annotation.subsample_with_category")
 
 
-def get_counts(count_filename, min_fl_count=2, key="id", min_len=None, max_len=None):
+def get_counts(
+    count_filename: str, min_fl_count=2, key="id", min_len=None, max_len=None
+) -> Tuple[int, List[int]]:
     total = 0
     count_d = defaultdict(lambda: 0)
     for r in DictReader(open(count_filename), delimiter="\t"):
@@ -22,7 +24,7 @@ def get_counts(count_filename, min_fl_count=2, key="id", min_len=None, max_len=N
             continue
         c = int(r["fl_count"])
         if c >= min_fl_count:
-            count_d[r[key] + "---" + r["category"]] += c
+            count_d[f"{r[key]}---{r['category']}"] += c
             total += c
 
     counts = []
@@ -32,7 +34,9 @@ def get_counts(count_filename, min_fl_count=2, key="id", min_len=None, max_len=N
     return total, counts
 
 
-def subsample(total, counts, iter=100, min_fl_count=2, step=10 ** 4):
+def subsample(
+    total: int, counts: List[int], iter=100, min_fl_count=2, step=10 ** 4
+) -> None:
     sizes = list(range(100, total + 1, step))
     logger.info(f"min fl count: {min_fl_count}")
     logger.info("size\tcategory\tmin\tmax\tmean\tsd")

@@ -2,12 +2,14 @@
 __author__ = "etseng@pacb.com"
 
 import math
-import sys
 from collections import Counter, defaultdict
 from csv import DictReader
+from pathlib import Path
+from typing import Dict, List, Union
 
 import typer
 
+from cupcake.logging import cupcake_logger as logger
 """
 Based on the script by Gloria Sheynkman for creating a BED12 file where
 isoforms are shaded by abundances
@@ -46,7 +48,12 @@ NUM_RGB = len(RGB_SCALE)
 app = typer.Typer(name="cupcake.tofu.color_bet12_post_sqanti")
 
 
-def shade_isoforms_for_gene_group(records, bed_info, bed_writers, ok_to_ignore=False):
+def shade_isoforms_for_gene_group(
+    records: Dict[str, str],
+    bed_info: Dict[str, List[str]],
+    bed_writers: Dict[str, str],
+    ok_to_ignore: bool = False,
+) -> None:
     """
 
     :param isolist: list of SQANTI3 classification records which all come from same gene
@@ -79,12 +86,12 @@ def shade_isoforms_for_gene_group(records, bed_info, bed_writers, ok_to_ignore=F
 
 
 def shaded_bed12_post_sqanti(
-    sqanti_class_filename,
-    input_bed12,
-    output_prefix,
-    FL_fieldnames=["FL"],
-    ok_to_ignore=False,
-):
+    sqanti_class_filename: Union[str, Path],
+    input_bed12: Union[str, Path],
+    output_prefix: str,
+    FL_fieldnames: List[str] = ["FL"],
+    ok_to_ignore: bool = False,
+) -> None:
 
     # read input BED12 file into dict
     bed_info = {}  # isoform --> bed record
@@ -111,24 +118,18 @@ def shaded_bed12_post_sqanti(
 
     for cpm_k in total_fl_count_dict:
         if total_fl_count_dict[cpm_k] == 0:
-            print(
-                "No counts observed in column `{0}`. Ignore!".format(
-                    CPM_fieldnames[cpm_k]
-                ),
-                file=sys.stderr,
-            )
-            del CPM_fieldnames[cpm_k]
+            raise RuntimeError(f"No counts observed in column `{CPM_fieldnames[cpm_k]}`. Ignore!".format()
 
-    print(f"Generating count RGB for columns: {', '.join(CPM_fieldnames.keys())}")
+    logger.info(f"Generating count RGB for columns: {', '.join(CPM_fieldnames.keys())}")
     bed_writers = {}
     for cpm_k in CPM_fieldnames:
-        outfile = output_prefix + "." + cpm_k + ".bed12"
-        print(f"Writing output to {outfile}....", file=sys.stdout)
+        outfile = f"{output_prefix}.{cpm_k}.bed12"
+        logger.info(f"Writing output to {outfile}....")
         with open(outfile, "w") as bed_writers[cpm_k]:
             bed_writers[cpm_k].write("track name=PacBioColored itemRgb=On\n")
 
     # calculate FL CPM
-    for gene, records in records_by_gene.items():
+    for _, records in records_by_gene.items():
         for r in records:
             for cpm_k, fl_k in CPM_fieldnames.items():
                 r[cpm_k] = (

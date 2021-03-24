@@ -5,11 +5,10 @@ import sys
 from collections import defaultdict
 from csv import DictReader, DictWriter
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Tuple
 
 import typer
 from Bio import SeqIO
-
 from cupcake.logging import cupcake_logger as logger
 from cupcake.sequence.GFF import collapseGFFReader
 
@@ -48,7 +47,7 @@ app = typer.Typer(name="cupcake.tofu.fusion_collate_into")
 
 def get_breakpoint_n_seq(
     r1: dict, r2: dict, genome_dict: Optional[str] = None, flanking_size: int = 50
-):
+) -> Tuple[str, str, str, str]:
     if r1.strand == "+":
         left_breakpoint = f"{r1.chr}:{r1.end}:+"
         if genome_dict is not None:
@@ -97,7 +96,7 @@ def collate_info(
     min_fl_count: int = 2,
     min_breakpoint_dist_kb: int = 10,
     include_Mt_genes: bool = False,
-):
+) -> None:
 
     global_info = {}  # holding information for general information
     if config_filename is not None:
@@ -126,7 +125,7 @@ def collate_info(
     # get sequences
     seq_dict = {
         r.id.split("|")[0]: r.seq
-        for r in SeqIO.parse(open(fusion_prefix + ".rep.fa"), "fasta")
+        for r in SeqIO.parse(open(f"{fusion_prefix}.rep.fa"), "fasta")
     }
 
     # get count information
@@ -145,7 +144,7 @@ def collate_info(
     # get breakpoint information
     gff_d = defaultdict(lambda: {})  # PBfusion.X --> isoform index -> sqanti3 record
     if cds_gff_filename is None:
-        gff_filename = fusion_prefix + ".gff"
+        gff_filename = f"{fusion_prefix}.gff"
     else:
         gff_filename = cds_gff_filename
 
@@ -181,7 +180,7 @@ def collate_info(
                 or r["associated_gene"] == ""
                 for junk, r in iso_dict
             )
-            pbid = "PBfusion." + str(gene_index)
+            pbid = f"PBfusion.{str(gene_index)}"
 
             gff_info = list(gff_d[gene_index].items())
             gff_info.sort(key=lambda x: x[0])
@@ -290,7 +289,7 @@ def main(
         10, help="Minimum breakpoint distance, in kb)"
     ),
     include_Mt_genes: bool = typer.Option(False, help="Include Mt genes"),
-):
+) -> None:
     if genome is not None:
         genome_dict = SeqIO.to_dict(SeqIO.parse(open(genome), "fasta"))
         print(f"Finished reading reference genome {genome}.")

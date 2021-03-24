@@ -6,10 +6,18 @@ import random
 import sys
 from collections import defaultdict
 
+import typer
 from Bio import SeqIO
+from cupcake.logging import cupcake_logger as logger
 
 simType = ["sub", "ins", "del", "match"]
 simTypeSize = 4
+
+
+app = typer.Typing(
+    name="cupcake.simulate.simulate",
+    help="Simple error simulation",
+)
 
 
 def throwdice(profile):
@@ -22,7 +30,7 @@ def throwdice(profile):
 def sim_start(ntimes, profile):
     start = defaultdict(lambda: 0)
     acc = defaultdict(lambda: 0)
-    for i in range(ntimes):
+    for _ in range(ntimes):
         curpos = 0
         while True:
             type = throwdice(profile)
@@ -49,7 +57,7 @@ def sim_seq(seq, profile):
     nucl = {"A", "T", "C", "G"}
     sim = ""
     qv = ""  # qv string,
-    for i, s in enumerate(seq):
+    for _, s in enumerate(seq):
         while True:
             type = throwdice(profile)
             if type == "match":
@@ -74,74 +82,60 @@ def sim_seq(seq, profile):
     return sim, qv
 
 
-def main():
-    from argparse import ArgumentParser
-
-    parser = ArgumentParser("Simple error simulation")
-    parser.add_argument("fasta_filename")
-    parser.add_argument("output_prefix")
-    parser.add_argument(
-        "--copy",
-        type=int,
-        default=1,
+@app.command(name="")
+def main(
+    fasta_filename: str = typer.Argument(...),
+    output_prefix: str = typer.Argument(...),
+    copy: int = typer.Option(
+        1,
         help="Number of copies to simulate per input sequence (default: 1)",
-    )
-    parser.add_argument(
+    ),
+    ins: float = typer.Option(
+        0,
         "--ins",
         "-i",
-        type=float,
-        default=0,
         help="Insert error rate [0-1] (default: 0)",
-    )
-    parser.add_argument(
+    ),
+    dele: float = typer.Option(
+        0,
         "--dele",
         "-d",
-        type=float,
-        default=0,
         help="Deletion error rate [0-1] (default: 0)",
-    )
-    parser.add_argument(
+    ),
+    sub: float = typer.Option(
+        0,
         "--sub",
         "-s",
-        type=float,
-        default=0,
         help="Substitution error rate [0-1] (default: 0)",
-    )
-
-    args = parser.parse_args()
-
-    if args.sub < 0 or args.sub > 1:
-        print("Substitution error must be between 0-1!", file=sys.stderr)
+    ),
+) -> None:
+    if sub < 0 or sub > 1:
+        logger.error("Substitution error must be between 0-1!")
         sys.exit(-1)
-    if args.ins < 0 or args.ins > 1:
-        print("Insertion error must be between 0-1!", file=sys.stderr)
+    if ins < 0 or ins > 1:
+        logger.error("Insertion error must be between 0-1!")
         sys.exit(-1)
-    if args.dele < 0 or args.dele > 1:
-        print("Deletion error must be between 0-1!", file=sys.stderr)
+    if dele < 0 or dele > 1:
+        logger.error("Deletion error must be between 0-1!")
         sys.exit(-1)
 
-    if args.sub + args.ins + args.dele > 1:
-        print("Total sub+ins+del error cannot exceed 1!", file=sys.stderr)
+    if sub + ins + dele > 1:
+        logger.error("Total sub+ins+del error cannot exceed 1!")
         sys.exit(-1)
 
-    profile = [args.sub, args.sub + args.ins, args.ins + args.dele, 1.0]
+    profile = [sub, sub + ins, ins + dele, 1.0]
 
-    fasta_filename = args.fasta_filename
-    idpre = args.output_prefix
+    fasta_filename = fasta_filename
+    idpre = output_prefix
 
     ith = 0
     for r in SeqIO.parse(open(fasta_filename), "fasta"):
-        for j in range(args.copy):
+        for _ in range(copy):
             ith += 1
             print(
-                ">{}_{}_{}\n{}".format(
-                    idpre,
-                    ith,
-                    r.id[: r.id.find("|")],
-                    sim_seq(r.seq.tostring(), profile),
-                )
+                f">{idpre}_{ith}_{r.id[:r.id.find('|')]}\n{sim_seq(r.seq.tostring(), profile)}"
             )
 
 
 if __name__ == "__main__":
-    main()
+    typer.run(main)

@@ -7,7 +7,6 @@ from csv import DictReader, DictWriter
 
 import typer
 from Bio import SeqIO
-
 from cupcake.logging import cupcake_logger as logger
 from cupcake.sequence import GFF
 
@@ -30,7 +29,7 @@ def filter_by_count(
     output_prefix: str,
     min_count: int,
     dun_use_group_count: bool = False,
-):
+) -> None:
 
     group_filename = f"{input_prefix}.group.txt"
     count_filename = f"{input_prefix}.abundance.txt"
@@ -115,7 +114,7 @@ def filter_by_count(
                 SeqIO.write(r, f, rep_type)
 
     # write output to .abundance.txt
-    with open("{output_prefix}.abundance.txt", "w") as f:
+    with open(f"{output_prefix}.abundance.txt", "w") as f:
         f.write(count_header)
         writer = DictWriter(
             f,

@@ -7,7 +7,6 @@ from pathlib import Path
 from typing import Dict
 
 from Bio import SeqIO
-
 from cupcake.sequence import BioReaders
 from cupcake.sequence.coordinate_mapper import consistute_genome_seq_from_exons
 

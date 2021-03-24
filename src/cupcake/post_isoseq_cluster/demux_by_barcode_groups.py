@@ -10,9 +10,8 @@ import sys
 from collections import defaultdict
 from csv import DictReader
 
-from Bio import SeqIO
-
 import cupcake.sequence.GFF as GFF
+from Bio import SeqIO
 
 rex_pbid = re.compile(r"(PB.\d+.\d+)(|\S+)")
 

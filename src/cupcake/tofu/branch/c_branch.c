@@ -3,7 +3,16 @@
 /* BEGIN: Cython Metadata
 {
     "distutils": {
-        "depends": [],
+        "depends": [
+            "/home/milo/miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/core/include/numpy/arrayobject.h",
+            "/home/milo/miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/core/include/numpy/arrayscalars.h",
+            "/home/milo/miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/core/include/numpy/ndarrayobject.h",
+            "/home/milo/miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/core/include/numpy/ndarraytypes.h",
+            "/home/milo/miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/core/include/numpy/ufuncobject.h"
+        ],
+        "include_dirs": [
+            "/home/milo/miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/core/include"
+        ],
         "name": "cupcake.tofu.branch.c_branch",
         "sources": [
             "src/cupcake/tofu/branch/c_branch.pyx"
@@ -902,7 +911,7 @@ typedef struct {
 } __Pyx_BufFmt_Context;
 
 
-/* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":690
+/* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":690
  * # in Cython to enable them only on the right systems.
  * 
  * ctypedef npy_int8       int8_t             # <<<<<<<<<<<<<<
@@ -911,7 +920,7 @@ typedef struct {
  */
 typedef npy_int8 __pyx_t_5numpy_int8_t;
 
-/* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":691
+/* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":691
  * 
  * ctypedef npy_int8       int8_t
  * ctypedef npy_int16      int16_t             # <<<<<<<<<<<<<<
@@ -920,7 +929,7 @@ typedef npy_int8 __pyx_t_5numpy_int8_t;
  */
 typedef npy_int16 __pyx_t_5numpy_int16_t;
 
-/* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":692
+/* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":692
  * ctypedef npy_int8       int8_t
  * ctypedef npy_int16      int16_t
  * ctypedef npy_int32      int32_t             # <<<<<<<<<<<<<<
@@ -929,7 +938,7 @@ typedef npy_int16 __pyx_t_5numpy_int16_t;
  */
 typedef npy_int32 __pyx_t_5numpy_int32_t;
 
-/* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":693
+/* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":693
  * ctypedef npy_int16      int16_t
  * ctypedef npy_int32      int32_t
  * ctypedef npy_int64      int64_t             # <<<<<<<<<<<<<<
@@ -938,7 +947,7 @@ typedef npy_int32 __pyx_t_5numpy_int32_t;
  */
 typedef npy_int64 __pyx_t_5numpy_int64_t;
 
-/* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":697
+/* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":697
  * #ctypedef npy_int128     int128_t
  * 
  * ctypedef npy_uint8      uint8_t             # <<<<<<<<<<<<<<
@@ -947,7 +956,7 @@ typedef npy_int64 __pyx_t_5numpy_int64_t;
  */
 typedef npy_uint8 __pyx_t_5numpy_uint8_t;
 
-/* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":698
+/* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":698
  * 
  * ctypedef npy_uint8      uint8_t
  * ctypedef npy_uint16     uint16_t             # <<<<<<<<<<<<<<
@@ -956,7 +965,7 @@ typedef npy_uint8 __pyx_t_5numpy_uint8_t;
  */
 typedef npy_uint16 __pyx_t_5numpy_uint16_t;
 
-/* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":699
+/* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":699
  * ctypedef npy_uint8      uint8_t
  * ctypedef npy_uint16     uint16_t
  * ctypedef npy_uint32     uint32_t             # <<<<<<<<<<<<<<
@@ -965,7 +974,7 @@ typedef npy_uint16 __pyx_t_5numpy_uint16_t;
  */
 typedef npy_uint32 __pyx_t_5numpy_uint32_t;
 
-/* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":700
+/* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":700
  * ctypedef npy_uint16     uint16_t
  * ctypedef npy_uint32     uint32_t
  * ctypedef npy_uint64     uint64_t             # <<<<<<<<<<<<<<
@@ -974,7 +983,7 @@ typedef npy_uint32 __pyx_t_5numpy_uint32_t;
  */
 typedef npy_uint64 __pyx_t_5numpy_uint64_t;
 
-/* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":704
+/* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":704
  * #ctypedef npy_uint128    uint128_t
  * 
  * ctypedef npy_float32    float32_t             # <<<<<<<<<<<<<<
@@ -983,7 +992,7 @@ typedef npy_uint64 __pyx_t_5numpy_uint64_t;
  */
 typedef npy_float32 __pyx_t_5numpy_float32_t;
 
-/* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":705
+/* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":705
  * 
  * ctypedef npy_float32    float32_t
  * ctypedef npy_float64    float64_t             # <<<<<<<<<<<<<<
@@ -992,7 +1001,7 @@ typedef npy_float32 __pyx_t_5numpy_float32_t;
  */
 typedef npy_float64 __pyx_t_5numpy_float64_t;
 
-/* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":714
+/* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":714
  * # The int types are mapped a bit surprising --
  * # numpy.int corresponds to 'l' and numpy.long to 'q'
  * ctypedef npy_long       int_t             # <<<<<<<<<<<<<<
@@ -1001,7 +1010,7 @@ typedef npy_float64 __pyx_t_5numpy_float64_t;
  */
 typedef npy_long __pyx_t_5numpy_int_t;
 
-/* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":715
+/* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":715
  * # numpy.int corresponds to 'l' and numpy.long to 'q'
  * ctypedef npy_long       int_t
  * ctypedef npy_longlong   long_t             # <<<<<<<<<<<<<<
@@ -1010,7 +1019,7 @@ typedef npy_long __pyx_t_5numpy_int_t;
  */
 typedef npy_longlong __pyx_t_5numpy_long_t;
 
-/* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":716
+/* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":716
  * ctypedef npy_long       int_t
  * ctypedef npy_longlong   long_t
  * ctypedef npy_longlong   longlong_t             # <<<<<<<<<<<<<<
@@ -1019,7 +1028,7 @@ typedef npy_longlong __pyx_t_5numpy_long_t;
  */
 typedef npy_longlong __pyx_t_5numpy_longlong_t;
 
-/* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":718
+/* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":718
  * ctypedef npy_longlong   longlong_t
  * 
  * ctypedef npy_ulong      uint_t             # <<<<<<<<<<<<<<
@@ -1028,7 +1037,7 @@ typedef npy_longlong __pyx_t_5numpy_longlong_t;
  */
 typedef npy_ulong __pyx_t_5numpy_uint_t;
 
-/* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":719
+/* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":719
  * 
  * ctypedef npy_ulong      uint_t
  * ctypedef npy_ulonglong  ulong_t             # <<<<<<<<<<<<<<
@@ -1037,7 +1046,7 @@ typedef npy_ulong __pyx_t_5numpy_uint_t;
  */
 typedef npy_ulonglong __pyx_t_5numpy_ulong_t;
 
-/* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":720
+/* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":720
  * ctypedef npy_ulong      uint_t
  * ctypedef npy_ulonglong  ulong_t
  * ctypedef npy_ulonglong  ulonglong_t             # <<<<<<<<<<<<<<
@@ -1046,7 +1055,7 @@ typedef npy_ulonglong __pyx_t_5numpy_ulong_t;
  */
 typedef npy_ulonglong __pyx_t_5numpy_ulonglong_t;
 
-/* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":722
+/* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":722
  * ctypedef npy_ulonglong  ulonglong_t
  * 
  * ctypedef npy_intp       intp_t             # <<<<<<<<<<<<<<
@@ -1055,7 +1064,7 @@ typedef npy_ulonglong __pyx_t_5numpy_ulonglong_t;
  */
 typedef npy_intp __pyx_t_5numpy_intp_t;
 
-/* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":723
+/* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":723
  * 
  * ctypedef npy_intp       intp_t
  * ctypedef npy_uintp      uintp_t             # <<<<<<<<<<<<<<
@@ -1064,7 +1073,7 @@ typedef npy_intp __pyx_t_5numpy_intp_t;
  */
 typedef npy_uintp __pyx_t_5numpy_uintp_t;
 
-/* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":725
+/* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":725
  * ctypedef npy_uintp      uintp_t
  * 
  * ctypedef npy_double     float_t             # <<<<<<<<<<<<<<
@@ -1073,7 +1082,7 @@ typedef npy_uintp __pyx_t_5numpy_uintp_t;
  */
 typedef npy_double __pyx_t_5numpy_float_t;
 
-/* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":726
+/* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":726
  * 
  * ctypedef npy_double     float_t
  * ctypedef npy_double     double_t             # <<<<<<<<<<<<<<
@@ -1082,7 +1091,7 @@ typedef npy_double __pyx_t_5numpy_float_t;
  */
 typedef npy_double __pyx_t_5numpy_double_t;
 
-/* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":727
+/* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":727
  * ctypedef npy_double     float_t
  * ctypedef npy_double     double_t
  * ctypedef npy_longdouble longdouble_t             # <<<<<<<<<<<<<<
@@ -1091,7 +1100,7 @@ typedef npy_double __pyx_t_5numpy_double_t;
  */
 typedef npy_longdouble __pyx_t_5numpy_longdouble_t;
 
-/* "cupcake/tofu/branch/c_branch.pyx":7
+/* "cupcake/tofu/branch/c_branch.pyx":10
  * 
  * DTYPE = np.int
  * ctypedef np.int_t DTYPE_t             # <<<<<<<<<<<<<<
@@ -1126,7 +1135,7 @@ static CYTHON_INLINE __pyx_t_double_complex __pyx_t_double_complex_from_parts(do
 
 /*--- Type declarations ---*/
 
-/* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":729
+/* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":729
  * ctypedef npy_longdouble longdouble_t
  * 
  * ctypedef npy_cfloat      cfloat_t             # <<<<<<<<<<<<<<
@@ -1135,7 +1144,7 @@ static CYTHON_INLINE __pyx_t_double_complex __pyx_t_double_complex_from_parts(do
  */
 typedef npy_cfloat __pyx_t_5numpy_cfloat_t;
 
-/* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":730
+/* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":730
  * 
  * ctypedef npy_cfloat      cfloat_t
  * ctypedef npy_cdouble     cdouble_t             # <<<<<<<<<<<<<<
@@ -1144,7 +1153,7 @@ typedef npy_cfloat __pyx_t_5numpy_cfloat_t;
  */
 typedef npy_cdouble __pyx_t_5numpy_cdouble_t;
 
-/* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":731
+/* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":731
  * ctypedef npy_cfloat      cfloat_t
  * ctypedef npy_cdouble     cdouble_t
  * ctypedef npy_clongdouble clongdouble_t             # <<<<<<<<<<<<<<
@@ -1153,7 +1162,7 @@ typedef npy_cdouble __pyx_t_5numpy_cdouble_t;
  */
 typedef npy_clongdouble __pyx_t_5numpy_clongdouble_t;
 
-/* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":733
+/* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":733
  * ctypedef npy_clongdouble clongdouble_t
  * 
  * ctypedef npy_cdouble     complex_t             # <<<<<<<<<<<<<<
@@ -1947,7 +1956,7 @@ static PyObject *__pyx_codeobj__6;
 static PyObject *__pyx_codeobj__8;
 /* Late includes */
 
-/* "cupcake/tofu/branch/c_branch.pyx":9
+/* "cupcake/tofu/branch/c_branch.pyx":12
  * ctypedef np.int_t DTYPE_t
  * 
  * def exon_finding(np.ndarray[DTYPE_t, ndim=1] baseC, np.ndarray[DTYPE_t, ndim=1] altC_neg, np.ndarray[DTYPE_t, ndim=1] altC_pos, np.ndarray[DTYPE_t, ndim=1] transC, int size, int threshSplit, int threshBase, int offset):             # <<<<<<<<<<<<<<
@@ -2008,47 +2017,47 @@ static PyObject *__pyx_pw_7cupcake_4tofu_6branch_8c_branch_1exon_finding(PyObjec
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_altC_neg)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("exon_finding", 1, 8, 8, 1); __PYX_ERR(0, 9, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("exon_finding", 1, 8, 8, 1); __PYX_ERR(0, 12, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_altC_pos)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("exon_finding", 1, 8, 8, 2); __PYX_ERR(0, 9, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("exon_finding", 1, 8, 8, 2); __PYX_ERR(0, 12, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_transC)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("exon_finding", 1, 8, 8, 3); __PYX_ERR(0, 9, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("exon_finding", 1, 8, 8, 3); __PYX_ERR(0, 12, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  4:
         if (likely((values[4] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_size)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("exon_finding", 1, 8, 8, 4); __PYX_ERR(0, 9, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("exon_finding", 1, 8, 8, 4); __PYX_ERR(0, 12, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  5:
         if (likely((values[5] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_threshSplit)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("exon_finding", 1, 8, 8, 5); __PYX_ERR(0, 9, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("exon_finding", 1, 8, 8, 5); __PYX_ERR(0, 12, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  6:
         if (likely((values[6] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_threshBase)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("exon_finding", 1, 8, 8, 6); __PYX_ERR(0, 9, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("exon_finding", 1, 8, 8, 6); __PYX_ERR(0, 12, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  7:
         if (likely((values[7] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_offset)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("exon_finding", 1, 8, 8, 7); __PYX_ERR(0, 9, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("exon_finding", 1, 8, 8, 7); __PYX_ERR(0, 12, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "exon_finding") < 0)) __PYX_ERR(0, 9, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "exon_finding") < 0)) __PYX_ERR(0, 12, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 8) {
       goto __pyx_L5_argtuple_error;
@@ -2066,23 +2075,23 @@ static PyObject *__pyx_pw_7cupcake_4tofu_6branch_8c_branch_1exon_finding(PyObjec
     __pyx_v_altC_neg = ((PyArrayObject *)values[1]);
     __pyx_v_altC_pos = ((PyArrayObject *)values[2]);
     __pyx_v_transC = ((PyArrayObject *)values[3]);
-    __pyx_v_size = __Pyx_PyInt_As_int(values[4]); if (unlikely((__pyx_v_size == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 9, __pyx_L3_error)
-    __pyx_v_threshSplit = __Pyx_PyInt_As_int(values[5]); if (unlikely((__pyx_v_threshSplit == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 9, __pyx_L3_error)
-    __pyx_v_threshBase = __Pyx_PyInt_As_int(values[6]); if (unlikely((__pyx_v_threshBase == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 9, __pyx_L3_error)
-    __pyx_v_offset = __Pyx_PyInt_As_int(values[7]); if (unlikely((__pyx_v_offset == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 9, __pyx_L3_error)
+    __pyx_v_size = __Pyx_PyInt_As_int(values[4]); if (unlikely((__pyx_v_size == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 12, __pyx_L3_error)
+    __pyx_v_threshSplit = __Pyx_PyInt_As_int(values[5]); if (unlikely((__pyx_v_threshSplit == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 12, __pyx_L3_error)
+    __pyx_v_threshBase = __Pyx_PyInt_As_int(values[6]); if (unlikely((__pyx_v_threshBase == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 12, __pyx_L3_error)
+    __pyx_v_offset = __Pyx_PyInt_As_int(values[7]); if (unlikely((__pyx_v_offset == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 12, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("exon_finding", 1, 8, 8, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 9, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("exon_finding", 1, 8, 8, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 12, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("cupcake.tofu.branch.c_branch.exon_finding", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_baseC), __pyx_ptype_5numpy_ndarray, 1, "baseC", 0))) __PYX_ERR(0, 9, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_altC_neg), __pyx_ptype_5numpy_ndarray, 1, "altC_neg", 0))) __PYX_ERR(0, 9, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_altC_pos), __pyx_ptype_5numpy_ndarray, 1, "altC_pos", 0))) __PYX_ERR(0, 9, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_transC), __pyx_ptype_5numpy_ndarray, 1, "transC", 0))) __PYX_ERR(0, 9, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_baseC), __pyx_ptype_5numpy_ndarray, 1, "baseC", 0))) __PYX_ERR(0, 12, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_altC_neg), __pyx_ptype_5numpy_ndarray, 1, "altC_neg", 0))) __PYX_ERR(0, 12, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_altC_pos), __pyx_ptype_5numpy_ndarray, 1, "altC_pos", 0))) __PYX_ERR(0, 12, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_transC), __pyx_ptype_5numpy_ndarray, 1, "transC", 0))) __PYX_ERR(0, 12, __pyx_L1_error)
   __pyx_r = __pyx_pf_7cupcake_4tofu_6branch_8c_branch_exon_finding(__pyx_self, __pyx_v_baseC, __pyx_v_altC_neg, __pyx_v_altC_pos, __pyx_v_transC, __pyx_v_size, __pyx_v_threshSplit, __pyx_v_threshBase, __pyx_v_offset);
 
   /* function exit code */
@@ -2148,26 +2157,26 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_exon_finding(CYTHON_U
   __pyx_pybuffernd_transC.rcbuffer = &__pyx_pybuffer_transC;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_baseC.rcbuffer->pybuffer, (PyObject*)__pyx_v_baseC, &__Pyx_TypeInfo_nn___pyx_t_7cupcake_4tofu_6branch_8c_branch_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 9, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_baseC.rcbuffer->pybuffer, (PyObject*)__pyx_v_baseC, &__Pyx_TypeInfo_nn___pyx_t_7cupcake_4tofu_6branch_8c_branch_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 12, __pyx_L1_error)
   }
   __pyx_pybuffernd_baseC.diminfo[0].strides = __pyx_pybuffernd_baseC.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_baseC.diminfo[0].shape = __pyx_pybuffernd_baseC.rcbuffer->pybuffer.shape[0];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_altC_neg.rcbuffer->pybuffer, (PyObject*)__pyx_v_altC_neg, &__Pyx_TypeInfo_nn___pyx_t_7cupcake_4tofu_6branch_8c_branch_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 9, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_altC_neg.rcbuffer->pybuffer, (PyObject*)__pyx_v_altC_neg, &__Pyx_TypeInfo_nn___pyx_t_7cupcake_4tofu_6branch_8c_branch_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 12, __pyx_L1_error)
   }
   __pyx_pybuffernd_altC_neg.diminfo[0].strides = __pyx_pybuffernd_altC_neg.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_altC_neg.diminfo[0].shape = __pyx_pybuffernd_altC_neg.rcbuffer->pybuffer.shape[0];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_altC_pos.rcbuffer->pybuffer, (PyObject*)__pyx_v_altC_pos, &__Pyx_TypeInfo_nn___pyx_t_7cupcake_4tofu_6branch_8c_branch_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 9, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_altC_pos.rcbuffer->pybuffer, (PyObject*)__pyx_v_altC_pos, &__Pyx_TypeInfo_nn___pyx_t_7cupcake_4tofu_6branch_8c_branch_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 12, __pyx_L1_error)
   }
   __pyx_pybuffernd_altC_pos.diminfo[0].strides = __pyx_pybuffernd_altC_pos.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_altC_pos.diminfo[0].shape = __pyx_pybuffernd_altC_pos.rcbuffer->pybuffer.shape[0];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_transC.rcbuffer->pybuffer, (PyObject*)__pyx_v_transC, &__Pyx_TypeInfo_nn___pyx_t_7cupcake_4tofu_6branch_8c_branch_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 9, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_transC.rcbuffer->pybuffer, (PyObject*)__pyx_v_transC, &__Pyx_TypeInfo_nn___pyx_t_7cupcake_4tofu_6branch_8c_branch_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 12, __pyx_L1_error)
   }
   __pyx_pybuffernd_transC.diminfo[0].strides = __pyx_pybuffernd_transC.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_transC.diminfo[0].shape = __pyx_pybuffernd_transC.rcbuffer->pybuffer.shape[0];
 
-  /* "cupcake/tofu/branch/c_branch.pyx":11
+  /* "cupcake/tofu/branch/c_branch.pyx":14
  * def exon_finding(np.ndarray[DTYPE_t, ndim=1] baseC, np.ndarray[DTYPE_t, ndim=1] altC_neg, np.ndarray[DTYPE_t, ndim=1] altC_pos, np.ndarray[DTYPE_t, ndim=1] transC, int size, int threshSplit, int threshBase, int offset):
  *     cdef int i
  *     cdef bool tag = False             # <<<<<<<<<<<<<<
@@ -2177,7 +2186,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_exon_finding(CYTHON_U
   __Pyx_INCREF(Py_False);
   __pyx_v_tag = ((PyBoolObject *)Py_False);
 
-  /* "cupcake/tofu/branch/c_branch.pyx":12
+  /* "cupcake/tofu/branch/c_branch.pyx":15
  *     cdef int i
  *     cdef bool tag = False
  *     cdef index = 0             # <<<<<<<<<<<<<<
@@ -2187,14 +2196,14 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_exon_finding(CYTHON_U
   __Pyx_INCREF(__pyx_int_0);
   __pyx_v_index = __pyx_int_0;
 
-  /* "cupcake/tofu/branch/c_branch.pyx":13
+  /* "cupcake/tofu/branch/c_branch.pyx":16
  *     cdef bool tag = False
  *     cdef index = 0
  *     exon_tree = IntervalTreeUnique()             # <<<<<<<<<<<<<<
  *     for i in xrange(size):
  *         if (baseC[i] > threshBase and not tag):  # a new exon!
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_IntervalTreeUnique); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 13, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_IntervalTreeUnique); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 16, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_2))) {
@@ -2208,13 +2217,13 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_exon_finding(CYTHON_U
   }
   __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3) : __Pyx_PyObject_CallNoArg(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 13, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 16, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_exon_tree = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "cupcake/tofu/branch/c_branch.pyx":14
+  /* "cupcake/tofu/branch/c_branch.pyx":17
  *     cdef index = 0
  *     exon_tree = IntervalTreeUnique()
  *     for i in xrange(size):             # <<<<<<<<<<<<<<
@@ -2226,7 +2235,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_exon_finding(CYTHON_U
   for (__pyx_t_6 = 0; __pyx_t_6 < __pyx_t_5; __pyx_t_6+=1) {
     __pyx_v_i = __pyx_t_6;
 
-    /* "cupcake/tofu/branch/c_branch.pyx":15
+    /* "cupcake/tofu/branch/c_branch.pyx":18
  *     exon_tree = IntervalTreeUnique()
  *     for i in xrange(size):
  *         if (baseC[i] > threshBase and not tag):  # a new exon!             # <<<<<<<<<<<<<<
@@ -2241,7 +2250,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_exon_finding(CYTHON_U
     } else if (unlikely(__pyx_t_8 >= __pyx_pybuffernd_baseC.diminfo[0].shape)) __pyx_t_9 = 0;
     if (unlikely(__pyx_t_9 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_9);
-      __PYX_ERR(0, 15, __pyx_L1_error)
+      __PYX_ERR(0, 18, __pyx_L1_error)
     }
     __pyx_t_10 = (((*__Pyx_BufPtrStrided1d(__pyx_t_7cupcake_4tofu_6branch_8c_branch_DTYPE_t *, __pyx_pybuffernd_baseC.rcbuffer->pybuffer.buf, __pyx_t_8, __pyx_pybuffernd_baseC.diminfo[0].strides)) > __pyx_v_threshBase) != 0);
     if (__pyx_t_10) {
@@ -2249,25 +2258,25 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_exon_finding(CYTHON_U
       __pyx_t_7 = __pyx_t_10;
       goto __pyx_L6_bool_binop_done;
     }
-    __pyx_t_10 = __Pyx_PyObject_IsTrue(((PyObject *)__pyx_v_tag)); if (unlikely(__pyx_t_10 < 0)) __PYX_ERR(0, 15, __pyx_L1_error)
+    __pyx_t_10 = __Pyx_PyObject_IsTrue(((PyObject *)__pyx_v_tag)); if (unlikely(__pyx_t_10 < 0)) __PYX_ERR(0, 18, __pyx_L1_error)
     __pyx_t_11 = ((!__pyx_t_10) != 0);
     __pyx_t_7 = __pyx_t_11;
     __pyx_L6_bool_binop_done:;
     if (__pyx_t_7) {
 
-      /* "cupcake/tofu/branch/c_branch.pyx":17
+      /* "cupcake/tofu/branch/c_branch.pyx":20
  *         if (baseC[i] > threshBase and not tag):  # a new exon!
  *             #print "new exon found at position", i
  *             e_start = i             # <<<<<<<<<<<<<<
  *             tag = True
  *         if tag:
  */
-      __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_i); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 17, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_i); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 20, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_XDECREF_SET(__pyx_v_e_start, __pyx_t_1);
       __pyx_t_1 = 0;
 
-      /* "cupcake/tofu/branch/c_branch.pyx":18
+      /* "cupcake/tofu/branch/c_branch.pyx":21
  *             #print "new exon found at position", i
  *             e_start = i
  *             tag = True             # <<<<<<<<<<<<<<
@@ -2277,7 +2286,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_exon_finding(CYTHON_U
       __Pyx_INCREF(Py_True);
       __Pyx_DECREF_SET(__pyx_v_tag, ((PyBoolObject *)Py_True));
 
-      /* "cupcake/tofu/branch/c_branch.pyx":15
+      /* "cupcake/tofu/branch/c_branch.pyx":18
  *     exon_tree = IntervalTreeUnique()
  *     for i in xrange(size):
  *         if (baseC[i] > threshBase and not tag):  # a new exon!             # <<<<<<<<<<<<<<
@@ -2286,17 +2295,17 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_exon_finding(CYTHON_U
  */
     }
 
-    /* "cupcake/tofu/branch/c_branch.pyx":19
+    /* "cupcake/tofu/branch/c_branch.pyx":22
  *             e_start = i
  *             tag = True
  *         if tag:             # <<<<<<<<<<<<<<
  *             if i == size - 1: # reached the end of genome, end of exon too
  *                 exon_tree.insert_interval(Interval(e_start+offset, size+offset, index))
  */
-    __pyx_t_7 = __Pyx_PyObject_IsTrue(((PyObject *)__pyx_v_tag)); if (unlikely(__pyx_t_7 < 0)) __PYX_ERR(0, 19, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyObject_IsTrue(((PyObject *)__pyx_v_tag)); if (unlikely(__pyx_t_7 < 0)) __PYX_ERR(0, 22, __pyx_L1_error)
     if (__pyx_t_7) {
 
-      /* "cupcake/tofu/branch/c_branch.pyx":20
+      /* "cupcake/tofu/branch/c_branch.pyx":23
  *             tag = True
  *         if tag:
  *             if i == size - 1: # reached the end of genome, end of exon too             # <<<<<<<<<<<<<<
@@ -2306,24 +2315,24 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_exon_finding(CYTHON_U
       __pyx_t_7 = ((__pyx_v_i == (__pyx_v_size - 1)) != 0);
       if (__pyx_t_7) {
 
-        /* "cupcake/tofu/branch/c_branch.pyx":21
+        /* "cupcake/tofu/branch/c_branch.pyx":24
  *         if tag:
  *             if i == size - 1: # reached the end of genome, end of exon too
  *                 exon_tree.insert_interval(Interval(e_start+offset, size+offset, index))             # <<<<<<<<<<<<<<
  *                 index += 1
  *                 tag = False
  */
-        __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_exon_tree, __pyx_n_s_insert_interval); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 21, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_exon_tree, __pyx_n_s_insert_interval); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 24, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
-        __Pyx_GetModuleGlobalName(__pyx_t_12, __pyx_n_s_Interval); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 21, __pyx_L1_error)
+        __Pyx_GetModuleGlobalName(__pyx_t_12, __pyx_n_s_Interval); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 24, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_12);
-        if (unlikely(!__pyx_v_e_start)) { __Pyx_RaiseUnboundLocalError("e_start"); __PYX_ERR(0, 21, __pyx_L1_error) }
-        __pyx_t_13 = __Pyx_PyInt_From_int(__pyx_v_offset); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 21, __pyx_L1_error)
+        if (unlikely(!__pyx_v_e_start)) { __Pyx_RaiseUnboundLocalError("e_start"); __PYX_ERR(0, 24, __pyx_L1_error) }
+        __pyx_t_13 = __Pyx_PyInt_From_int(__pyx_v_offset); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 24, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_13);
-        __pyx_t_14 = PyNumber_Add(__pyx_v_e_start, __pyx_t_13); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 21, __pyx_L1_error)
+        __pyx_t_14 = PyNumber_Add(__pyx_v_e_start, __pyx_t_13); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 24, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_14);
         __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-        __pyx_t_13 = __Pyx_PyInt_From_int((__pyx_v_size + __pyx_v_offset)); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 21, __pyx_L1_error)
+        __pyx_t_13 = __Pyx_PyInt_From_int((__pyx_v_size + __pyx_v_offset)); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 24, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_13);
         __pyx_t_15 = NULL;
         __pyx_t_9 = 0;
@@ -2340,7 +2349,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_exon_finding(CYTHON_U
         #if CYTHON_FAST_PYCALL
         if (PyFunction_Check(__pyx_t_12)) {
           PyObject *__pyx_temp[4] = {__pyx_t_15, __pyx_t_14, __pyx_t_13, __pyx_v_index};
-          __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_12, __pyx_temp+1-__pyx_t_9, 3+__pyx_t_9); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 21, __pyx_L1_error)
+          __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_12, __pyx_temp+1-__pyx_t_9, 3+__pyx_t_9); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 24, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_15); __pyx_t_15 = 0;
           __Pyx_GOTREF(__pyx_t_3);
           __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
@@ -2350,7 +2359,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_exon_finding(CYTHON_U
         #if CYTHON_FAST_PYCCALL
         if (__Pyx_PyFastCFunction_Check(__pyx_t_12)) {
           PyObject *__pyx_temp[4] = {__pyx_t_15, __pyx_t_14, __pyx_t_13, __pyx_v_index};
-          __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_12, __pyx_temp+1-__pyx_t_9, 3+__pyx_t_9); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 21, __pyx_L1_error)
+          __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_12, __pyx_temp+1-__pyx_t_9, 3+__pyx_t_9); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 24, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_15); __pyx_t_15 = 0;
           __Pyx_GOTREF(__pyx_t_3);
           __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
@@ -2358,7 +2367,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_exon_finding(CYTHON_U
         } else
         #endif
         {
-          __pyx_t_16 = PyTuple_New(3+__pyx_t_9); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 21, __pyx_L1_error)
+          __pyx_t_16 = PyTuple_New(3+__pyx_t_9); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 24, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_16);
           if (__pyx_t_15) {
             __Pyx_GIVEREF(__pyx_t_15); PyTuple_SET_ITEM(__pyx_t_16, 0, __pyx_t_15); __pyx_t_15 = NULL;
@@ -2372,7 +2381,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_exon_finding(CYTHON_U
           PyTuple_SET_ITEM(__pyx_t_16, 2+__pyx_t_9, __pyx_v_index);
           __pyx_t_14 = 0;
           __pyx_t_13 = 0;
-          __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_12, __pyx_t_16, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 21, __pyx_L1_error)
+          __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_12, __pyx_t_16, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 24, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_3);
           __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
         }
@@ -2390,24 +2399,24 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_exon_finding(CYTHON_U
         __pyx_t_1 = (__pyx_t_12) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_12, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3);
         __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-        if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 21, __pyx_L1_error)
+        if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 24, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-        /* "cupcake/tofu/branch/c_branch.pyx":22
+        /* "cupcake/tofu/branch/c_branch.pyx":25
  *             if i == size - 1: # reached the end of genome, end of exon too
  *                 exon_tree.insert_interval(Interval(e_start+offset, size+offset, index))
  *                 index += 1             # <<<<<<<<<<<<<<
  *                 tag = False
  *             elif baseC[i] <= threshBase: # end of exon at i-1
  */
-        __pyx_t_1 = __Pyx_PyInt_AddObjC(__pyx_v_index, __pyx_int_1, 1, 1, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 22, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyInt_AddObjC(__pyx_v_index, __pyx_int_1, 1, 1, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 25, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF_SET(__pyx_v_index, __pyx_t_1);
         __pyx_t_1 = 0;
 
-        /* "cupcake/tofu/branch/c_branch.pyx":23
+        /* "cupcake/tofu/branch/c_branch.pyx":26
  *                 exon_tree.insert_interval(Interval(e_start+offset, size+offset, index))
  *                 index += 1
  *                 tag = False             # <<<<<<<<<<<<<<
@@ -2417,7 +2426,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_exon_finding(CYTHON_U
         __Pyx_INCREF(Py_False);
         __Pyx_DECREF_SET(__pyx_v_tag, ((PyBoolObject *)Py_False));
 
-        /* "cupcake/tofu/branch/c_branch.pyx":20
+        /* "cupcake/tofu/branch/c_branch.pyx":23
  *             tag = True
  *         if tag:
  *             if i == size - 1: # reached the end of genome, end of exon too             # <<<<<<<<<<<<<<
@@ -2427,7 +2436,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_exon_finding(CYTHON_U
         goto __pyx_L9;
       }
 
-      /* "cupcake/tofu/branch/c_branch.pyx":24
+      /* "cupcake/tofu/branch/c_branch.pyx":27
  *                 index += 1
  *                 tag = False
  *             elif baseC[i] <= threshBase: # end of exon at i-1             # <<<<<<<<<<<<<<
@@ -2442,29 +2451,29 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_exon_finding(CYTHON_U
       } else if (unlikely(__pyx_t_8 >= __pyx_pybuffernd_baseC.diminfo[0].shape)) __pyx_t_9 = 0;
       if (unlikely(__pyx_t_9 != -1)) {
         __Pyx_RaiseBufferIndexError(__pyx_t_9);
-        __PYX_ERR(0, 24, __pyx_L1_error)
+        __PYX_ERR(0, 27, __pyx_L1_error)
       }
       __pyx_t_7 = (((*__Pyx_BufPtrStrided1d(__pyx_t_7cupcake_4tofu_6branch_8c_branch_DTYPE_t *, __pyx_pybuffernd_baseC.rcbuffer->pybuffer.buf, __pyx_t_8, __pyx_pybuffernd_baseC.diminfo[0].strides)) <= __pyx_v_threshBase) != 0);
       if (__pyx_t_7) {
 
-        /* "cupcake/tofu/branch/c_branch.pyx":25
+        /* "cupcake/tofu/branch/c_branch.pyx":28
  *                 tag = False
  *             elif baseC[i] <= threshBase: # end of exon at i-1
  *                 exon_tree.insert_interval(Interval(e_start+offset, i+offset, index))             # <<<<<<<<<<<<<<
  *                 index += 1
  *                 tag = False
  */
-        __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_exon_tree, __pyx_n_s_insert_interval); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 25, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_exon_tree, __pyx_n_s_insert_interval); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 28, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
-        __Pyx_GetModuleGlobalName(__pyx_t_12, __pyx_n_s_Interval); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 25, __pyx_L1_error)
+        __Pyx_GetModuleGlobalName(__pyx_t_12, __pyx_n_s_Interval); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 28, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_12);
-        if (unlikely(!__pyx_v_e_start)) { __Pyx_RaiseUnboundLocalError("e_start"); __PYX_ERR(0, 25, __pyx_L1_error) }
-        __pyx_t_16 = __Pyx_PyInt_From_int(__pyx_v_offset); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 25, __pyx_L1_error)
+        if (unlikely(!__pyx_v_e_start)) { __Pyx_RaiseUnboundLocalError("e_start"); __PYX_ERR(0, 28, __pyx_L1_error) }
+        __pyx_t_16 = __Pyx_PyInt_From_int(__pyx_v_offset); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 28, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_16);
-        __pyx_t_13 = PyNumber_Add(__pyx_v_e_start, __pyx_t_16); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 25, __pyx_L1_error)
+        __pyx_t_13 = PyNumber_Add(__pyx_v_e_start, __pyx_t_16); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 28, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_13);
         __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-        __pyx_t_16 = __Pyx_PyInt_From_int((__pyx_v_i + __pyx_v_offset)); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 25, __pyx_L1_error)
+        __pyx_t_16 = __Pyx_PyInt_From_int((__pyx_v_i + __pyx_v_offset)); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 28, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_16);
         __pyx_t_14 = NULL;
         __pyx_t_9 = 0;
@@ -2481,7 +2490,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_exon_finding(CYTHON_U
         #if CYTHON_FAST_PYCALL
         if (PyFunction_Check(__pyx_t_12)) {
           PyObject *__pyx_temp[4] = {__pyx_t_14, __pyx_t_13, __pyx_t_16, __pyx_v_index};
-          __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_12, __pyx_temp+1-__pyx_t_9, 3+__pyx_t_9); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 25, __pyx_L1_error)
+          __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_12, __pyx_temp+1-__pyx_t_9, 3+__pyx_t_9); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 28, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_14); __pyx_t_14 = 0;
           __Pyx_GOTREF(__pyx_t_3);
           __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
@@ -2491,7 +2500,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_exon_finding(CYTHON_U
         #if CYTHON_FAST_PYCCALL
         if (__Pyx_PyFastCFunction_Check(__pyx_t_12)) {
           PyObject *__pyx_temp[4] = {__pyx_t_14, __pyx_t_13, __pyx_t_16, __pyx_v_index};
-          __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_12, __pyx_temp+1-__pyx_t_9, 3+__pyx_t_9); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 25, __pyx_L1_error)
+          __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_12, __pyx_temp+1-__pyx_t_9, 3+__pyx_t_9); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 28, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_14); __pyx_t_14 = 0;
           __Pyx_GOTREF(__pyx_t_3);
           __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
@@ -2499,7 +2508,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_exon_finding(CYTHON_U
         } else
         #endif
         {
-          __pyx_t_15 = PyTuple_New(3+__pyx_t_9); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 25, __pyx_L1_error)
+          __pyx_t_15 = PyTuple_New(3+__pyx_t_9); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 28, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_15);
           if (__pyx_t_14) {
             __Pyx_GIVEREF(__pyx_t_14); PyTuple_SET_ITEM(__pyx_t_15, 0, __pyx_t_14); __pyx_t_14 = NULL;
@@ -2513,7 +2522,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_exon_finding(CYTHON_U
           PyTuple_SET_ITEM(__pyx_t_15, 2+__pyx_t_9, __pyx_v_index);
           __pyx_t_13 = 0;
           __pyx_t_16 = 0;
-          __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_12, __pyx_t_15, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 25, __pyx_L1_error)
+          __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_12, __pyx_t_15, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 28, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_3);
           __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
         }
@@ -2531,24 +2540,24 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_exon_finding(CYTHON_U
         __pyx_t_1 = (__pyx_t_12) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_12, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3);
         __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-        if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 25, __pyx_L1_error)
+        if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 28, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-        /* "cupcake/tofu/branch/c_branch.pyx":26
+        /* "cupcake/tofu/branch/c_branch.pyx":29
  *             elif baseC[i] <= threshBase: # end of exon at i-1
  *                 exon_tree.insert_interval(Interval(e_start+offset, i+offset, index))
  *                 index += 1             # <<<<<<<<<<<<<<
  *                 tag = False
  *             elif baseC[i] > 0 and (altC_pos[i] > threshSplit or altC_neg[i+1] < -threshSplit): # alt. junction found!
  */
-        __pyx_t_1 = __Pyx_PyInt_AddObjC(__pyx_v_index, __pyx_int_1, 1, 1, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 26, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyInt_AddObjC(__pyx_v_index, __pyx_int_1, 1, 1, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 29, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF_SET(__pyx_v_index, __pyx_t_1);
         __pyx_t_1 = 0;
 
-        /* "cupcake/tofu/branch/c_branch.pyx":27
+        /* "cupcake/tofu/branch/c_branch.pyx":30
  *                 exon_tree.insert_interval(Interval(e_start+offset, i+offset, index))
  *                 index += 1
  *                 tag = False             # <<<<<<<<<<<<<<
@@ -2558,7 +2567,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_exon_finding(CYTHON_U
         __Pyx_INCREF(Py_False);
         __Pyx_DECREF_SET(__pyx_v_tag, ((PyBoolObject *)Py_False));
 
-        /* "cupcake/tofu/branch/c_branch.pyx":24
+        /* "cupcake/tofu/branch/c_branch.pyx":27
  *                 index += 1
  *                 tag = False
  *             elif baseC[i] <= threshBase: # end of exon at i-1             # <<<<<<<<<<<<<<
@@ -2568,7 +2577,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_exon_finding(CYTHON_U
         goto __pyx_L9;
       }
 
-      /* "cupcake/tofu/branch/c_branch.pyx":28
+      /* "cupcake/tofu/branch/c_branch.pyx":31
  *                 index += 1
  *                 tag = False
  *             elif baseC[i] > 0 and (altC_pos[i] > threshSplit or altC_neg[i+1] < -threshSplit): # alt. junction found!             # <<<<<<<<<<<<<<
@@ -2583,7 +2592,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_exon_finding(CYTHON_U
       } else if (unlikely(__pyx_t_8 >= __pyx_pybuffernd_baseC.diminfo[0].shape)) __pyx_t_9 = 0;
       if (unlikely(__pyx_t_9 != -1)) {
         __Pyx_RaiseBufferIndexError(__pyx_t_9);
-        __PYX_ERR(0, 28, __pyx_L1_error)
+        __PYX_ERR(0, 31, __pyx_L1_error)
       }
       __pyx_t_11 = (((*__Pyx_BufPtrStrided1d(__pyx_t_7cupcake_4tofu_6branch_8c_branch_DTYPE_t *, __pyx_pybuffernd_baseC.rcbuffer->pybuffer.buf, __pyx_t_8, __pyx_pybuffernd_baseC.diminfo[0].strides)) > 0) != 0);
       if (__pyx_t_11) {
@@ -2599,7 +2608,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_exon_finding(CYTHON_U
       } else if (unlikely(__pyx_t_8 >= __pyx_pybuffernd_altC_pos.diminfo[0].shape)) __pyx_t_9 = 0;
       if (unlikely(__pyx_t_9 != -1)) {
         __Pyx_RaiseBufferIndexError(__pyx_t_9);
-        __PYX_ERR(0, 28, __pyx_L1_error)
+        __PYX_ERR(0, 31, __pyx_L1_error)
       }
       __pyx_t_11 = (((*__Pyx_BufPtrStrided1d(__pyx_t_7cupcake_4tofu_6branch_8c_branch_DTYPE_t *, __pyx_pybuffernd_altC_pos.rcbuffer->pybuffer.buf, __pyx_t_8, __pyx_pybuffernd_altC_pos.diminfo[0].strides)) > __pyx_v_threshSplit) != 0);
       if (!__pyx_t_11) {
@@ -2615,23 +2624,23 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_exon_finding(CYTHON_U
       } else if (unlikely(__pyx_t_8 >= __pyx_pybuffernd_altC_neg.diminfo[0].shape)) __pyx_t_9 = 0;
       if (unlikely(__pyx_t_9 != -1)) {
         __Pyx_RaiseBufferIndexError(__pyx_t_9);
-        __PYX_ERR(0, 28, __pyx_L1_error)
+        __PYX_ERR(0, 31, __pyx_L1_error)
       }
       __pyx_t_11 = (((*__Pyx_BufPtrStrided1d(__pyx_t_7cupcake_4tofu_6branch_8c_branch_DTYPE_t *, __pyx_pybuffernd_altC_neg.rcbuffer->pybuffer.buf, __pyx_t_8, __pyx_pybuffernd_altC_neg.diminfo[0].strides)) < (-__pyx_v_threshSplit)) != 0);
       __pyx_t_7 = __pyx_t_11;
       __pyx_L10_bool_binop_done:;
       if (__pyx_t_7) {
 
-        /* "cupcake/tofu/branch/c_branch.pyx":30
+        /* "cupcake/tofu/branch/c_branch.pyx":33
  *             elif baseC[i] > 0 and (altC_pos[i] > threshSplit or altC_neg[i+1] < -threshSplit): # alt. junction found!
  *                 # end the current exon at i and start a new one at i + 1
  *                 print "alt. junction found at", i             # <<<<<<<<<<<<<<
  *                 exon_tree.insert_interval(Interval(e_start+offset, i+1+offset, index))
  *                 index += 1
  */
-        __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_i); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 30, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_i); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 33, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 30, __pyx_L1_error)
+        __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 33, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_INCREF(__pyx_kp_s_alt_junction_found_at);
         __Pyx_GIVEREF(__pyx_kp_s_alt_junction_found_at);
@@ -2639,27 +2648,27 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_exon_finding(CYTHON_U
         __Pyx_GIVEREF(__pyx_t_1);
         PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_t_1);
         __pyx_t_1 = 0;
-        if (__Pyx_Print(0, __pyx_t_2, 1) < 0) __PYX_ERR(0, 30, __pyx_L1_error)
+        if (__Pyx_Print(0, __pyx_t_2, 1) < 0) __PYX_ERR(0, 33, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-        /* "cupcake/tofu/branch/c_branch.pyx":31
+        /* "cupcake/tofu/branch/c_branch.pyx":34
  *                 # end the current exon at i and start a new one at i + 1
  *                 print "alt. junction found at", i
  *                 exon_tree.insert_interval(Interval(e_start+offset, i+1+offset, index))             # <<<<<<<<<<<<<<
  *                 index += 1
  *                 e_start = i + 1
  */
-        __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_exon_tree, __pyx_n_s_insert_interval); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 31, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_exon_tree, __pyx_n_s_insert_interval); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 34, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
-        __Pyx_GetModuleGlobalName(__pyx_t_12, __pyx_n_s_Interval); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 31, __pyx_L1_error)
+        __Pyx_GetModuleGlobalName(__pyx_t_12, __pyx_n_s_Interval); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 34, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_12);
-        if (unlikely(!__pyx_v_e_start)) { __Pyx_RaiseUnboundLocalError("e_start"); __PYX_ERR(0, 31, __pyx_L1_error) }
-        __pyx_t_15 = __Pyx_PyInt_From_int(__pyx_v_offset); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 31, __pyx_L1_error)
+        if (unlikely(!__pyx_v_e_start)) { __Pyx_RaiseUnboundLocalError("e_start"); __PYX_ERR(0, 34, __pyx_L1_error) }
+        __pyx_t_15 = __Pyx_PyInt_From_int(__pyx_v_offset); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 34, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_15);
-        __pyx_t_16 = PyNumber_Add(__pyx_v_e_start, __pyx_t_15); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 31, __pyx_L1_error)
+        __pyx_t_16 = PyNumber_Add(__pyx_v_e_start, __pyx_t_15); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 34, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_16);
         __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
-        __pyx_t_15 = __Pyx_PyInt_From_long(((__pyx_v_i + 1) + __pyx_v_offset)); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 31, __pyx_L1_error)
+        __pyx_t_15 = __Pyx_PyInt_From_long(((__pyx_v_i + 1) + __pyx_v_offset)); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 34, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_15);
         __pyx_t_13 = NULL;
         __pyx_t_9 = 0;
@@ -2676,7 +2685,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_exon_finding(CYTHON_U
         #if CYTHON_FAST_PYCALL
         if (PyFunction_Check(__pyx_t_12)) {
           PyObject *__pyx_temp[4] = {__pyx_t_13, __pyx_t_16, __pyx_t_15, __pyx_v_index};
-          __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_12, __pyx_temp+1-__pyx_t_9, 3+__pyx_t_9); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 31, __pyx_L1_error)
+          __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_12, __pyx_temp+1-__pyx_t_9, 3+__pyx_t_9); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 34, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_13); __pyx_t_13 = 0;
           __Pyx_GOTREF(__pyx_t_3);
           __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
@@ -2686,7 +2695,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_exon_finding(CYTHON_U
         #if CYTHON_FAST_PYCCALL
         if (__Pyx_PyFastCFunction_Check(__pyx_t_12)) {
           PyObject *__pyx_temp[4] = {__pyx_t_13, __pyx_t_16, __pyx_t_15, __pyx_v_index};
-          __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_12, __pyx_temp+1-__pyx_t_9, 3+__pyx_t_9); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 31, __pyx_L1_error)
+          __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_12, __pyx_temp+1-__pyx_t_9, 3+__pyx_t_9); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 34, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_13); __pyx_t_13 = 0;
           __Pyx_GOTREF(__pyx_t_3);
           __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
@@ -2694,7 +2703,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_exon_finding(CYTHON_U
         } else
         #endif
         {
-          __pyx_t_14 = PyTuple_New(3+__pyx_t_9); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 31, __pyx_L1_error)
+          __pyx_t_14 = PyTuple_New(3+__pyx_t_9); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 34, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_14);
           if (__pyx_t_13) {
             __Pyx_GIVEREF(__pyx_t_13); PyTuple_SET_ITEM(__pyx_t_14, 0, __pyx_t_13); __pyx_t_13 = NULL;
@@ -2708,7 +2717,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_exon_finding(CYTHON_U
           PyTuple_SET_ITEM(__pyx_t_14, 2+__pyx_t_9, __pyx_v_index);
           __pyx_t_16 = 0;
           __pyx_t_15 = 0;
-          __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_12, __pyx_t_14, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 31, __pyx_L1_error)
+          __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_12, __pyx_t_14, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 34, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_3);
           __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
         }
@@ -2726,36 +2735,36 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_exon_finding(CYTHON_U
         __pyx_t_2 = (__pyx_t_12) ? __Pyx_PyObject_Call2Args(__pyx_t_1, __pyx_t_12, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_3);
         __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 31, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 34, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-        /* "cupcake/tofu/branch/c_branch.pyx":32
+        /* "cupcake/tofu/branch/c_branch.pyx":35
  *                 print "alt. junction found at", i
  *                 exon_tree.insert_interval(Interval(e_start+offset, i+1+offset, index))
  *                 index += 1             # <<<<<<<<<<<<<<
  *                 e_start = i + 1
  *     return exon_tree
  */
-        __pyx_t_2 = __Pyx_PyInt_AddObjC(__pyx_v_index, __pyx_int_1, 1, 1, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 32, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyInt_AddObjC(__pyx_v_index, __pyx_int_1, 1, 1, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 35, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF_SET(__pyx_v_index, __pyx_t_2);
         __pyx_t_2 = 0;
 
-        /* "cupcake/tofu/branch/c_branch.pyx":33
+        /* "cupcake/tofu/branch/c_branch.pyx":36
  *                 exon_tree.insert_interval(Interval(e_start+offset, i+1+offset, index))
  *                 index += 1
  *                 e_start = i + 1             # <<<<<<<<<<<<<<
  *     return exon_tree
  * 
  */
-        __pyx_t_2 = __Pyx_PyInt_From_long((__pyx_v_i + 1)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 33, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyInt_From_long((__pyx_v_i + 1)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 36, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_XDECREF_SET(__pyx_v_e_start, __pyx_t_2);
         __pyx_t_2 = 0;
 
-        /* "cupcake/tofu/branch/c_branch.pyx":28
+        /* "cupcake/tofu/branch/c_branch.pyx":31
  *                 index += 1
  *                 tag = False
  *             elif baseC[i] > 0 and (altC_pos[i] > threshSplit or altC_neg[i+1] < -threshSplit): # alt. junction found!             # <<<<<<<<<<<<<<
@@ -2765,7 +2774,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_exon_finding(CYTHON_U
       }
       __pyx_L9:;
 
-      /* "cupcake/tofu/branch/c_branch.pyx":19
+      /* "cupcake/tofu/branch/c_branch.pyx":22
  *             e_start = i
  *             tag = True
  *         if tag:             # <<<<<<<<<<<<<<
@@ -2775,7 +2784,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_exon_finding(CYTHON_U
     }
   }
 
-  /* "cupcake/tofu/branch/c_branch.pyx":34
+  /* "cupcake/tofu/branch/c_branch.pyx":37
  *                 index += 1
  *                 e_start = i + 1
  *     return exon_tree             # <<<<<<<<<<<<<<
@@ -2787,7 +2796,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_exon_finding(CYTHON_U
   __pyx_r = __pyx_v_exon_tree;
   goto __pyx_L0;
 
-  /* "cupcake/tofu/branch/c_branch.pyx":9
+  /* "cupcake/tofu/branch/c_branch.pyx":12
  * ctypedef np.int_t DTYPE_t
  * 
  * def exon_finding(np.ndarray[DTYPE_t, ndim=1] baseC, np.ndarray[DTYPE_t, ndim=1] altC_neg, np.ndarray[DTYPE_t, ndim=1] altC_pos, np.ndarray[DTYPE_t, ndim=1] transC, int size, int threshSplit, int threshBase, int offset):             # <<<<<<<<<<<<<<
@@ -2832,7 +2841,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_exon_finding(CYTHON_U
   return __pyx_r;
 }
 
-/* "cupcake/tofu/branch/c_branch.pyx":36
+/* "cupcake/tofu/branch/c_branch.pyx":39
  *     return exon_tree
  * 
  * def intervals_all_adjacent(x):             # <<<<<<<<<<<<<<
@@ -2872,45 +2881,45 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_2intervals_all_adjace
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("intervals_all_adjacent", 0);
 
-  /* "cupcake/tofu/branch/c_branch.pyx":48
+  /* "cupcake/tofu/branch/c_branch.pyx":51
  *     """
  *     cdef int i
  *     for i in xrange(len(x)-1):             # <<<<<<<<<<<<<<
  *         if x[i].end != x[i+1].start:
  *             return False
  */
-  __pyx_t_1 = PyObject_Length(__pyx_v_x); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 48, __pyx_L1_error)
+  __pyx_t_1 = PyObject_Length(__pyx_v_x); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 51, __pyx_L1_error)
   __pyx_t_2 = (__pyx_t_1 - 1);
   __pyx_t_1 = __pyx_t_2;
   for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_1; __pyx_t_3+=1) {
     __pyx_v_i = __pyx_t_3;
 
-    /* "cupcake/tofu/branch/c_branch.pyx":49
+    /* "cupcake/tofu/branch/c_branch.pyx":52
  *     cdef int i
  *     for i in xrange(len(x)-1):
  *         if x[i].end != x[i+1].start:             # <<<<<<<<<<<<<<
  *             return False
  *     return True
  */
-    __pyx_t_4 = __Pyx_GetItemInt(__pyx_v_x, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 0, 1, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 49, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_GetItemInt(__pyx_v_x, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 0, 1, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 52, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_end); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 49, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_end); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 52, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_t_6 = (__pyx_v_i + 1);
-    __pyx_t_4 = __Pyx_GetItemInt(__pyx_v_x, __pyx_t_6, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 49, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_GetItemInt(__pyx_v_x, __pyx_t_6, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 52, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_start); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 49, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_start); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 52, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = PyObject_RichCompare(__pyx_t_5, __pyx_t_7, Py_NE); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 49, __pyx_L1_error)
+    __pyx_t_4 = PyObject_RichCompare(__pyx_t_5, __pyx_t_7, Py_NE); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 52, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __pyx_t_8 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_8 < 0)) __PYX_ERR(0, 49, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_8 < 0)) __PYX_ERR(0, 52, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     if (__pyx_t_8) {
 
-      /* "cupcake/tofu/branch/c_branch.pyx":50
+      /* "cupcake/tofu/branch/c_branch.pyx":53
  *     for i in xrange(len(x)-1):
  *         if x[i].end != x[i+1].start:
  *             return False             # <<<<<<<<<<<<<<
@@ -2922,7 +2931,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_2intervals_all_adjace
       __pyx_r = Py_False;
       goto __pyx_L0;
 
-      /* "cupcake/tofu/branch/c_branch.pyx":49
+      /* "cupcake/tofu/branch/c_branch.pyx":52
  *     cdef int i
  *     for i in xrange(len(x)-1):
  *         if x[i].end != x[i+1].start:             # <<<<<<<<<<<<<<
@@ -2932,7 +2941,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_2intervals_all_adjace
     }
   }
 
-  /* "cupcake/tofu/branch/c_branch.pyx":51
+  /* "cupcake/tofu/branch/c_branch.pyx":54
  *         if x[i].end != x[i+1].start:
  *             return False
  *     return True             # <<<<<<<<<<<<<<
@@ -2944,7 +2953,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_2intervals_all_adjace
   __pyx_r = Py_True;
   goto __pyx_L0;
 
-  /* "cupcake/tofu/branch/c_branch.pyx":36
+  /* "cupcake/tofu/branch/c_branch.pyx":39
  *     return exon_tree
  * 
  * def intervals_all_adjacent(x):             # <<<<<<<<<<<<<<
@@ -2965,7 +2974,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_2intervals_all_adjace
   return __pyx_r;
 }
 
-/* "cupcake/tofu/branch/c_branch.pyx":53
+/* "cupcake/tofu/branch/c_branch.pyx":56
  *     return True
  * 
  * def exon_matching(exon_tree, ref_exon, match_extend_tolerate_left, match_extend_tolerate_right, intervals_adjacent=True):             # <<<<<<<<<<<<<<
@@ -3019,19 +3028,19 @@ static PyObject *__pyx_pw_7cupcake_4tofu_6branch_8c_branch_5exon_matching(PyObje
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_ref_exon)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("exon_matching", 0, 4, 5, 1); __PYX_ERR(0, 53, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("exon_matching", 0, 4, 5, 1); __PYX_ERR(0, 56, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_match_extend_tolerate_left)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("exon_matching", 0, 4, 5, 2); __PYX_ERR(0, 53, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("exon_matching", 0, 4, 5, 2); __PYX_ERR(0, 56, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_match_extend_tolerate_right)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("exon_matching", 0, 4, 5, 3); __PYX_ERR(0, 53, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("exon_matching", 0, 4, 5, 3); __PYX_ERR(0, 56, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  4:
@@ -3041,7 +3050,7 @@ static PyObject *__pyx_pw_7cupcake_4tofu_6branch_8c_branch_5exon_matching(PyObje
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "exon_matching") < 0)) __PYX_ERR(0, 53, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "exon_matching") < 0)) __PYX_ERR(0, 56, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -3063,7 +3072,7 @@ static PyObject *__pyx_pw_7cupcake_4tofu_6branch_8c_branch_5exon_matching(PyObje
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("exon_matching", 0, 4, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 53, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("exon_matching", 0, 4, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 56, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("cupcake.tofu.branch.c_branch.exon_matching", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -3102,18 +3111,18 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_4exon_matching(CYTHON
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("exon_matching", 0);
 
-  /* "cupcake/tofu/branch/c_branch.pyx":62
+  /* "cupcake/tofu/branch/c_branch.pyx":65
  *     in exon_tree that matches to ref_exon
  *     """
  *     matches = exon_tree.find(ref_exon.start, ref_exon.end)             # <<<<<<<<<<<<<<
  *     if len(matches) == 0: # likely due to very low coverage on transcript
  *         return None
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_exon_tree, __pyx_n_s_find); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 62, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_exon_tree, __pyx_n_s_find); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 65, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_ref_exon, __pyx_n_s_start); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 62, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_ref_exon, __pyx_n_s_start); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 65, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_ref_exon, __pyx_n_s_end); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 62, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_ref_exon, __pyx_n_s_end); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 65, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_t_5 = NULL;
   __pyx_t_6 = 0;
@@ -3130,7 +3139,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_4exon_matching(CYTHON
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_2)) {
     PyObject *__pyx_temp[3] = {__pyx_t_5, __pyx_t_3, __pyx_t_4};
-    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 62, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 65, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -3140,7 +3149,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_4exon_matching(CYTHON
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
     PyObject *__pyx_temp[3] = {__pyx_t_5, __pyx_t_3, __pyx_t_4};
-    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 62, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 65, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -3148,7 +3157,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_4exon_matching(CYTHON
   } else
   #endif
   {
-    __pyx_t_7 = PyTuple_New(2+__pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 62, __pyx_L1_error)
+    __pyx_t_7 = PyTuple_New(2+__pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 65, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     if (__pyx_t_5) {
       __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_5); __pyx_t_5 = NULL;
@@ -3159,7 +3168,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_4exon_matching(CYTHON
     PyTuple_SET_ITEM(__pyx_t_7, 1+__pyx_t_6, __pyx_t_4);
     __pyx_t_3 = 0;
     __pyx_t_4 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_7, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 62, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_7, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 65, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   }
@@ -3167,18 +3176,18 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_4exon_matching(CYTHON
   __pyx_v_matches = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "cupcake/tofu/branch/c_branch.pyx":63
+  /* "cupcake/tofu/branch/c_branch.pyx":66
  *     """
  *     matches = exon_tree.find(ref_exon.start, ref_exon.end)
  *     if len(matches) == 0: # likely due to very low coverage on transcript             # <<<<<<<<<<<<<<
  *         return None
  *     # check that all matches are adjacent (no splicing! this just one integral exon)
  */
-  __pyx_t_8 = PyObject_Length(__pyx_v_matches); if (unlikely(__pyx_t_8 == ((Py_ssize_t)-1))) __PYX_ERR(0, 63, __pyx_L1_error)
+  __pyx_t_8 = PyObject_Length(__pyx_v_matches); if (unlikely(__pyx_t_8 == ((Py_ssize_t)-1))) __PYX_ERR(0, 66, __pyx_L1_error)
   __pyx_t_9 = ((__pyx_t_8 == 0) != 0);
   if (__pyx_t_9) {
 
-    /* "cupcake/tofu/branch/c_branch.pyx":64
+    /* "cupcake/tofu/branch/c_branch.pyx":67
  *     matches = exon_tree.find(ref_exon.start, ref_exon.end)
  *     if len(matches) == 0: # likely due to very low coverage on transcript
  *         return None             # <<<<<<<<<<<<<<
@@ -3189,7 +3198,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_4exon_matching(CYTHON
     __pyx_r = Py_None; __Pyx_INCREF(Py_None);
     goto __pyx_L0;
 
-    /* "cupcake/tofu/branch/c_branch.pyx":63
+    /* "cupcake/tofu/branch/c_branch.pyx":66
  *     """
  *     matches = exon_tree.find(ref_exon.start, ref_exon.end)
  *     if len(matches) == 0: # likely due to very low coverage on transcript             # <<<<<<<<<<<<<<
@@ -3198,21 +3207,21 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_4exon_matching(CYTHON
  */
   }
 
-  /* "cupcake/tofu/branch/c_branch.pyx":66
+  /* "cupcake/tofu/branch/c_branch.pyx":69
  *         return None
  *     # check that all matches are adjacent (no splicing! this just one integral exon)
  *     if (not intervals_adjacent) or intervals_all_adjacent(matches):             # <<<<<<<<<<<<<<
  *         # check if the ends differ a little, if so, extend to min/max
  *         for i in xrange(len(matches)):
  */
-  __pyx_t_10 = __Pyx_PyObject_IsTrue(__pyx_v_intervals_adjacent); if (unlikely(__pyx_t_10 < 0)) __PYX_ERR(0, 66, __pyx_L1_error)
+  __pyx_t_10 = __Pyx_PyObject_IsTrue(__pyx_v_intervals_adjacent); if (unlikely(__pyx_t_10 < 0)) __PYX_ERR(0, 69, __pyx_L1_error)
   __pyx_t_11 = ((!__pyx_t_10) != 0);
   if (!__pyx_t_11) {
   } else {
     __pyx_t_9 = __pyx_t_11;
     goto __pyx_L5_bool_binop_done;
   }
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_intervals_all_adjacent); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 66, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_intervals_all_adjacent); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 69, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_7 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_2))) {
@@ -3226,35 +3235,35 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_4exon_matching(CYTHON
   }
   __pyx_t_1 = (__pyx_t_7) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_7, __pyx_v_matches) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_v_matches);
   __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 66, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 69, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_11 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_11 < 0)) __PYX_ERR(0, 66, __pyx_L1_error)
+  __pyx_t_11 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_11 < 0)) __PYX_ERR(0, 69, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_9 = __pyx_t_11;
   __pyx_L5_bool_binop_done:;
   if (__pyx_t_9) {
 
-    /* "cupcake/tofu/branch/c_branch.pyx":68
+    /* "cupcake/tofu/branch/c_branch.pyx":71
  *     if (not intervals_adjacent) or intervals_all_adjacent(matches):
  *         # check if the ends differ a little, if so, extend to min/max
  *         for i in xrange(len(matches)):             # <<<<<<<<<<<<<<
  *             d_start = abs(matches[i].start - ref_exon.start)
  *             #print "matching {0} to {1}".format(matches[i].start, ref_exon.start)
  */
-    __pyx_t_8 = PyObject_Length(__pyx_v_matches); if (unlikely(__pyx_t_8 == ((Py_ssize_t)-1))) __PYX_ERR(0, 68, __pyx_L1_error)
-    __pyx_t_1 = PyInt_FromSsize_t(__pyx_t_8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 68, __pyx_L1_error)
+    __pyx_t_8 = PyObject_Length(__pyx_v_matches); if (unlikely(__pyx_t_8 == ((Py_ssize_t)-1))) __PYX_ERR(0, 71, __pyx_L1_error)
+    __pyx_t_1 = PyInt_FromSsize_t(__pyx_t_8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 71, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_xrange, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 68, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_xrange, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 71, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     if (likely(PyList_CheckExact(__pyx_t_2)) || PyTuple_CheckExact(__pyx_t_2)) {
       __pyx_t_1 = __pyx_t_2; __Pyx_INCREF(__pyx_t_1); __pyx_t_8 = 0;
       __pyx_t_12 = NULL;
     } else {
-      __pyx_t_8 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 68, __pyx_L1_error)
+      __pyx_t_8 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 71, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_12 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 68, __pyx_L1_error)
+      __pyx_t_12 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 71, __pyx_L1_error)
     }
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     for (;;) {
@@ -3262,17 +3271,17 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_4exon_matching(CYTHON
         if (likely(PyList_CheckExact(__pyx_t_1))) {
           if (__pyx_t_8 >= PyList_GET_SIZE(__pyx_t_1)) break;
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_2 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_8); __Pyx_INCREF(__pyx_t_2); __pyx_t_8++; if (unlikely(0 < 0)) __PYX_ERR(0, 68, __pyx_L1_error)
+          __pyx_t_2 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_8); __Pyx_INCREF(__pyx_t_2); __pyx_t_8++; if (unlikely(0 < 0)) __PYX_ERR(0, 71, __pyx_L1_error)
           #else
-          __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 68, __pyx_L1_error)
+          __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 71, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           #endif
         } else {
           if (__pyx_t_8 >= PyTuple_GET_SIZE(__pyx_t_1)) break;
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_2 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_8); __Pyx_INCREF(__pyx_t_2); __pyx_t_8++; if (unlikely(0 < 0)) __PYX_ERR(0, 68, __pyx_L1_error)
+          __pyx_t_2 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_8); __Pyx_INCREF(__pyx_t_2); __pyx_t_8++; if (unlikely(0 < 0)) __PYX_ERR(0, 71, __pyx_L1_error)
           #else
-          __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 68, __pyx_L1_error)
+          __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 71, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           #endif
         }
@@ -3282,7 +3291,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_4exon_matching(CYTHON
           PyObject* exc_type = PyErr_Occurred();
           if (exc_type) {
             if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-            else __PYX_ERR(0, 68, __pyx_L1_error)
+            else __PYX_ERR(0, 71, __pyx_L1_error)
           }
           break;
         }
@@ -3291,55 +3300,55 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_4exon_matching(CYTHON
       __Pyx_XDECREF_SET(__pyx_v_i, __pyx_t_2);
       __pyx_t_2 = 0;
 
-      /* "cupcake/tofu/branch/c_branch.pyx":69
+      /* "cupcake/tofu/branch/c_branch.pyx":72
  *         # check if the ends differ a little, if so, extend to min/max
  *         for i in xrange(len(matches)):
  *             d_start = abs(matches[i].start - ref_exon.start)             # <<<<<<<<<<<<<<
  *             #print "matching {0} to {1}".format(matches[i].start, ref_exon.start)
  *             #pdb.set_trace()
  */
-      __pyx_t_2 = __Pyx_PyObject_GetItem(__pyx_v_matches, __pyx_v_i); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 69, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyObject_GetItem(__pyx_v_matches, __pyx_v_i); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 72, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_start); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 69, __pyx_L1_error)
+      __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_start); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 72, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_7);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_ref_exon, __pyx_n_s_start); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 69, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_ref_exon, __pyx_n_s_start); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 72, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_4 = PyNumber_Subtract(__pyx_t_7, __pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 69, __pyx_L1_error)
+      __pyx_t_4 = PyNumber_Subtract(__pyx_t_7, __pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 72, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __pyx_t_2 = __Pyx_PyNumber_Absolute(__pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 69, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyNumber_Absolute(__pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 72, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_XDECREF_SET(__pyx_v_d_start, __pyx_t_2);
       __pyx_t_2 = 0;
 
-      /* "cupcake/tofu/branch/c_branch.pyx":72
+      /* "cupcake/tofu/branch/c_branch.pyx":75
  *             #print "matching {0} to {1}".format(matches[i].start, ref_exon.start)
  *             #pdb.set_trace()
  *             if d_start <= match_extend_tolerate_left: # now find the furthest end that satisfies the results             # <<<<<<<<<<<<<<
  *                 for j in xrange(len(matches)-1, i-1, -1):
  *                     if abs(matches[j].end - ref_exon.end) <= match_extend_tolerate_right:
  */
-      __pyx_t_2 = PyObject_RichCompare(__pyx_v_d_start, __pyx_v_match_extend_tolerate_left, Py_LE); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 72, __pyx_L1_error)
-      __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 72, __pyx_L1_error)
+      __pyx_t_2 = PyObject_RichCompare(__pyx_v_d_start, __pyx_v_match_extend_tolerate_left, Py_LE); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 75, __pyx_L1_error)
+      __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 75, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       if (__pyx_t_9) {
 
-        /* "cupcake/tofu/branch/c_branch.pyx":73
+        /* "cupcake/tofu/branch/c_branch.pyx":76
  *             #pdb.set_trace()
  *             if d_start <= match_extend_tolerate_left: # now find the furthest end that satisfies the results
  *                 for j in xrange(len(matches)-1, i-1, -1):             # <<<<<<<<<<<<<<
  *                     if abs(matches[j].end - ref_exon.end) <= match_extend_tolerate_right:
  *                         return matches[i:(j+1)]
  */
-        __pyx_t_13 = PyObject_Length(__pyx_v_matches); if (unlikely(__pyx_t_13 == ((Py_ssize_t)-1))) __PYX_ERR(0, 73, __pyx_L1_error)
-        __pyx_t_2 = PyInt_FromSsize_t((__pyx_t_13 - 1)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 73, __pyx_L1_error)
+        __pyx_t_13 = PyObject_Length(__pyx_v_matches); if (unlikely(__pyx_t_13 == ((Py_ssize_t)-1))) __PYX_ERR(0, 76, __pyx_L1_error)
+        __pyx_t_2 = PyInt_FromSsize_t((__pyx_t_13 - 1)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 76, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
-        __pyx_t_4 = __Pyx_PyInt_SubtractObjC(__pyx_v_i, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 73, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PyInt_SubtractObjC(__pyx_v_i, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 76, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
-        __pyx_t_7 = PyTuple_New(3); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 73, __pyx_L1_error)
+        __pyx_t_7 = PyTuple_New(3); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 76, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_7);
         __Pyx_GIVEREF(__pyx_t_2);
         PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_2);
@@ -3350,16 +3359,16 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_4exon_matching(CYTHON
         PyTuple_SET_ITEM(__pyx_t_7, 2, __pyx_int_neg_1);
         __pyx_t_2 = 0;
         __pyx_t_4 = 0;
-        __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_xrange, __pyx_t_7, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 73, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_xrange, __pyx_t_7, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 76, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
         if (likely(PyList_CheckExact(__pyx_t_4)) || PyTuple_CheckExact(__pyx_t_4)) {
           __pyx_t_7 = __pyx_t_4; __Pyx_INCREF(__pyx_t_7); __pyx_t_13 = 0;
           __pyx_t_14 = NULL;
         } else {
-          __pyx_t_13 = -1; __pyx_t_7 = PyObject_GetIter(__pyx_t_4); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 73, __pyx_L1_error)
+          __pyx_t_13 = -1; __pyx_t_7 = PyObject_GetIter(__pyx_t_4); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 76, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_7);
-          __pyx_t_14 = Py_TYPE(__pyx_t_7)->tp_iternext; if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 73, __pyx_L1_error)
+          __pyx_t_14 = Py_TYPE(__pyx_t_7)->tp_iternext; if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 76, __pyx_L1_error)
         }
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
         for (;;) {
@@ -3367,17 +3376,17 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_4exon_matching(CYTHON
             if (likely(PyList_CheckExact(__pyx_t_7))) {
               if (__pyx_t_13 >= PyList_GET_SIZE(__pyx_t_7)) break;
               #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-              __pyx_t_4 = PyList_GET_ITEM(__pyx_t_7, __pyx_t_13); __Pyx_INCREF(__pyx_t_4); __pyx_t_13++; if (unlikely(0 < 0)) __PYX_ERR(0, 73, __pyx_L1_error)
+              __pyx_t_4 = PyList_GET_ITEM(__pyx_t_7, __pyx_t_13); __Pyx_INCREF(__pyx_t_4); __pyx_t_13++; if (unlikely(0 < 0)) __PYX_ERR(0, 76, __pyx_L1_error)
               #else
-              __pyx_t_4 = PySequence_ITEM(__pyx_t_7, __pyx_t_13); __pyx_t_13++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 73, __pyx_L1_error)
+              __pyx_t_4 = PySequence_ITEM(__pyx_t_7, __pyx_t_13); __pyx_t_13++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 76, __pyx_L1_error)
               __Pyx_GOTREF(__pyx_t_4);
               #endif
             } else {
               if (__pyx_t_13 >= PyTuple_GET_SIZE(__pyx_t_7)) break;
               #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-              __pyx_t_4 = PyTuple_GET_ITEM(__pyx_t_7, __pyx_t_13); __Pyx_INCREF(__pyx_t_4); __pyx_t_13++; if (unlikely(0 < 0)) __PYX_ERR(0, 73, __pyx_L1_error)
+              __pyx_t_4 = PyTuple_GET_ITEM(__pyx_t_7, __pyx_t_13); __Pyx_INCREF(__pyx_t_4); __pyx_t_13++; if (unlikely(0 < 0)) __PYX_ERR(0, 76, __pyx_L1_error)
               #else
-              __pyx_t_4 = PySequence_ITEM(__pyx_t_7, __pyx_t_13); __pyx_t_13++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 73, __pyx_L1_error)
+              __pyx_t_4 = PySequence_ITEM(__pyx_t_7, __pyx_t_13); __pyx_t_13++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 76, __pyx_L1_error)
               __Pyx_GOTREF(__pyx_t_4);
               #endif
             }
@@ -3387,7 +3396,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_4exon_matching(CYTHON
               PyObject* exc_type = PyErr_Occurred();
               if (exc_type) {
                 if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-                else __PYX_ERR(0, 73, __pyx_L1_error)
+                else __PYX_ERR(0, 76, __pyx_L1_error)
               }
               break;
             }
@@ -3396,34 +3405,34 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_4exon_matching(CYTHON
           __Pyx_XDECREF_SET(__pyx_v_j, __pyx_t_4);
           __pyx_t_4 = 0;
 
-          /* "cupcake/tofu/branch/c_branch.pyx":74
+          /* "cupcake/tofu/branch/c_branch.pyx":77
  *             if d_start <= match_extend_tolerate_left: # now find the furthest end that satisfies the results
  *                 for j in xrange(len(matches)-1, i-1, -1):
  *                     if abs(matches[j].end - ref_exon.end) <= match_extend_tolerate_right:             # <<<<<<<<<<<<<<
  *                         return matches[i:(j+1)]
  *         return None
  */
-          __pyx_t_4 = __Pyx_PyObject_GetItem(__pyx_v_matches, __pyx_v_j); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 74, __pyx_L1_error)
+          __pyx_t_4 = __Pyx_PyObject_GetItem(__pyx_v_matches, __pyx_v_j); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 77, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_4);
-          __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_end); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 74, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_end); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 77, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-          __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_ref_exon, __pyx_n_s_end); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 74, __pyx_L1_error)
+          __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_ref_exon, __pyx_n_s_end); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 77, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_4);
-          __pyx_t_3 = PyNumber_Subtract(__pyx_t_2, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 74, __pyx_L1_error)
+          __pyx_t_3 = PyNumber_Subtract(__pyx_t_2, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 77, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_3);
           __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
           __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-          __pyx_t_4 = __Pyx_PyNumber_Absolute(__pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 74, __pyx_L1_error)
+          __pyx_t_4 = __Pyx_PyNumber_Absolute(__pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 77, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_4);
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-          __pyx_t_3 = PyObject_RichCompare(__pyx_t_4, __pyx_v_match_extend_tolerate_right, Py_LE); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 74, __pyx_L1_error)
+          __pyx_t_3 = PyObject_RichCompare(__pyx_t_4, __pyx_v_match_extend_tolerate_right, Py_LE); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 77, __pyx_L1_error)
           __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-          __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 74, __pyx_L1_error)
+          __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 77, __pyx_L1_error)
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
           if (__pyx_t_9) {
 
-            /* "cupcake/tofu/branch/c_branch.pyx":75
+            /* "cupcake/tofu/branch/c_branch.pyx":78
  *                 for j in xrange(len(matches)-1, i-1, -1):
  *                     if abs(matches[j].end - ref_exon.end) <= match_extend_tolerate_right:
  *                         return matches[i:(j+1)]             # <<<<<<<<<<<<<<
@@ -3431,9 +3440,9 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_4exon_matching(CYTHON
  *     else: # ack! could not find evidence for this :<
  */
             __Pyx_XDECREF(__pyx_r);
-            __pyx_t_3 = __Pyx_PyInt_AddObjC(__pyx_v_j, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 75, __pyx_L1_error)
+            __pyx_t_3 = __Pyx_PyInt_AddObjC(__pyx_v_j, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 78, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_3);
-            __pyx_t_4 = __Pyx_PyObject_GetSlice(__pyx_v_matches, 0, 0, &__pyx_v_i, &__pyx_t_3, NULL, 0, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 75, __pyx_L1_error)
+            __pyx_t_4 = __Pyx_PyObject_GetSlice(__pyx_v_matches, 0, 0, &__pyx_v_i, &__pyx_t_3, NULL, 0, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 78, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_4);
             __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
             __pyx_r = __pyx_t_4;
@@ -3442,7 +3451,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_4exon_matching(CYTHON
             __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
             goto __pyx_L0;
 
-            /* "cupcake/tofu/branch/c_branch.pyx":74
+            /* "cupcake/tofu/branch/c_branch.pyx":77
  *             if d_start <= match_extend_tolerate_left: # now find the furthest end that satisfies the results
  *                 for j in xrange(len(matches)-1, i-1, -1):
  *                     if abs(matches[j].end - ref_exon.end) <= match_extend_tolerate_right:             # <<<<<<<<<<<<<<
@@ -3451,7 +3460,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_4exon_matching(CYTHON
  */
           }
 
-          /* "cupcake/tofu/branch/c_branch.pyx":73
+          /* "cupcake/tofu/branch/c_branch.pyx":76
  *             #pdb.set_trace()
  *             if d_start <= match_extend_tolerate_left: # now find the furthest end that satisfies the results
  *                 for j in xrange(len(matches)-1, i-1, -1):             # <<<<<<<<<<<<<<
@@ -3461,7 +3470,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_4exon_matching(CYTHON
         }
         __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-        /* "cupcake/tofu/branch/c_branch.pyx":72
+        /* "cupcake/tofu/branch/c_branch.pyx":75
  *             #print "matching {0} to {1}".format(matches[i].start, ref_exon.start)
  *             #pdb.set_trace()
  *             if d_start <= match_extend_tolerate_left: # now find the furthest end that satisfies the results             # <<<<<<<<<<<<<<
@@ -3470,7 +3479,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_4exon_matching(CYTHON
  */
       }
 
-      /* "cupcake/tofu/branch/c_branch.pyx":68
+      /* "cupcake/tofu/branch/c_branch.pyx":71
  *     if (not intervals_adjacent) or intervals_all_adjacent(matches):
  *         # check if the ends differ a little, if so, extend to min/max
  *         for i in xrange(len(matches)):             # <<<<<<<<<<<<<<
@@ -3480,7 +3489,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_4exon_matching(CYTHON
     }
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "cupcake/tofu/branch/c_branch.pyx":76
+    /* "cupcake/tofu/branch/c_branch.pyx":79
  *                     if abs(matches[j].end - ref_exon.end) <= match_extend_tolerate_right:
  *                         return matches[i:(j+1)]
  *         return None             # <<<<<<<<<<<<<<
@@ -3491,7 +3500,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_4exon_matching(CYTHON
     __pyx_r = Py_None; __Pyx_INCREF(Py_None);
     goto __pyx_L0;
 
-    /* "cupcake/tofu/branch/c_branch.pyx":66
+    /* "cupcake/tofu/branch/c_branch.pyx":69
  *         return None
  *     # check that all matches are adjacent (no splicing! this just one integral exon)
  *     if (not intervals_adjacent) or intervals_all_adjacent(matches):             # <<<<<<<<<<<<<<
@@ -3500,7 +3509,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_4exon_matching(CYTHON
  */
   }
 
-  /* "cupcake/tofu/branch/c_branch.pyx":78
+  /* "cupcake/tofu/branch/c_branch.pyx":81
  *         return None
  *     else: # ack! could not find evidence for this :<
  *         return None             # <<<<<<<<<<<<<<
@@ -3511,7 +3520,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_4exon_matching(CYTHON
     goto __pyx_L0;
   }
 
-  /* "cupcake/tofu/branch/c_branch.pyx":53
+  /* "cupcake/tofu/branch/c_branch.pyx":56
  *     return True
  * 
  * def exon_matching(exon_tree, ref_exon, match_extend_tolerate_left, match_extend_tolerate_right, intervals_adjacent=True):             # <<<<<<<<<<<<<<
@@ -3539,7 +3548,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_8c_branch_4exon_matching(CYTHON
   return __pyx_r;
 }
 
-/* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":735
+/* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":735
  * ctypedef npy_cdouble     complex_t
  * 
  * cdef inline object PyArray_MultiIterNew1(a):             # <<<<<<<<<<<<<<
@@ -3556,7 +3565,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew1(PyObject *__
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("PyArray_MultiIterNew1", 0);
 
-  /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":736
+  /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":736
  * 
  * cdef inline object PyArray_MultiIterNew1(a):
  *     return PyArray_MultiIterNew(1, <void*>a)             # <<<<<<<<<<<<<<
@@ -3570,7 +3579,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew1(PyObject *__
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":735
+  /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":735
  * ctypedef npy_cdouble     complex_t
  * 
  * cdef inline object PyArray_MultiIterNew1(a):             # <<<<<<<<<<<<<<
@@ -3589,7 +3598,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew1(PyObject *__
   return __pyx_r;
 }
 
-/* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":738
+/* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":738
  *     return PyArray_MultiIterNew(1, <void*>a)
  * 
  * cdef inline object PyArray_MultiIterNew2(a, b):             # <<<<<<<<<<<<<<
@@ -3606,7 +3615,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew2(PyObject *__
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("PyArray_MultiIterNew2", 0);
 
-  /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":739
+  /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":739
  * 
  * cdef inline object PyArray_MultiIterNew2(a, b):
  *     return PyArray_MultiIterNew(2, <void*>a, <void*>b)             # <<<<<<<<<<<<<<
@@ -3620,7 +3629,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew2(PyObject *__
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":738
+  /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":738
  *     return PyArray_MultiIterNew(1, <void*>a)
  * 
  * cdef inline object PyArray_MultiIterNew2(a, b):             # <<<<<<<<<<<<<<
@@ -3639,7 +3648,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew2(PyObject *__
   return __pyx_r;
 }
 
-/* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":741
+/* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":741
  *     return PyArray_MultiIterNew(2, <void*>a, <void*>b)
  * 
  * cdef inline object PyArray_MultiIterNew3(a, b, c):             # <<<<<<<<<<<<<<
@@ -3656,7 +3665,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew3(PyObject *__
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("PyArray_MultiIterNew3", 0);
 
-  /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":742
+  /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":742
  * 
  * cdef inline object PyArray_MultiIterNew3(a, b, c):
  *     return PyArray_MultiIterNew(3, <void*>a, <void*>b, <void*> c)             # <<<<<<<<<<<<<<
@@ -3670,7 +3679,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew3(PyObject *__
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":741
+  /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":741
  *     return PyArray_MultiIterNew(2, <void*>a, <void*>b)
  * 
  * cdef inline object PyArray_MultiIterNew3(a, b, c):             # <<<<<<<<<<<<<<
@@ -3689,7 +3698,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew3(PyObject *__
   return __pyx_r;
 }
 
-/* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":744
+/* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":744
  *     return PyArray_MultiIterNew(3, <void*>a, <void*>b, <void*> c)
  * 
  * cdef inline object PyArray_MultiIterNew4(a, b, c, d):             # <<<<<<<<<<<<<<
@@ -3706,7 +3715,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew4(PyObject *__
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("PyArray_MultiIterNew4", 0);
 
-  /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":745
+  /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":745
  * 
  * cdef inline object PyArray_MultiIterNew4(a, b, c, d):
  *     return PyArray_MultiIterNew(4, <void*>a, <void*>b, <void*>c, <void*> d)             # <<<<<<<<<<<<<<
@@ -3720,7 +3729,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew4(PyObject *__
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":744
+  /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":744
  *     return PyArray_MultiIterNew(3, <void*>a, <void*>b, <void*> c)
  * 
  * cdef inline object PyArray_MultiIterNew4(a, b, c, d):             # <<<<<<<<<<<<<<
@@ -3739,7 +3748,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew4(PyObject *__
   return __pyx_r;
 }
 
-/* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":747
+/* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":747
  *     return PyArray_MultiIterNew(4, <void*>a, <void*>b, <void*>c, <void*> d)
  * 
  * cdef inline object PyArray_MultiIterNew5(a, b, c, d, e):             # <<<<<<<<<<<<<<
@@ -3756,7 +3765,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew5(PyObject *__
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("PyArray_MultiIterNew5", 0);
 
-  /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":748
+  /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":748
  * 
  * cdef inline object PyArray_MultiIterNew5(a, b, c, d, e):
  *     return PyArray_MultiIterNew(5, <void*>a, <void*>b, <void*>c, <void*> d, <void*> e)             # <<<<<<<<<<<<<<
@@ -3770,7 +3779,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew5(PyObject *__
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":747
+  /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":747
  *     return PyArray_MultiIterNew(4, <void*>a, <void*>b, <void*>c, <void*> d)
  * 
  * cdef inline object PyArray_MultiIterNew5(a, b, c, d, e):             # <<<<<<<<<<<<<<
@@ -3789,7 +3798,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew5(PyObject *__
   return __pyx_r;
 }
 
-/* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":750
+/* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":750
  *     return PyArray_MultiIterNew(5, <void*>a, <void*>b, <void*>c, <void*> d, <void*> e)
  * 
  * cdef inline tuple PyDataType_SHAPE(dtype d):             # <<<<<<<<<<<<<<
@@ -3803,7 +3812,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyDataType_SHAPE(PyArray_Descr *__
   int __pyx_t_1;
   __Pyx_RefNannySetupContext("PyDataType_SHAPE", 0);
 
-  /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":751
+  /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":751
  * 
  * cdef inline tuple PyDataType_SHAPE(dtype d):
  *     if PyDataType_HASSUBARRAY(d):             # <<<<<<<<<<<<<<
@@ -3813,7 +3822,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyDataType_SHAPE(PyArray_Descr *__
   __pyx_t_1 = (PyDataType_HASSUBARRAY(__pyx_v_d) != 0);
   if (__pyx_t_1) {
 
-    /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":752
+    /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":752
  * cdef inline tuple PyDataType_SHAPE(dtype d):
  *     if PyDataType_HASSUBARRAY(d):
  *         return <tuple>d.subarray.shape             # <<<<<<<<<<<<<<
@@ -3825,7 +3834,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyDataType_SHAPE(PyArray_Descr *__
     __pyx_r = ((PyObject*)__pyx_v_d->subarray->shape);
     goto __pyx_L0;
 
-    /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":751
+    /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":751
  * 
  * cdef inline tuple PyDataType_SHAPE(dtype d):
  *     if PyDataType_HASSUBARRAY(d):             # <<<<<<<<<<<<<<
@@ -3834,7 +3843,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyDataType_SHAPE(PyArray_Descr *__
  */
   }
 
-  /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":754
+  /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":754
  *         return <tuple>d.subarray.shape
  *     else:
  *         return ()             # <<<<<<<<<<<<<<
@@ -3848,7 +3857,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyDataType_SHAPE(PyArray_Descr *__
     goto __pyx_L0;
   }
 
-  /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":750
+  /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":750
  *     return PyArray_MultiIterNew(5, <void*>a, <void*>b, <void*>c, <void*> d, <void*> e)
  * 
  * cdef inline tuple PyDataType_SHAPE(dtype d):             # <<<<<<<<<<<<<<
@@ -3863,7 +3872,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyDataType_SHAPE(PyArray_Descr *__
   return __pyx_r;
 }
 
-/* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":931
+/* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":931
  *     int _import_umath() except -1
  * 
  * cdef inline void set_array_base(ndarray arr, object base):             # <<<<<<<<<<<<<<
@@ -3875,7 +3884,7 @@ static CYTHON_INLINE void __pyx_f_5numpy_set_array_base(PyArrayObject *__pyx_v_a
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("set_array_base", 0);
 
-  /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":932
+  /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":932
  * 
  * cdef inline void set_array_base(ndarray arr, object base):
  *     Py_INCREF(base) # important to do this before stealing the reference below!             # <<<<<<<<<<<<<<
@@ -3884,7 +3893,7 @@ static CYTHON_INLINE void __pyx_f_5numpy_set_array_base(PyArrayObject *__pyx_v_a
  */
   Py_INCREF(__pyx_v_base);
 
-  /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":933
+  /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":933
  * cdef inline void set_array_base(ndarray arr, object base):
  *     Py_INCREF(base) # important to do this before stealing the reference below!
  *     PyArray_SetBaseObject(arr, base)             # <<<<<<<<<<<<<<
@@ -3893,7 +3902,7 @@ static CYTHON_INLINE void __pyx_f_5numpy_set_array_base(PyArrayObject *__pyx_v_a
  */
   (void)(PyArray_SetBaseObject(__pyx_v_arr, __pyx_v_base));
 
-  /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":931
+  /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":931
  *     int _import_umath() except -1
  * 
  * cdef inline void set_array_base(ndarray arr, object base):             # <<<<<<<<<<<<<<
@@ -3905,7 +3914,7 @@ static CYTHON_INLINE void __pyx_f_5numpy_set_array_base(PyArrayObject *__pyx_v_a
   __Pyx_RefNannyFinishContext();
 }
 
-/* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":935
+/* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":935
  *     PyArray_SetBaseObject(arr, base)
  * 
  * cdef inline object get_array_base(ndarray arr):             # <<<<<<<<<<<<<<
@@ -3920,7 +3929,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_get_array_base(PyArrayObject *__py
   int __pyx_t_1;
   __Pyx_RefNannySetupContext("get_array_base", 0);
 
-  /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":936
+  /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":936
  * 
  * cdef inline object get_array_base(ndarray arr):
  *     base = PyArray_BASE(arr)             # <<<<<<<<<<<<<<
@@ -3929,7 +3938,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_get_array_base(PyArrayObject *__py
  */
   __pyx_v_base = PyArray_BASE(__pyx_v_arr);
 
-  /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":937
+  /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":937
  * cdef inline object get_array_base(ndarray arr):
  *     base = PyArray_BASE(arr)
  *     if base is NULL:             # <<<<<<<<<<<<<<
@@ -3939,7 +3948,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_get_array_base(PyArrayObject *__py
   __pyx_t_1 = ((__pyx_v_base == NULL) != 0);
   if (__pyx_t_1) {
 
-    /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":938
+    /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":938
  *     base = PyArray_BASE(arr)
  *     if base is NULL:
  *         return None             # <<<<<<<<<<<<<<
@@ -3950,7 +3959,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_get_array_base(PyArrayObject *__py
     __pyx_r = Py_None; __Pyx_INCREF(Py_None);
     goto __pyx_L0;
 
-    /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":937
+    /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":937
  * cdef inline object get_array_base(ndarray arr):
  *     base = PyArray_BASE(arr)
  *     if base is NULL:             # <<<<<<<<<<<<<<
@@ -3959,7 +3968,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_get_array_base(PyArrayObject *__py
  */
   }
 
-  /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":939
+  /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":939
  *     if base is NULL:
  *         return None
  *     return <object>base             # <<<<<<<<<<<<<<
@@ -3971,7 +3980,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_get_array_base(PyArrayObject *__py
   __pyx_r = ((PyObject *)__pyx_v_base);
   goto __pyx_L0;
 
-  /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":935
+  /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":935
  *     PyArray_SetBaseObject(arr, base)
  * 
  * cdef inline object get_array_base(ndarray arr):             # <<<<<<<<<<<<<<
@@ -3986,7 +3995,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_get_array_base(PyArrayObject *__py
   return __pyx_r;
 }
 
-/* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":943
+/* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":943
  * # Versions of the import_* functions which are more suitable for
  * # Cython code.
  * cdef inline int import_array() except -1:             # <<<<<<<<<<<<<<
@@ -4010,7 +4019,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_array(void) {
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("import_array", 0);
 
-  /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":944
+  /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":944
  * # Cython code.
  * cdef inline int import_array() except -1:
  *     try:             # <<<<<<<<<<<<<<
@@ -4026,7 +4035,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_array(void) {
     __Pyx_XGOTREF(__pyx_t_3);
     /*try:*/ {
 
-      /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":945
+      /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":945
  * cdef inline int import_array() except -1:
  *     try:
  *         __pyx_import_array()             # <<<<<<<<<<<<<<
@@ -4035,7 +4044,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_array(void) {
  */
       __pyx_t_4 = _import_array(); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(1, 945, __pyx_L3_error)
 
-      /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":944
+      /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":944
  * # Cython code.
  * cdef inline int import_array() except -1:
  *     try:             # <<<<<<<<<<<<<<
@@ -4049,7 +4058,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_array(void) {
     goto __pyx_L8_try_end;
     __pyx_L3_error:;
 
-    /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":946
+    /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":946
  *     try:
  *         __pyx_import_array()
  *     except Exception:             # <<<<<<<<<<<<<<
@@ -4064,7 +4073,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_array(void) {
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_GOTREF(__pyx_t_7);
 
-      /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":947
+      /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":947
  *         __pyx_import_array()
  *     except Exception:
  *         raise ImportError("numpy.core.multiarray failed to import")             # <<<<<<<<<<<<<<
@@ -4080,7 +4089,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_array(void) {
     goto __pyx_L5_except_error;
     __pyx_L5_except_error:;
 
-    /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":944
+    /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":944
  * # Cython code.
  * cdef inline int import_array() except -1:
  *     try:             # <<<<<<<<<<<<<<
@@ -4095,7 +4104,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_array(void) {
     __pyx_L8_try_end:;
   }
 
-  /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":943
+  /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":943
  * # Versions of the import_* functions which are more suitable for
  * # Cython code.
  * cdef inline int import_array() except -1:             # <<<<<<<<<<<<<<
@@ -4118,7 +4127,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_array(void) {
   return __pyx_r;
 }
 
-/* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":949
+/* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":949
  *         raise ImportError("numpy.core.multiarray failed to import")
  * 
  * cdef inline int import_umath() except -1:             # <<<<<<<<<<<<<<
@@ -4142,7 +4151,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_umath(void) {
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("import_umath", 0);
 
-  /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":950
+  /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":950
  * 
  * cdef inline int import_umath() except -1:
  *     try:             # <<<<<<<<<<<<<<
@@ -4158,7 +4167,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_umath(void) {
     __Pyx_XGOTREF(__pyx_t_3);
     /*try:*/ {
 
-      /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":951
+      /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":951
  * cdef inline int import_umath() except -1:
  *     try:
  *         _import_umath()             # <<<<<<<<<<<<<<
@@ -4167,7 +4176,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_umath(void) {
  */
       __pyx_t_4 = _import_umath(); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(1, 951, __pyx_L3_error)
 
-      /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":950
+      /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":950
  * 
  * cdef inline int import_umath() except -1:
  *     try:             # <<<<<<<<<<<<<<
@@ -4181,7 +4190,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_umath(void) {
     goto __pyx_L8_try_end;
     __pyx_L3_error:;
 
-    /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":952
+    /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":952
  *     try:
  *         _import_umath()
  *     except Exception:             # <<<<<<<<<<<<<<
@@ -4196,7 +4205,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_umath(void) {
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_GOTREF(__pyx_t_7);
 
-      /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":953
+      /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":953
  *         _import_umath()
  *     except Exception:
  *         raise ImportError("numpy.core.umath failed to import")             # <<<<<<<<<<<<<<
@@ -4212,7 +4221,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_umath(void) {
     goto __pyx_L5_except_error;
     __pyx_L5_except_error:;
 
-    /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":950
+    /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":950
  * 
  * cdef inline int import_umath() except -1:
  *     try:             # <<<<<<<<<<<<<<
@@ -4227,7 +4236,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_umath(void) {
     __pyx_L8_try_end:;
   }
 
-  /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":949
+  /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":949
  *         raise ImportError("numpy.core.multiarray failed to import")
  * 
  * cdef inline int import_umath() except -1:             # <<<<<<<<<<<<<<
@@ -4250,7 +4259,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_umath(void) {
   return __pyx_r;
 }
 
-/* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":955
+/* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":955
  *         raise ImportError("numpy.core.umath failed to import")
  * 
  * cdef inline int import_ufunc() except -1:             # <<<<<<<<<<<<<<
@@ -4274,7 +4283,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_ufunc(void) {
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("import_ufunc", 0);
 
-  /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":956
+  /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":956
  * 
  * cdef inline int import_ufunc() except -1:
  *     try:             # <<<<<<<<<<<<<<
@@ -4290,7 +4299,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_ufunc(void) {
     __Pyx_XGOTREF(__pyx_t_3);
     /*try:*/ {
 
-      /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":957
+      /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":957
  * cdef inline int import_ufunc() except -1:
  *     try:
  *         _import_umath()             # <<<<<<<<<<<<<<
@@ -4299,7 +4308,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_ufunc(void) {
  */
       __pyx_t_4 = _import_umath(); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(1, 957, __pyx_L3_error)
 
-      /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":956
+      /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":956
  * 
  * cdef inline int import_ufunc() except -1:
  *     try:             # <<<<<<<<<<<<<<
@@ -4313,7 +4322,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_ufunc(void) {
     goto __pyx_L8_try_end;
     __pyx_L3_error:;
 
-    /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":958
+    /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":958
  *     try:
  *         _import_umath()
  *     except Exception:             # <<<<<<<<<<<<<<
@@ -4328,7 +4337,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_ufunc(void) {
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_GOTREF(__pyx_t_7);
 
-      /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":959
+      /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":959
  *         _import_umath()
  *     except Exception:
  *         raise ImportError("numpy.core.umath failed to import")             # <<<<<<<<<<<<<<
@@ -4344,7 +4353,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_ufunc(void) {
     goto __pyx_L5_except_error;
     __pyx_L5_except_error:;
 
-    /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":956
+    /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":956
  * 
  * cdef inline int import_ufunc() except -1:
  *     try:             # <<<<<<<<<<<<<<
@@ -4359,7 +4368,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_ufunc(void) {
     __pyx_L8_try_end:;
   }
 
-  /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":955
+  /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":955
  *         raise ImportError("numpy.core.umath failed to import")
  * 
  * cdef inline int import_ufunc() except -1:             # <<<<<<<<<<<<<<
@@ -4382,7 +4391,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_ufunc(void) {
   return __pyx_r;
 }
 
-/* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":969
+/* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":969
  * 
  * 
  * cdef inline bint is_timedelta64_object(object obj):             # <<<<<<<<<<<<<<
@@ -4395,7 +4404,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_is_timedelta64_object(PyObject *__pyx_v_
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("is_timedelta64_object", 0);
 
-  /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":981
+  /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":981
  *     bool
  *     """
  *     return PyObject_TypeCheck(obj, &PyTimedeltaArrType_Type)             # <<<<<<<<<<<<<<
@@ -4405,7 +4414,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_is_timedelta64_object(PyObject *__pyx_v_
   __pyx_r = PyObject_TypeCheck(__pyx_v_obj, (&PyTimedeltaArrType_Type));
   goto __pyx_L0;
 
-  /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":969
+  /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":969
  * 
  * 
  * cdef inline bint is_timedelta64_object(object obj):             # <<<<<<<<<<<<<<
@@ -4419,7 +4428,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_is_timedelta64_object(PyObject *__pyx_v_
   return __pyx_r;
 }
 
-/* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":984
+/* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":984
  * 
  * 
  * cdef inline bint is_datetime64_object(object obj):             # <<<<<<<<<<<<<<
@@ -4432,7 +4441,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_is_datetime64_object(PyObject *__pyx_v_o
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("is_datetime64_object", 0);
 
-  /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":996
+  /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":996
  *     bool
  *     """
  *     return PyObject_TypeCheck(obj, &PyDatetimeArrType_Type)             # <<<<<<<<<<<<<<
@@ -4442,7 +4451,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_is_datetime64_object(PyObject *__pyx_v_o
   __pyx_r = PyObject_TypeCheck(__pyx_v_obj, (&PyDatetimeArrType_Type));
   goto __pyx_L0;
 
-  /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":984
+  /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":984
  * 
  * 
  * cdef inline bint is_datetime64_object(object obj):             # <<<<<<<<<<<<<<
@@ -4456,7 +4465,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_is_datetime64_object(PyObject *__pyx_v_o
   return __pyx_r;
 }
 
-/* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":999
+/* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":999
  * 
  * 
  * cdef inline npy_datetime get_datetime64_value(object obj) nogil:             # <<<<<<<<<<<<<<
@@ -4467,7 +4476,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_is_datetime64_object(PyObject *__pyx_v_o
 static CYTHON_INLINE npy_datetime __pyx_f_5numpy_get_datetime64_value(PyObject *__pyx_v_obj) {
   npy_datetime __pyx_r;
 
-  /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":1006
+  /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":1006
  *     also needed.  That can be found using `get_datetime64_unit`.
  *     """
  *     return (<PyDatetimeScalarObject*>obj).obval             # <<<<<<<<<<<<<<
@@ -4477,7 +4486,7 @@ static CYTHON_INLINE npy_datetime __pyx_f_5numpy_get_datetime64_value(PyObject *
   __pyx_r = ((PyDatetimeScalarObject *)__pyx_v_obj)->obval;
   goto __pyx_L0;
 
-  /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":999
+  /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":999
  * 
  * 
  * cdef inline npy_datetime get_datetime64_value(object obj) nogil:             # <<<<<<<<<<<<<<
@@ -4490,7 +4499,7 @@ static CYTHON_INLINE npy_datetime __pyx_f_5numpy_get_datetime64_value(PyObject *
   return __pyx_r;
 }
 
-/* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":1009
+/* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":1009
  * 
  * 
  * cdef inline npy_timedelta get_timedelta64_value(object obj) nogil:             # <<<<<<<<<<<<<<
@@ -4501,7 +4510,7 @@ static CYTHON_INLINE npy_datetime __pyx_f_5numpy_get_datetime64_value(PyObject *
 static CYTHON_INLINE npy_timedelta __pyx_f_5numpy_get_timedelta64_value(PyObject *__pyx_v_obj) {
   npy_timedelta __pyx_r;
 
-  /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":1013
+  /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":1013
  *     returns the int64 value underlying scalar numpy timedelta64 object
  *     """
  *     return (<PyTimedeltaScalarObject*>obj).obval             # <<<<<<<<<<<<<<
@@ -4511,7 +4520,7 @@ static CYTHON_INLINE npy_timedelta __pyx_f_5numpy_get_timedelta64_value(PyObject
   __pyx_r = ((PyTimedeltaScalarObject *)__pyx_v_obj)->obval;
   goto __pyx_L0;
 
-  /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":1009
+  /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":1009
  * 
  * 
  * cdef inline npy_timedelta get_timedelta64_value(object obj) nogil:             # <<<<<<<<<<<<<<
@@ -4524,7 +4533,7 @@ static CYTHON_INLINE npy_timedelta __pyx_f_5numpy_get_timedelta64_value(PyObject
   return __pyx_r;
 }
 
-/* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":1016
+/* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":1016
  * 
  * 
  * cdef inline NPY_DATETIMEUNIT get_datetime64_unit(object obj) nogil:             # <<<<<<<<<<<<<<
@@ -4535,7 +4544,7 @@ static CYTHON_INLINE npy_timedelta __pyx_f_5numpy_get_timedelta64_value(PyObject
 static CYTHON_INLINE NPY_DATETIMEUNIT __pyx_f_5numpy_get_datetime64_unit(PyObject *__pyx_v_obj) {
   NPY_DATETIMEUNIT __pyx_r;
 
-  /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":1020
+  /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":1020
  *     returns the unit part of the dtype for a numpy datetime64 object.
  *     """
  *     return <NPY_DATETIMEUNIT>(<PyDatetimeScalarObject*>obj).obmeta.base             # <<<<<<<<<<<<<<
@@ -4543,7 +4552,7 @@ static CYTHON_INLINE NPY_DATETIMEUNIT __pyx_f_5numpy_get_datetime64_unit(PyObjec
   __pyx_r = ((NPY_DATETIMEUNIT)((PyDatetimeScalarObject *)__pyx_v_obj)->obmeta.base);
   goto __pyx_L0;
 
-  /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":1016
+  /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":1016
  * 
  * 
  * cdef inline NPY_DATETIMEUNIT get_datetime64_unit(object obj) nogil:             # <<<<<<<<<<<<<<
@@ -4656,9 +4665,9 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
   #if PY_MAJOR_VERSION >= 3
-  __pyx_builtin_xrange = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_xrange) __PYX_ERR(0, 14, __pyx_L1_error)
+  __pyx_builtin_xrange = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_xrange) __PYX_ERR(0, 17, __pyx_L1_error)
   #else
-  __pyx_builtin_xrange = __Pyx_GetBuiltinName(__pyx_n_s_xrange); if (!__pyx_builtin_xrange) __PYX_ERR(0, 14, __pyx_L1_error)
+  __pyx_builtin_xrange = __Pyx_GetBuiltinName(__pyx_n_s_xrange); if (!__pyx_builtin_xrange) __PYX_ERR(0, 17, __pyx_L1_error)
   #endif
   __pyx_builtin_ImportError = __Pyx_GetBuiltinName(__pyx_n_s_ImportError); if (!__pyx_builtin_ImportError) __PYX_ERR(1, 947, __pyx_L1_error)
   return 0;
@@ -4670,7 +4679,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":947
+  /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":947
  *         __pyx_import_array()
  *     except Exception:
  *         raise ImportError("numpy.core.multiarray failed to import")             # <<<<<<<<<<<<<<
@@ -4681,7 +4690,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple_);
   __Pyx_GIVEREF(__pyx_tuple_);
 
-  /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":953
+  /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":953
  *         _import_umath()
  *     except Exception:
  *         raise ImportError("numpy.core.umath failed to import")             # <<<<<<<<<<<<<<
@@ -4692,41 +4701,41 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__2);
   __Pyx_GIVEREF(__pyx_tuple__2);
 
-  /* "cupcake/tofu/branch/c_branch.pyx":9
+  /* "cupcake/tofu/branch/c_branch.pyx":12
  * ctypedef np.int_t DTYPE_t
  * 
  * def exon_finding(np.ndarray[DTYPE_t, ndim=1] baseC, np.ndarray[DTYPE_t, ndim=1] altC_neg, np.ndarray[DTYPE_t, ndim=1] altC_pos, np.ndarray[DTYPE_t, ndim=1] transC, int size, int threshSplit, int threshBase, int offset):             # <<<<<<<<<<<<<<
  *     cdef int i
  *     cdef bool tag = False
  */
-  __pyx_tuple__3 = PyTuple_Pack(13, __pyx_n_s_baseC, __pyx_n_s_altC_neg, __pyx_n_s_altC_pos, __pyx_n_s_transC, __pyx_n_s_size, __pyx_n_s_threshSplit, __pyx_n_s_threshBase, __pyx_n_s_offset, __pyx_n_s_i, __pyx_n_s_tag, __pyx_n_s_index, __pyx_n_s_exon_tree, __pyx_n_s_e_start); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(0, 9, __pyx_L1_error)
+  __pyx_tuple__3 = PyTuple_Pack(13, __pyx_n_s_baseC, __pyx_n_s_altC_neg, __pyx_n_s_altC_pos, __pyx_n_s_transC, __pyx_n_s_size, __pyx_n_s_threshSplit, __pyx_n_s_threshBase, __pyx_n_s_offset, __pyx_n_s_i, __pyx_n_s_tag, __pyx_n_s_index, __pyx_n_s_exon_tree, __pyx_n_s_e_start); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(0, 12, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__3);
   __Pyx_GIVEREF(__pyx_tuple__3);
-  __pyx_codeobj__4 = (PyObject*)__Pyx_PyCode_New(8, 0, 13, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__3, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_cupcake_tofu_branch_c_branch, __pyx_n_s_exon_finding, 9, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__4)) __PYX_ERR(0, 9, __pyx_L1_error)
+  __pyx_codeobj__4 = (PyObject*)__Pyx_PyCode_New(8, 0, 13, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__3, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_cupcake_tofu_branch_c_branch, __pyx_n_s_exon_finding, 12, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__4)) __PYX_ERR(0, 12, __pyx_L1_error)
 
-  /* "cupcake/tofu/branch/c_branch.pyx":36
+  /* "cupcake/tofu/branch/c_branch.pyx":39
  *     return exon_tree
  * 
  * def intervals_all_adjacent(x):             # <<<<<<<<<<<<<<
  *     """
  *     x --- a list of Intervals
  */
-  __pyx_tuple__5 = PyTuple_Pack(2, __pyx_n_s_x, __pyx_n_s_i); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(0, 36, __pyx_L1_error)
+  __pyx_tuple__5 = PyTuple_Pack(2, __pyx_n_s_x, __pyx_n_s_i); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(0, 39, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__5);
   __Pyx_GIVEREF(__pyx_tuple__5);
-  __pyx_codeobj__6 = (PyObject*)__Pyx_PyCode_New(1, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__5, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_cupcake_tofu_branch_c_branch, __pyx_n_s_intervals_all_adjacent, 36, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__6)) __PYX_ERR(0, 36, __pyx_L1_error)
+  __pyx_codeobj__6 = (PyObject*)__Pyx_PyCode_New(1, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__5, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_cupcake_tofu_branch_c_branch, __pyx_n_s_intervals_all_adjacent, 39, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__6)) __PYX_ERR(0, 39, __pyx_L1_error)
 
-  /* "cupcake/tofu/branch/c_branch.pyx":53
+  /* "cupcake/tofu/branch/c_branch.pyx":56
  *     return True
  * 
  * def exon_matching(exon_tree, ref_exon, match_extend_tolerate_left, match_extend_tolerate_right, intervals_adjacent=True):             # <<<<<<<<<<<<<<
  *     """
  *     exon_tree --- an IntervalTree made from .baseC/.altC using exon detection; probably only short read data
  */
-  __pyx_tuple__7 = PyTuple_Pack(9, __pyx_n_s_exon_tree, __pyx_n_s_ref_exon, __pyx_n_s_match_extend_tolerate_left, __pyx_n_s_match_extend_tolerate_right, __pyx_n_s_intervals_adjacent, __pyx_n_s_matches, __pyx_n_s_i, __pyx_n_s_d_start, __pyx_n_s_j); if (unlikely(!__pyx_tuple__7)) __PYX_ERR(0, 53, __pyx_L1_error)
+  __pyx_tuple__7 = PyTuple_Pack(9, __pyx_n_s_exon_tree, __pyx_n_s_ref_exon, __pyx_n_s_match_extend_tolerate_left, __pyx_n_s_match_extend_tolerate_right, __pyx_n_s_intervals_adjacent, __pyx_n_s_matches, __pyx_n_s_i, __pyx_n_s_d_start, __pyx_n_s_j); if (unlikely(!__pyx_tuple__7)) __PYX_ERR(0, 56, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__7);
   __Pyx_GIVEREF(__pyx_tuple__7);
-  __pyx_codeobj__8 = (PyObject*)__Pyx_PyCode_New(5, 0, 9, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__7, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_cupcake_tofu_branch_c_branch, __pyx_n_s_exon_matching, 53, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__8)) __PYX_ERR(0, 53, __pyx_L1_error)
+  __pyx_codeobj__8 = (PyObject*)__Pyx_PyCode_New(5, 0, 9, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__7, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_cupcake_tofu_branch_c_branch, __pyx_n_s_exon_matching, 56, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__8)) __PYX_ERR(0, 56, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -5075,104 +5084,104 @@ if (!__Pyx_RefNanny) {
 
   /* "cupcake/tofu/branch/c_branch.pyx":1
  * import numpy as np             # <<<<<<<<<<<<<<
+ * 
  * cimport numpy as np
- * from cpython cimport bool
  */
   __pyx_t_1 = __Pyx_Import(__pyx_n_s_numpy, 0, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_np, __pyx_t_1) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "cupcake/tofu/branch/c_branch.pyx":4
- * cimport numpy as np
+  /* "cupcake/tofu/branch/c_branch.pyx":6
  * from cpython cimport bool
- * from cupcake.tofu.branch.intersection_unique import IntervalTreeUnique, Interval             # <<<<<<<<<<<<<<
  * 
- * DTYPE = np.int
+ * from cupcake.tofu.branch.intersection_unique import (Interval,             # <<<<<<<<<<<<<<
+ *                                                      IntervalTreeUnique)
+ * 
  */
-  __pyx_t_1 = PyList_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 4, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 6, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_INCREF(__pyx_n_s_IntervalTreeUnique);
-  __Pyx_GIVEREF(__pyx_n_s_IntervalTreeUnique);
-  PyList_SET_ITEM(__pyx_t_1, 0, __pyx_n_s_IntervalTreeUnique);
   __Pyx_INCREF(__pyx_n_s_Interval);
   __Pyx_GIVEREF(__pyx_n_s_Interval);
-  PyList_SET_ITEM(__pyx_t_1, 1, __pyx_n_s_Interval);
-  __pyx_t_2 = __Pyx_Import(__pyx_n_s_cupcake_tofu_branch_intersection, __pyx_t_1, -1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 4, __pyx_L1_error)
+  PyList_SET_ITEM(__pyx_t_1, 0, __pyx_n_s_Interval);
+  __Pyx_INCREF(__pyx_n_s_IntervalTreeUnique);
+  __Pyx_GIVEREF(__pyx_n_s_IntervalTreeUnique);
+  PyList_SET_ITEM(__pyx_t_1, 1, __pyx_n_s_IntervalTreeUnique);
+  __pyx_t_2 = __Pyx_Import(__pyx_n_s_cupcake_tofu_branch_intersection, __pyx_t_1, -1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 6, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_IntervalTreeUnique); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 4, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_Interval); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 6, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_IntervalTreeUnique, __pyx_t_1) < 0) __PYX_ERR(0, 4, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_Interval, __pyx_t_1) < 0) __PYX_ERR(0, 6, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_Interval); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 4, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_IntervalTreeUnique); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 6, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_Interval, __pyx_t_1) < 0) __PYX_ERR(0, 4, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_IntervalTreeUnique, __pyx_t_1) < 0) __PYX_ERR(0, 7, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "cupcake/tofu/branch/c_branch.pyx":6
- * from cupcake.tofu.branch.intersection_unique import IntervalTreeUnique, Interval
+  /* "cupcake/tofu/branch/c_branch.pyx":9
+ *                                                      IntervalTreeUnique)
  * 
  * DTYPE = np.int             # <<<<<<<<<<<<<<
  * ctypedef np.int_t DTYPE_t
  * 
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 6, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 9, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_int); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 6, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_int); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 9, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_DTYPE, __pyx_t_1) < 0) __PYX_ERR(0, 6, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_DTYPE, __pyx_t_1) < 0) __PYX_ERR(0, 9, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "cupcake/tofu/branch/c_branch.pyx":9
+  /* "cupcake/tofu/branch/c_branch.pyx":12
  * ctypedef np.int_t DTYPE_t
  * 
  * def exon_finding(np.ndarray[DTYPE_t, ndim=1] baseC, np.ndarray[DTYPE_t, ndim=1] altC_neg, np.ndarray[DTYPE_t, ndim=1] altC_pos, np.ndarray[DTYPE_t, ndim=1] transC, int size, int threshSplit, int threshBase, int offset):             # <<<<<<<<<<<<<<
  *     cdef int i
  *     cdef bool tag = False
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7cupcake_4tofu_6branch_8c_branch_1exon_finding, NULL, __pyx_n_s_cupcake_tofu_branch_c_branch); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 9, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7cupcake_4tofu_6branch_8c_branch_1exon_finding, NULL, __pyx_n_s_cupcake_tofu_branch_c_branch); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 12, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_exon_finding, __pyx_t_1) < 0) __PYX_ERR(0, 9, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_exon_finding, __pyx_t_1) < 0) __PYX_ERR(0, 12, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "cupcake/tofu/branch/c_branch.pyx":36
+  /* "cupcake/tofu/branch/c_branch.pyx":39
  *     return exon_tree
  * 
  * def intervals_all_adjacent(x):             # <<<<<<<<<<<<<<
  *     """
  *     x --- a list of Intervals
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7cupcake_4tofu_6branch_8c_branch_3intervals_all_adjacent, NULL, __pyx_n_s_cupcake_tofu_branch_c_branch); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 36, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7cupcake_4tofu_6branch_8c_branch_3intervals_all_adjacent, NULL, __pyx_n_s_cupcake_tofu_branch_c_branch); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 39, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_intervals_all_adjacent, __pyx_t_1) < 0) __PYX_ERR(0, 36, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_intervals_all_adjacent, __pyx_t_1) < 0) __PYX_ERR(0, 39, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "cupcake/tofu/branch/c_branch.pyx":53
+  /* "cupcake/tofu/branch/c_branch.pyx":56
  *     return True
  * 
  * def exon_matching(exon_tree, ref_exon, match_extend_tolerate_left, match_extend_tolerate_right, intervals_adjacent=True):             # <<<<<<<<<<<<<<
  *     """
  *     exon_tree --- an IntervalTree made from .baseC/.altC using exon detection; probably only short read data
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7cupcake_4tofu_6branch_8c_branch_5exon_matching, NULL, __pyx_n_s_cupcake_tofu_branch_c_branch); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 53, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7cupcake_4tofu_6branch_8c_branch_5exon_matching, NULL, __pyx_n_s_cupcake_tofu_branch_c_branch); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 56, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_exon_matching, __pyx_t_1) < 0) __PYX_ERR(0, 53, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_exon_matching, __pyx_t_1) < 0) __PYX_ERR(0, 56, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "cupcake/tofu/branch/c_branch.pyx":1
  * import numpy as np             # <<<<<<<<<<<<<<
+ * 
  * cimport numpy as np
- * from cpython cimport bool
  */
   __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_1) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "../../miniconda3/envs/sqanti3/lib/python3.7/site-packages/numpy/__init__.pxd":1016
+  /* "../../miniconda3/envs/sqanti3/lib/python3.8/site-packages/numpy/__init__.pxd":1016
  * 
  * 
  * cdef inline NPY_DATETIMEUNIT get_datetime64_unit(object obj) nogil:             # <<<<<<<<<<<<<<

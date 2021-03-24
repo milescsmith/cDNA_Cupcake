@@ -2,11 +2,17 @@
 import sys
 from collections import Counter, defaultdict
 from csv import DictReader, DictWriter
+from pathlib import Path
+from typing import Dict, Optional, Union
 
+import typer
 from Bio.Seq import Seq
+from cupcake.logging import cupcake_logger as logger
+
+app = typer.Typer(name="cupcake.singlecell.UMI_BC_error_correct")
 
 
-def read_dropseq_clean_report(report_filename):
+def read_dropseq_clean_report(report_filename: str) -> Dict[Seq, Seq]:
     """
     EXAMPLE
     # FILTER_AMBIGUOUS=true
@@ -29,24 +35,26 @@ def read_dropseq_clean_report(report_filename):
     GAAGCCAGAGGT    GAAGCCAGAAGT    7037    47      10      G       A       FALSE
     GTGACGGACGGT    GTGACCGACGGT    8959    69      6       G       C       FALSE
     """
-    f = open(report_filename)
-    while True:
-        cur_pos = f.tell()
-        if not f.readline().startswith("#"):
-            break
-    f.seek(cur_pos)
+    with open(report_filename) as f:
+        while True:
+            cur_pos = f.tell()
+            if not f.readline().startswith("#"):
+                break
+        f.seek(cur_pos)
 
-    bc_repair_dict = {}
-    reader = DictReader(f, delimiter="\t")
-    for r in reader:
-        if r["repaired"] == "TRUE":
-            seq_from = Seq(r["neighbor_barcode"]).reverse_complement()
-            seq_to = Seq(r["intended_barcode"]).reverse_complement()
-            bc_repair_dict[seq_from] = seq_to
+        bc_repair_dict = {}
+        reader = DictReader(f, delimiter="\t")
+        for r in reader:
+            if r["repaired"] == "TRUE":
+                seq_from = Seq(r["neighbor_barcode"]).reverse_complement()
+                seq_to = Seq(r["intended_barcode"]).reverse_complement()
+                bc_repair_dict[seq_from] = seq_to
     return bc_repair_dict
 
 
-def read_dropseq_synthesis_report(report_filename, bc_repair_dict=None):
+def read_dropseq_synthesis_report(
+    report_filename: Union[str, Path], bc_repair_dict: Optional[Dict[Seq, Seq]] = None
+) -> Dict[Seq, Seq]:
     """
         EXAMPLE
         intended_sequence       related_sequences       num_related     deleted_base    deleted_base_pos        non_incorporated_rate   intended
@@ -56,26 +64,26 @@ def read_dropseq_synthesis_report(report_filename, bc_repair_dict=None):
         CTCCACTGGAAA    CTCCACTGAAAA:CTCCACTGAAAC:CTCCACTGAAAG:CTCCACTGAAAT     4       G       9       0.47    4851    1039    0.3     0.98
         TTTAATATGGAT    TTAATATGGATG:TTAATATGGATT
     """
-    f = open(report_filename)
-    while True:
-        cur_pos = f.tell()
-        if not f.readline().startswith("#"):
-            break
-    f.seek(cur_pos)
+    with open(report_filename) as f:
+        while True:
+            cur_pos = f.tell()
+            if not f.readline().startswith("#"):
+                break
+        f.seek(cur_pos)
 
-    if bc_repair_dict is None:
-        bc_repair_dict = {}
-    reader = DictReader(f, delimiter="\t")
-    for r in reader:
-        if r["intended_sequence"] != "NA":
-            seq_to = Seq(r["intended_sequence"]).reverse_complement()
-            for s in r["related_sequences"].split(":"):
-                seq_from = Seq(s).reverse_complement()
-                bc_repair_dict[seq_from] = seq_to
+        if bc_repair_dict is None:
+            bc_repair_dict = {}
+        reader = DictReader(f, delimiter="\t")
+        for r in reader:
+            if r["intended_sequence"] != "NA":
+                seq_to = Seq(r["intended_sequence"]).reverse_complement()
+                for s in r["related_sequences"].split(":"):
+                    seq_from = Seq(s).reverse_complement()
+                    bc_repair_dict[seq_from] = seq_to
     return bc_repair_dict
 
 
-def edit_distance(seq1, seq2):
+def edit_distance(seq1, seq2) -> int:
     assert len(seq1) == len(seq2)
     diff = 0
     for i in range(len(seq1)):
@@ -83,7 +91,9 @@ def edit_distance(seq1, seq2):
     return diff
 
 
-def error_correct_BC_or_UMI(records, key, threshold=1):
+def error_correct_BC_or_UMI(
+    records: Dict[str, str], key: str, threshold: int = 1
+) -> Dict[str, str]:
     """
     :param records: should be list of records all from the same gene!
     """
@@ -94,7 +104,7 @@ def error_correct_BC_or_UMI(records, key, threshold=1):
         bc_count[r[key]] += 1
 
     # most common BC, in decreasing order
-    bc_sorted = [bc for bc, count in bc_count.most_common()]
+    bc_sorted = [bc for bc, _ in bc_count.most_common()]
 
     i = 0
     while i < len(bc_sorted) - 1:
@@ -115,12 +125,12 @@ def error_correct_BC_or_UMI(records, key, threshold=1):
 
 
 def umi_bc_error_correct(
-    csv_filename,
-    output_filename,
-    shortread_bc={},
-    only_top_ranked=False,
-    bc_repair_dict=None,
-):
+    csv_filename: Union[str, Path],
+    output_filename: Union[str, Path],
+    shortread_bc: Optional[Dict[str, str]] = {},
+    only_top_ranked: bool = False,
+    bc_repair_dict: Optional[Dict[Seq, Seq]] = None,
+) -> None:
 
     reader = DictReader(open(csv_filename), delimiter="\t")
 
@@ -174,61 +184,52 @@ def umi_bc_error_correct(
                     writer.writerow(r)
 
 
-def main():
-    from argparse import ArgumentParser
-
-    parser = ArgumentParser()
-    parser.add_argument("input_csv", help="Input CSV")
-    parser.add_argument("output_csv", help="Output CSV")
-    parser.add_argument(
-        "--bc_rank_file", help="(Optional) cell barcode rank file from short read data"
-    )
-    parser.add_argument(
-        "--only_top_ranked",
-        action="store_true",
-        default=False,
-        help="(Optional) only output those that are top-ranked. Must have --bc_rank_file.",
-    )
-    parser.add_argument(
-        "--dropseq_clean_report",
+@app.command(name="")
+def main(
+    input_csv: str = typer.Argument(..., help="Input CSV"),
+    output_csv: str = typer.Argument(..., help="Output CSV"),
+    bc_rank_file: str = typer.Argument(
+        ..., help="Cell barcode rank file from short read data"
+    ),
+    only_top_ranked: bool = typer.Option(
+        False,
+        help="Only output those that are top-ranked. Must have --bc_rank_file.",
+    ),
+    dropseq_clean_report: str = typer.Option(
+        ...,
         help="Output from running DetectBeadSubstitutionErrors in DropSeq cookbook (ex: star_gene_exon_tagged_clean_substitution.bam_report.txt)",
-    )
-    parser.add_argument(
-        "--dropseq_synthesis_report",
+    ),
+    dropseq_synthesis_report: str = typer.Option(
+        ...,
         help="Output from running DetectBeadSynthesisErrors in DropSeq cookbook (ex: star_gene_exon_tagged_clean_substitution_clean2.bam_report.txt)",
-    )
-
-    args = parser.parse_args()
-
+    ),
+) -> None:
     shortread_bc = {}  # dict of cell barcode -> "Y" for top ranked
-    if args.bc_rank_file is not None:
-        reader = DictReader(open(args.bc_rank_file), delimiter="\t")
+    if bc_rank_file is not None:
+        reader = DictReader(open(bc_rank_file), delimiter="\t")
         for r in reader:
             shortread_bc[r["cell_barcode"]] = r["top_ranked"]
     else:
-        if args.only_top_ranked:
-            print(
-                "--bc_rank_file must be given if using --only_top_ranked!",
-                file=sys.stderr,
-            )
+        if only_top_ranked:
+            logger.error("--bc_rank_file must be given if using --only_top_ranked!")
             sys.exit(-1)
 
     bc_repair_dict = None
-    if args.dropseq_clean_report is not None:
-        bc_repair_dict = read_dropseq_clean_report(args.dropseq_clean_report)
-    if args.dropseq_synthesis_report is not None:
+    if dropseq_clean_report is not None:
+        bc_repair_dict = read_dropseq_clean_report(dropseq_clean_report)
+    if dropseq_synthesis_report is not None:
         bc_repair_dict = read_dropseq_synthesis_report(
-            args.dropseq_synthesis_report, bc_repair_dict
+            dropseq_synthesis_report, bc_repair_dict
         )
 
     umi_bc_error_correct(
-        args.input_csv,
-        args.output_csv,
+        input_csv,
+        output_csv,
         shortread_bc,
-        args.only_top_ranked,
+        only_top_ranked,
         bc_repair_dict,
     )
 
 
 if __name__ == "__main__":
-    main()
+    typer.run(main)

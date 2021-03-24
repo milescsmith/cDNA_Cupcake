@@ -30,66 +30,52 @@ Classify report format:
     m54033_171031_152256/27919086/29_3644_CCS,+,1,1,1,29,3644,3674,2,0
 """
 
-import os
 import re
 import sys
 from collections import Counter, defaultdict
 from csv import DictReader
+from pathlib import Path
+from typing import Optional
 
+import typer
 from Bio import SeqIO
+
+from cupcake.logging import cupcake_logger as logger
 
 hq1_id_rex = re.compile(r"i\d+_HQ_\S+\|(\S+)\/f\d+p\d+\/\d+")
 hq2_id_rex = re.compile(r"HQ_\S+\|(\S+)\/f\d+p\d+\/\d+")
 
 
-def link_files(src_dir, out_dir="./"):
+app = typer.Typer(name="cupcake.post_isoseq_cluster.demux_isoseq2_no_genome")
+
+
+def link_files(src_dir, out_dir=Path.cwd()):
     """
     :param src_dir: job directory
     Locate HQ isoform, (cluster) report.csv, (classify) file.csv link to current directory
     """
+    src_dir = Path(src_dir)
     # location for HQ fastq in IsoSeq1
-    hq_fastq = os.path.join(
-        os.path.abspath(src_dir),
-        "tasks",
-        "pbtranscript.tasks.combine_cluster_bins-0",
-        "hq_isoforms.fastq",
-    )
+    hq_fastq = src_dir.joinpath("tasks","pbtranscript.tasks.combine_cluster_bins-0","hq_isoforms.fastq",)
     # location for HQ fastq in IsoSeq2
-    hq_fastq2 = os.path.join(
-        os.path.abspath(src_dir),
-        "tasks",
-        "pbtranscript2tools.tasks.collect_polish-0",
-        "all_arrowed_hq.fastq",
-    )
+    hq_fastq2 = src_dir.joinpath("tasks","pbtranscript2tools.tasks.collect_polish-0","all_arrowed_hq.fastq",)
     # location for cluster report in IsoSeq1
-    cluster_csv = os.path.join(
-        os.path.abspath(src_dir),
-        "tasks",
-        "pbtranscript.tasks.combine_cluster_bins-0",
-        "cluster_report.csv",
-    )
-    cluster_csv2 = os.path.join(
-        os.path.abspath(src_dir),
-        "tasks",
-        "pbtranscript2tools.tasks.collect_polish-0",
-        "report.csv",
-    )
+    cluster_csv = src_dir.joinpath("tasks","pbtranscript.tasks.combine_cluster_bins-0","cluster_report.csv",)
+    cluster_csv2 = src_dir.joinpath("tasks","pbtranscript2tools.tasks.collect_polish-0","report.csv",)
     # location for classify report in IsoSeq1 and 2
-    primer_csv = os.path.join(
-        os.path.abspath(src_dir), "tasks", "pbcoretools.tasks.gather_csv-1", "file.csv"
-    )
+    primer_csv = src_dir.joinpath( "tasks", "pbcoretools.tasks.gather_csv-1", "file.csv")
 
-    if os.path.exists(hq_fastq):
-        print("Detecting IsoSeq1 task directories...", file=sys.stderr)
-        os.symlink(hq_fastq, os.path.join(out_dir, "hq_isoforms.fastq"))
-        os.symlink(cluster_csv, os.path.join(out_dir, "cluster_report.csv"))
-        os.symlink(primer_csv, os.path.join(out_dir, "classify_report.csv"))
+    if hq_fastq.exists():
+        logger.info("Detecting IsoSeq1 task directories...")
+        hq_fastq.symlink_to(out_dir.joinpath("hq_isoforms.fastq"))
+        cluster_csv.symlink_to(out_dir.joinpath("cluster_report.csv"))
+        primer_csv.symlink_to(out_dir.joinpath("classify_report.csv"))
         isoseq_version = "1"
     else:
-        print("Detecting IsoSeq2 task directories...", file=sys.stderr)
-        os.symlink(hq_fastq2, os.path.join(out_dir, "hq_isoforms.fastq"))
-        os.symlink(cluster_csv2, os.path.join(out_dir, "cluster_report.csv"))
-        os.symlink(primer_csv, os.path.join(out_dir, "classify_report.csv"))
+        logger.info("Detecting IsoSeq2 task directories...")
+        hq_fastq2.symlink_to(out_dir.joinpath("hq_isoforms.fastq"))
+        cluster_csv2.symlink_to(out_dir.joinpath("cluster_report.csv"))
+        primer_csv.symlink_to(out_dir.joinpath("classify_report.csv"))
         isoseq_version = "2"
     return (
         out_dir,
@@ -134,12 +120,13 @@ def read_classify_csv(classify_csv):
 
 
 def demux_isoseq2_no_genome(
-    job_dir=None,
-    hq_fastq=None,
-    cluster_csv=None,
-    classify_csv=None,
+    job_dir: Optional[Path] = None,
+    hq_fastq: Optional[Path] = None,
+    cluster_csv: Optional[Path] = None,
+    classify_csv: Optional[Path] = None,
     output_filename=sys.stdout,
 ):
+
     if job_dir is not None:
         (
             out_dir_ignore,
@@ -150,9 +137,9 @@ def demux_isoseq2_no_genome(
         ) = link_files(job_dir)
         assert isoseq_version in ("1", "2")
     else:
-        assert os.path.exists(hq_fastq)
-        assert os.path.exists(cluster_csv)
-        assert os.path.exists(classify_csv)
+        for _ in (hq_fastq, cluster_csv, classify_csv,):
+            if not _.exists():
+                raise FileNotFoundError(f"{_.name} was not found!")
 
     # info: dict of hq_isoform --> primer --> FL count
     logger.info(f"Reading {classify_csv}...")
@@ -170,8 +157,7 @@ def demux_isoseq2_no_genome(
                 m = hq2_id_rex.match(r.id)
 
             if m is None:
-                logger.error(f"Unexpected HQ isoform ID format: {r.id}! Abort.")
-                sys.exit(-1)
+                raise RuntimeError(f"Unexpected HQ isoform ID format: {r.id}! Abort.")
             cid = m.group(1)
             f.write(r.id)
             for p in range(max_primer + 1):
@@ -180,32 +166,24 @@ def demux_isoseq2_no_genome(
         logger.info(f"Count file written to {f.name}.")
 
 
-def main():
-    from argparse import ArgumentParser
+@app.command(name="")
+def main(
+    job_dir: Optional[str] = typer.Option(None, "--job_dir", "-j", help="Job directory (if given, automatically finds required files)",),
+    hq_fastq: Optional[str] = typer.Option(None, help="HQ isoform fastq (overridden by --job_dir if given)"),
+    cluster_csv: Optional[str] = typer.Option(None, help="Cluster report CSV (overridden by --job_dir if given)"),
+    classify_csv: Optional[str] = typer.Option(None, help="Classify report CSV (overriden by --job_dir if given)"),
+    output: Optional[str] = typer.Option(None, "--output", "-o", help="Output count filename", required=True)
+):
 
-    parser = ArgumentParser("")
-    parser.add_argument(
-        "-j",
-        "--job_dir",
-        help="Job directory (if given, automatically finds required files)",
-    )
-    parser.add_argument(
-        "--hq_fastq", help="HQ isoform fastq (overridden by --job_dir if given)"
-    )
-    parser.add_argument(
-        "--cluster_csv", help="Cluster report CSV (overridden by --job_dir if given)"
-    )
-    parser.add_argument(
-        "--classify_csv", help="Classify report CSV (overriden by --job_dir if given)"
-    )
-    parser.add_argument("-o", "--output", help="Output count filename", required=True)
-
-    args = parser.parse_args()
+    job_dir = Path(job_dir) if job_dir is not None else job_dir
+    hq_fastq = Path(hq_fastq) if hq_fastq is not None else hq_fastq
+    cluster_csv = Path(cluster_csv) if cluster_csv is not None else cluster_csv
+    classify_csv = Path(classify_csv) if classify_csv is not None else classify_csv
 
     demux_isoseq2_no_genome(
-        args.job_dir, args.hq_fastq, args.cluster_csv, args.classify_csv, args.output
+        job_dir, hq_fastq, cluster_csv, classify_csv, output
     )
 
 
 if __name__ == "__main__":
-    main()
+    typer.run(main)

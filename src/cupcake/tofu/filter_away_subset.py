@@ -21,14 +21,14 @@ Example:
 
 """
 
-import os
 import sys
 from collections import defaultdict
 from csv import DictReader, DictWriter
+from pathlib import Path
+from typing import Dict, Tuple
 
 import typer
 from Bio import SeqIO
-
 from cupcake.logging import cupcake_logger as logger
 from cupcake.sequence import GFF
 from cupcake.tofu import compare_junctions
@@ -36,43 +36,40 @@ from cupcake.tofu import compare_junctions
 app = typer.Typer(name="filer_away_subset")
 
 
-def sanity_check_collapse_input(input_prefix):
+def sanity_check_collapse_input(input_prefix: str) -> Tuple[Path, Path, Path, str]:
     """
     Check that
     1. the count, gff, rep files exist
     2. the number of records agree among the three
     """
-    # group_filename = input_prefix + ".group.txt"
-    count_filename = input_prefix + ".abundance.txt"
-    gff_filename = input_prefix + ".gff"
+    # group_filename = f"{input_prefix}.group.txt"
+    count_filename = Path(f"{input_prefix}.abundance.txt")
+    gff_filename = Path(f"{input_prefix}.gff")
     rep_filenames = [
-        (input_prefix + ".rep.fq", "fastq"),
-        (input_prefix + ".rep.fastq", "fastq"),
-        (input_prefix + ".rep.fa", "fasta"),
-        (input_prefix + ".rep.fasta", "fasta"),
+        (f"{input_prefix}.rep.fq", "fastq"),
+        (f"{input_prefix}.rep.fastq", "fastq"),
+        (f"{input_prefix}.rep.fa", "fasta"),
+        (f"{input_prefix}.rep.fasta", "fasta"),
     ]
 
     rep_filename = None
     rep_type = None
-    for x, type in rep_filenames:
-        if os.path.exists(x):
-            rep_filename = x
-            rep_type = type
+    for x, filetype in rep_filenames:
+        if Path(x).exists():
+            rep_filename = Path(x)
+            rep_type = filetype
 
     if rep_filename is None:
-        print(
-            "Expected to find input fasta or fastq files {0}.rep.fa or {0}.rep.fq. Not found. Abort!".format(
-                input_prefix
-            ),
-            file=sys.stderr,
+        logger.error(
+            f"Expected to find input fasta or fastq files {input_prefix}.rep.fa or {input_prefix}.rep.fq. Not found. Abort!"
         )
         sys.exit(-1)
 
-    if not os.path.exists(count_filename):
-        print("File {} does not exist. Abort!".format(count_filename), file=sys.stderr)
+    if not count_filename.exists():
+        logger.error(f"File {count_filename} does not exist. Abort!")
         sys.exit(-1)
-    if not os.path.exists(gff_filename):
-        print("File {} does not exist. Abort!".format(gff_filename), file=sys.stderr)
+    if not gff_filename.exists():
+        logger.error(f"File {gff_filename} does not exist. Abort!")
         sys.exit(-1)
 
     pbids1 = {[r.id for r in SeqIO.parse(open(rep_filename), rep_type)]}
@@ -84,22 +81,19 @@ def sanity_check_collapse_input(input_prefix):
         or len(pbids2) != len(pbids3)
         or len(pbids1) != len(pbids3)
     ):
-        print(
-            "The number of PBID records in the files disagree! Sanity check failed.",
-            file=sys.stderr,
+        logger.error(
+            "The number of PBID records in the files disagree! Sanity check failed."
         )
-        print("# of PBIDs in {}: {}".format(rep_filename, len(pbids1)), file=sys.stderr)
-        print("# of PBIDs in {}: {}".format(gff_filename, len(pbids2)), file=sys.stderr)
-        print(
-            "# of PBIDs in {}: {}".format(count_filename, len(pbids3)), file=sys.stderr
-        )
+        logger.error(f"# of PBIDs in {rep_filename}: {len(pbids1)}")
+        logger.error(f"# of PBIDs in {gff_filename}: {len(pbids2)}")
+        logger.error(f"# of PBIDs in {count_filename}: {len(pbids3)}")
         sys.exit(-1)
 
     return count_filename, gff_filename, rep_filename, rep_type
 
 
-def read_count_file(count_filename):
-    f = open(count_filename)
+def read_count_file(count_filename: Path) -> Tuple[Dict[str, str], str]:
+    f = count_filename.open()
     count_header = ""
     while True:
         cur_pos = f.tell()
@@ -114,7 +108,9 @@ def read_count_file(count_filename):
     return d, count_header
 
 
-def can_merge(m, r1, r2, internal_fuzzy_max_dist):
+def can_merge(
+    m: str, r1: GFF.gmapRecord, r2: GFF.gmapRecord, internal_fuzzy_max_dist: int
+) -> bool:
     if m == "subset":
         r1, r2 = r2, r1  # rotate so r1 is always the longer one
     if m == "super" or m == "subset":
@@ -151,7 +147,9 @@ def can_merge(m, r1, r2, internal_fuzzy_max_dist):
                 )
 
 
-def filter_out_subsets(recs, internal_fuzzy_max_dist):
+def filter_out_subsets(
+    recs: Dict[int, GFF.gmapRecord], internal_fuzzy_max_dist: int
+) -> None:
     # recs must be sorted by start becuz that's the order they are written
     i = 0
     while i < len(recs) - 1:

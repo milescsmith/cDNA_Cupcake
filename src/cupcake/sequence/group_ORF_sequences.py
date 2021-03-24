@@ -17,10 +17,11 @@ ORFgroup_<index> \t comma-sep list of IDs with the same ORF
 """
 
 import re
-import sys
 from collections import Counter, OrderedDict
 
 from Bio import SeqIO
+
+from cupcake.logging import cupcake_logger as logger
 
 rex_pbid = re.compile(r"(PB.\d+).(\d+)")
 
@@ -37,33 +38,28 @@ def dedup_ORFs(faa_filename, output_prefix, is_pbid):
             seq_dict[s] = []
         seq_dict[s].append(r.id)
 
-    f1 = open(output_prefix + ".faa", "w")
-    f2 = open(output_prefix + ".group.txt", "w")
+    with open(f"{output_prefix}.faa", "w") as f1, open(f"{output_prefix}.group.txt", "w") as f2:
 
-    for i, s in enumerate(seq_dict):
-        newid = None
-        if is_pbid:
-            m = rex_pbid.match(
-                seq_dict[s][0]
-            )  # we will just take the first member and use the PB.X.Y
-            if m is None:
-                print(
-                    "WARNING: seqid {} is not in PB.X.Y format!".format(seq_dict[s][0]),
-                    file=sys.stderr,
-                )
-            else:
-                pb_x = m.group(1)  # ex: PB.10
-                pbid_counter[pb_x] += 1
-                newid = "ORFgroup_{}_{}".format(pb_x, pbid_counter[pb_x])
-        if newid is None:
-            newid = "ORFgroup_{}".format(i + 1)
-        f1.write(">{}\n{}\n".format(newid, s))
-        f2.write("{}\t{}\n".format(newid, ",".join(seq_dict[s])))
+        for i, s in enumerate(seq_dict):
+            newid = None
+            if is_pbid:
+                m = rex_pbid.match(
+                    seq_dict[s][0]
+                )  # we will just take the first member and use the PB.X.Y
+                if m is None:
+                    logger.warning(
+                        f"WARNING: seqid {seq_dict[s][0]} is not in PB.X.Y format!",
+                    )
+                else:
+                    pb_x = m.group(1)  # ex: PB.10
+                    pbid_counter[pb_x] += 1
+                    newid = f"ORFgroup_{pb_x}_{pbid_counter[pb_x]}"
+            if newid is None:
+                newid = f"ORFgroup_{i + 1}"
+            f1.write(f">{newid}\n{s}\n")
+            f2.write(f"{newid}\t{','.join(seq_dict[s])}\n")
 
-    f1.close()
-    f2.close()
-
-    print("Output written to: {},{}".format(f1.name, f2.name), file=sys.stderr)
+    logger.info(f"Output written to: {f1.name},{f2.name}")
 
 
 def main():

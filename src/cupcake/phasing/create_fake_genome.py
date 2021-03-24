@@ -5,10 +5,9 @@ import os
 import re
 import sys
 
+import cupcake.sequence.GFF as GFF
 from Bio import SeqIO
 from bx.intervals.cluster import ClusterTree
-
-import cupcake.sequence.GFF as GFF
 from cupcake.logging import cupcake_logger as logger
 
 """

@@ -9,11 +9,12 @@ __version__ = "1.3"
 
 from collections import defaultdict, namedtuple
 from csv import DictReader
+from typing import List, Tuple
 
+import typer
 from Bio import SeqIO
 from bx.intervals import IntervalTree
 from bx.intervals.cluster import ClusterTree
-
 from cupcake.logging import cupcake_logger as logger
 from cupcake.sequence import BioReaders
 
@@ -31,20 +32,29 @@ Novel ---
 """
 
 
+app = typer.Typer(
+    name="cupcake.bacteria.match_w_annotation",
+    help="Match alignment with annotation. Categorize and Report.",
+)
+
+
 AMatch = namedtuple("AMatch", "name strand start end record")
 
 
-def calc_overlap(s1, e1, s2, e2):
+def calc_overlap(s1: int, e1: int, s2: int, e2: int) -> int:
     return min(e1, e2) - max(s1, s2)
 
 
-def calc_overlap_ratio1(s1, e1, s2, e2):
+def calc_overlap_ratio1(s1: int, e1: int, s2: int, e2: int) -> float:
     return (min(e1, e2) - max(s1, s2)) * 1.0 / (e1 - s1)
 
 
 def check_multigene(
-    overlaps, min_overlap_bp=0, min_query_overlap=0, min_gene_overlap=0.5
-):
+    overlaps: List[Tuple[str, int, float, float]],
+    min_overlap_bp: int = 0,
+    min_query_overlap: int = 0,
+    min_gene_overlap: float = 0.5,
+) -> str:
     """
     overlaps is a list of: (gene, overlap_bp, overlap_gene_ratio, overlap_query_ratio)
     """
@@ -54,7 +64,7 @@ def check_multigene(
         and x[3] >= min_query_overlap
         for x in overlaps
     ):
-        new_name = "poly-" + "-".join(x[0] for x in overlaps)
+        new_name = f"poly-{'-'.join(x[0] for x in overlaps)}"
         return new_name
     #    elif overlaps[0][2] >= min_gene_overlap: # first gene covers 50% of query
     #        return overlaps[0][0]
@@ -64,7 +74,7 @@ def check_multigene(
         return "novel"
 
 
-def categorize_novel(t, r, info, same_strand_overlap_gene=None):
+def categorize_novel(t, r, info, same_strand_overlap_gene=None) -> namedtuple:
     """
     Further categorize novel as:
 
@@ -76,13 +86,13 @@ def categorize_novel(t, r, info, same_strand_overlap_gene=None):
     matches = t[r.sID]["+" if r.flag.strand == "-" else "-"].find(s, e)
     if len(matches) > 0 and same_strand_overlap_gene is None:
         s2, e2, gene2 = info[matches[0]]
-        return AMatch("novel-antisense-" + gene2, r.flag.strand, s, e, r)
+        return AMatch(f"novel-antisense-{gene2}", r.flag.strand, s, e, r)
     else:
         if same_strand_overlap_gene is None:
             return AMatch("novel-unannotated", r.flag.strand, s, e, r)
         else:
             return AMatch(
-                "novel-partial-" + same_strand_overlap_gene, r.flag.strand, s, e, r
+                f"novel-partial-{same_strand_overlap_gene}", r.flag.strand, s, e, r
             )
 
 
@@ -205,14 +215,14 @@ def check_multigene_helper(
 
 
 def categorize_aln_by_annotation(
-    gene_annotation_file,
-    input_fasta,
-    input_sam,
-    output_prefix,
-    min_overlap_bp=200,
-    min_query_overlap=0.5,
-    min_gene_overlap=0.8,
-):
+    gene_annotation_file: str,
+    input_fasta: str,
+    input_sam: str,
+    output_prefix: str,
+    min_overlap_bp: int = 200,
+    min_query_overlap: float = 0.5,
+    min_gene_overlap: float = 0.8,
+) -> None:
 
     t = defaultdict(
         lambda: {"+": IntervalTree(), "-": IntervalTree()}
@@ -292,8 +302,8 @@ def categorize_aln_by_annotation(
         novel_region_index = 1
         for d1 in novel_ct.values():
             for ct in d1.values():
-                gn = "novel-" + str(novel_region_index)
-                for _start, _end, _indices in ct.getregions():
+                gn = f"novel-{str(novel_region_index)}"
+                for *_, _indices in ct.getregions():
                     v = [novel_list[ind] for ind in _indices]
                     v.sort(
                         key=lambda x: (x.start, x.end),
@@ -317,44 +327,35 @@ def categorize_aln_by_annotation(
         logger.info(f"Output written to: {f1.name}")
 
 
-def main():
-    from argparse import ArgumentParser
-
-    parser = ArgumentParser("Match alignment with annotation. Categorize and Report.")
-    parser.add_argument("gene_annotation_file", help="Gene Annotation Text File")
-    parser.add_argument("input_fasta", help="Input Fasta")
-    parser.add_argument("input_sam", help="Input SAM")
-    parser.add_argument("output_prefix", help="Output Prefix")
-    parser.add_argument(
-        "--min_query_overlap",
-        type=float,
-        default=0,
+@app.command(name="")
+def main(
+    gene_annotation_file: str = typer.Arguemnt(..., help="Gene Annotation Text File"),
+    input_fasta: str = typer.Argument(..., help="Input Fasta"),
+    input_sam: str = typer.Argument(..., help="Input SAM"),
+    output_prefix: str = typer.Argument(..., help="Output Prefix"),
+    min_query_overlap: float = typer.Option(
+        0.0,
         help="Minimum query overlap, in ratio (default: 0.0)",
-    )
-    parser.add_argument(
-        "--min_gene_overlap_bp",
-        type=int,
-        default=0,
+    ),
+    min_gene_overlap_bp: int = typer.Option(
+        0,
         help="Minimum gene overlap, in bp (default: 0 bp)",
-    )
-    parser.add_argument(
-        "--min_gene_overlap",
-        type=float,
-        default=0.5,
+    ),
+    min_gene_overlap: float = typer.Option(
+        0.5,
         help="Minimum gene overlap, in ratio (default: 0.5)",
-    )
-
-    args = parser.parse_args()
+    ),
+):
     categorize_aln_by_annotation(
-        args.gene_annotation_file,
-        args.input_fasta,
-        args.input_sam,
-        args.output_prefix,
-        args.min_gene_overlap_bp,
-        args.min_query_overlap,
-        args.min_gene_overlap,
+        gene_annotation_file,
+        input_fasta,
+        input_sam,
+        output_prefix,
+        min_gene_overlap_bp,
+        min_query_overlap,
+        min_gene_overlap,
     )
 
 
 if __name__ == "__main__":
-    main()
+    typer.run(main)

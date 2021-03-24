@@ -7,7 +7,6 @@ from csv import DictReader, DictWriter
 
 import vcf
 from bx.intervals import IntervalTree
-
 from cupcake.logging import cupcake_logger as logger
 from cupcake.phasing.io.SAMMPileUpReader import MPileUpReader
 
@@ -146,7 +145,7 @@ def main_brangus(vcf_filename, out_filename, unzip_snps=None):
         for r in vcf.VCFReader(open(vcf_filename)):
             unzip_snps[r.CHROM][r.POS] = r
 
-    print("Finished reading " + vcf_filename, file=sys.stderr)
+    logger.info(f"Finished reading {vcf_filename}")
     with open(out_filename, "w") as out_f:
         FIELDS = [
             "dir",
@@ -209,14 +208,14 @@ def main_maize(ki11_snps=None, dirs=None):
             # if debug_count > 100000: break
             debug_count += 1
 
-    print("Finished reading B73Ki11.q20.vcf.", file=sys.stderr)
+    logger.info("Finished reading B73Ki11.q20.vcf.")
 
     ki11_shortread_cov = defaultdict(lambda: {})  # chrom -> pos -> short read cov
     # read the raw Ki11 pileup to get coverage in places where no SNPs were called
     for r in MPileUpReader("Ki11.raw.mpileup"):
         if r is not None:
             ki11_shortread_cov[r.chr][r.pos] = r.cov
-    print("Fnished reading Ki11.raw.mpileup.", file=sys.stderr)
+    logger.info("Fnished reading Ki11.raw.mpileup.")
 
     repeat_by_chrom = {}
     # read the Tandem Repeat Finder summary
@@ -225,7 +224,7 @@ def main_maize(ki11_snps=None, dirs=None):
             repeat_by_chrom[r["chrom"]] = IntervalTree()
         repeat_by_chrom[r["chrom"]].add(int(r["start0"]), int(r["end1"]))
 
-    print("Finished reading B73_RefV4.fa.repeat_list.txt.", file=sys.stderr)
+    logger.info("Finished reading B73_RefV4.fa.repeat_list.txt.")
 
     FIELDS = [
         "dir",

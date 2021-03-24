@@ -24,7 +24,7 @@ from collections import Counter
 
 # import networkx as nx
 import numpy as np
-
+from cupcake.logging import cupcake_logger as logger
 from cupcake.phasing.io.VariantPhaser import Haplotypes
 
 
@@ -219,9 +219,7 @@ def error_correct_haplotypes(hap_obj, isoform_tally, diff_arr, hap_count_ordered
         new_isoform_tally[k] = Counter()
         for old_hap_index, count in v.items():
             if old_hap_index not in old_to_new_map:
-                print(
-                    f"Discarding: {hap_obj.haplotypes[old_hap_index]}", file=sys.stderr
-                )
+                logger.info(f"Discarding: {hap_obj.haplotypes[old_hap_index]}")
                 continue
             new_hap_index = old_to_new_map[old_hap_index]
             new_isoform_tally[k][new_hap_index] += count

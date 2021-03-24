@@ -42,7 +42,6 @@ from csv import DictReader, DictWriter
 from typing import List, Optional
 
 import typer
-
 from cupcake.logging import cupcake_logger as logger
 
 app = typer.Typer(
@@ -140,9 +139,7 @@ def read_group_filename(group_filename: str, is_cid=True):
                             ]  # cid = cb7607_c93041, for example
                         else:
                             raise Exception(
-                                "Unrecognized id format {} in {}!".format(
-                                    cid, group_filename
-                                )
+                                f"Unrecognized id format {cid} in {group_filename}!"
                             )
             cid_info[cid] = pbid
 
@@ -167,7 +164,7 @@ def output_read_count_IsoSeq_csv(
     elif output_mode == "a":
         f = open(output_filename, "a")
     else:
-        raise Exception("Output mode {} not valid!".format(output_mode))
+        raise Exception(f"Output mode {output_mode} not valid!")
 
     unmapped_holder = set()
     for r in DictReader(open(csv_filename), delimiter=","):
@@ -184,20 +181,14 @@ def output_read_count_IsoSeq_csv(
                             1
                         )  # make sure cid is transcript/0, transcript/1, without any prefix before 'transcript'
                     else:
-                        raise Exception(
-                            "cluster_id {} is not a valid cluster ID!".format(cid)
-                        )
+                        raise Exception(f"cluster_id {cid} is not a valid cluster ID!")
 
         x = r["read_id"]
         if cid in cid_info:
             # if is FL, must be unique
             if r["read_type"] == "FL":
                 pbid, stat = cid_info[cid], "unique"
-                f.write(
-                    "{id}\t{len}\t{is_fl}\t{stat}\t{pbid}\n".format(
-                        id=x, len=get_roi_len(x), is_fl="Y", stat=stat, pbid=pbid
-                    )
-                )
+                f.write(f"{x}\t{get_roi_len(x)}\tY\t{stat}\t{pbid}\n")
             else:  # nonFL could be multi-mapped, must wait and see
                 assert r["read_type"] == "NonFL"
                 # is only potentially unmapped, add all (movie-restricted) members to unmapped holder
@@ -210,11 +201,7 @@ def output_read_count_IsoSeq_csv(
             # if FL, can immediately write out since it only appears once in cluster_report.csv
             if r["read_type"] == "FL":
                 pbid, stat = "NA", "unmapped"
-                f.write(
-                    "{id}\t{len}\t{is_fl}\t{stat}\t{pbid}\n".format(
-                        id=x, len=get_roi_len(x), is_fl="Y", stat=stat, pbid=pbid
-                    )
-                )
+                f.write(f"{x}\t{get_roi_len(x)}\tY\t{stat}\t{pbid}\n")
             else:  # nonFL could be multi-mapped, so not sure it is truly unmapped, put in holder
                 unmapped_holder.add(x)
 
@@ -225,20 +212,12 @@ def output_read_count_IsoSeq_csv(
         else:
             stat = "ambiguous"
         for pbid in pbids:
-            f.write(
-                "{id}\t{len}\t{is_fl}\t{stat}\t{pbid}\n".format(
-                    id=seqid, len=get_roi_len(seqid), is_fl="N", stat=stat, pbid=pbid
-                )
-            )
+            f.write(f"{seqid}\t{get_roi_len(seqid)}\tN\t{stat}\t{pbid}\n")
 
     unmapped_holder = unmapped_holder.difference(mapped)
     pbid, stat = "NA", "unmapped"
     for x in unmapped_holder:
-        f.write(
-            "{id}\t{len}\t{is_fl}\t{stat}\t{pbid}\n".format(
-                id=x, len=get_roi_len(x), is_fl="N", stat=stat, pbid=pbid
-            )
-        )
+        f.write(f"{x}\t{get_roi_len(x)}\tN\t{stat}\t{pbid}\n")
 
     f.close()
 
@@ -297,7 +276,7 @@ def make_abundance_file(
     for k in keys:
         count_fl = tally[k]
         norm_fl = count_fl * 1.0 / use_total_fl
-        rec = {"pbid": k, "count_fl": count_fl, "norm_fl": "{:.4e}".format(norm_fl)}
+        rec = {"pbid": k, "count_fl": count_fl, "norm_fl": f"{norm_fl:.4e}"}
         writer.writerow(rec)
     f.close()
 

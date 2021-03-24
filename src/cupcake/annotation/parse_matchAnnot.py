@@ -3,7 +3,6 @@ import sys
 from collections import defaultdict
 
 from Bio import SeqIO
-
 from cupcake.logging import cupcake_logger as logger
 
 
@@ -46,7 +45,7 @@ def parse_matchAnnot(fa_or_fq, filename, not_pbid=False, parse_FL_coverage=False
             if score > match[pbid][1]:
                 match[pbid] = (gene, isoform, score)
 
-    f = open(filename + ".parsed.txt", "w")
+    f = open(f"{filename}.parsed.txt", "w")
     f.write("pbid\tpbgene\trefisoform\trefgene\tscore")
     if parse_FL_coverage:
         f.write("\tcount_fl")

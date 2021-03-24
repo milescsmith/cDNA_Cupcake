@@ -20,10 +20,9 @@ from enum import Enum
 from pathlib import Path
 from typing import List, Optional, Union
 
+import cupcake.sequence.GFF as GFF
 import typer
 from Bio import SeqIO
-
-import cupcake.sequence.GFF as GFF
 from cupcake.logging import cupcake_logger as logger
 from cupcake.tofu.counting import combine_abundance_across_samples as sp
 from cupcake.tofu.counting.chain_samples import read_config, read_count_info
@@ -105,7 +104,7 @@ def chain_fusion_samples(
         o = sp.MegaPBTreeFusion(
             gff_filename=f"tmp_{name}.gff",
             group_filename=f"tmp_{name}.group.txt",
-            self_prefix="tmp_" + name,
+            self_prefix=f"tmp_{name}",
             internal_fuzzy_max_dist=fuzzy_junction,
             fastq_filename=f"tmp_{name}.rep.fq" if fastq_filename is not None else None,
         )
@@ -150,7 +149,7 @@ def chain_fusion_samples(
     d = {}  # ex: (tmp_1009, PB.1.1) --> mega info dict
     for c in chain[1:]:
         for r in DictReader(open(f"tmp_{c}.mega_info.txt"), delimiter="\t"):
-            d["tmp_" + c, r["pbid"]] = r
+            d[f"tmp_{c}", r["pbid"]] = r
 
     with open("all_samples.chained_ids.txt", "w") as f1, open(
         "all_samples.chained_count.txt", "w"
@@ -158,8 +157,8 @@ def chain_fusion_samples(
         f1.write("superPBID")
         f2.write("superPBID")
         for c in chain:
-            f1.write("\t" + c)
-            f2.write("\t" + c)
+            f1.write(f"	{c}")
+            f2.write(f"	{c}")
         f1.write("\n")
         f2.write("\n")
 
@@ -193,8 +192,8 @@ def chain_fusion_samples(
             f1.write(r0["pbid"])
             f2.write(r0["pbid"])
             for c in chain:
-                f1.write("\t" + answer[c])  # each tissue still share the same PB id
-                f2.write("\t" + str(answer2[c]))
+                f1.write(f"	{answer[c]}")  # each tissue still share the same PB id
+                f2.write(f"	{str(answer2[c])}")
             f1.write("\n")
             f2.write("\n")
 

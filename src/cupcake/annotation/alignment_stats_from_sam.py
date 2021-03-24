@@ -26,11 +26,12 @@ Report #2. For each junction:
 import bisect
 from collections import defaultdict
 from csv import DictWriter
-from typing import Optional
+from pathlib import Path
+from typing import Dict, List, Optional, Tuple
 
 import typer
 from Bio import SeqIO
-
+from Bio.Seq import Seq
 from cupcake.logging import cupcake_logger as logger
 from cupcake.sequence.BioReaders import GMAPSAMReader
 from cupcake.sequence.GFF import collapseGFFReader
@@ -58,7 +59,7 @@ FIELDNAMES_REPORT2 = [
 app = typer.Typer(name="alignment_stats_from_sam")
 
 
-def type_fa_or_fq(file):
+def type_fa_or_fq(file: str) -> str:
     file = file.upper()
     if file.endswith(".FA") or file.endswith(".FASTA"):
         return "fasta"
@@ -87,7 +88,13 @@ def read_annotation_for_junction_info(gff_filename: str) -> defaultdict:
     return d
 
 
-def get_closest_junction_dist(junction_info, chrom, strand, pos1, pos2):
+def get_closest_junction_dist(
+    junction_info: Dict[Tuple[str, str, str], List[int]],
+    chrom: str,
+    strand: str,
+    pos1: int,
+    pos2: int,
+) -> Tuple[int, int]:
     """
     pos1, pos2 would be the donor/acceptor, in 0-based index
     always pos1 < pos2
@@ -97,7 +104,7 @@ def get_closest_junction_dist(junction_info, chrom, strand, pos1, pos2):
     :return: (dist to closest donor, dist to closest acceptor)
     """
 
-    def get_min_dist(distlist, index, pos):
+    def get_min_dist(distlist: List[int], index: int, pos: int) -> int:
         if index == 0:
             return distlist[0] - pos
         elif index == len(distlist):
@@ -129,7 +136,9 @@ def get_closest_junction_dist(junction_info, chrom, strand, pos1, pos2):
             return get_min_dist(distlist2, j, pos2), get_min_dist(distlist1, i, pos1)
 
 
-def get_donor_acceptor(genome_d, chrom, strand, pos1, pos2):
+def get_donor_acceptor(
+    genome_d: Dict[str, Seq], chrom: str, strand: str, pos1: int, pos2: int
+) -> Tuple[str, str]:
     """
     pos1, pos2 would be the donor/acceptor, in 0-based index
     always pos1 < pos2
@@ -150,13 +159,17 @@ def get_donor_acceptor(genome_d, chrom, strand, pos1, pos2):
 
 
 def evaluate_alignment_sam(
-    input_fa_or_fq, sam_filename, genome_d, output_prefix, junction_info=None
-):
-    h1 = open(output_prefix + ".alignment_report.txt", "w")
-    h2 = open(output_prefix + ".junction_report.txt", "w")
+    input_fa_or_fq: str,
+    sam_filename: str,
+    genome_d: Dict[str, Seq],
+    output_prefix: str,
+    junction_info=None,
+) -> None:
+    h1 = Path(f"{output_prefix}.alignment_report.txt")
+    h2 = Path(f"{output_prefix}.junction_report.txt")
 
-    w1 = DictWriter(h1, fieldnames=FIELDNAMES_REPORT1)
-    w2 = DictWriter(h2, fieldnames=FIELDNAMES_REPORT2)
+    w1 = DictWriter(h1.open("w"), fieldnames=FIELDNAMES_REPORT1)
+    w2 = DictWriter(h2.open("w"), fieldnames=FIELDNAMES_REPORT2)
     w1.writeheader()
     w2.writeheader()
 

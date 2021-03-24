@@ -6,7 +6,6 @@ from typing import Dict, Optional, Tuple
 
 import typer
 from Bio import SeqIO
-
 from cupcake.logging import cupcake_logger as logger
 
 app = typer.Typer(
@@ -27,23 +26,23 @@ def read_demux_fl_count_file(filename: str) -> Tuple[Dict[str, str], str]:
 
 
 def make_file_for_subsample(
-    input_prefix,
-    output_prefix,
+    input_prefix: str,
+    output_prefix: str,
     demux_file=None,
     matchAnnot_parsed=None,
     sqanti_class=None,
     include_single_exons=False,
-):
+) -> None:
     """
     Two files must exist: .abundance.txt and .rep.fq so we can make the length
     """
-    count_filename = input_prefix + ".abundance.txt"
+    count_filename = f"{input_prefix}.abundance.txt"
 
     rep_filenames = [
-        (input_prefix + ".rep.fq", "fastq"),
-        (input_prefix + ".rep.fastq", "fastq"),
-        (input_prefix + ".rep.fa", "fasta"),
-        (input_prefix + ".rep.fasta", "fasta"),
+        (f"{input_prefix}.rep.fq", "fastq"),
+        (f"{input_prefix}.rep.fastq", "fastq"),
+        (f"{input_prefix}.rep.fa", "fasta"),
+        (f"{input_prefix}.rep.fasta", "fasta"),
     ]
 
     rep_filename = None
@@ -62,7 +61,7 @@ def make_file_for_subsample(
     if not include_single_exons:
         from cupcake.sequence.GFF import collapseGFFReader
 
-        gff_filename = input_prefix + ".gff"
+        gff_filename = f"{input_prefix}.gff"
         logger.info(f"Reading {gff_filename} to exclude single exons...")
         good_ids = []
         for r in collapseGFFReader(gff_filename):
@@ -92,7 +91,7 @@ def make_file_for_subsample(
         with open(sqanti_class) as sc:
             for r in DictReader(sc, delimiter="\t"):
                 if r["associated_transcript"] == "novel":
-                    refisoform = "novel_" + r["isoform"]
+                    refisoform = f"novel_{r['isoform']}"
                 else:
                     refisoform = r["associated_transcript"]
                 match_dict[r["isoform"]] = {

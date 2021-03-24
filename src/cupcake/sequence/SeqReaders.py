@@ -33,7 +33,7 @@ class LazyFastqReader:
 
     def __getitem__(self, k):
         if k not in self.d:
-            raise Exception("key {} not in dictionary!".format(k))
+            raise Exception(f"key {k} not in dictionary!")
         self.f.seek(self.d[k])
 
         sequence = self.f.readline().strip()
@@ -84,7 +84,7 @@ class LazyFastaReader:
 
     def __getitem__(self, k):
         if k not in self.d:
-            raise Exception("key {} not in dictionary!".format(k))
+            raise Exception(f"key {k} not in dictionary!")
         self.f.seek(self.d[k])
         content = ""
         for line in self.f:

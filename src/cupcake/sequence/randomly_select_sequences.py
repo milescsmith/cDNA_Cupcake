@@ -8,6 +8,8 @@ import sys
 
 from Bio import SeqIO
 
+from cupcake.logging import cupcake_logger as logger
+
 
 def type_fa_or_fq(file):
     file = file.upper()
@@ -17,32 +19,23 @@ def type_fa_or_fq(file):
         return "fastq"
 
 
-def sep_by_primer(file, output_prefix, sample_size):
-    filetype = type_fa_or_fq(file)
+def sep_by_primer(filename, output_prefix, sample_size):
+    filetype = type_fa_or_fq(filename)
 
-    ids = [r.id for r in SeqIO.parse(open(file), filetype)]
+    ids = [r.id for r in SeqIO.parse(open(filename), filetype)]
 
     n = len(ids)
     if sample_size > n:
-        print(
-            "WARNING: {} contains only {} sequences but subsample size at {}! Simply output whole file.".format(
-                file, n, sample_size
-            ),
-            file=sys.stderr,
-        )
+        logger.warning(f"WARNING: {filename} contains only {n} sequences but subsample size at {sample_size}! Simply output whole file.")
 
     chosen_ids = random.sample(ids, min(n, sample_size))
 
-    with open(
-        output_prefix + "." + "random" + str(sample_size) + "." + filetype, "w"
-    ) as f:
-        for r in SeqIO.parse(open(file), filetype):
+    with open(f"{output_prefix}.random{str(sample_size)}.{filetype}", "w") as f:
+        for r in SeqIO.parse(open(filename), filetype):
             if r.id in chosen_ids:
                 SeqIO.write(r, f, filetype)
 
-        print(
-            "Randomly selected sequences written to {}.".format(f.name), file=sys.stderr
-        )
+        logger.info(f"Randomly selected sequences written to {f.name}.")
 
 
 def main():

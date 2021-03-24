@@ -1,13 +1,15 @@
 import sys
+from io import TextIOWrapper
 from pathlib import Path
+from typing import Any, Dict, List, Tuple, Union
 
 import numpy as np
 from Bio import SeqIO
 from bx.intervals.cluster import ClusterTree
-
+from bx.intervals.intersection import Interval, IntervalTree
 from cupcake.logging import cupcake_logger as logger
 from cupcake.sequence import BioReaders
-from cupcake.tofu.branch import c_branch
+from cupcake.tofu.branch import c_branch, intersection_unique
 
 # from cupcake.tofu.branch.intersection_unique import IntervalTreeUnique, Interval, IntervalNodeUnique
 
@@ -21,7 +23,7 @@ class ContiVec:
 
     """
 
-    def __init__(self, size):
+    def __init__(self, size: int):
         self.baseC = np.zeros(
             size, dtype=np.int
         )  # this was .B in the original code, base coverage
@@ -42,13 +44,13 @@ class BranchSimple:
 
     def __init__(
         self,
-        transfrag_filename,
-        cov_threshold=2,
-        min_aln_coverage=0.99,
-        min_aln_identity=0.85,
-        is_fq=False,
-        max_5_diff=1000,
-        max_3_diff=100,
+        transfrag_filename: Union[str, Path],
+        cov_threshold: int = 2,
+        min_aln_coverage: float = 0.99,
+        min_aln_identity: float = 0.85,
+        is_fq: bool = False,
+        max_5_diff: int = 1000,
+        max_3_diff: int = 100,
     ):
         self.contiVec = None  # current ContiVec object
         self.exons = None
@@ -60,9 +62,7 @@ class BranchSimple:
         self.transfrag_filename = transfrag_filename
         self.transfrag_len_dict = {
             r.id.split()[0]: len(r.seq)
-            for r in SeqIO.parse(
-                open(transfrag_filename), "fastq" if is_fq else "fasta"
-            )
+            for r in SeqIO.parse(transfrag_filename, "fastq" if is_fq else "fasta")
         }
 
         self.cov_threshold = cov_threshold  # only output GTF records if >= this many GMAP records support it (this must be if I'm running non-clustered fasta on GMAP)
@@ -72,13 +72,17 @@ class BranchSimple:
 
         self.cuff_index = 1
 
-    def iter_gmap_sam(self, gmap_sam_filename, ignored_fout):
+    def iter_gmap_sam(
+        self, gmap_sam_filename: Union[str, Path], ignored_fout: TextIOWrapper
+    ):
         """
         Iterate over a SORTED GMAP SAM file.
         Return a collection of records that overlap by at least 1 base.
         """
 
-        def sep_by_clustertree(records):
+        def sep_by_clustertree(
+            records: List[BioReaders.GMAPSAMRecord],
+        ) -> List[BioReaders.GMAPSAMRecord]:
             tree = ClusterTree(0, 0)
             for i, r in enumerate(records):
                 tree.insert(r.sStart, r.sEnd, i)
@@ -87,7 +91,9 @@ class BranchSimple:
                 result.append([records[i] for i in indices])
             return result
 
-        def sep_by_strand(records):
+        def sep_by_strand(
+            records: List[BioReaders.GMAPSAMRecord],
+        ) -> Dict[str, List[BioReaders.GMAPSAMRecord]]:
             """
             Note! Must further separate again within each strand. Because of initially processing
             the strands together, could've collapesd some genes.
@@ -101,13 +107,17 @@ class BranchSimple:
             return output
 
         gmap_sam_reader = BioReaders.GMAPSAMReader(
-            gmap_sam_filename, True, query_len_dict=self.transfrag_len_dict
+            filename=gmap_sam_filename,
+            has_header=True,
+            query_len_dict=self.transfrag_len_dict,
         )
-        quality_alignments = self.get_quality_alignments(gmap_sam_reader, ignored_fout)
+        quality_alignments = self.get_quality_alignments(
+            gmap_sam_reader=gmap_sam_reader, ignored_fout=ignored_fout
+        )
 
         # find first acceptably mapped read
         try:
-            records = [next(quality_alignments)]
+            records: List[BioReaders.GMAPSAMRecord] = [next(quality_alignments)]
             max_end = records[0].sEnd
         except StopIteration:
             logger.error(f"No valid records from {gmap_sam_filename}!")
@@ -126,7 +136,9 @@ class BranchSimple:
                 max_end = max(max_end, r.sEnd)
         yield sep_by_strand(records)
 
-    def get_quality_alignments(self, gmap_sam_reader, ignored_fout):
+    def get_quality_alignments(
+        self, gmap_sam_reader, ignored_fout
+    ) -> BioReaders.GMAPSAMRecord:
         """
         Exclude SAM alignments that
         (1) fail minimum coverage
@@ -327,16 +339,16 @@ class BranchSimple:
 
     def process_records(
         self,
-        records,
-        allow_extra_5_exons,
-        skip_5_exon_alt,
+        records: List[BioReaders.GMAPSAMRecord],
+        allow_extra_5_exons: bool,
+        skip_5_exon_alt: bool,
         f_good: Path,
         f_bad: Path,
         f_group: Path,
         tolerate_end: int = 100,
         starting_isoform_index: int = 0,
         gene_prefix: str = "PB",
-    ):
+    ) -> Tuple[List[Tuple[str, str, np.ndarray]], List[Tuple[str, str, np.ndarray]]]:
         """
         Given a set of records
         (1) process them by running through parse_transfrag2contig
@@ -385,14 +397,15 @@ class BranchSimple:
             with f_out.open("w") as fo, f_group.open("w") as fg:
                 self.isoform_index += 1
                 segments = [node_d[x] for x in m.nonzero()[1]]
-                newline = "\n"
-                tab = "\t"
                 fg.write(
-                    f"{gene_prefix}.{self.cuff_index}.{self.isoform_index}{tab}{ids}{newline}"
+                    f"{gene_prefix}.{self.cuff_index}.{self.isoform_index}\t{ids}\n"
                 )
 
                 fo.write(
-                    f'{self.chrom}{tab}PacBio{tab}transcript{tab}{segments[0].start + 1}{tab}{segments[-1].end}{tab}.{tab}{self.strand}{tab}.{tab}gene_id "{gene_prefix}.{self.cuff_index}"; transcript_id "{gene_prefix}.{self.cuff_index}.{self.isoform_index}";{newline}'
+                    f"{self.chrom}\tPacBio\ttranscript\t{segments[0].start + 1}"
+                    f"\t{segments[-1].end}\t.\t{self.strand}\t."
+                    f'\tgene_id "{gene_prefix}.{self.cuff_index}"; transcript_id "'
+                    f'{gene_prefix}.{self.cuff_index}.{self.isoform_index}";\n'
                 )
 
                 i = 0
@@ -400,11 +413,19 @@ class BranchSimple:
                 for j in range(1, len(segments)):
                     if segments[j].start != segments[j - 1].end:
                         fo.write(
-                            f'{self.chrom}{tab}PacBio{tab}exon{tab}{segments[i].start + 1}{tab}{segments[j - 1].end}{tab}.{tab}{self.strand}{tab}.{tab}gene_id "{gene_prefix}.{self.cuff_index}"; transcript_id "{gene_prefix}.{self.cuff_index}.{self.isoform_index}";{newline}'
+                            f"{self.chrom}\tPacBio\texon\t{segments[i].start + 1}"
+                            f"\t{segments[j - 1].end}\t."
+                            f'\t{self.strand}\t.\tgene_id "{gene_prefix}.'
+                            f'{self.cuff_index}"; transcript_id "{gene_prefix}.'
+                            f'{self.cuff_index}.{self.isoform_index}";\n'
                         )
                         i = j
                 fo.write(
-                    f'{self.chrom}{tab}PacBio{tab}exon{tab}{segments[i].start + 1}{tab}{segments[j].end}{tab}.{tab}{self.strand}{tab}.{tab}gene_id "{gene_prefix}.{self.cuff_index}"; transcript_id "{gene_prefix}.{self.cuff_index}.{self.isoform_index}";{newline}'
+                    f"{self.chrom}\tPacBio\texon\t{segments[i].start + 1}\t"
+                    f"{segments[j].end}\t."
+                    f'\t{self.strand}\t.\tgene_id "{gene_prefix}.'
+                    f'{self.cuff_index}"; transcript_id "{gene_prefix}.'
+                    f'{self.cuff_index}.{self.isoform_index}";\n'
                 )
 
         self.cuff_index += 1
@@ -412,7 +433,13 @@ class BranchSimple:
         return result, result_merged
 
 
-def iterative_merge_transcripts(result_list, node_d, merge5, max_5_diff, max_3_diff):
+def iterative_merge_transcripts(
+    result_list: List[Tuple[str, str, np.ndarray]],
+    node_d: Dict[Dict[str, Any], intersection_unique.IntervalTreeUnique],
+    merge5: bool,
+    max_5_diff: int,
+    max_3_diff: int,
+) -> None:
     """
     result_list --- list of (qID, strand, binary exon sparse matrix)
     """
@@ -431,14 +458,22 @@ def iterative_merge_transcripts(result_list, node_d, merge5, max_5_diff, max_3_d
                     m1, m2, node_d, strand1, merge5, max_5_diff, max_3_diff
                 )
                 if flag:
-                    result_list[i] = (id1 + "," + id2, strand1, m3)
+                    result_list[i] = (f"{id1},{id2}", strand1, m3)
                     result_list.pop(j)
                 else:
                     j += 1
         i += 1
 
 
-def compare_exon_matrix(m1, m2, node_d, strand, merge5, max_5_diff, max_3_diff):
+def compare_exon_matrix(
+    m1: np.ndaray,
+    m2: np.ndarray,
+    node_d: Dict[Dict[str, Any], intersection_unique.IntervalTreeUnique],
+    strand: str,
+    merge5: bool,
+    max_5_diff: int,
+    max_3_diff: int,
+) -> Tuple[bool, np.ndarray]:
     """
     m1, m2 are 1-d array where m1[0, i] is 1 if it uses the i-th exon, otherwise 0
     compare the two and merge them if they are compatible
@@ -552,7 +587,12 @@ def compare_exon_matrix(m1, m2, node_d, strand, merge5, max_5_diff, max_3_diff):
     raise Exception("Should not happen")
 
 
-def trim_exon_left_to_right(m1, m2, node_d, max_distance):
+def trim_exon_left_to_right(
+    m1: np.ndarray,
+    m2: np.ndarray,
+    node_d: Dict[Dict[str, Any], intersection_unique.IntervalTreeUnique],
+    max_distance: int,
+) -> Tuple[bool, np.ndarray]:
     """"""
     l1 = m1.nonzero()[1]
     l2 = m2.nonzero()[1]
@@ -602,12 +642,12 @@ def trim_exon_left_to_right(m1, m2, node_d, max_distance):
 
 
 def exon_matching(
-    exon_tree,
-    ref_exon,
-    match_extend_tolerate_left,
-    match_extend_tolerate_right,
-    intervals_adjacent=True,
-):
+    exon_tree: IntervalTree,
+    ref_exon: Interval,
+    match_extend_tolerate_left: int,
+    match_extend_tolerate_right: int,
+    intervals_adjacent: bool = True,
+) -> List[IntervalTree]:
     """
     exon_tree --- an IntervalTree made from .baseC/.altC using exon detection; probably only short read data
     ref_exon --- an Interval representing an exon; probably from PacBio

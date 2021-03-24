@@ -53,7 +53,6 @@ import sys
 from pathlib import Path
 
 import vcf
-
 from cupcake.logging import setup_logging
 from cupcake.sequence.SeqReaders import LazyFastaReader
 
@@ -149,7 +148,7 @@ def write_snp_to_vcf(
     genome_rec = genome_d[snp_rec.ref_name]
 
     with open("template.vcf", "w+") as f:
-        f.write(__VCF_EXAMPLE__ + "\n")
+        f.write(f"{__VCF_EXAMPLE__}\n")
         reader = vcf.VCFReader(f)
         reader.samples = [sample_name]
         f_vcf = vcf.Writer(vcf_filename.open("w"), reader)

@@ -19,7 +19,6 @@ from typing import Dict, Tuple
 
 import typer
 from Bio import SeqIO
-
 from cupcake.logging import cupcake_logger as logger
 from cupcake.sequence import GFF
 
@@ -55,10 +54,7 @@ def sanity_check_collapse_input(input_prefix: str) -> Tuple[Path, Path, Path]:
         or len(pbids2) != len(pbids3)
         or len(pbids1) != len(pbids3)
     ):
-        logger.error(
-            "The number of PBID records in the files disagree! Sanity check failed.",
-            file=sys.stderr,
-        )
+        logger.error("The number of PBID records in the files disagree! Sanity check failed.")
         logger.error(f"# of PBIDs in {rep_filename}: {len(pbids1)}")
         logger.error(f"# of PBIDs in {gff_filename}: {len(pbids2)}")
         logger.error(f"# of PBIDs in {count_filename}: {len(pbids3)}")

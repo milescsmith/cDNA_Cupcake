@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 __author__ = "etseng@pacb.com"
 
-import os
 import shutil
 import sys
 from collections import OrderedDict, defaultdict
@@ -14,7 +13,6 @@ from typing import List, Tuple, Union
 import typer
 from Bio import SeqIO
 from bx.intervals.cluster import ClusterTree
-
 from cupcake.logging import cupcake_logger as logger
 from cupcake.sequence import GFF
 from cupcake.tofu.counting import combine_abundance_across_samples as sp
@@ -212,8 +210,8 @@ def chain_split_file(
                 f_gff.close()
                 f_group.close()
                 if n == 0:  # didn't write any records, delete these
-                    os.remove(f_gff.name)
-                    os.remove(f_group.name)
+                    Path(f_gff.name).unlink()
+                    Path(f_group.name).unlink()
                 else:
                     split_files.append((f_gff.name, f_group.name))
                 if i >= n_chunks or counter >= len(recs):
@@ -225,8 +223,8 @@ def chain_split_file(
         f_gff.close()
         f_group.close()
         if n == 0:  # didn't write any records, delete these
-            os.remove(f_gff.name)
-            os.remove(f_group.name)
+            Path(f_gff.name).unlink()
+            Path(f_group.name).unlink()
         else:
             split_files.append((f_gff.name, f_group.name))
 
@@ -309,21 +307,15 @@ def combine_split_chained_results(
     # sanity check files are all there
     split_files = []  # tuple of (gff, group, mega)
     for ref_name, o in output_prefixes:
-        gff_file = f"tmp_{o}.gff"
-        mega_file = f"tmp_{o}.mega_info.txt"
-        group_file = f"tmp_{o}.group.txt"
+        gff_file = Path(f"tmp_{o}.gff")
+        mega_file = Path(f"tmp_{o}.mega_info.txt")
+        group_file = Path(f"tmp_{o}.group.txt")
         if (
-            not os.path.exists(gff_file)
-            or not os.path.exists(mega_file)
-            or not os.path.exists(group_file)
+            not gff_file.exists()
+            or not mega_file.exists()
+            or not group_file.exists()
         ):
-            print(
-                "Expects to see {},{},{} but one or more files are missing! Abort!".format(
-                    gff_file, mega_file, group_file
-                ),
-                file=sys.stderr,
-            )
-            sys.exit(-1)
+            raise RuntimeError(f"Expects to see {gff_file},{mega_file},{group_file} but one or more files are missing! Abort!")
         split_files.append((ref_name, o, gff_file, group_file, mega_file))
 
     use_fq = False
@@ -405,9 +397,9 @@ def combine_split_chained_results(
 
     sp.write_reclist_to_gff_n_info(rec_list, final_prefix, ref_name, addon_name, use_fq)
     for (ref_name, split_name, gff_file, group_file, mega_file) in split_files:
-        os.remove(gff_file)
-        os.remove(group_file)
-        os.remove(mega_file)
+        gff_file.unlink()
+        group_file.unlink()
+        mega_file.unlink()
 
 
 def chain_samples(
@@ -424,13 +416,13 @@ def chain_samples(
 ):
     for d in dirs.values():
         sample_sanity_check(
-            os.path.join(d, group_filename),
-            os.path.join(d, gff_filename),
-            os.path.join(d, count_filename),
-            os.path.join(d, fastq_filename) if fastq_filename is not None else None,
+            Path(d, group_filename),
+            Path(d, gff_filename),
+            Path(d, count_filename),
+            Path(d, fastq_filename) if fastq_filename is not None else None,
         )
 
-    count_header, count_info = read_count_info(count_filename, dirs, field_to_use)
+    _, count_info = read_count_info(count_filename, dirs, field_to_use)
 
     # some names may already start with "tmp_" which means they are intermediate results that have already been chained
     # find the first non "tmp_" and start from there
@@ -456,30 +448,31 @@ def chain_samples(
         # chain.append(name) # no need, already done above
     else:  # everything is new, start fresh
         name = names[0]
-        d = dirs[name]
+        d = Path(dirs[name])
         chain = [name]
         o = sp.MegaPBTree(
-            os.path.join(d, gff_filename),
-            os.path.join(d, group_filename),
+            d.joinpath(gff_filename),
+            d.joinpath(group_filename),
             self_prefix=name,
             internal_fuzzy_max_dist=fuzzy_junction,
             allow_5merge=allow_5merge,
             max_3_diff=max_3_diff,
-            fastq_filename=os.path.join(d, fastq_filename)
+            fastq_filename=d.joinpath(fastq_filename)
             if fastq_filename is not None
             else None,
         )
         start_i = 1
 
     for name in names[start_i:]:
-        assert not name.startswith("tmp_")
-        d = dirs[name]
+        if name.startswith("tmp_"):
+            raise AssertionError("trying to add a temp file!")
+        d = Path(dirs[name])
         o.add_sample(
-            os.path.join(d, gff_filename),
-            os.path.join(d, group_filename),
+            d.joinpath(gff_filename),
+            d.joinpath(group_filename),
             sample_prefix=name,
             output_prefix=f"tmp_{name}",
-            fastq_filename=os.path.join(d, fastq_filename)
+            fastq_filename=d.joinpath(fastq_filename)
             if fastq_filename is not None
             else None,
         )
@@ -500,59 +493,57 @@ def chain_samples(
         for r in DictReader(open(f"tmp_{c}.mega_info.txt"), delimiter="\t"):
             d[f"tmp_{c}", r["superPBID"]] = r
 
-    f1 = open("all_samples.chained_ids.txt", "w")
-    writer1 = DictWriter(f1, fieldnames=["superPBID"] + chain, delimiter="\t")
-    writer1.writeheader()
-    f2 = open("all_samples.chained_count.txt", "w")
-    writer2 = DictWriter(f2, fieldnames=["superPBID"] + chain, delimiter="\t")
-    writer2.writeheader()
+    with open("all_samples.chained_ids.txt", "w") as f1, open("all_samples.chained_count.txt", "w") as f2:
+        writer1 = DictWriter(f1, fieldnames=["superPBID"] + chain, delimiter="\t")
+        writer1.writeheader()
+        
+        writer2 = DictWriter(f2, fieldnames=["superPBID"] + chain, delimiter="\t")
+        writer2.writeheader()
 
-    reader = DictReader(open(f"tmp_{chain[-1]}.mega_info.txt"), delimiter="\t")
-    for r in reader:
-        saw_NA = False
-        r0 = r
-        answer = defaultdict(lambda: "NA")  # ex: 1009 --> PB.1.1
-        answer2 = defaultdict(lambda: "NA")  # ex: 1009 --> count
-        answer[chain[-1]] = r[chain[-1]]
-        if r[chain[-1]] != "NA":
-            answer2[chain[-1]] = count_info[chain[-1], answer[chain[-1]]]
-        for c in chain[::-1][
-            1:-1
-        ]:  # the first sample does not have tmp_, because it's not a chain
-            if r[f"tmp_{c}"] == "NA":
-                saw_NA = True
-                break
-            else:
-                r2 = d[f"tmp_{c}", r[f"tmp_{c}"]]
-                answer[c] = r2[c]
-                if answer[c] != "NA":
-                    answer2[c] = count_info[c, answer[c]]
-                r = r2
-        if not saw_NA:
-            answer[chain[0]] = r[chain[0]]
-            if answer[chain[0]] != "NA":
-                answer2[chain[0]] = count_info[chain[0], answer[chain[0]]]
+        reader = DictReader(open(f"tmp_{chain[-1]}.mega_info.txt"), delimiter="\t")
+        for r in reader:
+            saw_NA = False
+            r0 = r
+            answer = defaultdict(lambda: "NA")  # ex: 1009 --> PB.1.1
+            answer2 = defaultdict(lambda: "NA")  # ex: 1009 --> count
+            answer[chain[-1]] = r[chain[-1]]
+            if r[chain[-1]] != "NA":
+                answer2[chain[-1]] = count_info[chain[-1], answer[chain[-1]]]
+            for c in chain[::-1][
+                1:-1
+            ]:  # the first sample does not have tmp_, because it's not a chain
+                if r[f"tmp_{c}"] == "NA":
+                    saw_NA = True
+                    break
+                else:
+                    r2 = d[f"tmp_{c}", r[f"tmp_{c}"]]
+                    answer[c] = r2[c]
+                    if answer[c] != "NA":
+                        answer2[c] = count_info[c, answer[c]]
+                    r = r2
+            if not saw_NA:
+                answer[chain[0]] = r[chain[0]]
+                if answer[chain[0]] != "NA":
+                    answer2[chain[0]] = count_info[chain[0], answer[chain[0]]]
 
-        rec1 = {"superPBID": r0["superPBID"]}
-        rec2 = {"superPBID": r0["superPBID"]}
-        for c in chain:
-            rec1[c] = answer[c]
-            rec2[c] = str(answer2[c])
-        writer1.writerow(rec1)
-        writer2.writerow(rec2)
-    f1.close()
-    f2.close()
+            rec1 = {"superPBID": r0["superPBID"]}
+            rec2 = {"superPBID": r0["superPBID"]}
+            for c in chain:
+                rec1[c] = answer[c]
+                rec2[c] = str(answer2[c])
+            writer1.writerow(rec1)
+            writer2.writerow(rec2)
 
     shutil.copyfile(f"tmp_{chain[-1]}.gff", "all_samples.chained.gff")
     if fastq_filename is not None:
         shutil.copyfile(f"tmp_{chain[-1]}.rep.fq", "all_samples.chained.rep.fq")
 
-    print("Chained output written to:", file=sys.stdout)
-    print("all_samples.chained.gff", file=sys.stdout)
-    print(f1.name, file=sys.stdout)
-    print(f2.name, file=sys.stdout)
+    logger.info("Chained output written to:")
+    logger.info("all_samples.chained.gff")
+    logger.info(f1.name)
+    logger.info(f2.name)
     if fastq_filename is not None:
-        print("all_samples.chained.rep.fq", file=sys.stdout)
+        logger.info("all_samples.chained.rep.fq")
 
 
 def chain_samples_multithread(
@@ -570,13 +561,13 @@ def chain_samples_multithread(
 ):
     for d in dirs.values():
         sample_sanity_check(
-            os.path.join(d, group_filename),
-            os.path.join(d, gff_filename),
-            os.path.join(d, count_filename),
-            os.path.join(d, fastq_filename) if fastq_filename is not None else None,
+            Path(d, group_filename),
+            Path(d, gff_filename),
+            Path(d, count_filename),
+            Path(d, fastq_filename) if fastq_filename is not None else None,
         )
 
-    count_header, count_info = read_count_info(count_filename, dirs, field_to_use)
+    _, count_info = read_count_info(count_filename, dirs, field_to_use)
 
     # some names may already start with "tmp_" which means they are intermediate results that have already been chained
     # find the first non "tmp_" and start from there
@@ -600,12 +591,12 @@ def chain_samples_multithread(
     for addon_name in names[start_i:]:
         assert not addon_name.startswith("tmp_")
         ref_name = chain[-1]
-        ref_d = dirs[ref_name]
+        ref_d = Path(dirs[ref_name])
         if first_add:
-            ref_gff = os.path.join(ref_d, gff_filename)
-            ref_group = os.path.join(ref_d, group_filename)
+            ref_gff = ref_d.joinpath(gff_filename)
+            ref_group = ref_d.joinpath(group_filename)
             ref_fq = (
-                os.path.join(ref_d, fastq_filename)
+                ref_d.joinpath(fastq_filename)
                 if fastq_filename is not None
                 else None
             )
@@ -614,11 +605,11 @@ def chain_samples_multithread(
             ref_gff = f"{ref_name}.gff"
             ref_group = f"{ref_name}.group.txt"
             ref_fq = f"{ref_name}.rep.fq" if fastq_filename is not None else None
-        addon_d = dirs[addon_name]
-        addon_gff = os.path.join(addon_d, gff_filename)
-        addon_group = os.path.join(addon_d, group_filename)
+        addon_d = Path(dirs[addon_name])
+        addon_gff = addon_d.joinpath(gff_filename)
+        addon_group = addon_d.joinpath(group_filename)
         addon_fq = (
-            os.path.join(addon_d, fastq_filename)
+            addon_d.joinpath(fastq_filename)
             if fastq_filename is not None
             else None
         )
@@ -650,8 +641,8 @@ def chain_samples_multithread(
 
         chain.append(addon_name)
         for in_gff_split, in_group_split in split_ins:
-            os.remove(in_gff_split)  # remove the split gff
-            os.remove(in_group_split)
+            Path(in_gff_split).unlink()  # remove the split gff
+            Path(in_group_split).unlink()
 
         first_add = False
 
@@ -661,59 +652,57 @@ def chain_samples_multithread(
         for r in DictReader(open(f"tmp_{c}.mega_info.txt"), delimiter="\t"):
             d[f"tmp_{c}", r["superPBID"]] = r
 
-    f1 = open("all_samples.chained_ids.txt", "w")
-    writer1 = DictWriter(f1, fieldnames=["superPBID"] + chain, delimiter="\t")
-    writer1.writeheader()
-    f2 = open("all_samples.chained_count.txt", "w")
-    writer2 = DictWriter(f2, fieldnames=["superPBID"] + chain, delimiter="\t")
-    writer2.writeheader()
+    with open("all_samples.chained_ids.txt", "w") as f1, open("all_samples.chained_count.txt", "w") as f2:
+        writer1 = DictWriter(f1, fieldnames=["superPBID"] + chain, delimiter="\t")
+        writer1.writeheader()
+        
+        writer2 = DictWriter(f2, fieldnames=["superPBID"] + chain, delimiter="\t")
+        writer2.writeheader()
 
-    reader = DictReader(open(f"tmp_{chain[-1]}.mega_info.txt"), delimiter="\t")
-    for r in reader:
-        saw_NA = False
-        r0 = r
-        answer = defaultdict(lambda: "NA")  # ex: 1009 --> PB.1.1
-        answer2 = defaultdict(lambda: "NA")  # ex: 1009 --> count
-        answer[chain[-1]] = r[chain[-1]]
-        if r[chain[-1]] != "NA":
-            answer2[chain[-1]] = count_info[chain[-1], answer[chain[-1]]]
-        for c in chain[::-1][
-            1:-1
-        ]:  # the first sample does not have tmp_, because it's not a chain
-            if r[f"tmp_{c}"] == "NA":
-                saw_NA = True
-                break
-            else:
-                r2 = d[f"tmp_{c}", r[f"tmp_{c}"]]
-                answer[c] = r2[c]
-                if answer[c] != "NA":
-                    answer2[c] = count_info[c, answer[c]]
-                r = r2
-        if not saw_NA:
-            answer[chain[0]] = r[chain[0]]
-            if answer[chain[0]] != "NA":
-                answer2[chain[0]] = count_info[chain[0], answer[chain[0]]]
+        reader = DictReader(open(f"tmp_{chain[-1]}.mega_info.txt"), delimiter="\t")
+        for r in reader:
+            saw_NA = False
+            r0 = r
+            answer = defaultdict(lambda: "NA")  # ex: 1009 --> PB.1.1
+            answer2 = defaultdict(lambda: "NA")  # ex: 1009 --> count
+            answer[chain[-1]] = r[chain[-1]]
+            if r[chain[-1]] != "NA":
+                answer2[chain[-1]] = count_info[chain[-1], answer[chain[-1]]]
+            for c in chain[::-1][
+                1:-1
+            ]:  # the first sample does not have tmp_, because it's not a chain
+                if r[f"tmp_{c}"] == "NA":
+                    saw_NA = True
+                    break
+                else:
+                    r2 = d[f"tmp_{c}", r[f"tmp_{c}"]]
+                    answer[c] = r2[c]
+                    if answer[c] != "NA":
+                        answer2[c] = count_info[c, answer[c]]
+                    r = r2
+            if not saw_NA:
+                answer[chain[0]] = r[chain[0]]
+                if answer[chain[0]] != "NA":
+                    answer2[chain[0]] = count_info[chain[0], answer[chain[0]]]
 
-        rec1 = {"superPBID": r0["superPBID"]}
-        rec2 = {"superPBID": r0["superPBID"]}
-        for c in chain:
-            rec1[c] = answer[c]
-            rec2[c] = str(answer2[c])
-        writer1.writerow(rec1)
-        writer2.writerow(rec2)
-    f1.close()
-    f2.close()
+            rec1 = {"superPBID": r0["superPBID"]}
+            rec2 = {"superPBID": r0["superPBID"]}
+            for c in chain:
+                rec1[c] = answer[c]
+                rec2[c] = str(answer2[c])
+            writer1.writerow(rec1)
+            writer2.writerow(rec2)
 
     shutil.copyfile(f"tmp_{chain[-1]}.gff", "all_samples.chained.gff")
     if fastq_filename is not None:
         shutil.copyfile(f"tmp_{chain[-1]}.rep.fq", "all_samples.chained.rep.fq")
 
-    print("Chained output written to:", file=sys.stdout)
-    print("all_samples.chained.gff", file=sys.stdout)
-    print(f1.name, file=sys.stdout)
-    print(f2.name, file=sys.stdout)
+    logger.info("Chained output written to:")
+    logger.info("all_samples.chained.gff")
+    logger.info(f1.name)
+    logger.info(f2.name)
     if fastq_filename is not None:
-        print("all_samples.chained.rep.fq", file=sys.stdout)
+        logger.info("all_samples.chained.rep.fq")
 
 
 @app.command(name="")

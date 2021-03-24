@@ -10,15 +10,15 @@ INPUT:
    -- Reference genome (fasta)
 """
 
-import os
 import re
 import sys
 from collections import defaultdict, namedtuple
 from csv import DictReader
+from pathlib import Path
 
+import typer
 from Bio import SeqIO
 from bx.intervals.cluster import ClusterTree
-
 from cupcake.logging import cupcake_logger as logger
 from cupcake.sequence.GFF import collapseGFFReader
 from cupcake.sequence.SeqReaders import LazyFastqReader
@@ -35,6 +35,9 @@ rex_pbid = re.compile(r"(PB.\d+).\d+")
 
 extra_bp_around_junctions = 50  # get this much around junctions to be safe AND to not screw up GMAP who doesn't like microintrons....
 __padding_before_after__ = 10  # get this much before and after the start
+
+
+app = typer.Typer(name="cupcake.phasing.utils.select_loci_to_phase")
 
 
 def read_flnc_fastq(flnc_filename):
@@ -105,7 +108,7 @@ def read_read_stat(stat_filename, rich_zmws):
 LocusInfo = namedtuple("LocusInfo", ["chrom", "strand", "regions", "isoforms"])
 
 
-def read_GFF(gff_filename, logf):
+def read_GFF(gff_filename):
     """
     Read a GFF filename and get the gene regions
 
@@ -126,7 +129,7 @@ def read_GFF(gff_filename, logf):
             )
         else:
             if gff_info[locus].chrom != r.chr:
-                logf.write(
+                logger.warning(
                     f"WARNING: Expected {r.seqid} to be on {gff_info[locus].chrom} but saw {r.chr}. Could be minimap2 multi-mapping inconsistency for repetitive genes. Check later.\n"
                 )
             tmp[locus].append(r)
@@ -181,129 +184,124 @@ def make_fake_genome(genome_d, gff_info, locus, output_prefix, output_name):
     with open(f"{output_prefix}.pbids.txt", "w") as f:
         f.write("\n".join(gff_info[locus].isoforms) + "\n")
 
-    print(
+    logger.info(
         f"Output written to {output_prefix}.fasta, {output_prefix}.mapping.txt, {output_prefix}.pbids.txt.",
-        file=sys.stderr,
     )
 
 
-def select_loci_to_phase(args, genome_dict):
+def select_loci_to_phase(
+    genome_dict,
+    gff_filename,
+    stat_filename,
+    flnc_filename,
+    coverage,
+):
 
-    with open("warning.logs", "w") as logf:
-        print("Reading FLNC file...", file=sys.stderr)
-        flnc_fastq_d, rich_zmws = read_flnc_fastq(args.flnc_filename)
+    logger.info(
+        "Reading FLNC file...",
+    )
+    flnc_fastq_d, rich_zmws = read_flnc_fastq(flnc_filename)
 
-        print("Reading read_stat...", file=sys.stderr)
-        tally_by_loci, poor_zmws_not_in_rich = read_read_stat(
-            args.stat_filename, rich_zmws
+    logger.info(
+        "Reading read_stat...",
+    )
+    tally_by_loci, poor_zmws_not_in_rich = read_read_stat(stat_filename, rich_zmws)
+
+    logger.info(
+        "Reading GFF file...",
+    )
+    gff_info = read_GFF(gff_filename)
+
+    # find all gene loci that has at least X FLNC coverage
+    cand_loci = [k for k in tally_by_loci if len(tally_by_loci[k]) >= coverage]
+    logger.info(
+        f"Total {len(tally_by_loci)} loci read. {len(cand_loci)} has >= {coverage} coverage.",
+    )
+    for locus in cand_loci:
+        if locus not in gff_info:
+            logger.warning(
+                f"WARNING: {locus} skipped because not in GFF info (probably filtered out later).\n"
+            )
+            continue
+
+        logger.info(
+            "making",
+            locus,
         )
+        d2 = Path(f"by_loci/{locus}_size{len(tally_by_loci[locus])}")
+        d2.mkdir()
 
-        print("Reading GFF file...", file=sys.stderr)
-        gff_info = read_GFF(args.gff_filename, logf)
+        chrom_len = {k: len(v) for k, v in genome_dict.items()}
 
-        # find all gene loci that has at least X FLNC coverage
-        cand_loci = [k for k in tally_by_loci if len(tally_by_loci[k]) >= args.coverage]
-        print(
-            f"Total {len(tally_by_loci)} loci read. {len(cand_loci)} has >= {args.coverage} coverage.",
-            file=sys.stderr,
-        )
-        for locus in cand_loci:
-            if locus not in gff_info:
-                logf.write(
-                    f"WARNING: {locus} skipped because not in GFF info (probably filtered out later).\n"
-                )
-                continue
-
-            print("making", locus, file=sys.stderr)
-            d2 = os.path.join(f"by_loci/{locus}_size{len(tally_by_loci[locus])}")
-            os.makedirs(d2)
-
-            chrom_len = {k: len(v) for k, v in genome_dict.items()}
-
-            with open(os.path.join(d2, "config"), "w") as f:
-                ref_start = max(
-                    0, gff_info[locus].regions[0][0]
-                )  # ref start must be >= 0
-                # ref end must be at most chrom length
-                ref_end = min(
-                    chrom_len[gff_info[locus].chrom], gff_info[locus].regions[-1][-1]
-                )
-
-                # _chr, _strand, _start, _end = gff_info[locus]
-                f.write(f"pbid={locus}\n")
-                f.write(f"ref_chr={gff_info[locus].chrom}\n")
-                f.write(f"ref_strand={gff_info[locus].strand}\n")
-                f.write(f"ref_start={ref_start}\n")
-                f.write(f"ref_end={ref_end}\n")
-
-            make_fake_genome(
-                genome_dict, gff_info, locus, f"{d2}/fake", f"fake_{locus}"
+        with d2.joinpath("config").open("w") as f:
+            ref_start = max(0, gff_info[locus].regions[0][0])  # ref start must be >= 0
+            # ref end must be at most chrom length
+            ref_end = min(
+                chrom_len[gff_info[locus].chrom], gff_info[locus].regions[-1][-1]
             )
 
-            # write ccs.fastq
-            with open(os.path.join(d2, "ccs.fastq"), "w") as f1, open(
-                os.path.join(d2, "ccs.fasta"), "w"
-            ) as f2, open(os.path.join(d2, "fake.read_stat.txt"), "w") as h:
-                h.write("id\tlength\tis_fl\tstat\tpbid\n")
-                for pbid, zmw in tally_by_loci[locus]:
-                    rec = flnc_fastq_d[zmw]
-                    SeqIO.write(rec, f1, "fastq")
-                    SeqIO.write(rec, f2, "fasta")
-                    h.write(f"{zmw}\t{len(rec.seq)}\tY\tunique\t{pbid}\n")
+            # _chr, _strand, _start, _end = gff_info[locus]
+            f.write(f"pbid={locus}\n")
+            f.write(f"ref_chr={gff_info[locus].chrom}\n")
+            f.write(f"ref_strand={gff_info[locus].strand}\n")
+            f.write(f"ref_start={ref_start}\n")
+            f.write(f"ref_end={ref_end}\n")
+
+        make_fake_genome(genome_dict, gff_info, locus, f"{d2}/fake", f"fake_{locus}")
+
+        # write ccs.fastq
+        with d2.joinpath("ccs.fastq").open("w") as f1, d2.joinpath("ccs.fasta").open(
+            "w"
+        ) as f2, d2.joinpath("fake.read_stat.txt").open("w") as h:
+            h.write("id\tlength\tis_fl\tstat\tpbid\n")
+            for pbid, zmw in tally_by_loci[locus]:
+                rec = flnc_fastq_d[zmw]
+                SeqIO.write(rec, f1, "fastq")
+                SeqIO.write(rec, f2, "fasta")
+                h.write(f"{zmw}\t{len(rec.seq)}\tY\tunique\t{pbid}\n")
 
 
-def getargs():
-    from argparse import ArgumentParser
-
-    parser = ArgumentParser()
-    parser.add_argument("genome_fasta", help="Reference genome fasta")
-    parser.add_argument("flnc_filename", help="FLNC fastq file")
-    parser.add_argument(
-        "gff_filename", help="GFF file of transcripts, IDs must be PB.X.Y"
-    )
-    parser.add_argument(
-        "stat_filename", help="Tab-delimited read stat file linking FLNC to PB.X.Y"
-    )
-    parser.add_argument(
-        "-c",
+def main(
+    genome_fasta: str = typer.Argument(..., help="Reference genome fasta"),
+    flnc_filename: str = typer.Argument(..., help="FLNC fastq file"),
+    gff_filename: str = typer.Argument(
+        ..., help="GFF file of transcripts, IDs must be PB.X.Y"
+    ),
+    stat_filename: str = typer.Argument(
+        ..., help="Tab-delimited read stat file linking FLNC to PB.X.Y"
+    ),
+    coverage: int = typer.Option(
+        40,
         "--coverage",
-        type=int,
-        default=40,
+        "-c",
         help="Minimum FLNC coverage required (default: 40)",
-    )
+    ),
+) -> None:
+    if Path("by_loci").exists() and Path("by_loci").is_dir():
+        logger.error("Directory by_loci/ already exists. Delete before running!")
+        sys.exit(-1)
 
-    return parser
+    if not Path(genome_fasta).exists():
+        logger.error(f"Cannot find genome FASTA {genome_fasta}. Abort!")
+        sys.exit(-1)
+
+    if not Path(flnc_filename).exists():
+        logger.error(f"Cannot find FLNC file {flnc_filename}. Abort!")
+        sys.exit(-1)
+
+    if not Path(gff_filename).exists():
+        logger.error(f"Cannot find GFF file {gff_filename}. Abort!")
+        sys.exit(-1)
+
+    if not Path(stat_filename).exists():
+        logger.error(f"Cannot find Stat file {stat_filename}. Abort!")
+        sys.exit(-1)
+
+    logger.info(f"Reading genome fasta {genome_fasta}...")
+    genome_d = SeqIO.to_dict(SeqIO.parse(open(genome_fasta), "fasta"))
+
+    select_loci_to_phase(genome_d, gff_filename, stat_filename, flnc_filename, coverage)
 
 
 if __name__ == "__main__":
-    print("Reading genome...", file=sys.stderr)
-    parser = getargs()
-
-    args = parser.parse_args()
-
-    if os.path.exists("by_loci"):
-        print(
-            "Directory by_loci/ already exists. Delete before running!", file=sys.stderr
-        )
-        sys.exit(-1)
-
-    if not os.path.exists(args.genome_fasta):
-        logger.error(f"Cannot find genome FASTA {args.genome_fasta}. Abort!")
-        sys.exit(-1)
-
-    if not os.path.exists(args.flnc_filename):
-        logger.error(f"Cannot find FLNC file {args.flnc_filename}. Abort!")
-        sys.exit(-1)
-
-    if not os.path.exists(args.gff_filename):
-        logger.error(f"Cannot find GFF file {args.gff_filename}. Abort!")
-        sys.exit(-1)
-
-    if not os.path.exists(args.stat_filename):
-        logger.error(f"Cannot find Stat file {args.stat_filename}. Abort!")
-        sys.exit(-1)
-
-    logger.error(f"Reading genome fasta {args.genome_fasta}...")
-    genome_d = SeqIO.to_dict(SeqIO.parse(open(args.genome_fasta), "fasta"))
-
-    select_loci_to_phase(args, genome_d)
+    typer.run(main)
