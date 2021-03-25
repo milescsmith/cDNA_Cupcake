@@ -30,7 +30,7 @@ def main(
     # sanity checking of input files
     for line in snps_filename.open():
         filename = Path(line.strip())
-        if not filename.suffix(".snps"):
+        if filename.suffix != "snps":
             raise FileNotFoundError(
                 f"Input files listed in {snps_filename} must end with .snps_files!"
             )

@@ -14,10 +14,10 @@ class GTF:
             str(gtf_filename) if isinstance(gtf_filename, Path) else gtf_filename
         )
         self.genome = defaultdict(
-            lambda: IntervalTree()
+            IntervalTree()
         )  # chr --> IntervalTree --> (0-start, 1-end, transcript ID)
         self.transcript = defaultdict(
-            lambda: IntervalTree()
+            IntervalTree()
         )  # tID --> IntervalTree --> (0-start, 1-end, {'ith': i-th exon, 'eID': exon ID})
         self.exon = defaultdict(
             lambda: []
@@ -133,7 +133,7 @@ class TSSGFF(GTF):
                 if line.startswith("##"):
                     continue
                 raw = line.strip().split("\t")
-                assert raw[2] in ("Gencode TSS")
+                assert raw[2] in "Gencode TSS"
                 chrom = raw[0]
                 strand = raw[6]
                 start = int(raw[3]) - 1
@@ -223,7 +223,7 @@ class variantRecord:
     def __str__(self):
         return f"""
         {self.type} {self.chr}:{self.start}-{self.end}
-        reference: {self.referenceref}
+        reference: {self.reference}
         variant: {self.variant} ({self.freq})
         coverage: {self.coverage}
         confidence: {self.confidence}
@@ -400,7 +400,10 @@ class gmapRecord:
 
         exons --- list of Interval, 0-based start, 1-based end
         """
-        assert strand == "+" or strand == "-"
+        if not strand == "+" or strand == "-":
+            raise ValueError(
+                f"`strand` must be either `+` or `-`, but instead {strand} was passed."
+            )
         self.chr = seqname
         self.coverage = coverage
         self.identity = identity
@@ -435,9 +438,9 @@ class gmapRecord:
         """
 
     def __getattr__(self, key):
-        if key == "rstart" or key == "start":
+        if key in ("rstart", "start"):
             return self.get_start()
-        elif key == "rend" or key == "end":
+        elif key in ("rend", "end"):
             return self.get_end()
         else:
             raise AttributeError(key)
@@ -451,14 +454,20 @@ class gmapRecord:
     def add_cds_exon(self, start, end):
         self.cds_exons.append(Interval(start, end))
 
-    def add_exon(self, rStart0, rEnd1, sStart0, sEnd1, rstrand, score):
+    def add_exon(self, rStart0, rEnd1, sStart0, sEnd1, rstrand, score=0):
         assert rStart0 < rEnd1 and sStart0 < sEnd1
         if rstrand == "-":
-            assert len(self.ref_exons) == 0 or self.ref_exons[0].start >= rEnd1
+            if not len(self.ref_exons) == 0 or self.ref_exons[0].start >= rEnd1:
+                raise ValueError(
+                    "The exon being added has a starting position that is past the end position!"
+                )
             self.scores.insert(0, score)
             self.ref_exons.insert(0, Interval(rStart0, rEnd1))
         else:
-            assert len(self.ref_exons) == 0 or self.ref_exons[-1].end <= rStart0
+            if not len(self.ref_exons) == 0 or self.ref_exons[-1].end <= rStart0:
+                raise ValueError(
+                    "The exon being added has a starting position that is past the end position!"
+                )
             self.scores.append(score)
             self.ref_exons.append(Interval(rStart0, rEnd1))
         if rstrand == "-":
@@ -618,7 +627,7 @@ class pasaGFFReader(gmapGFFReader):
             #    gid = blob[9:-1]
 
         rec = gmapRecord(
-            chr=seqname, coverage=None, identity=None, strand=strand, seqid=tid
+            seqname=seqname, coverage=None, identity=None, strand=strand, seqid=tid
         )
 
         while True:

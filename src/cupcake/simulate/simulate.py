@@ -14,7 +14,7 @@ simType = ["sub", "ins", "del", "match"]
 simTypeSize = 4
 
 
-app = typer.Typing(
+app = typer.Typer(
     name="cupcake.simulate.simulate",
     help="Simple error simulation",
 )

@@ -31,9 +31,9 @@ def get_seq_stats(filename, binwidth):
             lens.append(len(r.seq))
 
     logger.info(f"{len(lens)} sequences")
-    logger.info("min:", min(lens))
-    logger.info("max:", max(lens))
-    logger.info("avg:", sum(lens) * 1.0 / len(lens))
+    logger.info(f"min: {min(lens)}")
+    logger.info(f"max: {max(lens)}")
+    logger.info(f"avg: {sum(lens) * 1.0 / len(lens)}")
 
     # print by 1 kb bins
     logger.info("Length Breakdown by kb range:")
@@ -67,4 +67,4 @@ def main(
 
 
 if __name__ == "__main__":
-    main()
+    typer.run(main)

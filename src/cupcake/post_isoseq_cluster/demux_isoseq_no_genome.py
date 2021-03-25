@@ -8,7 +8,7 @@ from csv import DictReader
 from pathlib import Path
 from typing import Any
 from typing import Counter as counter
-from typing import Dict, Optional, Path, Set, Tuple, Union
+from typing import Dict, Optional, Set, Tuple, Union
 
 import typer
 from Bio import SeqIO

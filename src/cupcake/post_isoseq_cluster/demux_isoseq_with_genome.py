@@ -144,26 +144,26 @@ def demux_isoseq_with_genome(
 
 @app.command(name="")
 def main(
-    job_dir: str = typer.Argument(
+    job_dir: str = typer.Option(
         ...,
         "--job_dir",
         "-j",
         help="Job directory (if given, automatically finds required files)",
     ),
-    mapped_fafq: str = typer.Argument(
+    mapped_fafq: str = typer.Option(
         ..., help="mapped fasta/fastq (overridden by --job_dir if given)"
     ),
-    read_stat: str = typer.Argument(
+    read_stat: str = typer.Option(
         ..., help="read_stat txt (overridden by --job_dir if given)"
     ),
-    classify_csv: str = typer.Argument(
+    classify_csv: str = typer.Option(
         ..., help="Classify report CSV (overriden by --job_dir if given)"
     ),
     primer_names: Optional[str] = typer.Option(
         None,
         help="Text file showing primer sample names (default: None)",
     ),
-    output: str = typer.Argument(..., "--output", "-o", help="Output count filename"),
+    output: str = typer.Option(..., "--output", "-o", help="Output count filename"),
 ):
     if primer_names is not None:
         primer_names = {}

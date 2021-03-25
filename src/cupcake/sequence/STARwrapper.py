@@ -6,7 +6,6 @@ Parameters are pre-set according to:
 
 
 """
-import os
 import shutil
 import subprocess
 import tempfile

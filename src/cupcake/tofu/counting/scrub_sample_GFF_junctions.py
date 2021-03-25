@@ -14,8 +14,6 @@ Looks through the junction reports and scrub it, retaining only junctions that
 
 Output: scrubbed.junctions.bed
 """
-import os
-import sys
 from collections import defaultdict
 from csv import DictReader, DictWriter
 from pathlib import Path
@@ -198,7 +196,7 @@ def scrub_sample_GFFs(
 
     for _, d in sample_dirs.items():
         with Path(d, f"{output_prefix}.gff.tmp").open("w") as outf:
-            for r in GFF.collapseGFFReader(os.path.join(d, gff_filename)):
+            for r in GFF.collapseGFFReader(Path(d, gff_filename)):
                 n = len(r.ref_exons)
                 if n == 1:
                     GFF.write_collapseGFF_format(outf, r)
@@ -355,8 +353,8 @@ def main(
         2, "-T", help="Minimum number of transcripts as evidence (default: 2)"
     ),
     # parser.add_argument("-C", "--accept_all_canonical", action="store_true", default=False, help="Accept all canonical jucntions (default: false)")
-    scrubbed_junction_file: Union[str, Path] = typer.Option(
-        help="Scrubbed junction bed --- if given, directly use it to scrub GFFs."
+    scrubbed_junction_file: Optional[Union[str, Path]] = typer.Option(
+        None, help="Scrubbed junction bed --- if given, directly use it to scrub GFFs."
     ),
 ):
     (
@@ -393,4 +391,4 @@ def main(
 
 
 if __name__ == "__main__":
-    typer.app(main)
+    typer.run(main)

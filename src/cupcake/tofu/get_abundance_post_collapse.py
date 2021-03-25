@@ -309,7 +309,7 @@ def get_abundance_post_collapse(
     output_read_count_IsoSeq_csv(
         cid_info, cluster_report_csv, f"{output_prefix}.read_stat.txt"
     )
-    logger.info("Read stat file written to", f"{output_prefix}.read_stat.txt")
+    logger.info(f"Read stat file written to {output_prefix}.read_stat.txt")
     make_abundance_file(
         f"{output_prefix}.read_stat.txt",
         f"{output_prefix}.abundance.txt",

@@ -23,17 +23,15 @@ Outputs:
 - gff
 """
 
-import sys
 from collections import Counter, defaultdict
 from csv import DictReader, DictWriter
 from pathlib import Path
 
 import typer
 from Bio import SeqIO
-from cupcake.logging import cupcake_logger as logger
 from cupcake.sequence.GFF import collapseGFFReader, write_collapseGFF_format
 
-app = typer.Typing(name="cupcake.singlecell.dedup_FLNC_per_cluster")
+app = typer.Typer(name="cupcake.singlecell.dedup_FLNC_per_cluster")
 
 
 CORRECTED_CSV_FILELDS = [
@@ -63,12 +61,11 @@ def dedup_FLNC_per_cluster(
     reader = DictReader(open(corrected_csv), delimiter="\t")
     for k in CORRECTED_CSV_FILELDS:
         if k not in reader.fieldnames:
-            print(
+            raise RuntimeError(
                 "The following fields must exist in {}!\n{}".format(
                     corrected_csv, "\n".join(CORRECTED_CSV_FILELDS)
                 )
             )
-            sys.exit(-1)
 
     per_unique = {}  # tag -> record
     per_unique_count = Counter()  # tag -> number of duplicates
@@ -169,22 +166,19 @@ def main(
 ):
 
     if not Path(corrected_csv).exists():
-        logger.error(f"Input file {corrected_csv} does not exist! Abort!")
-        sys.exit(-1)
+        raise FileNotFoundError(f"Input file {corrected_csv} does not exist! Abort!")
 
     if not Path(cluster_file).exists():
-        logger.error(f"Input file {cluster_file} does not exist! Abort!")
-        sys.exit(-1)
+        raise FileNotFoundError(f"Input file {cluster_file} does not exist! Abort!")
 
     cluster_info = {}
     reader = DictReader(open(cluster_file), delimiter="\t")
     if ("cell_barcode" not in reader.fieldnames) or (
         "cluster" not in reader.fieldnames
     ):
-        logger.error(
+        raise RuntimeError(
             f"Cluster file {cluster_file} must contain 'cell_barcode' and 'cluster' fields!"
         )
-        sys.exit(-1)
     for r in reader:
         if r["cluster"] != "NA":
             cluster_info[r["cell_barcode_rev"]] = r["cluster"]
@@ -195,4 +189,4 @@ def main(
 
 
 if __name__ == "__main__":
-    main()
+    typer.run(main)

@@ -203,7 +203,7 @@ def main(
         None, help="Classify report CSV (overriden by --job_dir if given)"
     ),
     output: Optional[str] = typer.Option(
-        None, "--output", "-o", help="Output count filename", required=True
+        None, "--output", "-o", help="Output count filename"
     ),
 ):
 

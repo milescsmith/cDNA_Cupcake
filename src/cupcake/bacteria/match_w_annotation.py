@@ -1,6 +1,22 @@
 #!/usr/bin/env python
 
-"""match_w_annotation.py: functions for categorizing read alignments to annotations. mainly for bacteria."""
+"""match_w_annotation.py: functions for categorizing read alignments
+to annotations. mainly for bacteria.
+
+Criteria for matching genes:
+
+Single --- query must cover the ref gene by 50% and does not extend upstream
+more than 300 bp or downstream more than 500 bp
+
+Poly --- query must cover each of the ref gene by 50%
+
+Novel ---
+ (a) novel-antisense: has overlapping genes on opposite strand but not the same
+    strand
+ (b) novel-unannotated: no overlapping genes on either strand
+ (c) novel-partial: has overlapping genes on same strand (but less than the
+    "single" criterion)
+"""
 
 __author__ = "Elizabeth Tseng"
 __copyright__ = "Copyright 2016, cDNA_Cupcake"
@@ -17,20 +33,6 @@ from bx.intervals import IntervalTree
 from bx.intervals.cluster import ClusterTree
 from cupcake.logging import cupcake_logger as logger
 from cupcake.sequence import BioReaders
-
-"""
-Criteria for matching genes:
-
-Single --- query must cover the ref gene by 50% and does not extend upstream more than 300 bp or downstream more than 500 bp
-
-Poly --- query must cover each of the ref gene by 50%
-
-Novel ---
- (a) novel-antisense: has overlapping genes on opposite strand but not the same strand
- (b) novel-unannotated: no overlapping genes on either strand
- (c) novel-partial: has overlapping genes on same strand (but less than the "single" criterion)
-"""
-
 
 app = typer.Typer(
     name="cupcake.bacteria.match_w_annotation",
@@ -85,7 +87,7 @@ def categorize_novel(t, r, info, same_strand_overlap_gene=None) -> namedtuple:
     s, e = r.sStart, r.sEnd
     matches = t[r.sID]["+" if r.flag.strand == "-" else "-"].find(s, e)
     if len(matches) > 0 and same_strand_overlap_gene is None:
-        s2, e2, gene2 = info[matches[0]]
+        *_, gene2 = info[matches[0]]
         return AMatch(f"novel-antisense-{gene2}", r.flag.strand, s, e, r)
     else:
         if same_strand_overlap_gene is None:
@@ -232,7 +234,7 @@ def categorize_aln_by_annotation(
     # reader = DictReader(open('ProteinTable149_154224.txt'),delimiter='\t')
     for r in DictReader(open(gene_annotation_file), delimiter="\t"):
         if r["#Replicon Name"] != "chr":
-            logger.info("Ignore", r)
+            logger.info(f"Ignore {r}")
             continue
         info[r["Locus tag"]] = (int(r["Start"]), int(r["Stop"]), r["Locus tag"])
         t[r["Replicon Accession"]][r["Strand"]].add(
@@ -283,7 +285,7 @@ def categorize_aln_by_annotation(
                 tagRG = "single"
             v.sort(
                 key=lambda x: (x.start, x.end),
-                reverse=True if v[0].strand == "-" else False,
+                reverse=bool(v[0].strand == "-"),
             )  # sort by start, then end
             for i, x in enumerate(v):
                 f.write(
@@ -307,7 +309,7 @@ def categorize_aln_by_annotation(
                     v = [novel_list[ind] for ind in _indices]
                     v.sort(
                         key=lambda x: (x.start, x.end),
-                        reverse=True if v[0].strand == "-" else False,
+                        reverse=bool(v[0].strand == "-"),
                     )  # sort by start, then end
                     for i, x in enumerate(v):
                         f.write(
@@ -329,7 +331,7 @@ def categorize_aln_by_annotation(
 
 @app.command(name="")
 def main(
-    gene_annotation_file: str = typer.Arguemnt(..., help="Gene Annotation Text File"),
+    gene_annotation_file: str = typer.Argument(..., help="Gene Annotation Text File"),
     input_fasta: str = typer.Argument(..., help="Input Fasta"),
     input_sam: str = typer.Argument(..., help="Input SAM"),
     output_prefix: str = typer.Argument(..., help="Output Prefix"),

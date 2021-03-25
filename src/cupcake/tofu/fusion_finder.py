@@ -10,6 +10,7 @@ import typer
 from Bio import SeqIO
 from Bio.SeqIO import SeqRecord
 from bx.intervals.cluster import ClusterTree
+from click.exceptions import BadArgumentUsage
 from cupcake.logging import cupcake_logger as logger
 from cupcake.sequence import BioReaders
 from cupcake.sequence.SeqReaders import LazyFastaReader, LazyFastqReader
@@ -525,10 +526,10 @@ def fusion_main(
 
 @app.command(name="")
 def main(
-    input_filename: str = typer.Argument("--input", help="Input FA/FQ filename"),
+    input_filename: str = typer.Argument(..., help="Input FA/FQ filename"),
     fq: bool = typer.Option(False, help="Input is a fastq file"),
-    sam: str = typer.Argument(..., "-s", help="Sorted GMAP SAM filename"),
-    prefix: str = typer.Argument(..., "-o", help="Output filename prefix"),
+    sam: str = typer.Option(..., "--sam", "-s", help="Sorted GMAP SAM filename"),
+    prefix: str = typer.Option(..., "--prefix", "-o", help="Output filename prefix"),
     cluster_report_csv: str = typer.Option(
         "cluster_report.csv", help="if given will generate count info."
     ),
@@ -557,10 +558,9 @@ def main(
     assert 0 < min_identity <= 1
 
     if is_flnc and cluster_report_csv is not None:
-        logger.error(
+        raise BadArgumentUsage(
             "ERROR: Cannot use both --is_flnc and --cluster_report_csv at the same time. Abort!"
         )
-        sys.exit(-1)
 
     fusion_main(
         input_filename,

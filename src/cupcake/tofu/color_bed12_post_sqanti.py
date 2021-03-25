@@ -160,8 +160,9 @@ def main(
             fl_fieldnames.append(x)
 
     if len(fl_fieldnames) == 0:
-        print("Expected column(s) 'FL' or 'FL.<sample>'! None found. Abort!")
-        sys.exit(-1)
+        raise RuntimeError(
+            "Expected column(s) 'FL' or 'FL.<sample>'! None found. Abort!"
+        )
 
     shaded_bed12_post_sqanti(
         class_filename,

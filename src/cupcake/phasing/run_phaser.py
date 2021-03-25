@@ -163,8 +163,8 @@ def main(
     read_stat: str = typer.Argument(
         ...,
     ),
-    mapping_filename: str = typer.Argument(..., type=str),
-    output_prefix: str = typer.Argument(..., "--output_prefix", "-o"),
+    mapping_filename: str = typer.Argument(...),
+    output_prefix: str = typer.Option(..., "--output_prefix", "-o"),
     strand: strand_direction = typer.Option(...),
     partial_ok: bool = typer.Option(
         False,

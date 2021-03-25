@@ -236,16 +236,14 @@ def evaluate_alignment_sam(
 
 @app.command(name="")
 def main(
-    input_file: str = typer.Argument(
-        ..., "--input", "-i", help="Input fasta or fastq."
-    ),
-    sam_filename: str = typer.Argument(
+    input_file: str = typer.Option(..., "--input", "-i", help="Input fasta or fastq."),
+    sam_filename: str = typer.Option(
         ..., "--sam_filename", "-s", help="Aligned SAM filename."
     ),
-    genome_filename: str = typer.Argument(
+    genome_filename: str = typer.Option(
         ..., "--genome_filename", "-g", help="Genome fasta."
     ),
-    output_prefix: str = typer.Argument(
+    output_prefix: str = typer.Option(
         ..., "--output_prefix", "-o", help="Output prefix."
     ),
     gff: Optional[str] = typer.Option(None, "--gff", help="Annotation GFF."),
@@ -268,4 +266,4 @@ def main(
 
 
 if __name__ == "__main__":
-    main()
+    typer.run(main)

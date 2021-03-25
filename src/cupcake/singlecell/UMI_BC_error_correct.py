@@ -86,7 +86,7 @@ def read_dropseq_synthesis_report(
 def edit_distance(seq1, seq2) -> int:
     assert len(seq1) == len(seq2)
     diff = 0
-    for i in range(len(seq1)):
+    for i in enumerate(seq1):
         diff += seq1[i] != seq2[i]
     return diff
 
@@ -127,11 +127,12 @@ def error_correct_BC_or_UMI(
 def umi_bc_error_correct(
     csv_filename: Union[str, Path],
     output_filename: Union[str, Path],
-    shortread_bc: Optional[Dict[str, str]] = {},
+    shortread_bc: Optional[Dict[str, str]] = None,
     only_top_ranked: bool = False,
     bc_repair_dict: Optional[Dict[Seq, Seq]] = None,
 ) -> None:
 
+    shortread_bc = {} if shortread_bc is None else shortread_bc
     reader = DictReader(open(csv_filename), delimiter="\t")
 
     FIELDS = reader.fieldnames + ["BC_ed", "UMI_ed", "BC_match", "BC_top_rank"]

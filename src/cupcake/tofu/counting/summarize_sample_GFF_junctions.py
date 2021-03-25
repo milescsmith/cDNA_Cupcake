@@ -121,6 +121,7 @@ def read_annotation_junction_bed(junction_filename: Union[str, Path]) -> default
     for line in open(junction_filename):
         chrom, left, right, strand = line.strip().split("\t")
         junction[chrom, strand][(int(left), int(right))] = 1
+    return junction
 
 
 def summarize_junctions(

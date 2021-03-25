@@ -229,14 +229,14 @@ def collapse_fuzzy_junctions(
     return fuzzy_match
 
 
-@app.command(name="")
+@app.command()
 def main(
-    input_filename: str = typer.Argument(..., "--input", help="Input FA/FQ filename"),
+    input_filename: str = typer.Argument(..., help="Input FA/FQ filename"),
+    sam: str = typer.Argument(..., help="Sorted GMAP SAM filename"),
     fq: bool = typer.Option(
         False, "--fq", help="Input is a fastq file (default is fasta)"
     ),  # store_true
-    sam: str = typer.Argument(..., help="Sorted GMAP SAM filename"),
-    prefix: str = typer.Argument(..., "-o", "--output", help="Output filename prefix"),
+    prefix: str = typer.Option(..., "-o", "--output", help="Output filename prefix"),
     min_aln_coverage: float = typer.Option(
         0.99, "--min-coverage", "-c", help="Minimum alignment coverage (default: 0.99)"
     ),
@@ -258,7 +258,6 @@ def main(
     ),
     gen_mol_count: bool = typer.Option(
         False,
-        "--gen_mol_count",
         help="Generate a .abundance.txt file based on the number of input sequences collapsed. Use only if input is FLNC or UMI-dedup output (default: off)",
     ),  # store_true
     allow_extra_5exon: bool = typer.Option(
@@ -266,10 +265,9 @@ def main(
         "--dun-merge-5-shorter",
         help="Don't collapse shorter 5' transcripts (default: turned off)",
     ),  # store_false
-):
-
+) -> None:
     # sanity check that input file and input SAM exists
-    if not Path(input_filename).exists():
+    if not Path(str(input_filename)).exists():
         logger.error(f"Input file {input_filename} does not exist. Abort.")
         sys.exit(-1)
 

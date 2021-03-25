@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 __author__ = "etseng@pacb.com"
 
-import os
 import re
-import sys
 from enum import Enum
-
+from typing import Optional
+from pathlib import Path
+ 
 import cupcake.sequence.GFF as GFF
 import typer
 from Bio import SeqIO
@@ -37,7 +37,7 @@ def make_fake_genome(
     ref_end,
     ref_strand,
     output_prefix,
-    output_name,
+    output_name=None,
     genome_d=None,
 ):
     if genome_d is None:
@@ -45,6 +45,9 @@ def make_fake_genome(
         d = SeqIO.to_dict(SeqIO.parse(open(genome_filename), "fasta"))
     else:
         d = genome_d
+
+    if output_name is None:
+        output_name = f"fake_{genome_filename}"
 
     logger.info(f"Reading GFF file {gff_filename}...")
     good = []
@@ -60,10 +63,9 @@ def make_fake_genome(
             good.append(r)
 
     if len(good) == 0:
-        logger.error(
+        raise RuntimeError(
             f"Did not find any transcripts strictly within {ref_chr}:{ref_start}-{ref_end} on strand {ref_strand}. Abort!"
         )
-        sys.exit(-1)
 
     c = ClusterTree(0, 0)
     for r in good:
@@ -109,24 +111,25 @@ def main(
     output_prefix: str = typer.Option(
         ..., "--output_prefix", "-o", help="Output prefix"
     ),
+    output_name: Optional[str] = typer.Option(None, help="Output genome name"),
 ) -> None:
 
     rex = re.compile(r"(\S+):(\d+)-(\d+)")
     m = rex.match(locus)
     if m is None:
-        logger.info(f"{locus} is not a defined chr location! Abort.")
-        sys.exit(-1)
+        raise RuntimeError(f"{locus} is not a defined chr location! Abort.")
 
     ref_chr = m.group(1)
     ref_start = int(m.group(2)) - 1  # make it 0-based
     ref_end = int(m.group(3))  # keep it 1-based
 
-    if not os.path.exists(genome_filename):
-        logger.error(f"Genome file {genome_filename} does not exist! Abort.")
-        sys.exit(-1)
-    if not os.path.exists(gff_filename):
-        logger.critical(f"GFF {gff_filename} does not exist! Abort.")
-        sys.exit(-1)
+    genome_filename = Path(genome_filename)
+    gff_filename = Path(gff_filename)
+
+    if not genome_filename.exists():
+        raise FileNotFoundError(f"Genome file {genome_filename} does not exist! Abort.")
+    if not gff_filename.exists():
+        raise FileNotFoundError(f"GFF {gff_filename} does not exist! Abort.")
 
     make_fake_genome(
         genome_filename,
@@ -136,8 +139,9 @@ def main(
         ref_end,
         strand,
         output_prefix,
+        output_name,
     )
 
 
 if __name__ == "__main__":
-    main()
+    typer.run(main)

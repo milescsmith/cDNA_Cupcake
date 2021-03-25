@@ -1,7 +1,7 @@
 import sys
 from io import TextIOWrapper
 from pathlib import Path
-from typing import Any, Dict, List, Tuple, Union
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 import numpy as np
 from Bio import SeqIO
@@ -9,7 +9,8 @@ from bx.intervals.cluster import ClusterTree
 from bx.intervals.intersection import Interval, IntervalTree
 from cupcake.logging import cupcake_logger as logger
 from cupcake.sequence import BioReaders
-from cupcake.tofu.branch import c_branch, intersection_unique
+from cupcake.tofu.branch import c_branch, intervals_all_adjacent
+from cupcake.tofu.branch.intersection_unique import IntervalTreeUnique
 
 # from cupcake.tofu.branch.intersection_unique import IntervalTreeUnique, Interval, IntervalNodeUnique
 
@@ -435,7 +436,7 @@ class BranchSimple:
 
 def iterative_merge_transcripts(
     result_list: List[Tuple[str, str, np.ndarray]],
-    node_d: Dict[Dict[str, Any], intersection_unique.IntervalTreeUnique],
+    node_d: Dict[Dict[str, Any], IntervalTreeUnique],
     merge5: bool,
     max_5_diff: int,
     max_3_diff: int,
@@ -466,9 +467,9 @@ def iterative_merge_transcripts(
 
 
 def compare_exon_matrix(
-    m1: np.ndaray,
+    m1: np.ndarray,
     m2: np.ndarray,
-    node_d: Dict[Dict[str, Any], intersection_unique.IntervalTreeUnique],
+    node_d: Dict[Dict[str, Any], IntervalTreeUnique],
     strand: str,
     merge5: bool,
     max_5_diff: int,
@@ -590,9 +591,9 @@ def compare_exon_matrix(
 def trim_exon_left_to_right(
     m1: np.ndarray,
     m2: np.ndarray,
-    node_d: Dict[Dict[str, Any], intersection_unique.IntervalTreeUnique],
+    node_d: Dict[Dict[str, Any], IntervalTreeUnique],
     max_distance: int,
-) -> Tuple[bool, np.ndarray]:
+) -> Tuple[bool, Optional[np.ndarray]]:
     """"""
     l1 = m1.nonzero()[1]
     l2 = m2.nonzero()[1]
@@ -660,7 +661,7 @@ def exon_matching(
     if len(matches) == 0:  # likely due to very low coverage on transcript
         return None
     # check that all matches are adjacent (no splicing! this just one integral exon)
-    if (not intervals_adjacent) or c_branch.intervals_all_adjacent(matches):
+    if (not intervals_adjacent) or intervals_all_adjacent(matches):
         # check if the ends differ a little, if so, extend to min/max
         for i in range(len(matches)):
             d_start = abs(matches[i].start - ref_exon.start)

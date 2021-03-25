@@ -40,4 +40,4 @@ def main(sam_filename: str = typer.Argument(...)) -> None:
 
 
 if __name__ == "__main__":
-    main()
+    typer.run(main)

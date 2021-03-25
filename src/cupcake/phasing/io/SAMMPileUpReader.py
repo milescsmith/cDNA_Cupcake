@@ -158,7 +158,7 @@ class MPileUpReader(object):
             # cov = int(raw[3])
             # if cov > 0:
             return MPileUpRecord(
-                chr=raw[0],
+                chrom=raw[0],
                 pos=int(raw[1]) - 1,
                 ref=raw[2],
                 cov=int(raw[3]),
@@ -172,7 +172,7 @@ class MPileUpReader(object):
             # fake    8728    T       3       .$.$.   ;q:     ]]]
             # fake    8729    T       0
             return MPileUpRecord(
-                chr=raw[0],
+                chrom=raw[0],
                 pos=int(raw[1]) - 1,
                 ref=raw[2],
                 cov=0,

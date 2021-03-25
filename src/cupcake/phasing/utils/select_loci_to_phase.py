@@ -224,10 +224,7 @@ def select_loci_to_phase(
             )
             continue
 
-        logger.info(
-            "making",
-            locus,
-        )
+        logger.info(f"making {locus}")
         d2 = Path(f"by_loci/{locus}_size{len(tally_by_loci[locus])}")
         d2.mkdir()
 

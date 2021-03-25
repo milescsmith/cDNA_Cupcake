@@ -17,9 +17,6 @@ we have:
 start with assumption of 2 allele:
 how do we find the center
 """
-
-
-import sys
 from collections import Counter
 
 # import networkx as nx

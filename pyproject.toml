@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cupcake"
-version = "21.0.0"
+version = "21.0.1"
 description = "Miscellaneous collection of Python and R scripts for processing Iso-Seq data"
 authors = ["Elizabeth Tseng <etseng@pacb.com>"]
 license = "BSD3"
@@ -59,33 +59,34 @@ ipython = "^7.20.0"
 pylint = "^2.6.2"
 flake8 = "^3.8.4"
 mypy = "^0.800"
+colorama = "^0.4.4"
 
 [build-system]
 requires = ["poetry-core>=1.0.0", "cython", "numpy"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-evaluate_alignment_sam      = "cupcake.annotation.alignment_stats_from_sam:main"
-make_file_for_subsample     = "cupcake.annotation.make_file_for_subsampling_from_collapsed:main"
-parse_matchAnnot            = "cupcake.annotation.parse_matchAnnot:main"
-subsample_with_category     = "cupcake.annotation.subsample_with_category:main"
-subsample                   = "cupcake.annotation.subsample:main"
+evaluate_alignment_sam      = "cupcake.annotation.alignment_stats_from_sam:app"
+make_file_for_subsample     = "cupcake.annotation.make_file_for_subsampling_from_collapsed:app"
+parse_matchAnnot            = "cupcake.annotation.parse_matchAnnot:app"
+subsample_with_category     = "cupcake.annotation.subsample_with_category:app"
+subsample                   = "cupcake.annotation.subsample:app"
 # tofu submodule
-collapse_isoforms_by_sam    = "cupcake.tofu.collapse_isoforms_by_sam:main"
-get_abundance_post_collapse = "cupcake.tofu.get_abundance_post_collapse:main"
-filter_by_count             = "cupcake.tofu.filter_by_count:main"
-filter_away_subset          = "cupcake.tofu.filter_away_subset:main"
-fusion_finder               = "cupcake.tofu.fusion_finder:main"
-chain_samples               = "cupcake.tofu.counting.chain_samples:main"
-chain_fusion_samples        = "cupcake.tofu.counting.chain_fusion_samples:main"
-summarize_junctions         = "cupcake.tofu.counting.summarize_sample_GFF_junctions:main"
-scrub_sample_GFFs           = "cupcake.tofu.counting.scrub_sample_GFF_junctions:main"
+collapse_isoforms_by_sam    = "cupcake.tofu.collapse_isoforms_by_sam:app"
+get_abundance_post_collapse = "cupcake.tofu.get_abundance_post_collapse:app"
+filter_by_count             = "cupcake.tofu.filter_by_count:app"
+filter_away_subset          = "cupcake.tofu.filter_away_subset:app"
+fusion_finder               = "cupcake.tofu.fusion_finder:app"
+chain_samples               = "cupcake.tofu.counting.chain_samples:app"
+chain_fusion_samples        = "cupcake.tofu.counting.chain_fusion_samples:app"
+summarize_junctions         = "cupcake.tofu.counting.summarize_sample_GFF_junctions:app"
+scrub_sample_GFFs           = "cupcake.tofu.counting.scrub_sample_GFF_junctions:app"
 # uh phasing! are we still doing phasing?
-make_fake_genome            = "cupcake.phasing.create_fake_genome:main"
-simple_stats_post_collapse  = "cupcake.tofu.simple_stats_post_collapse:main"
-fusion_collate_info         = "cupcake.tofu.fusion_collate_info:main"
-color_bed12_post_sqanti     = "cupcake.tofu.color_bed12_post_sqanti:main"
-run_phaser                  = "cupcake.phasing.run_phaser:main"
+make_fake_genome            = "cupcake.phasing.create_fake_genome:app"
+simple_stats_post_collapse  = "cupcake.tofu.simple_stats_post_collapse:app"
+fusion_collate_info         = "cupcake.tofu.fusion_collate_info:app"
+color_bed12_post_sqanti     = "cupcake.tofu.color_bed12_post_sqanti:app"
+run_phaser                  = "cupcake.phasing.run_phaser:app"
 
 [tool.poetry.build]
 generate-setup-file = false
@@ -107,7 +108,7 @@ show_source = true
 flake8-bandit = ["+*"]
 flake8-bugbear = ["-B950"]
 flake8-builtins = ["+*"]
-pylint = ["+*", "-C0103", "-C0116", "-C901", "-E203", "-E401", "-E501", "-E266", "-F401", "-F403", "-R0913", "-R0914", "-W503", "-W1203", "-W1309"]
+pylint = ["+*", "-C0103", "-C0116", "-C901", "-E203", "-E401", "-E501", "-E266", "-F401", "-F403", "-R0913", "-R0914", "-W503", "-W1203", "-W1309", "-R1705", "-C0301", "-W*",]
 # wemake-python-styleguide = ["+*", "-WPS305", "-WPS221", "-WPS111", "-WPS231", "-WPS326", "-WPS337", "-WPS336", "-WPS528", "-WPS529"]
 flake8-broken-line = ["+*"]
 flake8-commas = ["+*"]
@@ -121,7 +122,7 @@ flake8-isort = ["+*"]
 # flake8-string-format = ["+*"]
 # mccabe = ["+*"]
 # pep8-naming = ["+*"]
-pycodestyle = ["+*","-E203", "-E401", "-E501", "-E266", "-W503", "-W1203", "-W1309"]
+pycodestyle = ["+*","-W*"]
 pyflakes = ["+*"]
 
 # match by prefix

@@ -435,12 +435,10 @@ def main(
         ..., help="CCS BAM with cDNA primer removed (post LIMA)"
     ),
     output_prefix: str = typer.Argument(..., help="Output prefix"),
-    umi_len: int = typer.Argument(
-        ..., "-u", "--umi_len", type=int, help="Length of UMI"
-    ),
-    bc_len: int = typer.Argument(..., "-b", "--bc_len", help="Length of cell barcode"),
+    umi_len: int = typer.Option(..., "-u", "--umi_len", help="Length of UMI"),
+    bc_len: int = typer.Option(..., "-b", "--bc_len", help="Length of cell barcode"),
     tso_len: int = typer.Option(
-        0, "-t", "--tso_len", type=int, help="Length of TSO (for G5-10X only)"
+        0, "-t", "--tso_len", help="Length of TSO (for G5-10X only)"
     ),
     umi_type: umi_types = typer.Option(..., help="Location of the UMI"),
     g5_clip_seq: Optional[str] = typer.Option(

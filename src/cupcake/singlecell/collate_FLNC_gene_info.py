@@ -12,9 +12,9 @@ Output a collated infor file that is:
    <ccs>, <pbid>, <transcript>, <gene>, <category>, <ontarget Y|N|NA>, <UMI>, <BC>, <UMIrev>, <BCrev>
 """
 
-import sys
 from csv import DictReader, DictWriter
 from pathlib import Path
+from typing import Optional
 
 import typer
 from Bio.Seq import Seq
@@ -138,19 +138,19 @@ def main(
     csv_filename: str = typer.Argument(..., help="Trimmed UMI/BC CSV info"),
     class_filename: str = typer.Argument(..., help="SQANTI classification.txt"),
     output_filename: str = typer.Argument(..., help="Output filename"),
-    ontarget_filename: str = typer.Argument(
+    ontarget_filename: str = typer.Option(
         ..., "-i", help="(Optional) on target information text"
     ),
-    dedup_ORF_prefix: str = typer.Argument(
-        ...,
+    dedup_ORF_prefix: Optional[str] = typer.Option(
+        None,
         "-p",
-        help="(Optional) dedup-ed ORF group prefix, must have <pre>.faa and <pre>.group.txt",
+        help="Dedup-ed ORF group prefix, must have <pre>.faa and <pre>.group.txt",
     ),
     no_extra_base: bool = typer.Option(
         False, help="Drop all reads where there are extra bases"
     ),
     is_clustered: bool = typer.Option(
-        False, default=False, help="group.txt contains post-UMI clustering result"
+        False, help="group.txt contains post-UMI clustering result"
     ),
 ):
     if Path(output_filename).exists():

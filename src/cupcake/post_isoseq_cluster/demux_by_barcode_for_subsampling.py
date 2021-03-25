@@ -15,7 +15,7 @@ FIELDNAMES = ["pbid", "pbgene", "length", "refisoform", "refgene", "fl_count"]
 pbid_rex = re.compile(r"PB.(\d+).\d+")
 
 
-app = typer.Typing(name="cupcake.post_isoseq_cluster.demux_by_barcode_for_subsampling")
+app = typer.Typer(name="cupcake.post_isoseq_cluster.demux_by_barcode_for_subsampling")
 
 
 def demux_for_subsamping(

@@ -213,6 +213,6 @@ def consistute_genome_seq_from_exons(genome_dict, _chr, exons, strand):
 
     seq = Seq(seq)
     if strand == "+":
-        return seq.tostring()
+        return str(seq)
     else:
-        return seq.reverse_complement().tostring()
+        return str(seq.reverse_complement())

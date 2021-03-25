@@ -13,6 +13,7 @@ from typing import Optional
 import cupcake.sequence.GFF as GFF
 import typer
 from Bio import SeqIO
+from cupcake.logging import cupcake_logger as logger
 
 rex_pbid = re.compile(r"(PB.\d+.\d+)(|\S+)")
 
@@ -109,4 +110,4 @@ def main(
 
 
 if __name__ == "__main__":
-    main()
+    typer.run(main)

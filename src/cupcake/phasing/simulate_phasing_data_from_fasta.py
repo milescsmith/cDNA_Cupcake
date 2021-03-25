@@ -117,7 +117,7 @@ def simulate_phasing_data(
 
 @app.command(name="")
 def main(
-    fasta_filename: str = typer.Arguement(
+    fasta_filename: str = typer.Argument(
         ..., help="Fasta file from which to simulate phasing data from."
     ),
     ploidity: int = typer.Option(2, "-p"),

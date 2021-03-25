@@ -5,6 +5,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [21.0.1] - 2021-03-35
+
+### Fixed
+- Changed the "scripts" in pyproject.toml to call `app` instead of `main`
+  since no scripts with typer appear to work otherwise
+- Cleanup of `typer.Argument` objects that were given alternative parameter names
+- Stray bugs picked up by flake8
+
+## [21.0.0] - 2021-03-24
+
+### Changed
+- Completely replaced argparse usage with typer
+- Completely replaced printing to stderr with a logger
+- Partial replacement of using the os module with pathlib
 ## [19.1.2] - 2021-03-22
 
 ### Changed
