@@ -400,7 +400,7 @@ class gmapRecord:
 
         exons --- list of Interval, 0-based start, 1-based end
         """
-        if not strand == "+" or strand == "-":
+        if strand not in ("+", "-"):
             raise ValueError(
                 f"`strand` must be either `+` or `-`, but instead {strand} was passed."
             )
@@ -457,17 +457,19 @@ class gmapRecord:
     def add_exon(self, rStart0, rEnd1, sStart0, sEnd1, rstrand, score=0):
         assert rStart0 < rEnd1 and sStart0 < sEnd1
         if rstrand == "-":
-            if not len(self.ref_exons) == 0 or self.ref_exons[0].start >= rEnd1:
-                raise ValueError(
-                    "The exon being added has a starting position that is past the end position!"
-                )
+            if not len(self.ref_exons) == 0:
+                if self.ref_exons[0].start < rEnd1:
+                    raise ValueError(
+                        "The exon being added has a starting position that is past the end position!"
+                    )
             self.scores.insert(0, score)
             self.ref_exons.insert(0, Interval(rStart0, rEnd1))
         else:
-            if not len(self.ref_exons) == 0 or self.ref_exons[-1].end <= rStart0:
-                raise ValueError(
-                    "The exon being added has a starting position that is past the end position!"
-                )
+            if len(self.ref_exons) != 0:
+                if self.ref_exons[-1].end > rStart0:
+                    raise ValueError(
+                        "The exon being added has a starting position that is past the end position!"
+                    )
             self.scores.append(score)
             self.ref_exons.append(Interval(rStart0, rEnd1))
         if rstrand == "-":

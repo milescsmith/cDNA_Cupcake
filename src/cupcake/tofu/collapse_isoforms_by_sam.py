@@ -17,7 +17,6 @@ Suggested scripts to follow up with:
    filter_away_subset.py (if collapse is run with --dun-merge-5-shorter)
 """
 
-import sys
 from collections import defaultdict
 from gzip import open as gzopen
 from pathlib import Path
@@ -231,26 +230,26 @@ def collapse_fuzzy_junctions(
 
 @app.command()
 def main(
-    input_filename: str = typer.Argument(..., help="Input FA/FQ filename"),
-    sam: str = typer.Argument(..., help="Sorted GMAP SAM filename"),
+    input_filename: str = typer.Option(..., "--input", help="Input FA/FQ filename"),
+    sam: str = typer.Option(..., help="Sorted GMAP SAM filename"),
     fq: bool = typer.Option(
-        False, "--fq", help="Input is a fastq file (default is fasta)"
+        False, "--fq", help="Input is a fastq file"
     ),  # store_true
-    prefix: str = typer.Option(..., "-o", "--output", help="Output filename prefix"),
+    prefix: str = typer.Option(..., "-p", "--prefix", help="Output filename prefix"),
     min_aln_coverage: float = typer.Option(
-        0.99, "--min-coverage", "-c", help="Minimum alignment coverage (default: 0.99)"
+        0.99, "--min-coverage", "-c", help="Minimum alignment coverage"
     ),
     min_aln_identity: float = typer.Option(
-        0.95, "--min-identity", "-i", help="Minimum alignment identity (default: 0.95)"
+        0.95, "--min-identity", "-i", help="Minimum alignment identity"
     ),
     max_fuzzy_junction: int = typer.Option(
-        5, help="Max fuzzy junction dist (default: 5 bp)"
+        5, help="Max fuzzy junction dist"
     ),
     max_5_diff: int = typer.Option(
-        1000, help="Maximum allowed 5' difference if on same exon (default: 1000 bp)"
+        1000, help="Maximum allowed 5' difference if on same exon"
     ),
     max_3_diff: int = typer.Option(
-        100, help="Maximum allowed 3' difference if on same exon (default: 100 bp)"
+        100, help="Maximum allowed 3' difference if on same exon"
     ),
     flnc_coverage: int = typer.Option(
         -1,
@@ -258,7 +257,7 @@ def main(
     ),
     gen_mol_count: bool = typer.Option(
         False,
-        help="Generate a .abundance.txt file based on the number of input sequences collapsed. Use only if input is FLNC or UMI-dedup output (default: off)",
+        help="Generate a .abundance.txt file based on the number of input sequences collapsed. Use only if input is FLNC or UMI-dedup output",
     ),  # store_true
     allow_extra_5exon: bool = typer.Option(
         True,
@@ -268,12 +267,10 @@ def main(
 ) -> None:
     # sanity check that input file and input SAM exists
     if not Path(str(input_filename)).exists():
-        logger.error(f"Input file {input_filename} does not exist. Abort.")
-        sys.exit(-1)
+        raise FileNotFoundError(f"Input file {input_filename} does not exist. Abort.")
 
     if not Path(sam).exists():
-        logger.error(f"SAM file {sam} does not exist. Abort.")
-        sys.exit(-1)
+        raise FileNotFoundError(f"SAM file {sam} does not exist. Abort.")
 
     # check for duplicate IDs
     check_ids_unique(input_filename, is_fq=fq)

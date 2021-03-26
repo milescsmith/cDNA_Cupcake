@@ -1,6 +1,13 @@
 *.o
 *.pyc
 *.so
+*.gff
+*.group.txt
+*.gff.unfuzzy
+*.group.txt.unfuzzy
+*.txt
+*.fa
+
 
 build/*
 cupcake/tofu/branch/*

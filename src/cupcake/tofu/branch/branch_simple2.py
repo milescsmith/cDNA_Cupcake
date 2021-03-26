@@ -9,7 +9,7 @@ from bx.intervals.cluster import ClusterTree
 from bx.intervals.intersection import Interval, IntervalTree
 from cupcake.logging import cupcake_logger as logger
 from cupcake.sequence import BioReaders
-from cupcake.tofu.branch import c_branch, intervals_all_adjacent
+from cupcake.tofu.branch import c_branch
 from cupcake.tofu.branch.intersection_unique import IntervalTreeUnique
 
 # from cupcake.tofu.branch.intersection_unique import IntervalTreeUnique, Interval, IntervalNodeUnique
@@ -395,7 +395,7 @@ class BranchSimple:
             else:
                 f_out = f_good
 
-            with f_out.open("w") as fo, f_group.open("w") as fg:
+            with f_out.open("a") as fo, f_group.open("a") as fg:
                 self.isoform_index += 1
                 segments = [node_d[x] for x in m.nonzero()[1]]
                 fg.write(
@@ -661,7 +661,7 @@ def exon_matching(
     if len(matches) == 0:  # likely due to very low coverage on transcript
         return None
     # check that all matches are adjacent (no splicing! this just one integral exon)
-    if (not intervals_adjacent) or intervals_all_adjacent(matches):
+    if (not intervals_adjacent) or c_branch.intervals_all_adjacent(matches):
         # check if the ends differ a little, if so, extend to min/max
         for i in range(len(matches)):
             d_start = abs(matches[i].start - ref_exon.start)
