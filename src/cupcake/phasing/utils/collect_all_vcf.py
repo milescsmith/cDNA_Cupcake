@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import Optional
 
 import typer
-import vcf
+import vcfpy
 from cupcake.logging import cupcake_logger as logger
 
 
@@ -27,7 +27,6 @@ def collect_all_vcf(
     no_snp_found_filename = Path(f"{Path(vcf_filename).stem}.NO_SNPS_FOUND")
     snps_by_chrom = defaultdict(lambda: [])
 
-    samp_ft = vcf.model.make_calldata_tuple(["GT", "HQ"])
     reader = None
 
     for d in dirs:
@@ -37,7 +36,7 @@ def collect_all_vcf(
                 logger.info("VCF file {filename} does not exist. Skipping.")
             continue
         with open(filename) as rf:
-            reader = vcf.VCFReader(rf)
+            reader = vcfpy.Reader(rf)
 
             for r in reader:
                 c = Counter()  # genotype -> count
@@ -50,7 +49,13 @@ def collect_all_vcf(
                 c_keys = c.keys()
                 genotype = "|".join(str(k) for k in c_keys)
                 counts = ",".join(str(c[k]) for k in c_keys)
-                r.samples = [vcf.model._Call(r, "SAMPLE", samp_ft(*[genotype, counts]))]
+                r.samples = [
+                    vcfpy.Call(
+                        r,
+                        "SAMPLE",
+                        vcfpy.OrderedDict([("GT", genotype), ("HQ", counts)]),
+                    )
+                ]
                 snps_by_chrom[r.CHROM].append((r.POS, r))
 
     keys = list(snps_by_chrom.keys())
@@ -59,7 +64,7 @@ def collect_all_vcf(
     if reader is not None:
         reader.samples = ["SAMPLE"]
         with open(output, "w") as f:
-            f = vcf.Writer(f, reader)
+            f = vcfpy.Writer(f, reader)
             for k in keys:
                 v = snps_by_chrom[k]
                 v.sort(key=lambda x: x[0])

@@ -28,7 +28,7 @@ from pathlib import Path
 from typing import Tuple
 
 # from collections import defaultdict
-import vcf
+import vcfpy
 from cupcake.logging import cupcake_logger as logger
 
 
@@ -61,7 +61,7 @@ def eval_isophase_phaseswitch(
 
     _chr, _start, _end, _strand = read_config(config_file)
 
-    reader = vcf.VCFReader(open(isophase_vcf))
+    reader = vcfpy.Reader(isophase_vcf)
     # record the first SNP for each isoform
     prev = {}  # sample -> CallData.GT (ex: '0|1')
     r = next(reader)

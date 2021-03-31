@@ -3,11 +3,12 @@ __author__ = "etseng@pacb.com"
 from collections import defaultdict, namedtuple
 from csv import DictReader
 
-import vcf
+import vcfpy
 from Bio import SeqIO
 from Bio.Seq import Seq
 from cupcake.phasing.io.coordinate_mapper import (
-    get_base_to_base_mapping_from_sam,)
+    get_base_to_base_mapping_from_sam,
+)
 from cupcake.sequence.BioReaders import GMAPSAMReader
 
 __VCF_EXAMPLE__ = """
@@ -391,9 +392,9 @@ class Haplotypes(object):
         # write a fake VCF example so we can read the headers in
         with open("template.vcf", "w") as f:
             f.write(__VCF_EXAMPLE__)
-        reader = vcf.VCFReader(open("template.vcf"))
+        reader = vcfpy.Reader(open("template.vcf"))
         reader.samples = name_isoforms
-        f_vcf = vcf.Writer(open(f"{output_prefix}.vcf", "w"), reader)
+        f_vcf = vcfpy.Writer(f"{output_prefix}.vcf", reader)
 
         # human readable text:
         # first line: assoc VCF filename
@@ -431,19 +432,19 @@ class Haplotypes(object):
                 f"{self.count_of_vars_by_pos[pos][b] * 1.0 / total_count:.2f}"
                 for b in self.alt_at_pos[pos]
             ]
-            rec = vcf.model._Record(
+            rec = vcfpy.Record(
                 CHROM=ref_chr,
                 POS=ref_pos + 1,
                 ID=".",
                 REF=self.ref_at_pos[pos],
-                ALT=[vcf.model._Substitution(b) for b in self.alt_at_pos[pos]],
+                ALT=[vcfpy.Substitution(b) for b in self.alt_at_pos[pos]],
                 QUAL=".",
                 FILTER="PASS",
                 INFO={"AF": alt_freq, "DP": total_count},
                 FORMAT="GT:HQ",
                 sample_indexes=None,
             )
-            samp_ft = vcf.model.make_calldata_tuple(["GT", "HQ"])
+
             rec.samples = []
             for _iso in name_isoforms:
                 # isoform_tally[_iso] is a dict of haplotype index --> count
@@ -459,7 +460,9 @@ class Haplotypes(object):
                     str(isoform_tally[_iso][hap_index]) for hap_index in hap_indices
                 )
                 rec.samples.append(
-                    vcf.model._Call(rec, _iso, samp_ft(*[genotype, counts]))
+                    vcfpy.Call(
+                        rec, _iso, vcfpy.OrderedDict([("GT", genotype), ("HQ", counts)])
+                    )
                 )
             f_vcf.write_record(rec)
         f_vcf.close()

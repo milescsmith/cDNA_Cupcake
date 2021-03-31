@@ -232,9 +232,7 @@ def collapse_fuzzy_junctions(
 def main(
     input_filename: str = typer.Option(..., "--input", help="Input FA/FQ filename"),
     sam: str = typer.Option(..., help="Sorted GMAP SAM filename"),
-    fq: bool = typer.Option(
-        False, "--fq", help="Input is a fastq file"
-    ),  # store_true
+    fq: bool = typer.Option(False, "--fq", help="Input is a fastq file"),  # store_true
     prefix: str = typer.Option(..., "-p", "--prefix", help="Output filename prefix"),
     min_aln_coverage: float = typer.Option(
         0.99, "--min-coverage", "-c", help="Minimum alignment coverage"
@@ -242,9 +240,7 @@ def main(
     min_aln_identity: float = typer.Option(
         0.95, "--min-identity", "-i", help="Minimum alignment identity"
     ),
-    max_fuzzy_junction: int = typer.Option(
-        5, help="Max fuzzy junction dist"
-    ),
+    max_fuzzy_junction: int = typer.Option(5, help="Max fuzzy junction dist"),
     max_5_diff: int = typer.Option(
         1000, help="Maximum allowed 5' difference if on same exon"
     ),

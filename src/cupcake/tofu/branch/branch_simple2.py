@@ -88,7 +88,7 @@ class BranchSimple:
             for i, r in enumerate(records):
                 tree.insert(r.sStart, r.sEnd, i)
             result = []
-            for s, e, indices in tree.getregions():
+            for *_, indices in tree.getregions():
                 result.append([records[i] for i in indices])
             return result
 

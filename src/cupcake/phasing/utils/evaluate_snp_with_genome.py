@@ -5,7 +5,7 @@ from csv import DictReader, DictWriter
 from pathlib import Path
 
 import typer
-import vcf
+import vcfpy
 from bx.intervals import IntervalTree
 from cupcake.logging import cupcake_logger as logger
 from cupcake.phasing.io.SAMMPileUpReader import MPileUpReader
@@ -69,7 +69,7 @@ def eval_isophase(
     name="NA",
     strand="NA",
 ):
-    for r in vcf.VCFReader(open(isophase_vcf)):
+    for r in vcfpy.Reader(isophase_vcf):
         out = {
             "dir": name,
             "chrom": "NA",
@@ -144,7 +144,7 @@ def eval_isophase(
 def brangus(vcf_filename, out_filename, unzip_snps=None):
     if unzip_snps is None:
         unzip_snps = defaultdict(lambda: {})
-        for r in vcf.VCFReader(open(vcf_filename)):
+        for r in vcfpy.Reader(vcf_filename):
             unzip_snps[r.CHROM][r.POS] = r
 
     logger.info(f"Finished reading {vcf_filename}")
@@ -205,7 +205,7 @@ def main_maize(ki11_snps=None, dirs=None):
     if ki11_snps is None:
         ki11_snps = defaultdict(lambda: {})  # chrom -> pos -> VCF record
         debug_count = 0
-        for r in vcf.VCFReader(open("B73Ki11.q20.vcf")):
+        for r in vcfpy.Reader("B73Ki11.q20.vcf"):
             ki11_snps[r.CHROM][r.POS] = r
             # if debug_count > 100000: break
             debug_count += 1

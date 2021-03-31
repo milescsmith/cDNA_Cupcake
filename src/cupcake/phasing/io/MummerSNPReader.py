@@ -51,10 +51,9 @@ __VCF_EXAMPLE__ = """
 from pathlib import Path
 
 import typer
-import vcf
+import vcfpy
 from cupcake.logging import cupcake_logger as logger
 from cupcake.sequence.SeqReaders import LazyFastaReader
-from typer.params import Argument
 
 
 class SNPRecord(object):
@@ -155,9 +154,9 @@ def write_snp_to_vcf(
 
     with open("template.vcf", "w+") as f:
         f.write(f"{__VCF_EXAMPLE__}\n")
-        reader = vcf.VCFReader(f)
+        reader = vcfpy.Reader(f)
         reader.samples = [sample_name]
-        f_vcf = vcf.Writer(vcf_filename.open("w"), reader)
+        f_vcf = vcfpy.Writer(vcf_filename, reader)
 
         for r1 in snp_reader:
             if r1.ref_pos == cur_recs[-1].ref_pos:  # multi-nt insertion, keep recording
@@ -195,20 +194,22 @@ def write_snp_to_vcf(
                     ref_base = ref_base_prev + "".join(r.ref_base for r in cur_recs)
                     alt_base = ref_base_prev
 
-                rec = vcf.model._Record(
+                rec = vcfpy.Record(
                     CHROM=snp_rec.ref_name,
                     POS=pos + 1,
                     ID=".",
                     REF=ref_base,
-                    ALT=[vcf.model._Substitution(alt_base)],
+                    ALT=[vcfpy.Substitution(alt_base)],
                     QUAL=".",
                     FILTER="PASS",
                     INFO={"AF": 0.5},
                     FORMAT="GT",
                     sample_indexes=None,
                 )
-                samp_ft = vcf.model.make_calldata_tuple(["GT"])
-                rec.samples.append(vcf.model._Call(rec, sample_name, samp_ft(*["0|1"])))
+
+                rec.samples.append(
+                    vcfpy.Call(rec, sample_name, vcfpy.OrderedDict([("GT", "0|1")]))
+                )
                 f_vcf.write_record(rec)
                 if r1.ref_name != cur_recs[0].ref_name:
                     genome_rec = genome_d[r1.ref_name]

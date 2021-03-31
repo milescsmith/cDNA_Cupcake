@@ -5,7 +5,7 @@ import re
 from enum import Enum
 from typing import Optional
 from pathlib import Path
- 
+
 import cupcake.sequence.GFF as GFF
 import typer
 from Bio import SeqIO

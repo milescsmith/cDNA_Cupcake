@@ -573,7 +573,7 @@ class gmapGFFReader(object):
                 for blob in raw[8].split(";"):
                     if blob.startswith("Target="):
                         # sstrand is the strand on the query sequence
-                        junk, sstart1, send1, sstrand = blob.split()
+                        _, sstart1, send1, sstrand = blob.split()
                         sstart1 = int(sstart1)
                         send1 = int(send1)
                         rec.sstrand = sstrand
@@ -868,13 +868,24 @@ def convert_BLAST9rec_to_gmapRecord(rec_list):
     """
     Adds .chr, .seqid, and .ref_exons so we can use it to write in UCSC format
     """
-    assert len(rec_list) > 0
+    if not len(rec_list) > 0:
+        raise RuntimeError("Cannot convert an empty record list!")
     seqname = rec_list[0].sID
     seqid = rec_list[0].qID
     strand = rec_list[0].strand
-    assert all(x.sID == chr for x in rec_list)
-    assert all(x.qID == seqid for x in rec_list)
-    assert all(x.strand == strand for x in rec_list)
+
+    if not all(x.sID == chr for x in rec_list):
+        raise RuntimeError(
+            "The record list has differing `sID` valuess - they must all be the same!!"
+        )
+    if not all(x.qID == seqid for x in rec_list):
+        raise RuntimeError(
+            "The record list has differing `qID` valuess - they must all be the same!"
+        )
+    if not all(x.strand == strand for x in rec_list):
+        raise RuntimeError(
+            "The record list has differing `strand` values - they must all be the same!!"
+        )
 
     r = gmapRecord(seqname, coverage=0, identity=0, strand=strand, seqid=seqid)
     r.ref_exons = [Interval(x.sStart, x.sEnd) for x in rec_list]
@@ -1223,16 +1234,16 @@ def make_exon_report(gtf, gmap_report_filename):
     coverage = defaultdict(lambda: defaultdict(lambda: 0))  # tID --> ith-exon --> count
     for r in DictReader(open(gmap_report_filename), delimiter="\t"):
         tID = r["refID"]
-        for i, j in eval(r["matches"]):
+        for i, _ in eval(r["matches"]):
             coverage[tID][i] += 1
 
-    f = open(f"{gmap_report_filename}.exon_report", "w")
-    for tID in coverage:
-        path = gtf.get_exons(tID)
-        for ith, exon in enumerate(path):
-            f.write(f"{tID}\t{ith}\t{exon.end - exon.start}\t{coverage[tID][ith]}\n")
-
-    f.close()
+    with open(f"{gmap_report_filename}.exon_report", "w") as f:
+        for tID in coverage:
+            path = gtf.get_exons(tID)
+            for ith, exon in enumerate(path):
+                f.write(
+                    f"{tID}\t{ith}\t{exon.end - exon.start}\t{coverage[tID][ith]}\n"
+                )
 
 
 """

@@ -2,7 +2,7 @@ import glob
 from csv import DictReader, DictWriter
 from pathlib import Path
 
-import vcf
+import vcfpy
 from Bio import SeqIO
 from cupcake.logging import cupcake_logger as logger
 
@@ -27,7 +27,7 @@ with open("summarized.isophase_results.txt", "w") as f:
             rec["num_hap_withpartial"] = 0
         else:
             rec["num_snp"] = len(
-                [x for x in vcf.VCFReader(d.joinpath("phased.partial.vcf").open())]
+                [x for x in vcfpy.Reader(d.joinpath("phased.partial.vcf"))]
             )
             if d.joinpath("phased.nopartial.NO_HAPS_FOUND").exists():
                 rec["num_hap_nopartial"] = 0
