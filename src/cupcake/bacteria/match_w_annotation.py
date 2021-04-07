@@ -18,10 +18,7 @@ Novel ---
     "single" criterion)
 """
 
-__author__ = "Elizabeth Tseng"
 __copyright__ = "Copyright 2016, cDNA_Cupcake"
-__email__ = "etseng@pacb.com"
-__version__ = "1.3"
 
 from collections import defaultdict, namedtuple
 from csv import DictReader
@@ -33,6 +30,7 @@ from bx.intervals import IntervalTree
 from bx.intervals.cluster import ClusterTree
 from cupcake.logging import cupcake_logger as logger
 from cupcake.sequence import BioReaders
+from cupcake.__about__ import __version__, __author__, __email__
 
 app = typer.Typer(
     name="cupcake.bacteria.match_w_annotation",

@@ -395,7 +395,7 @@ class BranchSimple:
             else:
                 f_out = f_good
 
-            with f_out.open("a") as fo, f_group.open("a") as fg:
+            with open(f_out, "a") as fo, open(f_group, "a") as fg:
                 self.isoform_index += 1
                 segments = [node_d[x] for x in m.nonzero()[1]]
                 fg.write(

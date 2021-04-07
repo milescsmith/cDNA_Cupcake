@@ -42,7 +42,7 @@ def read_config(config_filename: Path) -> Tuple[str, str, str, str]:
 
     :return: (chr, start, end, strand)
     """
-    for line in config_filename.open("r"):
+    for line in open(config_filename, "r"):
         a, b = line.strip().split("=")
         if a == "ref_chr":
             _chr = b

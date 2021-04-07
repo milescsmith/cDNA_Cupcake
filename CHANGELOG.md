@@ -5,6 +5,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [21.0.4] - 2021-04-07
+
+### Changed
+- Replaced all instances of Pathobj.open() with open(Pathobj) (to catch
+  instances where a string was being passed by an outside-cupcake module)
+- All instances of `__version__`, `__author__`, and `__email__` now use the
+  entries in `cupcake.__about__` as their single source, and `cupcake.__about__`
+  uses `importlib.metadata` (or `import_metadata`) to extract that information
+- Update dependencies
+
+### Fixed
+- minor typo fixes
+
 ## [21.0.3] - 2021-03-31
 
 ### Changed
@@ -75,6 +88,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Now using Poetry for dependency managment
 
 
+[21.0.4]: https://github.com/olivierlacan/keep-a-changelog/compare/21.0.2...21.0.4
 [21.0.3]: https://github.com/olivierlacan/keep-a-changelog/compare/21.0.2...21.0.3
 [21.0.2]: https://github.com/olivierlacan/keep-a-changelog/compare/21.0.1...21.0.2
 [21.0.1]: https://github.com/olivierlacan/keep-a-changelog/compare/21.0.0...21.0.1

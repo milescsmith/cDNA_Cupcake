@@ -63,7 +63,7 @@ def get_fl_count_by_barcode(
     logger.info(f"Reading {group_filename}...")
 
     fl = Path(f"{collapse_prefix}.fl_count_by_barcode.txt")
-    with fl.open(mode="w") as f:
+    with open(fl, "w") as f:
         f.write("pbid")
         for p in primer_ranges:
             f.write(f"\t{str(primer_names[int(p)])}")

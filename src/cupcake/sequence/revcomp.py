@@ -1,7 +1,3 @@
-#!/usr/bin/env python
-
-__version__ = "1.0"
-
 import sys
 
 from Bio import Seq

@@ -145,7 +145,7 @@ def scrub_ref_exons(r: Dict[str, Any], tree: IntervalTree) -> Optional[List[Inte
 
 
 def read_scrubbed_junction_to_tree(junction_filename: Union[str, Path]) -> IntervalTree:
-    tree = defaultdict(lambda: IntervalTree())
+    tree = defaultdict(IntervalTree)
     with open(junction_filename) as f:
         if not f.readline().startswith("track"):
             f.seek(0)
@@ -171,7 +171,7 @@ def scrub_junctions(
     min_transcript: int,
     accept_all_canonical: bool,
 ) -> IntervalTree:
-    tree = defaultdict(lambda: IntervalTree())
+    tree = defaultdict(IntervalTree)
     with open(output_filename, "w") as f:
         for _, junctions in read_junction_report(report_filename):
             good = scrub_junction_by_label(

@@ -28,7 +28,7 @@ def main(
 
     snps_files = []
     # sanity checking of input files
-    for line in snps_filename.open():
+    for line in open(snps_filename, "r"):
         filename = Path(line.strip())
         if filename.suffix != "snps":
             raise FileNotFoundError(

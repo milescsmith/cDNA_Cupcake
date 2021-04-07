@@ -1,7 +1,5 @@
 #!/usr/bin/env python
-
-__version__ = "1.0"
-
+from pathlib import Path
 import random
 import sys
 from collections import defaultdict
@@ -33,12 +31,12 @@ def sim_start(ntimes, profile):
     for _ in range(ntimes):
         curpos = 0
         while True:
-            type = throwdice(profile)
+            simtype = throwdice(profile)
             acc[type] += 1
-            if type == "match":
+            if simtype == "match":
                 start[curpos] += 1
                 break
-            elif type == "ins":
+            elif simtype == "ins":
                 # insertion occurred, with 1/4 chance it'll match
                 if random.random() < 0.25:
                     start[curpos] += 1
@@ -59,25 +57,25 @@ def sim_seq(seq, profile):
     qv = ""  # qv string,
     for _, s in enumerate(seq):
         while True:
-            type = throwdice(profile)
-            if type == "match":
+            simtype = throwdice(profile)
+            if simtype == "match":
                 sim += s
                 qv += "]"
                 break
-            elif type == "ins":
+            elif simtype == "ins":
                 # insertion occurred, with 1/4 chance it'll match
                 choice = random.sample(nucl, 1)[0]
                 sim += choice
                 qv += "!"
-            elif type == "sub":  # anything but the right one
+            elif simtype == "sub":  # anything but the right one
                 choice = random.sample(nucl.difference([s]), 1)[0]
                 sim += choice
                 qv += "!"
                 break
-            elif type == "del":  # skip over this
+            elif simtype == "del":  # skip over this
                 break
             else:
-                raise KeyError(f"Invalid type {type}")
+                raise KeyError(f"Invalid type {simtype}")
 
     return sim, qv
 
@@ -125,7 +123,7 @@ def main(
 
     profile = [sub, sub + ins, ins + dele, 1.0]
 
-    fasta_filename = fasta_filename
+    fasta_filename = Path(fasta_filename)
     idpre = output_prefix
 
     ith = 0

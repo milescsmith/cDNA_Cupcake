@@ -34,8 +34,8 @@ with open("summarized.isophase_results.txt", "w") as f:
                 rec["num_hap_withpartial"] = 0
             else:
                 file1 = d.joinpath("phased.nopartial.cleaned.human_readable.txt")
-                file2 = d.joinpatj("phased.partial.cleaned.human_readable.txt")
-                with file1.open() as h1, file2.open() as h2:
+                file2 = d.joinpath("phased.partial.cleaned.human_readable.txt")
+                with open(file1, "r") as h1, open(file2, "r") as h2:
                     h1.readline()  # skip header
                     h2.readline()  # skip header
                     rec["num_hap_nopartial"] = len(

@@ -1,6 +1,12 @@
 r"""*Single-source version number for* ``cdna_cupcake``.
 """
 
-__author__ = "Elizabeth Tseng"
-__email__ = "etseng@pacb.com"
-__version__ = "19.0.1"
+try:
+    from importlib.metadata import metadata
+except ImportError:
+    # Running on pre-3.8 Python; use importlib-metadata package
+    from importlib_metadata import metadata
+
+__author__ = metadata["Author"]
+__email__ = metadata["Author-email"]
+__version__ = metadata["Version"]

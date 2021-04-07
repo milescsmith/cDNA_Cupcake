@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 
-__version__ = "1.0"
-
 from pathlib import Path
 from typing import Dict
 
@@ -10,6 +8,7 @@ from Bio import SeqIO
 from cupcake.logging import cupcake_logger as logger
 from cupcake.sequence import BioReaders
 from cupcake.sequence.coordinate_mapper import consistute_genome_seq_from_exons
+from cupcake.__about__ import __version__
 
 ###### MODIFY FILENAME BELOW #######
 # genome_file = 'hg38.fa'
@@ -34,11 +33,11 @@ def err_correct(
 ) -> None:
     if genome_dict is None:
         genome_dict = {}
-        for r in SeqIO.parse(genome_file.open(), "fasta"):
+        for r in SeqIO.parse(open(genome_file, "r"), "fasta"):
             genome_dict[r.name] = r
         logger.info(f"done reading {genome_file}")
 
-    with output_err_corrected_fasta.open("w") as f:
+    with open(output_err_corrected_fasta, "w") as f:
         reader = BioReaders.GMAPSAMReader(str(sam_file), True)
         for r in reader:
             if r.sID == "*":

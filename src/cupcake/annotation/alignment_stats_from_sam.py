@@ -168,8 +168,8 @@ def evaluate_alignment_sam(
     h1 = Path(f"{output_prefix}.alignment_report.txt")
     h2 = Path(f"{output_prefix}.junction_report.txt")
 
-    w1 = DictWriter(h1.open("w"), fieldnames=FIELDNAMES_REPORT1)
-    w2 = DictWriter(h2.open("w"), fieldnames=FIELDNAMES_REPORT2)
+    w1 = DictWriter(open(h1, "w"), fieldnames=FIELDNAMES_REPORT1)
+    w2 = DictWriter(open(h2, "w"), fieldnames=FIELDNAMES_REPORT2)
     w1.writeheader()
     w2.writeheader()
 

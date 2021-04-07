@@ -45,7 +45,7 @@ def sanity_check_collapse_input(input_prefix: str) -> Tuple[Path, Path, Path]:
         logger.error(f"File {rep_filename} does not exist. Abort!")
         sys.exit(-1)
 
-    pbids1 = {[r.id for r in SeqIO.parse(rep_filename.open(), "fastq")]}
+    pbids1 = {[r.id for r in SeqIO.parse(open(rep_filename, "r"), "fastq")]}
     pbids2 = {[r.seqid for r in GFF.collapseGFFReader(gff_filename)]}
     pbids3 = {read_count_file(count_filename)[0].keys()}
 
@@ -66,7 +66,7 @@ def sanity_check_collapse_input(input_prefix: str) -> Tuple[Path, Path, Path]:
 
 
 def read_count_file(count_filename: Path) -> Tuple[Dict[str, str], str]:
-    with count_filename.open() as f:
+    with open(count_filename, "r") as f:
         count_header = ""
         while True:
             cur_pos = f.tell()
@@ -108,7 +108,7 @@ def main(
 
     # write output rep.fq
     with open(f"{output_prefix}.rep.fq", "w") as f:
-        for r in SeqIO.parse(rep_filename.open(), "fastq"):
+        for r in SeqIO.parse(open(rep_filename, "r"), "fastq"):
             if r.name.split("|")[0] in good:
                 SeqIO.write(r, f, "fastq")
 

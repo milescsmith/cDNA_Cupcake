@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-__version__ = "1.0"
 from pathlib import Path
 
 import numpy as np
@@ -39,15 +38,15 @@ def get_seq_stats(filename, binwidth):
     logger.info("Length Breakdown by kb range:")
 
     _max = (max(lens) // binwidth) + 1
-    bin = [0] * _max
+    bins = [0] * _max
     for x in lens:
-        bin[x // binwidth] += 1
+        bins[x // binwidth] += 1
 
     for i in range(0, _max):
         if binwidth == 1000:
-            print(f"{i}-{i + 1} kb: {bin[i]}")
+            print(f"{i}-{i + 1} kb: {bins[i]}")
         else:
-            print(f"{i * binwidth}-{(i + 1) * binwidth}: {bin[i]}")
+            print(f"{i * binwidth}-{(i + 1) * binwidth}: {bins[i]}")
 
     print("5-95% percentile:", np.percentile(lens, 5), np.percentile(lens, 95))
 

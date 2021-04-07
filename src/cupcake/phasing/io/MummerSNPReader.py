@@ -231,7 +231,7 @@ def main(
 
     snps_files = []
     # sanity checking of input files
-    for filename in snps_filename.open():
+    for filename in open(snps_filename):
         if not filename.suffix(".snps"):
             raise FileNotFoundError(
                 f"Input files listed in {snps_filename} must end with .snps_files!"

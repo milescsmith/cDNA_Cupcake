@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cupcake"
-version = "21.0.3"
+version = "21.0.4"
 description = "Miscellaneous collection of Python and R scripts for processing Iso-Seq data"
 authors = ["Elizabeth Tseng <etseng@pacb.com>"]
 license = "BSD3"
@@ -36,7 +36,7 @@ include = [
 "bug tracker" = "https://github.com/Magdoll/cDNA_Cupcake/issues"
 
 [tool.poetry.dependencies]
-python = ">=3.7.1"
+python = ">=3.7.1,<4.0.0"
 numpy = "^1.20.1"
 biopython = "^1.78"
 bx-python = "^0.8.9"
@@ -60,6 +60,7 @@ pylint = "^2.6.2"
 flake8 = "^3.8.4"
 mypy = "^0.800"
 colorama = "^0.4.4"
+commitizen = "^2.17.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0", "cython", "numpy"]

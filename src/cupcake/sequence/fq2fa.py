@@ -1,9 +1,5 @@
 #!/usr/bin/env python
-
-__version__ = "1.0"
-
-import sys
-
+from pathlib import Path
 import typer
 from Bio import SeqIO
 from cupcake.logging import cupcake_logger as logger
@@ -11,13 +7,13 @@ from cupcake.logging import cupcake_logger as logger
 app = typer.Typer(name="cupcake.sequence.fq2fa", help="Convert fastq to fasta")
 
 
-def fq2fa(input):
-    if not input.lower().endswith(".fastq") or input.lower().endswith(".fq"):
-        raise AssertionError(f"Input {input} does not end with .fastq or .fq! Abort")
+def fq2fa(input_file):
+    if not input_file.lower().endswith(".fastq") or input_file.lower().endswith(".fq"):
+        raise AssertionError(f"Input {input_file} does not end with .fastq or .fq! Abort")
 
-    output = f"{input[:input.rfind('.')]}.fasta"
+    output = Path(input_file).with_suffix(".fasta")
 
-    for r in SeqIO.parse(open(input), "fastq"):
+    for r in SeqIO.parse(open(input_file), "fastq"):
         SeqIO.write(r, output, "fasta")
 
     logger.info(f"Output written to {output}")

@@ -20,7 +20,7 @@ def simple_stats_post_collapse(input_prefix: str) -> None:
     simple_stats = Path(f"{input_prefix}.simple_stats.txt")
     exon_stats = Path(f"{input_prefix}.exon_stats.txt")
 
-    with simple_stats.open("w") as f1, exon_stats.open("w") as f2:
+    with open(simple_stats, "w") as f1, open(exon_stats, "w") as f2:
         f1.write("pbid\tlocus\tlength\tnum_exon\n")
         f2.write("pbid\texon_index\texon_size\tintron_size\n")
 

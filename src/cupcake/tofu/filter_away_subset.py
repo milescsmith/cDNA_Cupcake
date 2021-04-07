@@ -93,7 +93,7 @@ def sanity_check_collapse_input(input_prefix: str) -> Tuple[Path, Path, Path, st
 
 
 def read_count_file(count_filename: Path) -> Tuple[Dict[str, str], str]:
-    f = count_filename.open()
+    f = open(count_filename, "r")
     count_header = ""
     while True:
         cur_pos = f.tell()

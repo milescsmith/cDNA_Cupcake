@@ -661,7 +661,7 @@ class MegaPBTreeFusion(MegaPBTree):
 
                             if fastq_filename2 is not None:
                                 seqrec.id = tID
-                                SeqIO.write(seqrec, f_fastq.open("w"), "fastq")
+                                SeqIO.write(seqrec, open(f_fastq, "w"), "fastq")
 
                             with open(f"{output_prefix}.group.txt", "w") as f_group:
                                 f_group.write(
