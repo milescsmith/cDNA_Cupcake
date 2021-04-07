@@ -92,3 +92,8 @@ run_phaser                  = "cupcake.phasing.run_phaser:app"
 [tool.poetry.build]
 generate-setup-file = false
 script = "build.py"
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+version = "21.0.4"
+tag_format = "$version"
