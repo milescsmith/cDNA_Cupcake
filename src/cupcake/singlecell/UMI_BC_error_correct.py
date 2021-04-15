@@ -7,6 +7,7 @@ from typing import Dict, Optional, Union
 
 import typer
 from Bio.Seq import Seq
+
 from cupcake.logging import cupcake_logger as logger
 
 app = typer.Typer(name="cupcake.singlecell.UMI_BC_error_correct")

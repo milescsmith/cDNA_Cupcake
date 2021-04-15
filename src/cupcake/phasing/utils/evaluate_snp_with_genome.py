@@ -7,6 +7,7 @@ from pathlib import Path
 import typer
 import vcfpy
 from bx.intervals import IntervalTree
+
 from cupcake.logging import cupcake_logger as logger
 from cupcake.phasing.io.SAMMPileUpReader import MPileUpReader
 

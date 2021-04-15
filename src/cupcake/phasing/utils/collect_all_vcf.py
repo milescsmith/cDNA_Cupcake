@@ -6,6 +6,7 @@ from typing import Optional
 
 import typer
 import vcfpy
+
 from cupcake.logging import cupcake_logger as logger
 
 

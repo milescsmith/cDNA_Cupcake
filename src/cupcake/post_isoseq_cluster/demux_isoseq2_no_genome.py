@@ -39,6 +39,7 @@ from typing import Optional
 
 import typer
 from Bio import SeqIO
+
 from cupcake.logging import cupcake_logger as logger
 
 hq1_id_rex = re.compile(r"i\d+_HQ_\S+\|(\S+)\/f\d+p\d+\/\d+")

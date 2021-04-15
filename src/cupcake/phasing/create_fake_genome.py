@@ -3,13 +3,14 @@ __author__ = "etseng@pacb.com"
 
 import re
 from enum import Enum
-from typing import Optional
 from pathlib import Path
+from typing import Optional
 
-import cupcake.sequence.GFF as GFF
 import typer
 from Bio import SeqIO
 from bx.intervals.cluster import ClusterTree
+
+import cupcake.sequence.GFF as GFF
 from cupcake.logging import cupcake_logger as logger
 
 """

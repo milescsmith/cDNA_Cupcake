@@ -19,6 +19,7 @@ from pathlib import Path
 import typer
 from Bio import SeqIO
 from bx.intervals.cluster import ClusterTree
+
 from cupcake.logging import cupcake_logger as logger
 from cupcake.sequence.GFF import collapseGFFReader
 from cupcake.sequence.SeqReaders import LazyFastqReader

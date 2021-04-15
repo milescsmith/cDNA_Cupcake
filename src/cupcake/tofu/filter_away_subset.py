@@ -29,6 +29,7 @@ from typing import Dict, Tuple
 
 import typer
 from Bio import SeqIO
+
 from cupcake.logging import cupcake_logger as logger
 from cupcake.sequence import GFF
 from cupcake.tofu import compare_junctions

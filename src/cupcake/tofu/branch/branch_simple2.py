@@ -7,6 +7,7 @@ import numpy as np
 from Bio import SeqIO
 from bx.intervals.cluster import ClusterTree
 from bx.intervals.intersection import Interval, IntervalTree
+
 from cupcake.logging import cupcake_logger as logger
 from cupcake.sequence import BioReaders
 from cupcake.tofu.branch import c_branch

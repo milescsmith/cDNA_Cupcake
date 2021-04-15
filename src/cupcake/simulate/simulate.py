@@ -1,11 +1,12 @@
 #!/usr/bin/env python
-from pathlib import Path
 import random
 import sys
 from collections import defaultdict
+from pathlib import Path
 
 import typer
 from Bio import SeqIO
+
 from cupcake.logging import cupcake_logger as logger
 
 simType = ["sub", "ins", "del", "match"]

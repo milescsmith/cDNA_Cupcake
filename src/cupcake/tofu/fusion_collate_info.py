@@ -9,6 +9,7 @@ from typing import Optional, Tuple
 
 import typer
 from Bio import SeqIO
+
 from cupcake.logging import cupcake_logger as logger
 from cupcake.sequence.GFF import collapseGFFReader
 

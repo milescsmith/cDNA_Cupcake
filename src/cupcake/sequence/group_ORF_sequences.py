@@ -21,6 +21,7 @@ from collections import Counter, OrderedDict
 
 import typer
 from Bio import SeqIO
+
 from cupcake.logging import cupcake_logger as logger
 
 rex_pbid = re.compile(r"(PB.\d+).(\d+)")

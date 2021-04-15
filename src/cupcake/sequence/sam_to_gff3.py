@@ -23,15 +23,15 @@ from pathlib import Path
 from typing import Optional
 
 import typer
+# from gtfparse.write_gtf import df_to_gtf
+from BCBio import GFF as BCBio_GFF
 from Bio import SeqIO
 from Bio.Seq import Seq
 from Bio.SeqFeature import FeatureLocation, SeqFeature
 from Bio.SeqRecord import SeqRecord
+
 from cupcake.logging import cupcake_logger as logger
 from cupcake.sequence.BioReaders import GMAPSAMReader
-
-# from gtfparse.write_gtf import df_to_gtf
-from BCBio import GFF as BCBio_GFF
 
 app = typer.Typer(
     name="cupcake.sequence.sam_to_gff3",

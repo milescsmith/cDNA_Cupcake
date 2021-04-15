@@ -7,6 +7,7 @@ from typing import Dict, Optional, Tuple
 import pysam
 import typer
 from Bio.Seq import Seq
+
 from cupcake.logging import cupcake_logger as logger
 
 VALID_CIGAR_SYMBOL = ["I", "D"]

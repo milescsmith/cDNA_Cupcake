@@ -32,6 +32,7 @@ from typing import Dict, List, Optional, Tuple
 import typer
 from Bio import SeqIO
 from Bio.Seq import Seq
+
 from cupcake.logging import cupcake_logger as logger
 from cupcake.sequence.BioReaders import GMAPSAMReader
 from cupcake.sequence.GFF import collapseGFFReader

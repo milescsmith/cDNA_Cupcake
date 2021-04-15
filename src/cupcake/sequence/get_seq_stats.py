@@ -5,6 +5,7 @@ from pathlib import Path
 import numpy as np
 import typer
 from Bio import SeqIO
+
 from cupcake.logging import cupcake_logger as logger
 
 app = typer.Typer(

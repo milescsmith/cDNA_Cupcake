@@ -9,6 +9,7 @@ from typing import Tuple
 
 import typer
 from Bio import SeqIO
+
 from cupcake.logging import cupcake_logger as logger
 
 FIELDNAMES = ["pbid", "pbgene", "length", "refisoform", "refgene", "fl_count"]

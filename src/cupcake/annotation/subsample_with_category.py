@@ -6,6 +6,7 @@ from csv import DictReader
 from typing import List, Tuple
 
 import typer
+
 from cupcake.logging import cupcake_logger as logger
 
 app = typer.Typer(name="cupcake.annotation.subsample_with_category")

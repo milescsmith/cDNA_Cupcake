@@ -5,10 +5,11 @@ from typing import Dict
 
 import typer
 from Bio import SeqIO
+
+from cupcake.__about__ import __version__
 from cupcake.logging import cupcake_logger as logger
 from cupcake.sequence import BioReaders
 from cupcake.sequence.coordinate_mapper import consistute_genome_seq_from_exons
-from cupcake.__about__ import __version__
 
 ###### MODIFY FILENAME BELOW #######
 # genome_file = 'hg38.fa'

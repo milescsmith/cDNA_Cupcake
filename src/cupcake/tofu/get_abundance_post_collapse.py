@@ -42,6 +42,7 @@ from csv import DictReader, DictWriter
 from typing import List, Optional
 
 import typer
+
 from cupcake.logging import cupcake_logger as logger
 
 app = typer.Typer(

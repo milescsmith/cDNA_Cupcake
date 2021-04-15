@@ -6,11 +6,12 @@ from csv import DictReader, DictWriter
 from multiprocessing import Process
 from pathlib import Path
 
-import cupcake.sequence.BioReaders as BioReaders
 import pysam
 import typer
 from Bio import SeqIO
 from bx.intervals.cluster import ClusterTree
+
+import cupcake.sequence.BioReaders as BioReaders
 from cupcake.logging import cupcake_logger as logger
 
 csv.field_size_limit(100000000)

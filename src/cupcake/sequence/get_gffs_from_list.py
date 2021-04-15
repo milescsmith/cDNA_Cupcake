@@ -2,6 +2,7 @@
 import sys
 
 import typer
+
 from cupcake.sequence import GFF
 
 app = typer.Typer(

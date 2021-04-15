@@ -11,6 +11,7 @@ import parasail
 import typer
 from Bio import SeqIO
 from Bio.SeqRecord import SeqRecord
+
 from cupcake.logging import cupcake_logger as logger
 
 

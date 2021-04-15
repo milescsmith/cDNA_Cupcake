@@ -18,6 +18,7 @@ from typing import Optional
 
 import typer
 from Bio.Seq import Seq
+
 from cupcake.logging import cupcake_logger as logger
 
 app = typer.Typer(name="cupcake.singlecell.collate_FLNC_gene_info")

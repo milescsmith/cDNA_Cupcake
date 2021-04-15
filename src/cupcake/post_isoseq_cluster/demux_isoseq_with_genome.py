@@ -14,6 +14,7 @@ from typing import Dict, Optional, Set, Tuple
 
 import typer
 from Bio import SeqIO
+
 from cupcake.logging import cupcake_logger as logger
 
 mapped_id_rex = re.compile(r"(PB.\d+.\d+)")

@@ -10,9 +10,10 @@ from collections import defaultdict
 from csv import DictReader
 from typing import Optional
 
-import cupcake.sequence.GFF as GFF
 import typer
 from Bio import SeqIO
+
+import cupcake.sequence.GFF as GFF
 from cupcake.logging import cupcake_logger as logger
 
 rex_pbid = re.compile(r"(PB.\d+.\d+)(|\S+)")

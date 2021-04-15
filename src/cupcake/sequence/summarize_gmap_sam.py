@@ -5,6 +5,7 @@ from pathlib import Path
 
 import typer
 from Bio import SeqIO
+
 from cupcake.logging import cupcake_logger as logger
 from cupcake.sequence import BioReaders
 

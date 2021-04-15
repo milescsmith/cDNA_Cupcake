@@ -12,6 +12,7 @@ from typing import Dict, Optional, Set, Tuple, Union
 
 import typer
 from Bio import SeqIO
+
 from cupcake.logging import cupcake_logger as logger
 
 """

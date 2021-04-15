@@ -21,6 +21,7 @@ from collections import Counter
 
 # import networkx as nx
 import numpy as np
+
 from cupcake.logging import cupcake_logger as logger
 from cupcake.phasing.io.VariantPhaser import Haplotypes
 

@@ -4,6 +4,7 @@ import sys
 from pathlib import Path
 
 import typer
+
 from cupcake.logging import cupcake_logger as logger
 from cupcake.sequence.GFF import collapseGFFReader
 

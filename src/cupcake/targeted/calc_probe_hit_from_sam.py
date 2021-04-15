@@ -9,6 +9,7 @@ from pathlib import Path
 import typer
 from Bio import SeqIO
 from bx.intervals import Interval, IntervalTree
+
 from cupcake.sequence import BED, BioReaders
 from cupcake.sequence.GFF import collapseGFFReader
 

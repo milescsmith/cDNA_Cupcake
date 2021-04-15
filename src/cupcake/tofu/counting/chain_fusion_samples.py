@@ -20,9 +20,10 @@ from enum import Enum
 from pathlib import Path
 from typing import List, Optional, Union
 
-import cupcake.sequence.GFF as GFF
 import typer
 from Bio import SeqIO
+
+import cupcake.sequence.GFF as GFF
 from cupcake.logging import cupcake_logger as logger
 from cupcake.tofu.counting import combine_abundance_across_samples as sp
 from cupcake.tofu.counting.chain_samples import read_config, read_count_info

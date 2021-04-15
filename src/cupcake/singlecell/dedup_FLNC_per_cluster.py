@@ -29,6 +29,7 @@ from pathlib import Path
 
 import typer
 from Bio import SeqIO
+
 from cupcake.sequence.GFF import collapseGFFReader, write_collapseGFF_format
 
 app = typer.Typer(name="cupcake.singlecell.dedup_FLNC_per_cluster")

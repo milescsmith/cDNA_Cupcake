@@ -6,6 +6,7 @@ from typing import Dict, Optional, Tuple
 
 import typer
 from Bio import SeqIO
+
 from cupcake.logging import cupcake_logger as logger
 
 app = typer.Typer(

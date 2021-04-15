@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cupcake"
-version = "21.0.5"
+version = "21.1.0"
 description = "Miscellaneous collection of Python and R scripts for processing Iso-Seq data"
 authors = ["Elizabeth Tseng <etseng@pacb.com>"]
 license = "BSD3"
@@ -79,12 +79,21 @@ chain_samples               = "cupcake.tofu.counting.chain_samples:app"
 chain_fusion_samples        = "cupcake.tofu.counting.chain_fusion_samples:app"
 summarize_junctions         = "cupcake.tofu.counting.summarize_sample_GFF_junctions:app"
 scrub_sample_GFFs           = "cupcake.tofu.counting.scrub_sample_GFF_junctions:app"
-# uh phasing! are we still doing phasing?
-make_fake_genome            = "cupcake.phasing.create_fake_genome:app"
 simple_stats_post_collapse  = "cupcake.tofu.simple_stats_post_collapse:app"
 fusion_collate_info         = "cupcake.tofu.fusion_collate_info:app"
 color_bed12_post_sqanti     = "cupcake.tofu.color_bed12_post_sqanti:app"
+
+make_fake_genome            = "cupcake.phasing.create_fake_genome:app"
 run_phaser                  = "cupcake.phasing.run_phaser:app"
+
+fa2fq                       = "cupcake.sequence.fa2fq:app"
+fq2fa                       = "cupcake.sequence.fq2fa:app"
+get_seq_stats               = "cupcake.sequence.get_seq_stats:app"
+rev_comp                    = "cupcake.sequence.revcomp:app"
+get_seqs_from_list          = "cupcake.sequence.get_seqs_from_list:app"
+err_correct_w_genome        = "cupcake.sequence.err_correct_w_genome:app"
+group_ORF_sequences         = "cupcake.sequence.group_ORF_sequences:app"
+
 
 [tool.poetry.build]
 generate-setup-file = false

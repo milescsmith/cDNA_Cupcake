@@ -9,6 +9,7 @@ from subprocess import check_output
 
 import typer
 from Bio import SeqIO
+
 from cupcake.logging import cupcake_logger as logger
 from cupcake.phasing.io import VariantPhaseCleaner, VariantPhaser
 from cupcake.phasing.io.MPileUpVariantCaller import MPileUPVariant

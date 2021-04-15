@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import List, Optional, Tuple, Union
 
 import typer
+
 from cupcake.logging import cupcake_logger as logger
 
 app = typer.Typer(name="cupcake.annotation.subsample")

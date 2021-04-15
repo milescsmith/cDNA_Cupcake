@@ -1,7 +1,9 @@
 #!/usr/bin/env python
-import typer
 from pathlib import Path
+
+import typer
 from Bio import SeqIO
+
 from cupcake.logging import cupcake_logger as logger
 
 app = typer.Typer(name="cupcake.sequence.fa2fq", help="Convert fasta to fastq")
@@ -9,7 +11,9 @@ app = typer.Typer(name="cupcake.sequence.fa2fq", help="Convert fasta to fastq")
 
 def fa2fq(input_file):
     if not input_file.lower().endswith(".fasta") or input_file.lower().endswith(".fa"):
-        raise AssertionError(f"Input {input_file} does not end with .fasta or .fa! Abort")
+        raise AssertionError(
+            f"Input {input_file} does not end with .fasta or .fa! Abort"
+        )
     output = Path(input_file).with_suffix(".fastq")
 
     f = open(output, "w")

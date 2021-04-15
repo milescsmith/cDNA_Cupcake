@@ -8,6 +8,7 @@ import pysam
 import typer
 from Bio import SeqIO
 from Bio.Seq import Seq
+
 from cupcake.logging import cupcake_logger as logger
 
 SCOREMAT = parasail.matrix_create("ACGT", 2, -5)
