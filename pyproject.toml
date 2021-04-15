@@ -46,9 +46,6 @@ scikit-learn = "^0.24.1"
 pysam = "^0.16.0"
 bcbio-gff = "^0.6.6"
 # pyvcf = {git = "https://github.com/milescsmith/PyVCF"}
-pbcommand = {git = "https://github.com/PacificBiosciences/pbcommand"}
-pbcore = {git = "https://github.com/PacificBiosciences/pbcore"}
-pbcoretools = {git = "https://github.com/PacificBiosciences/pbcoretools"}
 typer = "^0.3.2"
 parasail = "^1.2.4"
 vcfpy = "^0.13.3"

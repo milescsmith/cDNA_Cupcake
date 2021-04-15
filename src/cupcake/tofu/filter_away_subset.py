@@ -60,21 +60,18 @@ def sanity_check_collapse_input(input_prefix: str) -> Tuple[Path, Path, Path, st
             rep_type = filetype
 
     if rep_filename is None:
-        logger.error(
+        raise RuntimeError(
             f"Expected to find input fasta or fastq files {input_prefix}.rep.fa or {input_prefix}.rep.fq. Not found. Abort!"
         )
-        sys.exit(-1)
 
     if not count_filename.exists():
-        logger.error(f"File {count_filename} does not exist. Abort!")
-        sys.exit(-1)
+        raise RuntimeError(f"File {count_filename} does not exist. Abort!")
     if not gff_filename.exists():
-        logger.error(f"File {gff_filename} does not exist. Abort!")
-        sys.exit(-1)
+        raise RuntimeError(f"File {gff_filename} does not exist. Abort!")
 
-    pbids1 = {[r.id for r in SeqIO.parse(open(rep_filename), rep_type)]}
-    pbids2 = {[r.seqid for r in GFF.collapseGFFReader(gff_filename)]}
-    pbids3 = {read_count_file(count_filename)[0].keys()}
+    pbids1 = set([r.id for r in SeqIO.parse(open(rep_filename), rep_type)])
+    pbids2 = set([r.seqid for r in GFF.collapseGFFReader(gff_filename)])
+    pbids3 = set(read_count_file(count_filename)[0].keys())
 
     if (
         len(pbids1) != len(pbids2)
@@ -93,7 +90,7 @@ def sanity_check_collapse_input(input_prefix: str) -> Tuple[Path, Path, Path, st
 
 
 def read_count_file(count_filename: Path) -> Tuple[Dict[str, str], str]:
-    f = open(count_filename, "r")
+    f = count_filename.open()
     count_header = ""
     while True:
         cur_pos = f.tell()
@@ -244,7 +241,7 @@ def main(
     logger.info(
         f"Output written to: {output_prefix}.gff\n"
         f"Output written to: {rep_filename}\n"
-        f"Output written to: {output_prefix}.gff"
+        f"Output written to: {output_prefix}.abundance.txt"
     )
 
 
