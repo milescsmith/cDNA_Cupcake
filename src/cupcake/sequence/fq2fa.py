@@ -10,7 +10,7 @@ app = typer.Typer(name="cupcake.sequence.fq2fa", help="Convert fastq to fasta")
 
 
 def fq2fa(input_file):
-    if not input_file.lower().endswith(".fastq") or input_file.lower().endswith(".fq"):
+    if not (input_file.lower().endswith(".fastq") or input_file.lower().endswith(".fq")):
         raise AssertionError(
             f"Input {input_file} does not end with .fastq or .fq! Abort"
         )
