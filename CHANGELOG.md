@@ -4,14 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-
 ## [21.05.6] - 2021-04-15
 
 ### Changed
 - Removed pbcore, pbcoretools, and pbcommand from the list of dependencies as
   they were not being used.
-
-## [21.05.5] - 2021-04-07
+  
+## [21.0.5] - 2021-04-07
 
 ### Fixed
 - Hot fix for importlib.metadata.metadata usage
@@ -99,12 +98,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Now using Poetry for dependency managment
 
 
-[21.0.4]: https://github.com/olivierlacan/keep-a-changelog/compare/21.0.2...21.0.4
-[21.0.3]: https://github.com/olivierlacan/keep-a-changelog/compare/21.0.2...21.0.3
-[21.0.2]: https://github.com/olivierlacan/keep-a-changelog/compare/21.0.1...21.0.2
-[21.0.1]: https://github.com/olivierlacan/keep-a-changelog/compare/21.0.0...21.0.1
-[21.0.0]: https://github.com/olivierlacan/keep-a-changelog/compare/19.1.2...21.0.0
-[19.1.2]: https://github.com/olivierlacan/keep-a-changelog/compare/19.1.1...19.1.2
-[19.1.1]: https://github.com/olivierlacan/keep-a-changelog/compare/19.1.0...19.1.1
-[19.1.0]: https://github.com/olivierlacan/keep-a-changelog/compare/19.0.2...19.1.0
-[19.0.2]: https://github.com/olivierlacan/keep-a-changelog/compare/19.0.1...19.0.2
+[21.0.5]: https://github.com/milescsmith/cDNA_Cupcake/compare/21.0.4...21.0.5
+[21.0.4]: https://github.com/milescsmith/cDNA_Cupcake/compare/21.0.3...21.0.4
+[21.0.3]: https://github.com/milescsmith/cDNA_Cupcake/compare/21.0.2...21.0.3
+[21.0.2]: https://github.com/milescsmith/cDNA_Cupcake/compare/21.0.1...21.0.2
+[21.0.1]: https://github.com/milescsmith/cDNA_Cupcake/compare/21.0.0...21.0.1
+[21.0.0]: https://github.com/milescsmith/cDNA_Cupcake/compare/19.1.2...21.0.0
+[19.1.2]: https://github.com/milescsmith/cDNA_Cupcake/compare/19.1.1...19.1.2
+[19.1.1]: https://github.com/milescsmith/cDNA_Cupcake/compare/19.1.0...19.1.1
+[19.1.0]: https://github.com/milescsmith/cDNA_Cupcake/compare/19.0.2...19.1.0
+[19.0.2]: https://github.com/milescsmith/cDNA_Cupcake/compare/19.0.1...19.0.2
