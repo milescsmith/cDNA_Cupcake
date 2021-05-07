@@ -77,7 +77,7 @@ def write_reclist_to_gff_n_info(
     tree_keys = sorted(tree_keys_numeric) + sorted(tree_keys_alpha)
 
     writer_info = DictWriter(
-        Path(f"{final_prefix}.mega_info.txt".open("w")),
+        Path(f"{final_prefix}.mega_info.txt").open("w"),
         fieldnames=["superPBID", ref_name, addon_name],
         delimiter="\t",
     )
@@ -206,19 +206,19 @@ class MegaPBTree:
         #    pdb.set_trace()
         matches = self.tree[r.chr][r.strand].find(r.start, r.end)
         for r2 in matches:
-            r.segments = r.ref_exons
-            r2.segments = r2.ref_exons
-            n1 = len(r.segments)
+            r.segments = r.ref_exons    # the incoming entry
+            r2.segments = r2.ref_exons  # an existing entries in the tree
+            n1 = len(r.segments)        # how many exons?
             n2 = len(r2.segments)
 
             three_end_is_match = (
                 self.max_3_diff is None
                 or (r.strand == "+" and abs(r.end - r2.end) <= self.max_3_diff)
                 or (r.strand == "-" and abs(r.start - r2.start) <= self.max_3_diff)
-            )
+            )  # either nothing, so whether the 3' ends "match" (within reason)
 
             last_junction_match = False
-            if n1 == 1:
+            if n1 == 1:  # essentially, if there is just the one exon for both, assume they are the same
                 if n2 == 1:
                     last_junction_match = True
                 else:
@@ -234,7 +234,7 @@ class MegaPBTree:
                         ) and (
                             abs(r.segments[0].end - r2.segments[0].end)
                             <= self.internal_fuzzy_max_dist
-                        )
+                        )  # match if the difference in the positions of either end of the first and last exon are under a certain distance
                     else:
                         last_junction_match = (
                             abs(r.segments[0].end - r2.segments[0].end)
@@ -244,28 +244,26 @@ class MegaPBTree:
                             <= self.internal_fuzzy_max_dist
                         )
 
-            if (
-                compare_junctions.compare_junctions(
-                    r, r2, internal_fuzzy_max_dist=self.internal_fuzzy_max_dist
-                )
-                == "exact"
-            ):  # is a match!
-                if three_end_is_match:
-                    yield r2
-            elif (
-                self.allow_5merge
-            ):  # check if the shorter one is a subset of the longer one
+            # How well do the exon junctions overlap?
+            # Exact matches?
+            if self.allow_5merge:
                 if len(r.segments) > len(r2.segments):
                     a, b = r, r2
                 else:
                     a, b = r2, r
+            else:
+                b, a = r, r2
+
+            # rearranged so that `compare_junctions` is run once, not twice
+            junct_compare = compare_junctions.compare_junctions(b, a, internal_fuzzy_max_dist=self.internal_fuzzy_max_dist)
+
+            if (junct_compare == "exact"):  # is a match!
+                if three_end_is_match:
+                    yield r2
+            # check if the shorter one is a subset of the longer one
+            elif (self.allow_5merge):
                 # a is the longer one, b is the shorter one
-                if (
-                    compare_junctions.compare_junctions(
-                        b, a, internal_fuzzy_max_dist=self.internal_fuzzy_max_dist
-                    )
-                    == "subset"
-                ):
+                if (junct_compare == "subset"):
                     # we only know that a is a subset of b, verify that it is actually 5' truncated (strand-sensitive!)
                     # if + strand, last junction of (a,b) should match and 3' end not too diff
                     # if - strand, first exon of a should match first exon of b AND the next exon don't overlap
@@ -284,6 +282,7 @@ class MegaPBTree:
         unmatched_recs = set(self.record_d.keys())
 
         for r in GFF.collapseGFFReader(gff_filename):
+            # for each collapsed transcript, find records that overlap
             match_rec_list = list(self.match_record_to_tree(r))
             if len(match_rec_list) > 0:  # found match(es)! put longer of r1/r2 in
                 # if len(match_rec_list) > 1: pdb.set_trace()  #DEBUG
@@ -366,7 +365,8 @@ class MegaPBTree:
             else:
                 for r1 in r1s:
                     if len(r1s) > 1:
-                        logger.info(f"matching {r1} to {r2}")
+                        continue
+                        # logger.info(f"matching {r1} to {r2}")
                     rep = find_representative_in_iso_list([r1, r2])
                     new_rec_list.append(
                         MatchRecord(

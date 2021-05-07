@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cupcake"
-version = "21.1.1"
+version = "21.2.0"
 description = "Miscellaneous collection of Python and R scripts for processing Iso-Seq data"
 authors = ["Elizabeth Tseng <etseng@pacb.com>"]
 license = "BSD3"
@@ -32,6 +32,10 @@ include = [
     {path = "src/cupcake/tofu/branch/*.pyd", format = "wheel"},
 ]
 
+[tool.poetry.build]
+generate-setup-file = false
+script = "build.py"
+
 [tool.poetry.urls]
 "bug tracker" = "https://github.com/Magdoll/cDNA_Cupcake/issues"
 
@@ -60,7 +64,7 @@ colorama = "^0.4.4"
 commitizen = "^2.17.0"
 
 [build-system]
-requires = ["poetry-core>=1.0.0", "cython", "numpy"]
+requires = ["poetry-core>=1.0.0", "cython", "numpy", "toml"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
@@ -93,11 +97,6 @@ rev_comp                    = "cupcake.sequence.revcomp:app"
 get_seqs_from_list          = "cupcake.sequence.get_seqs_from_list:app"
 err_correct_w_genome        = "cupcake.sequence.err_correct_w_genome:app"
 group_ORF_sequences         = "cupcake.sequence.group_ORF_sequences:app"
-
-
-[tool.poetry.build]
-generate-setup-file = false
-script = "build.py"
 
 [tool.commitizen]
 name = "cz_conventional_commits"

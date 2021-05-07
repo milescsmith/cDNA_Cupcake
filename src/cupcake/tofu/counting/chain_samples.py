@@ -8,7 +8,9 @@ from csv import DictReader, DictWriter
 from enum import Enum
 from multiprocessing import Process
 from pathlib import Path
-from typing import List, Tuple, Union
+from typing import List, Tuple, Union, Dict
+
+from BCBio import GFF as bGFF
 
 import typer
 from Bio import SeqIO
@@ -61,7 +63,9 @@ def sample_sanity_check(
             )
 
 
-def read_config(filename):
+def read_config(
+    filename: Union[str, Path]
+) -> Tuple[Dict[str, Path], List[str], str, str, str, str]:
     """
     tmpSAMPLE=<name>;<path>
     SAMPLE=<name>;<path>
@@ -119,15 +123,15 @@ def read_config(filename):
                 fastq_filename = line.strip()[len("FASTQ_FILENAME=") :]
 
     if group_filename is None:
-        raise Exception(
+        raise FileNotFoundError(
             f"Expected GROUP_FILENAME= but not in config file {filename}! Abort."
         )
     if count_filename is None:
-        raise Exception(
+        raise FileNotFoundError(
             f"Expected COUNT_FILENAME= but not in config file {filename}! Abort."
         )
     if gff_filename is None:
-        raise Exception(
+        raise FileNotFoundError(
             f"Expected GFF_FILENAME= but not in config file {filename}! Abort."
         )
 
@@ -145,6 +149,7 @@ def read_config(filename):
     )
 
 
+# TODO: replace with pandas or DictReader?
 def read_count_info(
     count_filename: Union[str, Path], dirs: List[Union[str, Path]], field_to_use: str
 ) -> Tuple[str, str]:
@@ -165,21 +170,61 @@ def read_count_info(
 
 
 def chain_split_file(
-    ref_gff,
-    ref_group,
-    ref_name,
-    addon_gff,
-    addon_group,
-    addon_name,
-    fuzzy_junction,
-    allow_5merge,
-    max_3_diff,
-    n_chunks,
-):
+    ref_gff: Union[str, Path],
+    ref_group: Union[str, Path],
+    ref_name: str,
+    addon_gff: Union[str, Path],
+    addon_group: Union[str, Path],
+    addon_name: str,
+    fuzzy_junction: int,
+    allow_5merge: bool,
+    max_3_diff: int,
+    n_chunks: int,
+) -> Tuple[List[str], List[str]]:
+    """
+    Organize entries in both a gff and transcript group file
+    and split both such that the original two files are split into chunks
+    where gff.chunk.n covers the same entries as group.chunk.n
+    """
+
+    # read in the group_file as a dictionary in the form of
+    # {
+    #   'PB.1.1': ["transcript/1"],
+    #   'PB.1.2': ["transcript/2", "transcript/3"]
+    # }
     addon_group_info = sp.MegaPBTree.read_group(addon_group, None)
     recs = []
     tree = OrderedDict()
     i = 0
+    # for r in HTSeq.GFF_Reader(addon_gff):
+    # if r.iv.chrom not in tree2:
+    #     tree[r.iv.chrom] = {"+": ClusterTree(0, 0), "-": ClusterTree(0, 0)}
+    #     tree[r.iv.chrom][r.iv.strand].insert(r.iv.start, r.iv.end, i)
+    #     recs.append(r)
+    #     i += 1
+
+    # This should build a structure in the form of:
+    #{"chrN":
+    #   {
+    #       "+" : bx.intervals.cluster.clusterTree,
+    #       "-" : bx.intervals.cluster.clusterTree,
+    #   },
+    # "chrN+1":
+    #   {
+    #       "+" : bx.intervals.cluster.clusterTree,
+    #       "-" : bx.intervals.cluster.clusterTree,
+    #   },
+    # }
+    # CusterTree objects have the form
+    #   [(x,y,[z]), (a,b,[c]), (m,n,[o])]
+    #   where each tuple is a range and a list of ids that lie within that range
+    # e.g. (from the bx-python docs):
+    # tree = ClusterTree(0, 0) Insert (6, 7, 1), (1, 2, 3), (9, 10, 2), (3, 4, 0), (3, 8, 4)
+    # tree.getregions() returns [(1, 2, [3]), (3, 8, [0, 1, 4]), (9, 10, [2])]
+
+    # NOTE: GFF.collapseGFFReader is a specialized GFF reader that in the attributes
+    # field stores a list of bx.intervals.intersection.Interval objects
+    # describing the exons
     for r in GFF.collapseGFFReader(addon_gff):
         if r.chr not in tree:
             tree[r.chr] = {"+": ClusterTree(0, 0), "-": ClusterTree(0, 0)}
@@ -195,6 +240,11 @@ def chain_split_file(
     counter = 0
     f_gff = open(f"{addon_gff}.split{str(i)}", "w")
     f_group = open(f"{addon_group}.split{str(i)}", "w")
+    # this loop is going to reorder everything
+    # so that we have a GFF with a transcript followed by all the exons that
+    # made up that transcript and a separate file with the matching 
+    # transcript_id transcript/read_group#
+    # (see the sp.MegaPBTree above)
     for v1 in tree.values():
         for strand in ("+", "-"):
             v2 = v1[strand]
@@ -590,7 +640,7 @@ def chain_samples_multithread(
         first_add = True
 
     for addon_name in names[start_i:]:
-        assert not addon_name.startswith("tmp_")
+        assert not addon_name.startswith("tmp_") # TODO: get rid of this since asserts are not used in "compiled" python scripts
         ref_name = chain[-1]
         ref_d = Path(dirs[ref_name])
         if first_add:
@@ -624,7 +674,7 @@ def chain_samples_multithread(
         )
 
         combine_split_chained_results(
-            split_outs,
+            output_prefixes=split_outs,
             final_prefix=f"tmp_{addon_name}",
             ref_gff=ref_gff,
             ref_group=ref_group,

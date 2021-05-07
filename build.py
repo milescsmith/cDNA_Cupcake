@@ -48,7 +48,8 @@ class ExtBuilder(build_ext):
             build_ext.build_extension(self, ext)
         except (CCompilerError, DistutilsExecError, DistutilsPlatformError, ValueError):
             print(
-                f"  Unable to build the '{ext.name}' C extension, cDNA_Cupcake will use the pure python version of the extension."
+                f"  Unable to build the '{ext.name}' C extension, cDNA_Cupcake "
+                f"will use the pure python version of the extension."
             )
 
 
@@ -57,7 +58,7 @@ def build(setup_kwargs):
     This function is mandatory in order to build the extensions.
     """
     distribution = Distribution(
-        {"name": "src/cupcake", "ext_modules": cythonize(extensions)}
+        {"name": "src/cupcake", "ext_modules": cythonize(extensions, compiler_directives={'language_level': '3'})}
     )
     distribution.package_dir = "cupcake"
 

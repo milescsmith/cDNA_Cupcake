@@ -479,6 +479,7 @@ class gmapRecord:
             self.seq_exons.append(Interval(sStart0, sEnd1))
 
 
+# Why are we rolling our own GFF parser here?  Why not use gtfparse or bcbio-gff
 class gmapGFFReader(object):
     def __init__(self, filename):
         self.filename = filename
@@ -647,37 +648,16 @@ class pasaGFFReader(gmapGFFReader):
 
 def write_collapseGFF_format(f, r):
     f.write(
-        '{chr}\tPacBio\ttranscript\t{s}\t{e}\t.\t{strand}\t.\tgene_id "{gid}"; transcript_id "{tid}";\n'.format(
-            chr=r.chr,
-            s=r.start + 1,
-            e=r.end,
-            strand=r.strand,
-            gid=r.geneid,
-            tid=r.seqid,
-        )
+        f'{r.chr}\tPacBio\ttranscript\t{r.start+1}\t{r.end}\t.\t{r.strand}\t.\tgene_id "{r.geneid}"; transcript_id "{r.seqid}";\n'
     )
     for exon in r.ref_exons:
         f.write(
-            '{chr}\tPacBio\texon\t{s}\t{e}\t.\t{strand}\t.\tgene_id "{gid}"; transcript_id "{tid}";\n'.format(
-                chr=r.chr,
-                s=exon.start + 1,
-                e=exon.end,
-                strand=r.strand,
-                gid=r.geneid,
-                tid=r.seqid,
-            )
+            f'{r.chr}\tPacBio\texon\t{exon.start + 1}\t{exon.end}\t.\t{r.strand}\t.\tgene_id "{r.geneid}"; transcript_id "{r.seqid}";\n'
         )
     if r.cds_exons is not None:
         for exon in r.cds_exons:
             f.write(
-                '{chr}\tPacBio\tCDS\t{s}\t{e}\t.\t{strand}\t.\tgene_id "{gid}"; transcript_id "{tid}";\n'.format(
-                    chr=r.chr,
-                    s=exon.start + 1,
-                    e=exon.end,
-                    strand=r.strand,
-                    gid=r.geneid,
-                    tid=r.seqid,
-                )
+                f'{r.chr}\tPacBio\tCDS\t{exon.start + 1}\t{exon.end}\t.\t{r.strand}\t.\tgene_id "{r.geneid}"; transcript_id "{r.seqid}";\n'
             )
 
 

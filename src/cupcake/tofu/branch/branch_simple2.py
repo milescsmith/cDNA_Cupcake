@@ -8,6 +8,7 @@ from Bio import SeqIO
 from bx.intervals.cluster import ClusterTree
 from bx.intervals.intersection import Interval, IntervalTree
 
+from cupcake.utils import OpenFile
 from cupcake.logging import cupcake_logger as logger
 from cupcake.sequence import BioReaders
 from cupcake.tofu.branch import c_branch
@@ -61,12 +62,10 @@ class BranchSimple:
         self.max_5_diff = max_5_diff
         self.max_3_diff = max_3_diff
 
-        self.transfrag_filename = transfrag_filename
+        self.transfrag_filename = Path(transfrag_filename)
         self.transfrag_len_dict = {
-            r.id.split()[0]: len(r.seq)
-            for r in SeqIO.parse(transfrag_filename, "fastq" if is_fq else "fasta")
+            r.id.split()[0]: len(r.seq) for r in SeqIO.parse(OpenFile(transfrag_filename), "fastq" if is_fq else "fasta")
         }
-
         self.cov_threshold = cov_threshold  # only output GTF records if >= this many GMAP records support it (this must be if I'm running non-clustered fasta on GMAP)
 
         self.min_aln_coverage = min_aln_coverage
@@ -119,7 +118,7 @@ class BranchSimple:
 
         # find first acceptably mapped read
         try:
-            records: List[BioReaders.GMAPSAMRecord] = [next(quality_alignments)]
+            records: List[BioReaders.GMAPSAMRecord] = list(next(quality_alignments))
             max_end = records[0].sEnd
         except StopIteration:
             logger.error(f"No valid records from {gmap_sam_filename}!")
