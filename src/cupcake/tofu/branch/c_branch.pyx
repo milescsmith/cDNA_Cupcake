@@ -3,13 +3,24 @@ import numpy as np
 cimport numpy as np
 from cpython cimport bool
 
-from cupcake.tofu.branch.intersection_unique import (Interval,
-                                                     IntervalTreeUnique)
+from cupcake.tofu.branch.intersection_unique import (
+    Interval,
+    IntervalTreeUnique
+    )
 
-DTYPE = np.int
-ctypedef np.int_t DTYPE_t
+DTYPE = np.int64
+ctypedef np.int64_t DTYPE_t
 
-def exon_finding(np.ndarray[DTYPE_t, ndim=1] baseC, np.ndarray[DTYPE_t, ndim=1] altC_neg, np.ndarray[DTYPE_t, ndim=1] altC_pos, np.ndarray[DTYPE_t, ndim=1] transC, int size, int threshSplit, int threshBase, int offset):
+def exon_finding(
+    np.ndarray[DTYPE_t, ndim=1] baseC,
+    np.ndarray[DTYPE_t, ndim=1] altC_neg,
+    np.ndarray[DTYPE_t, ndim=1] altC_pos,
+    np.ndarray[DTYPE_t, ndim=1] transC,
+    int size,
+    int threshSplit,
+    int threshBase,
+    int offset
+    ):
     cdef int i
     cdef bool tag = False
     cdef index = 0
@@ -30,7 +41,7 @@ def exon_finding(np.ndarray[DTYPE_t, ndim=1] baseC, np.ndarray[DTYPE_t, ndim=1] 
                 tag = False
             elif baseC[i] > 0 and (altC_pos[i] > threshSplit or altC_neg[i+1] < -threshSplit): # alt. junction found!
                 # end the current exon at i and start a new one at i + 1
-                print "alt. junction found at", i
+                print(f"alt. junction found at {i}")
                 exon_tree.insert_interval(Interval(e_start+offset, i+1+offset, index))
                 index += 1
                 e_start = i + 1
