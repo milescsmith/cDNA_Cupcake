@@ -118,7 +118,7 @@ class BranchSimple:
 
         # find first acceptably mapped read
         try:
-            records: List[BioReaders.GMAPSAMRecord] = list(next(quality_alignments))
+            records: List[BioReaders.GMAPSAMRecord] = [next(quality_alignments)]
             max_end = records[0].sEnd
         except StopIteration:
             logger.error(f"No valid records from {gmap_sam_filename}!")
