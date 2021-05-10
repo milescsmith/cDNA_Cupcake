@@ -3,6 +3,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
+## [21.2.3] - 2021-05-10
+
+### Changed
+- Removed all dev dependencies because I cannot figure out how to get a module that
+  relies on cupcake to ignore them on installation (ipython was killing my 
+  SQANTI3 docker build times)
+
 ## [21.2.2] - 2021-05-10
 
 ### Fixed
@@ -134,7 +141,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Reformmated to follow PEP517 - that is, replaced setup.py with pyproject.toml and build.py
 - Now using Poetry for dependency managment
 
-
+[21.2.3]: https://github.com/milescsmith/cDNA_Cupcake/compare/21.2.2...21.2.3
+[21.2.2]: https://github.com/milescsmith/cDNA_Cupcake/compare/21.2.1...21.2.2
+[21.2.1]: https://github.com/milescsmith/cDNA_Cupcake/compare/21.2.0...21.2.1
+[21.2.0]: https://github.com/milescsmith/cDNA_Cupcake/compare/21.1.1...21.2.0
 [21.1.1]: https://github.com/milescsmith/cDNA_Cupcake/compare/21.1.0...21.1.1
 [21.1.0]: https://github.com/milescsmith/cDNA_Cupcake/compare/21.0.5...21.1.0
 [21.0.5]: https://github.com/milescsmith/cDNA_Cupcake/compare/21.0.4...21.0.5
