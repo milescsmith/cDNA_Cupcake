@@ -31,6 +31,7 @@ from cupcake.sequence import GFF
 from cupcake.tofu.branch import branch_simple2
 from cupcake.tofu.compare_junctions import compare_junctions
 from cupcake.tofu.utils import check_ids_unique
+from cupcake.utils import OpenFile
 
 GFF_FIELDS = [
     "seqname",
@@ -65,14 +66,7 @@ def pick_rep(
           If pick_least_err_instead is True, pick the one w/ least number of expected base errors
           Else, pick the longest one
     """
-    if Path(fa_fq_filename).suffix == ".gz":
-        fd = SeqIO.to_dict(
-            SeqIO.parse(gzopen(fa_fq_filename), "fastq" if is_fq else "fasta")
-        )
-    else:
-        fd = SeqIO.to_dict(
-            SeqIO.parse(open(fa_fq_filename), "fastq" if is_fq else "fasta")
-        )
+    fd = SeqIO.to_dict(SeqIO.parse(OpenFile(fa_fq_filename), "fastq" if is_fq else "fasta"))
 
     coords = {}
     for line in open(gff_filename):

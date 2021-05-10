@@ -3,6 +3,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
+## [21.2.2] - 2021-05-10
+
+### Fixed
+- Fixed a problem with opening gzipped FASTA/FASTQ files in tofu/collapse_isoforms_by_sam
+
+### Fixed
+- Reverted a `[]` to `list()` change in branch_simple2.py
+
 ## [21.2.1] - 2021-05-10
 
 ### Fixed

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cupcake"
-version = "21.2.0"
+version = "21.2.2"
 description = "Miscellaneous collection of Python and R scripts for processing Iso-Seq data"
 authors = ["Elizabeth Tseng <etseng@pacb.com>"]
 license = "BSD3"
