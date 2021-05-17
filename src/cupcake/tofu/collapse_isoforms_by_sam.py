@@ -32,6 +32,7 @@ from cupcake.tofu.branch import branch_simple2
 from cupcake.tofu.compare_junctions import compare_junctions
 from cupcake.tofu.utils import check_ids_unique
 from cupcake.utils import OpenFile
+from cupcake import __version__
 
 GFF_FIELDS = [
     "seqname",
@@ -47,6 +48,13 @@ GFF_FIELDS = [
 
 
 app = typer.Typer(name="collapse_isoforms_by_sam", add_completion=False)
+
+
+def version_callback(value: bool):
+    """Prints the version of the package."""
+    if value:
+        print(f"cupcake version: {__version__}")
+        raise typer.Exit()
 
 
 def pick_rep(
@@ -255,6 +263,13 @@ def main(
         "--dun-merge-5-shorter",
         help="Don't collapse shorter 5' transcripts (default: turned off)",
     ),  # store_false
+    version: bool = typer.Option(
+        None,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Prints the version of the SQANTI3 package.",
+    ),
 ) -> None:
     # sanity check that input file and input SAM exists
     if not Path(str(input_filename)).exists():

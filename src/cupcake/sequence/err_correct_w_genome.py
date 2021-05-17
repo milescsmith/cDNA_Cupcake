@@ -8,8 +8,11 @@ from Bio import SeqIO
 
 from cupcake.__about__ import __version__
 from cupcake.logging import cupcake_logger as logger
+from cupcake.logging import setup_logging
 from cupcake.sequence import BioReaders
 from cupcake.sequence.coordinate_mapper import consistute_genome_seq_from_exons
+from cupcake.utils import OpenFile
+from tqdm import tqdm
 
 ###### MODIFY FILENAME BELOW #######
 # genome_file = 'hg38.fa'
@@ -34,18 +37,21 @@ def err_correct(
 ) -> None:
     if genome_dict is None:
         genome_dict = {}
-        for r in SeqIO.parse(open(genome_file, "r"), "fasta"):
+        logger.info(f"Loading {genome_file.name}")
+        for r in tqdm(SeqIO.parse(OpenFile(genome_file, "r"), "fasta")):
             genome_dict[r.name] = r
-        logger.info(f"done reading {genome_file}")
+        logger.info(f"Finished reading {genome_file}")
 
     with open(output_err_corrected_fasta, "w") as f:
         reader = BioReaders.GMAPSAMReader(str(sam_file), True)
-        for r in reader:
+        for r in tqdm(reader):
+            logger.info(r)
             if r.sID == "*":
                 continue
             seq = consistute_genome_seq_from_exons(
                 genome_dict, r.sID, r.segments, r.flag.strand
             )
+            logger.info(f">{r.qID}")
             f.write(f">{r.qID}\n{seq}\n")
 
     logger.info(f"output written to {output_err_corrected_fasta}")
@@ -61,4 +67,5 @@ def main(
 
 
 if __name__ == "__main__":
+    setup_logging("cupcake.sequence.err_correct_w_genome")
     typer.run(main)

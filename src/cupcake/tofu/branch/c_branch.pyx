@@ -8,6 +8,8 @@ from cupcake.tofu.branch.intersection_unique import (
     IntervalTreeUnique
     )
 
+from cupcake.logging import cupcake_logger as logger
+
 DTYPE = np.int64
 ctypedef np.int64_t DTYPE_t
 
@@ -41,7 +43,7 @@ def exon_finding(
                 tag = False
             elif baseC[i] > 0 and (altC_pos[i] > threshSplit or altC_neg[i+1] < -threshSplit): # alt. junction found!
                 # end the current exon at i and start a new one at i + 1
-                print(f"alt. junction found at {i}")
+                logger.info(f"alt. junction found at {i}")
                 exon_tree.insert_interval(Interval(e_start+offset, i+1+offset, index))
                 index += 1
                 e_start = i + 1

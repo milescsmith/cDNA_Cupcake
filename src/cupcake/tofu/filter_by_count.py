@@ -146,11 +146,11 @@ def filter_by_count(
 @app.command(name="")
 def main(
     input_prefix: str = typer.Argument(...),
-    min_count: int = typer.Option(2, help="Minimum FL count (default: 2)"),
+    min_count: int = typer.Option(2, help="Minimum FL count"),
     dun_use_group_count: bool = typer.Option(
         True,
         "--dun_use-group_count",
-        help="Turn off more stringent min count (default: off)",
+        help="Turn off more stringent min count",
     ),
 ) -> None:
 

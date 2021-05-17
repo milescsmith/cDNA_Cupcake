@@ -336,15 +336,15 @@ def main(
     output_prefix: str = typer.Argument(..., help="Output Prefix"),
     min_query_overlap: float = typer.Option(
         0.0,
-        help="Minimum query overlap, in ratio (default: 0.0)",
+        help="Minimum query overlap, in ratio",
     ),
     min_gene_overlap_bp: int = typer.Option(
         0,
-        help="Minimum gene overlap, in bp (default: 0 bp)",
+        help="Minimum gene overlap, in bp",
     ),
     min_gene_overlap: float = typer.Option(
         0.5,
-        help="Minimum gene overlap, in ratio (default: 0.5)",
+        help="Minimum gene overlap, in ratio",
     ),
 ):
     categorize_aln_by_annotation(

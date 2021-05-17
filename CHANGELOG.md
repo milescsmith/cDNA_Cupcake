@@ -3,6 +3,15 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
+## [21.2.4] - 2021-05-17
+
+## Changed
+- Revised logging and now incorporating the coloredlogs module
+
+### Fixed
+- Removed most instances of `Path.write_text()`, replacing it with a standard
+  open file and write using a context manager.
+
 ## [21.2.3] - 2021-05-10
 
 ### Changed

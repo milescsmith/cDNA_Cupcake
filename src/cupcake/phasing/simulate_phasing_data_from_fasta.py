@@ -91,20 +91,21 @@ def simulate_phasing_data(
         "id\tlength\tis_fl\tstat\tpbid\n"
     )
     profile = [err_sub, err_sub, err_sub, 1.0]
-    for i, copy in enumerate(copies):
-        if i >= len(new_seqs):
-            break
-        for c in range(copy):
-            cur_seq, cur_qv = sim_seq(new_seqs[i], profile)
-            cur_id = f"hap{i + 1}_{c}"
-            if write_fastq:
-                f.write_text(f"@{cur_id}\n{cur_seq}\n")
-                f.write_text(f"+\n{cur_qv}\n")
-            else:
-                f.write_text(f">{cur_id}\n{cur_seq}\n")
-            working_dir.joinpath("fake.read_stat.txt").write_text(
-                f"{cur_id}\t{n}\tY\tunique\tPB.0.0\n"
-            )
+    with f.open("w") as fopen:
+        for i, copy in enumerate(copies):
+            if i >= len(new_seqs):
+                break
+            for c in range(copy):
+                cur_seq, cur_qv = sim_seq(new_seqs[i], profile)
+                cur_id = f"hap{i + 1}_{c}"
+                if write_fastq:
+                    fopen.write(f"@{cur_id}\n{cur_seq}\n")
+                    fopen.write(f"+\n{cur_qv}\n")
+                else:
+                    fopen.write(f">{cur_id}\n{cur_seq}\n")
+                working_dir.joinpath("fake.read_stat.txt").open("w+).write(
+                    f"{cur_id}\t{n}\tY\tunique\tPB.0.0\n"
+                )
 
     ref_at_pos = {p: seq0[p] for p in var_positions}
     hap_obj = Haplotypes(var_positions, ref_at_pos, count_of_vars_by_pos)

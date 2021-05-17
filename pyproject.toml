@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cupcake"
-version = "21.2.3"
+version = "21.2.4"
 description = "Miscellaneous collection of Python and R scripts for processing Iso-Seq data"
 authors = ["Elizabeth Tseng <etseng@pacb.com>"]
 license = "BSD3"
@@ -53,6 +53,8 @@ bcbio-gff = "^0.6.6"
 typer = "^0.3.2"
 parasail = "^1.2.4"
 vcfpy = "^0.13.3"
+coloredlogs = "^15.0"
+tqdm = "^4.60.0"
 
 [tool.poetry.dev-dependencies]
 

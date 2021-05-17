@@ -129,27 +129,27 @@ def make_file_for_subsample(
                     to_write[s][pbid] = d2[s]
 
     for sample in to_write:
-        h = Path(f"{output_prefix}.{sample}.txt")
-        if matchAnnot_parsed is None and sqanti_class is None:
-            h.write_text("pbid\tpbgene\tlength\tfl_count\n")
-        else:
-            h.write_text(
-                "pbid\tpbgene\tlength\trefisoform\trefgene\tcategory\tfl_count\n"
-            )
-        for pbid in to_write[sample]:
-            if matchAnnot_parsed is not None or sqanti_class is not None:
-                if pbid not in match_dict:
-                    logger.critical(
-                        f"Ignoring {pbid} because not on annotation (SQANTI/MatchAnnot) file."
-                    )
-                    continue
-                m = match_dict[pbid]
-                h.write_text(f"{pbid}\t{pbid.split('.')[1]}\t{seqlen_dict[pbid]}\t")
-                h.write_text(f'{m["refisoform"]}\t{m["refgene"]}\t{m["category"]}\t')
+        with Path(f"{output_prefix}.{sample}.txt").open("a+") as h:
+            if matchAnnot_parsed is None and sqanti_class is None:
+                h.write("pbid\tpbgene\tlength\tfl_count\n")
             else:
-                h.write_text(f'{pbid}\t{pbid.split(".")[1]}\t{seqlen_dict[pbid]}\t')
-            h.write_text(f"{to_write[sample][pbid]}\n")
-        logger.info(f"Output written to {h.absolute()}.")
+                h.write(
+                    "pbid\tpbgene\tlength\trefisoform\trefgene\tcategory\tfl_count\n"
+                )
+            for pbid in to_write[sample]:
+                if matchAnnot_parsed is not None or sqanti_class is not None:
+                    if pbid not in match_dict:
+                        logger.critical(
+                            f"Ignoring {pbid} because not on annotation (SQANTI/MatchAnnot) file."
+                        )
+                        continue
+                    m = match_dict[pbid]
+                    h.write(f"{pbid}\t{pbid.split('.')[1]}\t{seqlen_dict[pbid]}\t")
+                    h.write(f'{m["refisoform"]}\t{m["refgene"]}\t{m["category"]}\t')
+                else:
+                    h.write(f'{pbid}\t{pbid.split(".")[1]}\t{seqlen_dict[pbid]}\t')
+                h.write(f"{to_write[sample][pbid]}\n")
+            logger.info(f"Output written to {h.absolute()}.")
 
 
 @app.command(name="")

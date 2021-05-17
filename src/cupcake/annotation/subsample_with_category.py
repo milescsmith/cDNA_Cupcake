@@ -72,7 +72,7 @@ def main(
     by: str = typer.Option("id", help="Unique specifier name"),
     iterations: int = typer.Option(100, help="Number of iterations"),
     len_range: int = typer.Option(
-        None, "--range", help="Length range (ex: (1000,2000), default None)"
+        None, "--range", help="Length range (ex: (1000,2000))"
     ),
     min_fl_count: int = typer.Option(1, help="Minimum FL count"),
     step: int = typer.Option(10000, help="Step size"),
