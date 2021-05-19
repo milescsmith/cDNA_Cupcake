@@ -89,7 +89,7 @@ def setup_logging(name: Optional[str] = None):
         'funcName': {'color': 74},
         'lineno': {'bold': True, 'color': 75},
         'message': {'color': 'yellow'}
-        }
+    }
     coloredlogs.install(level="DEBUG", fmt='[%(asctime)s] {%(module)s:%(funcName)s():%(lineno)d} %(levelname)s - %(message)s')
     logger = logging.getLogger(__name__)
     logger.setLevel(logging.DEBUG)

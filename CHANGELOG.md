@@ -3,6 +3,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
+## [21.2.6] - 2021-05-18
+
+### Fixed
+- Fixed Python 2 `print` stragglers in cython code
+
 ## [21.2.5] - 2021-05-18
 
 ### Fixed
@@ -155,6 +160,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Reformmated to follow PEP517 - that is, replaced setup.py with pyproject.toml and build.py
 - Now using Poetry for dependency managment
 
+[21.2.6]: https://github.com/milescsmith/cDNA_Cupcake/compare/21.2.5...21.2.6
 [21.2.5]: https://github.com/milescsmith/cDNA_Cupcake/compare/21.2.4...21.2.5
 [21.2.4]: https://github.com/milescsmith/cDNA_Cupcake/compare/21.2.3...21.2.4
 [21.2.3]: https://github.com/milescsmith/cDNA_Cupcake/compare/21.2.2...21.2.3
