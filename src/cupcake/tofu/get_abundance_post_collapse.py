@@ -34,12 +34,12 @@ PBfusion.2      HQ_sample0ZPg9hS7|cb7607_c16635/f3p0/810,HQ_sample0ZPg9hS7|cb760
 """
 
 
-import os
 import re
 import sys
 from collections import Counter
 from csv import DictReader, DictWriter
 from typing import List, Optional
+from pathlib import Path
 
 import typer
 
@@ -81,7 +81,7 @@ cluster_rex_isoseq3_mapped = re.compile(
 )  # for isoseq post SL mapping
 
 
-def read_group_filename(group_filename: str, is_cid=True):
+def read_group_filename(group_filename: Path, is_cid=True):
     """
     Make the connection between partitioned results and final (ex: PB.1.1)
     The partitioned results could either be ICE cluster (ex: i1_c123) or RoIs
@@ -109,7 +109,7 @@ def read_group_filename(group_filename: str, is_cid=True):
     """
     cid_info = {}  # ex: i1 --> c123 --> PB.1.1, or c123 --> PB.1.1
 
-    for line in open(group_filename):
+    for line in group_filename.open():
         pbid, members = line.strip().split("\t")
         for cid in members.split(","):
             m = cluster_rex_isoseq3_mapped.match(cid)
@@ -283,8 +283,8 @@ def make_abundance_file(
 
 
 def get_abundance_post_collapse(
-    collapse_prefix: str,
-    cluster_report_csv: str,
+    group_file: Path,
+    cluster_report_csv: Path,
     output_prefix: str,
     restricted_movies: Optional[List[str]] = None,
 ):
@@ -296,16 +296,16 @@ def get_abundance_post_collapse(
     :param restricted_movies:
     :return:
     """
-    group_filename = f"{collapse_prefix}.group.txt"
-    if not os.path.exists(group_filename):
-        logger.error(f"File {group_filename} does not exist. Abort!")
+    
+    if not group_file.exists():
+        logger.error(f"File {group_file.name} does not exist. Abort!")
         sys.exit(-1)
 
-    if not os.path.exists(cluster_report_csv):
-        logger.error(f"File {cluster_report_csv} does not exist. Abort!")
+    if not cluster_report_csv.exists():
+        logger.error(f"File {cluster_report_csv.name} does not exist. Abort!")
         sys.exit(-1)
 
-    cid_info = read_group_filename(f"{collapse_prefix}.group.txt", is_cid=True)
+    cid_info = read_group_filename(group_file, is_cid=True)
 
     output_read_count_IsoSeq_csv(
         cid_info, cluster_report_csv, f"{output_prefix}.read_stat.txt"
@@ -321,15 +321,19 @@ def get_abundance_post_collapse(
 
 @app.command(name="")
 def main(
-    collapse_prefix: str = typer.Argument(
-        ..., help="Collapse prefix (must have .group.txt)"
+    group_file: Path = typer.Argument(
+        ..., help="Group file from collapse_isoforms_by_sam()"
     ),
-    cluster_report: str = typer.Argument(..., help="Cluster CSV report"),
+    cluster_report: Path = typer.Argument(..., help="Cluster CSV report"),
+    output_prefix: Optional[str] = typer.Option(None, help="Name to use for output files.  By default, will use the prefix from the group file")
 ) -> None:
     """Get abundance/read stat information after running collapse script.
     Works for Iso-Seq1, 2, and 3 output."
     """
-    get_abundance_post_collapse(collapse_prefix, cluster_report, collapse_prefix)
+    if not output_prefix:
+        output_prefix = group_file.stem
+
+    get_abundance_post_collapse(group_file, cluster_report, output_prefix)
 
 
 if __name__ == "__main__":

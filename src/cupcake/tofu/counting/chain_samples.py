@@ -66,6 +66,7 @@ def sample_sanity_check(
 def read_config(
     filename: Union[str, Path]
 ) -> Tuple[Dict[str, Path], List[str], str, str, str, str]:
+    # Okay, why is this a thing?  Why not just pass arguments?
     """
     tmpSAMPLE=<name>;<path>
     SAMPLE=<name>;<path>
@@ -139,6 +140,25 @@ def read_config(
         logger.error("No samples given. Exit.")
         sys.exit(-1)
 
+    # return signature is:
+    # sample_dirs    = Dict[sample_name, Path(sample_path)]
+    # sample_names   = List[sample_name] 
+    # group_filename = str
+    # gff_filename   = str
+    # count_filename = str
+    # fastq_filename = str
+
+    # so, for the test data, we get:
+    # sample_dirs = {
+    #   'A': Path('tests/test_data/chaining/A'), 
+    #   'B': Path('tests/test_data/chaining/B')
+    #   }
+    # sample_names = ["A", "B"]
+    # group_filename = touse.group.txt
+    # gff_filename   = touse.gff
+    # count_filename = touse.count.txt
+    # fastq_filename = touse.rep.fq
+    
     return (
         sample_dirs,
         sample_names,
@@ -149,10 +169,9 @@ def read_config(
     )
 
 
-# TODO: replace with pandas or DictReader?
 def read_count_info(
     count_filename: Union[str, Path], dirs: List[Union[str, Path]], field_to_use: str
-) -> Tuple[str, str]:
+) -> Dict[Tuple[str, str], int]:
     count_info = {}  # key: (sample, PB.1.1) --> count
     count_header = ""
     for name, d in dirs.items():
@@ -166,7 +185,13 @@ def read_count_info(
             f.seek(cur)
             for r in DictReader(f, delimiter="\t"):
                 count_info[name, r["pbid"]] = r[field_to_use]
-    return count_header, count_info
+    
+    # count_info = {
+    #   (sample_name, pbid): count,
+    #   (sample_name, pbid): count,
+    #   ...
+    # }
+    return count_info
 
 
 def chain_split_file(
@@ -204,7 +229,7 @@ def chain_split_file(
     #     i += 1
 
     # This should build a structure in the form of:
-    #{"chrN":
+    # {"chrN":
     #   {
     #       "+" : bx.intervals.cluster.clusterTree,
     #       "-" : bx.intervals.cluster.clusterTree,
@@ -471,7 +496,7 @@ def chain_samples(
             Path(d, fastq_filename) if fastq_filename is not None else None,
         )
 
-    _, count_info = read_count_info(count_filename, dirs, field_to_use)
+    count_info = read_count_info(count_filename, dirs, field_to_use)
 
     # some names may already start with "tmp_" which means they are intermediate results that have already been chained
     # find the first non "tmp_" and start from there
@@ -618,7 +643,7 @@ def chain_samples_multithread(
             Path(d, fastq_filename) if fastq_filename is not None else None,
         )
 
-    _, count_info = read_count_info(count_filename, dirs, field_to_use)
+    count_info = read_count_info(count_filename, dirs, field_to_use)
 
     # some names may already start with "tmp_" which means they are intermediate results that have already been chained
     # find the first non "tmp_" and start from there

@@ -3,6 +3,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
+## [21.3.0] - 2021-?-?
+
+### Changed
+- `cupcake.tofu.get_abundance_post_collapse.get_abundance_post_collapse()` now takes the path to the group_file created by `collapse_isoforms_by_sam()` instead of a prefix (makes it better compatible with pipelines)
+- Removed `count_header` from the return values of 
+  `cupcake.tofu.counting.chain_samples.read_count_info()` as it was not being used
+- Update dependencies
+
 ## [21.2.8] - 2021-06-11
 
 ### Changed
