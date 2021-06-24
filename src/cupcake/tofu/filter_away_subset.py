@@ -25,7 +25,7 @@ import sys
 from collections import defaultdict
 from csv import DictReader, DictWriter
 from pathlib import Path
-from typing import Dict, Tuple
+from typing import Dict, Tuple, Optional
 
 import typer
 from Bio import SeqIO
@@ -37,41 +37,29 @@ from cupcake.tofu import compare_junctions
 app = typer.Typer(name="filer_away_subset")
 
 
-def sanity_check_collapse_input(input_prefix: str) -> Tuple[Path, Path, Path, str]:
+def sanity_check_collapse_input(
+    count_filename: Path, gff_filename: Path, rep_filename: Path, sample_directory: Path
+) -> None:
     """
     Check that
     1. the count, gff, rep files exist
     2. the number of records agree among the three
     """
     # group_filename = f"{input_prefix}.group.txt"
-    count_filename = Path(f"{input_prefix}.abundance.txt")
-    gff_filename = Path(f"{input_prefix}.gff")
-    rep_filenames = [
-        (f"{input_prefix}.rep.fq", "fastq"),
-        (f"{input_prefix}.rep.fastq", "fastq"),
-        (f"{input_prefix}.rep.fa", "fasta"),
-        (f"{input_prefix}.rep.fasta", "fasta"),
-    ]
 
-    rep_filename = None
-    rep_type = None
-    for x, filetype in rep_filenames:
-        if Path(x).exists():
-            rep_filename = Path(x)
-            rep_type = filetype
-
-    if rep_filename is None:
-        raise RuntimeError(
-            f"Expected to find input fasta or fastq files {input_prefix}.rep.fa or {input_prefix}.rep.fq. Not found. Abort!"
-        )
-
+    if not rep_filename.exists():
+        raise RuntimeError(f"Input sequence file {rep_filename.name} not found. Abort!")
     if not count_filename.exists():
-        raise RuntimeError(f"File {count_filename} does not exist. Abort!")
+        raise RuntimeError(f"File {count_filename.name} not found. Abort!")
     if not gff_filename.exists():
-        raise RuntimeError(f"File {gff_filename} does not exist. Abort!")
+        raise RuntimeError(f"File {gff_filename.name} not found. Abort!")
+    if not sample_directory.exists():
+        raise RuntimeError(f"The directory {sample_directory.name} not found. Abort!")
 
-    pbids1 = set([r.id for r in SeqIO.parse(open(rep_filename), rep_type)])
-    pbids2 = set([r.seqid for r in GFF.collapseGFFReader(gff_filename)])
+    rep_type = "fastq" if rep_filename.suffix in (".fq", ".fastq") else "fasta"
+
+    pbids1 = {r.id for r in SeqIO.parse(open(rep_filename), rep_type)}
+    pbids2 = {r.seqid for r in GFF.collapseGFFReader(gff_filename)}
     pbids3 = set(read_count_file(count_filename)[0].keys())
 
     if (
@@ -87,10 +75,10 @@ def sanity_check_collapse_input(input_prefix: str) -> Tuple[Path, Path, Path, st
         logger.error(f"# of PBIDs in {count_filename}: {len(pbids3)}")
         sys.exit(-1)
 
-    return count_filename, gff_filename, rep_filename, rep_type
+    return None
 
 
-def read_count_file(count_filename: Path) -> Tuple[Dict[str, str], str]:
+def read_count_file(count_filename: Path) -> Tuple[Dict[str, Dict[str, str]], str]:
     f = count_filename.open()
     count_header = ""
     while True:
@@ -103,7 +91,7 @@ def read_count_file(count_filename: Path) -> Tuple[Dict[str, str], str]:
             count_header += line
     d = {r["pbid"]: r for r in DictReader(f, delimiter="\t")}
     f.close()
-    return d, count_header
+    return (d, count_header)
 
 
 def can_merge(
@@ -139,10 +127,9 @@ def can_merge(
                 return (
                     abs(r1.ref_exons[0].end - r2.ref_exons[0].end)
                     <= internal_fuzzy_max_dist
-                    and r1.ref_exons[n2 - 1].start
-                    <= r2.ref_exons[-1].end
-                    < r1.ref_exons[n2].end
-                )
+                ) and r1.ref_exons[n2 - 1].start <= r2.ref_exons[-1].end < r1.ref_exons[
+                    n2
+                ].end
 
 
 def filter_out_subsets(
@@ -175,18 +162,38 @@ def filter_out_subsets(
 
 @app.command(name="")
 def main(
-    input_prefix: str = typer.Argument(
-        ..., help="Input prefix (ex: test.collapsed.min_fl_2)"
+    count_filename: Path = typer.Argument(
+        ..., help="Count file (generally ends with '.abundance.txt')"
+    ),
+    gff_filename: Path = typer.Argument(..., help="Annotation file"),
+    rep_filename: Path = typer.Argument(
+        ..., help="Sequence file (ends with '.fq', '.fastq', '.fa', or '.fasta')"
     ),
     fuzzy_junction: int = typer.Option(
         5, help="Fuzzy junction max dist (default: 5bp)"
     ),
+    sample_directory: Optional[Path] = typer.Option(
+        None,
+        help="Directory in which the sample data resides.  By default uses the directory from which the script was called",
+    ),
+    output_prefix: Optional[str] = typer.Option(
+        None, help="Prefix to use when naming the filtered files"
+    ),
 ) -> None:
 
-    output_prefix = f"{input_prefix}.filtered"
+    if not sample_directory:
+        sample_directory = Path.cwd()
 
-    count_filename, gff_filename, rep_filename, rep_type = sanity_check_collapse_input(
-        input_prefix
+    if output_prefix is None:
+        output_prefix = f"{gff_filename.stem}.filtered"
+
+    rep_type = "fastq" if rep_filename.suffix in (".fq", ".fastq") else "fasta"
+
+    sanity_check_collapse_input(
+        count_filename,
+        gff_filename,
+        rep_filename,
+        sample_directory,
     )
 
     recs = defaultdict(lambda: [])
@@ -211,7 +218,7 @@ def main(
 
     # write output rep.fq
     with open(
-        f"{output_prefix}.rep.{('fq' if rep_type == 'fastq' else 'a')}", "w"
+        f"{output_prefix}.rep.{('fq' if rep_type == 'fastq' else 'fa')}", "w"
     ) as f:
         for r in SeqIO.parse(open(rep_filename), rep_type):
             if r.name.split("|")[0] in good:

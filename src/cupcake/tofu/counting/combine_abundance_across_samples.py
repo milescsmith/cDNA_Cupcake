@@ -206,9 +206,9 @@ class MegaPBTree:
         #    pdb.set_trace()
         matches = self.tree[r.chr][r.strand].find(r.start, r.end)
         for r2 in matches:
-            r.segments = r.ref_exons    # the incoming entry
+            r.segments = r.ref_exons  # the incoming entry
             r2.segments = r2.ref_exons  # an existing entries in the tree
-            n1 = len(r.segments)        # how many exons?
+            n1 = len(r.segments)  # how many exons?
             n2 = len(r2.segments)
 
             three_end_is_match = (
@@ -218,7 +218,9 @@ class MegaPBTree:
             )  # either nothing, so whether the 3' ends "match" (within reason)
 
             last_junction_match = False
-            if n1 == 1:  # essentially, if there is just the one exon for both, assume they are the same
+            if (
+                n1 == 1
+            ):  # essentially, if there is just the one exon for both, assume they are the same
                 if n2 == 1:
                     last_junction_match = True
                 else:
@@ -255,15 +257,17 @@ class MegaPBTree:
                 b, a = r, r2
 
             # rearranged so that `compare_junctions` is run once, not twice
-            junct_compare = compare_junctions.compare_junctions(b, a, internal_fuzzy_max_dist=self.internal_fuzzy_max_dist)
+            junct_compare = compare_junctions.compare_junctions(
+                b, a, internal_fuzzy_max_dist=self.internal_fuzzy_max_dist
+            )
 
-            if (junct_compare == "exact"):  # is a match!
+            if junct_compare == "exact":  # is a match!
                 if three_end_is_match:
                     yield r2
             # check if the shorter one is a subset of the longer one
-            elif (self.allow_5merge):
+            elif self.allow_5merge:
                 # a is the longer one, b is the shorter one
-                if (junct_compare == "subset"):
+                if junct_compare == "subset":
                     # we only know that a is a subset of b, verify that it is actually 5' truncated (strand-sensitive!)
                     # if + strand, last junction of (a,b) should match and 3' end not too diff
                     # if - strand, first exon of a should match first exon of b AND the next exon don't overlap

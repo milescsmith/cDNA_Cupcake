@@ -2,8 +2,7 @@
 import shutil
 from distutils.command.build_ext import build_ext
 from distutils.core import Distribution, Extension
-from distutils.errors import (CCompilerError, DistutilsExecError,
-                              DistutilsPlatformError)
+from distutils.errors import CCompilerError, DistutilsExecError, DistutilsPlatformError
 from pathlib import Path
 
 import numpy as np
@@ -58,7 +57,12 @@ def build(setup_kwargs):
     This function is mandatory in order to build the extensions.
     """
     distribution = Distribution(
-        {"name": "src/cupcake", "ext_modules": cythonize(extensions, compiler_directives={'language_level': '3'})}
+        {
+            "name": "src/cupcake",
+            "ext_modules": cythonize(
+                extensions, compiler_directives={"language_level": "3"}
+            ),
+        }
     )
     distribution.package_dir = "cupcake"
 

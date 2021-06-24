@@ -3,11 +3,30 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
-## [21.3.0] - 2021-?-?
+## [21.4.0] - 2021-6-24
+
+### Changed
+- `cupcake.tofu.filter_away_subset.sanity_check_collapse_input()` now just checks
+  that the files are where the user says they are but still verifies their
+  records all match
+- `cupcake.tofu.filter_away_subset.main()` now requires the path
+  to the needed files be explicitly passed instead of inferring by use of a prefix
+  (needed for Nextflow pipeline)
+
+### Fixed
+- FASTA files written by - `cupcake.tofu.filter_away_subset.main()` now have
+  the correct ".fa" suffix
+
+### Added
+- pre-commit hooks
+- type checking/linting with pyre
+
+
+## [21.3.0] - 2021-06-23
 
 ### Changed
 - `cupcake.tofu.get_abundance_post_collapse.get_abundance_post_collapse()` now takes the path to the group_file created by `collapse_isoforms_by_sam()` instead of a prefix (makes it better compatible with pipelines)
-- Removed `count_header` from the return values of 
+- Removed `count_header` from the return values of
   `cupcake.tofu.counting.chain_samples.read_count_info()` as it was not being used
 - Update dependencies
 
@@ -41,7 +60,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Changed
 - Removed all dev dependencies because I cannot figure out how to get a module that
-  relies on cupcake to ignore them on installation (ipython was killing my 
+  relies on cupcake to ignore them on installation (ipython was killing my
   SQANTI3 docker build times)
 
 ## [21.2.2] - 2021-05-10
@@ -65,21 +84,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [21.2.0] - 2021-05-07
 
 ### Added
-- Added `OpenFile` class, an enhanced version of the standard `open` function 
+- Added `OpenFile` class, an enhanced version of the standard `open` function
   that (should) transparently handle (b)gzipped files.  Currently only used
   when reading FASTA/FASTQ files.
 
 ## [21.1.1] - 2021-04-15
 
 ### Fixed
-- Hotfix to allow `fa2fq` and `fq2fa` to correctly accept files with an 
+- Hotfix to allow `fa2fq` and `fq2fa` to correctly accept files with an
   `.fa` and `.fq` extension
 
 
 ## [21.1.0] - 2021-04-15
 
 ### Added
-- added `fa2fq`, `fq2fa`, `get_seq_stats`, `rev_comp`, `get_seqs_from_list`, 
+- added `fa2fq`, `fq2fa`, `get_seq_stats`, `rev_comp`, `get_seqs_from_list`,
   `err_correct_w_genome`, and `group_ORF_sequences` to the list of scripts
 
 ## [21.0.6] - 2021-04-15
@@ -87,7 +106,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Changed
 - Removed pbcore, pbcoretools, and pbcommand from the list of dependencies as
   they were not being used.
-  
+
 ## [21.0.5] - 2021-04-07
 
 ### Fixed
@@ -143,7 +162,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [19.1.1] - 2021-03-01
 
 ### Changed
-- Most changes in cupcake.tofu.counting.chain_samples and 
+- Most changes in cupcake.tofu.counting.chain_samples and
   cupcake.tofu.counting.chain_fusion_samples
   - Replaced argparse with typer
   - os.path with pathlib.Path
@@ -175,6 +194,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Reformmated to follow PEP517 - that is, replaced setup.py with pyproject.toml and build.py
 - Now using Poetry for dependency managment
 
+[21.2.8]: https://github.com/milescsmith/cDNA_Cupcake/compare/21.3.0...21.4.0
+[21.2.8]: https://github.com/milescsmith/cDNA_Cupcake/compare/21.2.8...21.3.0
 [21.2.8]: https://github.com/milescsmith/cDNA_Cupcake/compare/21.2.7...21.2.8
 [21.2.7]: https://github.com/milescsmith/cDNA_Cupcake/compare/21.2.6...21.2.7
 [21.2.6]: https://github.com/milescsmith/cDNA_Cupcake/compare/21.2.5...21.2.6

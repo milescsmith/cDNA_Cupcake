@@ -844,8 +844,8 @@ struct __pyx_opt_args_7cupcake_4tofu_6branch_19intersection_unique_18IntervalNod
 struct __pyx_opt_args_7cupcake_4tofu_6branch_19intersection_unique_18IntervalNodeUnique_right;
 
 /* "cupcake/tofu/branch/intersection_unique.pyx":322
- * 
- * 
+ *
+ *
  *     cpdef left(self, position, int n=1, int max_dist=2500):             # <<<<<<<<<<<<<<
  *         """
  *         find n features with a start > than `position`
@@ -858,7 +858,7 @@ struct __pyx_opt_args_7cupcake_4tofu_6branch_19intersection_unique_18IntervalNod
 
 /* "cupcake/tofu/branch/intersection_unique.pyx":337
  *         return r[:n]
- * 
+ *
  *     cpdef right(self, position, int n=1, int max_dist=2500):             # <<<<<<<<<<<<<<
  *         """
  *         find n features with a end < than position
@@ -871,7 +871,7 @@ struct __pyx_opt_args_7cupcake_4tofu_6branch_19intersection_unique_18IntervalNod
 
 /* "cupcake/tofu/branch/intersection_unique.pyx":61
  * cdef float nlog = -1.0 / log(0.5)
- * 
+ *
  * cdef class IntervalNodeUnique:             # <<<<<<<<<<<<<<
  *     """
  *     A single node of an `IntervalTreeUnique`.
@@ -894,7 +894,7 @@ struct __pyx_obj_7cupcake_4tofu_6branch_19intersection_unique_IntervalNodeUnique
 
 /* "cupcake/tofu/branch/intersection_unique.pyx":371
  * ## ---- Wrappers that retain the old interface -------------------------------
- * 
+ *
  * cdef class Interval:             # <<<<<<<<<<<<<<
  *     """
  *     Basic feature, with required integer start and end properties.
@@ -911,7 +911,7 @@ struct __pyx_obj_7cupcake_4tofu_6branch_19intersection_unique_Interval {
 
 /* "cupcake/tofu/branch/intersection_unique.pyx":423
  *             return self == other or self > other
- * 
+ *
  * cdef class IntervalTreeUnique:             # <<<<<<<<<<<<<<
  *     """
  *     Data structure for performing window intersect queries on a set of
@@ -925,7 +925,7 @@ struct __pyx_obj_7cupcake_4tofu_6branch_19intersection_unique_IntervalTreeUnique
 
 /* "cupcake/tofu/branch/intersection_unique.pyx":61
  * cdef float nlog = -1.0 / log(0.5)
- * 
+ *
  * cdef class IntervalNodeUnique:             # <<<<<<<<<<<<<<
  *     """
  *     A single node of an `IntervalTreeUnique`.
@@ -1692,7 +1692,7 @@ static PyObject *__pyx_codeobj__15;
 
 /* "cupcake/tofu/branch/intersection_unique.pyx":33
  *     int iabs(int)
- * 
+ *
  * cdef inline int imax2(int a, int b):             # <<<<<<<<<<<<<<
  *     if b > a: return b
  *     return a
@@ -1705,11 +1705,11 @@ static CYTHON_INLINE int __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_im
   __Pyx_RefNannySetupContext("imax2", 0);
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":34
- * 
+ *
  * cdef inline int imax2(int a, int b):
  *     if b > a: return b             # <<<<<<<<<<<<<<
  *     return a
- * 
+ *
  */
   __pyx_t_1 = ((__pyx_v_b > __pyx_v_a) != 0);
   if (__pyx_t_1) {
@@ -1721,7 +1721,7 @@ static CYTHON_INLINE int __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_im
  * cdef inline int imax2(int a, int b):
  *     if b > a: return b
  *     return a             # <<<<<<<<<<<<<<
- * 
+ *
  * cdef inline int imax3(int a, int b, int c):
  */
   __pyx_r = __pyx_v_a;
@@ -1729,7 +1729,7 @@ static CYTHON_INLINE int __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_im
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":33
  *     int iabs(int)
- * 
+ *
  * cdef inline int imax2(int a, int b):             # <<<<<<<<<<<<<<
  *     if b > a: return b
  *     return a
@@ -1743,7 +1743,7 @@ static CYTHON_INLINE int __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_im
 
 /* "cupcake/tofu/branch/intersection_unique.pyx":37
  *     return a
- * 
+ *
  * cdef inline int imax3(int a, int b, int c):             # <<<<<<<<<<<<<<
  *     if b > a:
  *         if c > b:
@@ -1756,7 +1756,7 @@ static CYTHON_INLINE int __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_im
   __Pyx_RefNannySetupContext("imax3", 0);
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":38
- * 
+ *
  * cdef inline int imax3(int a, int b, int c):
  *     if b > a:             # <<<<<<<<<<<<<<
  *         if c > b:
@@ -1805,7 +1805,7 @@ static CYTHON_INLINE int __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_im
     goto __pyx_L0;
 
     /* "cupcake/tofu/branch/intersection_unique.pyx":38
- * 
+ *
  * cdef inline int imax3(int a, int b, int c):
  *     if b > a:             # <<<<<<<<<<<<<<
  *         if c > b:
@@ -1828,7 +1828,7 @@ static CYTHON_INLINE int __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_im
  *     if a > c:
  *         return a             # <<<<<<<<<<<<<<
  *     return c
- * 
+ *
  */
     __pyx_r = __pyx_v_a;
     goto __pyx_L0;
@@ -1846,7 +1846,7 @@ static CYTHON_INLINE int __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_im
  *     if a > c:
  *         return a
  *     return c             # <<<<<<<<<<<<<<
- * 
+ *
  * cdef inline int imin3(int a, int b, int c):
  */
   __pyx_r = __pyx_v_c;
@@ -1854,7 +1854,7 @@ static CYTHON_INLINE int __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_im
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":37
  *     return a
- * 
+ *
  * cdef inline int imax3(int a, int b, int c):             # <<<<<<<<<<<<<<
  *     if b > a:
  *         if c > b:
@@ -1868,7 +1868,7 @@ static CYTHON_INLINE int __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_im
 
 /* "cupcake/tofu/branch/intersection_unique.pyx":46
  *     return c
- * 
+ *
  * cdef inline int imin3(int a, int b, int c):             # <<<<<<<<<<<<<<
  *     if b < a:
  *         if c < b:
@@ -1881,7 +1881,7 @@ static CYTHON_INLINE int __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_im
   __Pyx_RefNannySetupContext("imin3", 0);
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":47
- * 
+ *
  * cdef inline int imin3(int a, int b, int c):
  *     if b < a:             # <<<<<<<<<<<<<<
  *         if c < b:
@@ -1930,7 +1930,7 @@ static CYTHON_INLINE int __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_im
     goto __pyx_L0;
 
     /* "cupcake/tofu/branch/intersection_unique.pyx":47
- * 
+ *
  * cdef inline int imin3(int a, int b, int c):
  *     if b < a:             # <<<<<<<<<<<<<<
  *         if c < b:
@@ -1953,7 +1953,7 @@ static CYTHON_INLINE int __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_im
  *     if a < c:
  *         return a             # <<<<<<<<<<<<<<
  *     return c
- * 
+ *
  */
     __pyx_r = __pyx_v_a;
     goto __pyx_L0;
@@ -1971,7 +1971,7 @@ static CYTHON_INLINE int __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_im
  *     if a < c:
  *         return a
  *     return c             # <<<<<<<<<<<<<<
- * 
+ *
  * cdef inline int imin2(int a, int b):
  */
   __pyx_r = __pyx_v_c;
@@ -1979,7 +1979,7 @@ static CYTHON_INLINE int __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_im
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":46
  *     return c
- * 
+ *
  * cdef inline int imin3(int a, int b, int c):             # <<<<<<<<<<<<<<
  *     if b < a:
  *         if c < b:
@@ -1993,7 +1993,7 @@ static CYTHON_INLINE int __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_im
 
 /* "cupcake/tofu/branch/intersection_unique.pyx":55
  *     return c
- * 
+ *
  * cdef inline int imin2(int a, int b):             # <<<<<<<<<<<<<<
  *     if b < a: return b
  *     return a
@@ -2006,11 +2006,11 @@ static CYTHON_INLINE int __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_im
   __Pyx_RefNannySetupContext("imin2", 0);
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":56
- * 
+ *
  * cdef inline int imin2(int a, int b):
  *     if b < a: return b             # <<<<<<<<<<<<<<
  *     return a
- * 
+ *
  */
   __pyx_t_1 = ((__pyx_v_b < __pyx_v_a) != 0);
   if (__pyx_t_1) {
@@ -2022,7 +2022,7 @@ static CYTHON_INLINE int __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_im
  * cdef inline int imin2(int a, int b):
  *     if b < a: return b
  *     return a             # <<<<<<<<<<<<<<
- * 
+ *
  * cdef float nlog = -1.0 / log(0.5)
  */
   __pyx_r = __pyx_v_a;
@@ -2030,7 +2030,7 @@ static CYTHON_INLINE int __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_im
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":55
  *     return c
- * 
+ *
  * cdef inline int imin2(int a, int b):             # <<<<<<<<<<<<<<
  *     if b < a: return b
  *     return a
@@ -2043,7 +2043,7 @@ static CYTHON_INLINE int __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_im
 }
 
 /* "cupcake/tofu/branch/intersection_unique.pyx":75
- * 
+ *
  *     property left_node:
  *         def __get__(self):             # <<<<<<<<<<<<<<
  *             return self.cleft if self.cleft is not EmptyNode else None
@@ -2091,7 +2091,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
   goto __pyx_L0;
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":75
- * 
+ *
  *     property left_node:
  *         def __get__(self):             # <<<<<<<<<<<<<<
  *             return self.cleft if self.cleft is not EmptyNode else None
@@ -2173,7 +2173,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
  *     property root_node:
  *         def __get__(self):             # <<<<<<<<<<<<<<
  *             return self.croot if self.croot is not EmptyNode else None
- * 
+ *
  */
 
 /* Python wrapper */
@@ -2200,7 +2200,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
  *     property root_node:
  *         def __get__(self):
  *             return self.croot if self.croot is not EmptyNode else None             # <<<<<<<<<<<<<<
- * 
+ *
  *     def __repr__(self):
  */
   __Pyx_XDECREF(__pyx_r);
@@ -2221,7 +2221,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
  *     property root_node:
  *         def __get__(self):             # <<<<<<<<<<<<<<
  *             return self.croot if self.croot is not EmptyNode else None
- * 
+ *
  */
 
   /* function exit code */
@@ -2233,10 +2233,10 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
 
 /* "cupcake/tofu/branch/intersection_unique.pyx":84
  *             return self.croot if self.croot is not EmptyNode else None
- * 
+ *
  *     def __repr__(self):             # <<<<<<<<<<<<<<
  *         return "IntervalNodeUnique(%i, %i)" % (self.start, self.end)
- * 
+ *
  */
 
 /* Python wrapper */
@@ -2264,10 +2264,10 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
   __Pyx_RefNannySetupContext("__repr__", 0);
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":85
- * 
+ *
  *     def __repr__(self):
  *         return "IntervalNodeUnique(%i, %i)" % (self.start, self.end)             # <<<<<<<<<<<<<<
- * 
+ *
  *     def __cinit__(IntervalNodeUnique self, int start, int end, object interval):
  */
   __Pyx_XDECREF(__pyx_r);
@@ -2292,10 +2292,10 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":84
  *             return self.croot if self.croot is not EmptyNode else None
- * 
+ *
  *     def __repr__(self):             # <<<<<<<<<<<<<<
  *         return "IntervalNodeUnique(%i, %i)" % (self.start, self.end)
- * 
+ *
  */
 
   /* function exit code */
@@ -2313,7 +2313,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
 
 /* "cupcake/tofu/branch/intersection_unique.pyx":87
  *         return "IntervalNodeUnique(%i, %i)" % (self.start, self.end)
- * 
+ *
  *     def __cinit__(IntervalNodeUnique self, int start, int end, object interval):             # <<<<<<<<<<<<<<
  *         # Python lacks the binomial distribution, so we convert a
  *         # uniform into a binomial because it naturally scales with
@@ -2499,7 +2499,7 @@ static int __pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18IntervalNodeU
  *         self.cleft    = EmptyNode
  *         self.cright   = EmptyNode             # <<<<<<<<<<<<<<
  *         self.croot    = EmptyNode
- * 
+ *
  */
   __Pyx_INCREF(((PyObject *)__pyx_v_7cupcake_4tofu_6branch_19intersection_unique_EmptyNode));
   __Pyx_GIVEREF(((PyObject *)__pyx_v_7cupcake_4tofu_6branch_19intersection_unique_EmptyNode));
@@ -2511,7 +2511,7 @@ static int __pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18IntervalNodeU
  *         self.cleft    = EmptyNode
  *         self.cright   = EmptyNode
  *         self.croot    = EmptyNode             # <<<<<<<<<<<<<<
- * 
+ *
  *     cpdef IntervalNodeUnique insert(IntervalNodeUnique self, int start, int end, object interval):
  */
   __Pyx_INCREF(((PyObject *)__pyx_v_7cupcake_4tofu_6branch_19intersection_unique_EmptyNode));
@@ -2522,7 +2522,7 @@ static int __pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18IntervalNodeU
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":87
  *         return "IntervalNodeUnique(%i, %i)" % (self.start, self.end)
- * 
+ *
  *     def __cinit__(IntervalNodeUnique self, int start, int end, object interval):             # <<<<<<<<<<<<<<
  *         # Python lacks the binomial distribution, so we convert a
  *         # uniform into a binomial because it naturally scales with
@@ -2541,7 +2541,7 @@ static int __pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18IntervalNodeU
 
 /* "cupcake/tofu/branch/intersection_unique.pyx":103
  *         self.croot    = EmptyNode
- * 
+ *
  *     cpdef IntervalNodeUnique insert(IntervalNodeUnique self, int start, int end, object interval):             # <<<<<<<<<<<<<<
  *         """
  *         Insert a new IntervalNodeUnique into the tree of which this node is
@@ -2680,7 +2680,7 @@ static struct __pyx_obj_7cupcake_4tofu_6branch_19intersection_unique_IntervalNod
  *         cdef int decision_endpoint = start
  *         if start == self.start:             # <<<<<<<<<<<<<<
  *             decision_endpoint = end
- * 
+ *
  */
   __pyx_t_9 = ((__pyx_v_start == __pyx_v_self->start) != 0);
   if (__pyx_t_9) {
@@ -2689,7 +2689,7 @@ static struct __pyx_obj_7cupcake_4tofu_6branch_19intersection_unique_IntervalNod
  *         cdef int decision_endpoint = start
  *         if start == self.start:
  *             decision_endpoint = end             # <<<<<<<<<<<<<<
- * 
+ *
  *         if start > self.start or (start==self.start and end > self.end):
  */
     __pyx_v_decision_endpoint = __pyx_v_end;
@@ -2699,13 +2699,13 @@ static struct __pyx_obj_7cupcake_4tofu_6branch_19intersection_unique_IntervalNod
  *         cdef int decision_endpoint = start
  *         if start == self.start:             # <<<<<<<<<<<<<<
  *             decision_endpoint = end
- * 
+ *
  */
   }
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":116
  *             decision_endpoint = end
- * 
+ *
  *         if start > self.start or (start==self.start and end > self.end):             # <<<<<<<<<<<<<<
  *         #if decision_endpoint > self.start:
  *             # insert to cright tree
@@ -2830,7 +2830,7 @@ static struct __pyx_obj_7cupcake_4tofu_6branch_19intersection_unique_IntervalNod
 
     /* "cupcake/tofu/branch/intersection_unique.pyx":116
  *             decision_endpoint = end
- * 
+ *
  *         if start > self.start or (start==self.start and end > self.end):             # <<<<<<<<<<<<<<
  *         #if decision_endpoint > self.start:
  *             # insert to cright tree
@@ -2914,7 +2914,7 @@ static struct __pyx_obj_7cupcake_4tofu_6branch_19intersection_unique_IntervalNod
  *             # rebalance tree
  *             if self.priority < self.cleft.priority:             # <<<<<<<<<<<<<<
  *                 croot = self.rotate_right()
- * 
+ *
  */
     __pyx_t_9 = ((__pyx_v_self->priority < __pyx_v_self->cleft->priority) != 0);
     if (__pyx_t_9) {
@@ -2923,7 +2923,7 @@ static struct __pyx_obj_7cupcake_4tofu_6branch_19intersection_unique_IntervalNod
  *             # rebalance tree
  *             if self.priority < self.cleft.priority:
  *                 croot = self.rotate_right()             # <<<<<<<<<<<<<<
- * 
+ *
  *         croot.set_ends()
  */
       __pyx_t_5 = ((PyObject *)((struct __pyx_vtabstruct_7cupcake_4tofu_6branch_19intersection_unique_IntervalNodeUnique *)__pyx_v_self->__pyx_vtab)->rotate_right(__pyx_v_self)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 134, __pyx_L1_error)
@@ -2936,7 +2936,7 @@ static struct __pyx_obj_7cupcake_4tofu_6branch_19intersection_unique_IntervalNod
  *             # rebalance tree
  *             if self.priority < self.cleft.priority:             # <<<<<<<<<<<<<<
  *                 croot = self.rotate_right()
- * 
+ *
  */
     }
   }
@@ -2944,7 +2944,7 @@ static struct __pyx_obj_7cupcake_4tofu_6branch_19intersection_unique_IntervalNod
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":136
  *                 croot = self.rotate_right()
- * 
+ *
  *         croot.set_ends()             # <<<<<<<<<<<<<<
  *         self.cleft.croot  = croot
  *         self.cright.croot = croot
@@ -2952,7 +2952,7 @@ static struct __pyx_obj_7cupcake_4tofu_6branch_19intersection_unique_IntervalNod
   __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_18IntervalNodeUnique_set_ends(__pyx_v_croot);
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":137
- * 
+ *
  *         croot.set_ends()
  *         self.cleft.croot  = croot             # <<<<<<<<<<<<<<
  *         self.cright.croot = croot
@@ -2969,7 +2969,7 @@ static struct __pyx_obj_7cupcake_4tofu_6branch_19intersection_unique_IntervalNod
  *         self.cleft.croot  = croot
  *         self.cright.croot = croot             # <<<<<<<<<<<<<<
  *         return croot
- * 
+ *
  */
   __Pyx_INCREF(((PyObject *)__pyx_v_croot));
   __Pyx_GIVEREF(((PyObject *)__pyx_v_croot));
@@ -2981,7 +2981,7 @@ static struct __pyx_obj_7cupcake_4tofu_6branch_19intersection_unique_IntervalNod
  *         self.cleft.croot  = croot
  *         self.cright.croot = croot
  *         return croot             # <<<<<<<<<<<<<<
- * 
+ *
  *     cpdef IntervalNodeUnique uproot_smallest_successor(IntervalNodeUnique self, IntervalNodeUnique parent):
  */
   __Pyx_XDECREF(((PyObject *)__pyx_r));
@@ -2991,7 +2991,7 @@ static struct __pyx_obj_7cupcake_4tofu_6branch_19intersection_unique_IntervalNod
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":103
  *         self.croot    = EmptyNode
- * 
+ *
  *     cpdef IntervalNodeUnique insert(IntervalNodeUnique self, int start, int end, object interval):             # <<<<<<<<<<<<<<
  *         """
  *         Insert a new IntervalNodeUnique into the tree of which this node is
@@ -3119,7 +3119,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
 
 /* "cupcake/tofu/branch/intersection_unique.pyx":141
  *         return croot
- * 
+ *
  *     cpdef IntervalNodeUnique uproot_smallest_successor(IntervalNodeUnique self, IntervalNodeUnique parent):             # <<<<<<<<<<<<<<
  *         cdef IntervalNodeUnique a = self
  *         if self.cleft is EmptyNode:
@@ -3189,7 +3189,7 @@ static struct __pyx_obj_7cupcake_4tofu_6branch_19intersection_unique_IntervalNod
   }
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":142
- * 
+ *
  *     cpdef IntervalNodeUnique uproot_smallest_successor(IntervalNodeUnique self, IntervalNodeUnique parent):
  *         cdef IntervalNodeUnique a = self             # <<<<<<<<<<<<<<
  *         if self.cleft is EmptyNode:
@@ -3263,7 +3263,7 @@ static struct __pyx_obj_7cupcake_4tofu_6branch_19intersection_unique_IntervalNod
  *             a = self.cleft.uproot_smallest_successor(self)
  *             self.set_ends()             # <<<<<<<<<<<<<<
  *             return a
- * 
+ *
  */
     __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_18IntervalNodeUnique_set_ends(__pyx_v_self);
 
@@ -3271,7 +3271,7 @@ static struct __pyx_obj_7cupcake_4tofu_6branch_19intersection_unique_IntervalNod
  *             a = self.cleft.uproot_smallest_successor(self)
  *             self.set_ends()
  *             return a             # <<<<<<<<<<<<<<
- * 
+ *
  *     cpdef IntervalNodeUnique uproot_smallest_predecessor(IntervalNodeUnique self, IntervalNodeUnique parent):
  */
     __Pyx_XDECREF(((PyObject *)__pyx_r));
@@ -3282,7 +3282,7 @@ static struct __pyx_obj_7cupcake_4tofu_6branch_19intersection_unique_IntervalNod
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":141
  *         return croot
- * 
+ *
  *     cpdef IntervalNodeUnique uproot_smallest_successor(IntervalNodeUnique self, IntervalNodeUnique parent):             # <<<<<<<<<<<<<<
  *         cdef IntervalNodeUnique a = self
  *         if self.cleft is EmptyNode:
@@ -3352,7 +3352,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
 
 /* "cupcake/tofu/branch/intersection_unique.pyx":151
  *             return a
- * 
+ *
  *     cpdef IntervalNodeUnique uproot_smallest_predecessor(IntervalNodeUnique self, IntervalNodeUnique parent):             # <<<<<<<<<<<<<<
  *         cdef IntervalNodeUnique a = self
  *         if self.cright is EmptyNode:
@@ -3422,7 +3422,7 @@ static struct __pyx_obj_7cupcake_4tofu_6branch_19intersection_unique_IntervalNod
   }
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":152
- * 
+ *
  *     cpdef IntervalNodeUnique uproot_smallest_predecessor(IntervalNodeUnique self, IntervalNodeUnique parent):
  *         cdef IntervalNodeUnique a = self             # <<<<<<<<<<<<<<
  *         if self.cright is EmptyNode:
@@ -3496,7 +3496,7 @@ static struct __pyx_obj_7cupcake_4tofu_6branch_19intersection_unique_IntervalNod
  *             a = self.cright.uproot_smallest_predecessor(self)
  *             self.set_ends()             # <<<<<<<<<<<<<<
  *             return a
- * 
+ *
  */
     __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_18IntervalNodeUnique_set_ends(__pyx_v_self);
 
@@ -3504,7 +3504,7 @@ static struct __pyx_obj_7cupcake_4tofu_6branch_19intersection_unique_IntervalNod
  *             a = self.cright.uproot_smallest_predecessor(self)
  *             self.set_ends()
  *             return a             # <<<<<<<<<<<<<<
- * 
+ *
  *     #cpdef IntervalNodeUnique find_smallest_predecessor(IntervalNodeUnique self, IntervalNodeUnique parent):
  */
     __Pyx_XDECREF(((PyObject *)__pyx_r));
@@ -3515,7 +3515,7 @@ static struct __pyx_obj_7cupcake_4tofu_6branch_19intersection_unique_IntervalNod
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":151
  *             return a
- * 
+ *
  *     cpdef IntervalNodeUnique uproot_smallest_predecessor(IntervalNodeUnique self, IntervalNodeUnique parent):             # <<<<<<<<<<<<<<
  *         cdef IntervalNodeUnique a = self
  *         if self.cright is EmptyNode:
@@ -3585,7 +3585,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
 
 /* "cupcake/tofu/branch/intersection_unique.pyx":168
  *     #    return parent
- * 
+ *
  *     cpdef IntervalNodeUnique delete_node(IntervalNodeUnique self, int start, int end):             # <<<<<<<<<<<<<<
  *         cdef IntervalNodeUnique croot = self
  *         cdef int decision_endpoint = start
@@ -3701,7 +3701,7 @@ static struct __pyx_obj_7cupcake_4tofu_6branch_19intersection_unique_IntervalNod
   }
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":169
- * 
+ *
  *     cpdef IntervalNodeUnique delete_node(IntervalNodeUnique self, int start, int end):
  *         cdef IntervalNodeUnique croot = self             # <<<<<<<<<<<<<<
  *         cdef int decision_endpoint = start
@@ -4431,7 +4431,7 @@ static struct __pyx_obj_7cupcake_4tofu_6branch_19intersection_unique_IntervalNod
  *                 self.cleft.set_ends()
  *         self.set_ends()             # <<<<<<<<<<<<<<
  *         return croot
- * 
+ *
  */
   __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_18IntervalNodeUnique_set_ends(__pyx_v_self);
 
@@ -4439,7 +4439,7 @@ static struct __pyx_obj_7cupcake_4tofu_6branch_19intersection_unique_IntervalNod
  *                 self.cleft.set_ends()
  *         self.set_ends()
  *         return croot             # <<<<<<<<<<<<<<
- * 
+ *
  *     cdef IntervalNodeUnique rotate_right(IntervalNodeUnique self):
  */
   __Pyx_XDECREF(((PyObject *)__pyx_r));
@@ -4449,7 +4449,7 @@ static struct __pyx_obj_7cupcake_4tofu_6branch_19intersection_unique_IntervalNod
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":168
  *     #    return parent
- * 
+ *
  *     cpdef IntervalNodeUnique delete_node(IntervalNodeUnique self, int start, int end):             # <<<<<<<<<<<<<<
  *         cdef IntervalNodeUnique croot = self
  *         cdef int decision_endpoint = start
@@ -4566,7 +4566,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
 
 /* "cupcake/tofu/branch/intersection_unique.pyx":230
  *         return croot
- * 
+ *
  *     cdef IntervalNodeUnique rotate_right(IntervalNodeUnique self):             # <<<<<<<<<<<<<<
  *         cdef IntervalNodeUnique croot = self.cleft
  *         self.cleft  = self.cleft.cright
@@ -4580,7 +4580,7 @@ static struct __pyx_obj_7cupcake_4tofu_6branch_19intersection_unique_IntervalNod
   __Pyx_RefNannySetupContext("rotate_right", 0);
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":231
- * 
+ *
  *     cdef IntervalNodeUnique rotate_right(IntervalNodeUnique self):
  *         cdef IntervalNodeUnique croot = self.cleft             # <<<<<<<<<<<<<<
  *         self.cleft  = self.cleft.cright
@@ -4624,7 +4624,7 @@ static struct __pyx_obj_7cupcake_4tofu_6branch_19intersection_unique_IntervalNod
  *         croot.cright = self
  *         self.set_ends()             # <<<<<<<<<<<<<<
  *         return croot
- * 
+ *
  */
   __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_18IntervalNodeUnique_set_ends(__pyx_v_self);
 
@@ -4632,7 +4632,7 @@ static struct __pyx_obj_7cupcake_4tofu_6branch_19intersection_unique_IntervalNod
  *         croot.cright = self
  *         self.set_ends()
  *         return croot             # <<<<<<<<<<<<<<
- * 
+ *
  *     cdef IntervalNodeUnique rotate_left(IntervalNodeUnique self):
  */
   __Pyx_XDECREF(((PyObject *)__pyx_r));
@@ -4642,7 +4642,7 @@ static struct __pyx_obj_7cupcake_4tofu_6branch_19intersection_unique_IntervalNod
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":230
  *         return croot
- * 
+ *
  *     cdef IntervalNodeUnique rotate_right(IntervalNodeUnique self):             # <<<<<<<<<<<<<<
  *         cdef IntervalNodeUnique croot = self.cleft
  *         self.cleft  = self.cleft.cright
@@ -4658,7 +4658,7 @@ static struct __pyx_obj_7cupcake_4tofu_6branch_19intersection_unique_IntervalNod
 
 /* "cupcake/tofu/branch/intersection_unique.pyx":237
  *         return croot
- * 
+ *
  *     cdef IntervalNodeUnique rotate_left(IntervalNodeUnique self):             # <<<<<<<<<<<<<<
  *         cdef IntervalNodeUnique croot = self.cright
  *         self.cright = self.cright.cleft
@@ -4672,7 +4672,7 @@ static struct __pyx_obj_7cupcake_4tofu_6branch_19intersection_unique_IntervalNod
   __Pyx_RefNannySetupContext("rotate_left", 0);
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":238
- * 
+ *
  *     cdef IntervalNodeUnique rotate_left(IntervalNodeUnique self):
  *         cdef IntervalNodeUnique croot = self.cright             # <<<<<<<<<<<<<<
  *         self.cright = self.cright.cleft
@@ -4716,7 +4716,7 @@ static struct __pyx_obj_7cupcake_4tofu_6branch_19intersection_unique_IntervalNod
  *         croot.cleft  = self
  *         self.set_ends()             # <<<<<<<<<<<<<<
  *         return croot
- * 
+ *
  */
   __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_18IntervalNodeUnique_set_ends(__pyx_v_self);
 
@@ -4724,7 +4724,7 @@ static struct __pyx_obj_7cupcake_4tofu_6branch_19intersection_unique_IntervalNod
  *         croot.cleft  = self
  *         self.set_ends()
  *         return croot             # <<<<<<<<<<<<<<
- * 
+ *
  *     cdef inline void set_ends(IntervalNodeUnique self):
  */
   __Pyx_XDECREF(((PyObject *)__pyx_r));
@@ -4734,7 +4734,7 @@ static struct __pyx_obj_7cupcake_4tofu_6branch_19intersection_unique_IntervalNod
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":237
  *         return croot
- * 
+ *
  *     cdef IntervalNodeUnique rotate_left(IntervalNodeUnique self):             # <<<<<<<<<<<<<<
  *         cdef IntervalNodeUnique croot = self.cright
  *         self.cright = self.cright.cleft
@@ -4750,7 +4750,7 @@ static struct __pyx_obj_7cupcake_4tofu_6branch_19intersection_unique_IntervalNod
 
 /* "cupcake/tofu/branch/intersection_unique.pyx":244
  *         return croot
- * 
+ *
  *     cdef inline void set_ends(IntervalNodeUnique self):             # <<<<<<<<<<<<<<
  *         if self.cright is not EmptyNode and self.cleft is not EmptyNode:
  *             self.maxend = imax3(self.end, self.cright.maxend, self.cleft.maxend)
@@ -4764,7 +4764,7 @@ static CYTHON_INLINE void __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_1
   __Pyx_RefNannySetupContext("set_ends", 0);
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":245
- * 
+ *
  *     cdef inline void set_ends(IntervalNodeUnique self):
  *         if self.cright is not EmptyNode and self.cleft is not EmptyNode:             # <<<<<<<<<<<<<<
  *             self.maxend = imax3(self.end, self.cright.maxend, self.cleft.maxend)
@@ -4811,7 +4811,7 @@ static CYTHON_INLINE void __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_1
     __pyx_v_self->minstart = __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_imin3(__pyx_v_self->start, __pyx_v_self->cright->minstart, __pyx_v_self->cleft->minstart);
 
     /* "cupcake/tofu/branch/intersection_unique.pyx":245
- * 
+ *
  *     cdef inline void set_ends(IntervalNodeUnique self):
  *         if self.cright is not EmptyNode and self.cleft is not EmptyNode:             # <<<<<<<<<<<<<<
  *             self.maxend = imax3(self.end, self.cright.maxend, self.cleft.maxend)
@@ -4893,7 +4893,7 @@ static CYTHON_INLINE void __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_1
  *             self.maxend = imax2(self.end, self.cleft.maxend)
  *             self.minend = imin2(self.end, self.cleft.minend)             # <<<<<<<<<<<<<<
  *             self.minstart = imin2(self.start, self.cleft.minstart)
- * 
+ *
  */
     __pyx_v_self->minend = __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_imin2(__pyx_v_self->end, __pyx_v_self->cleft->minend);
 
@@ -4901,8 +4901,8 @@ static CYTHON_INLINE void __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_1
  *             self.maxend = imax2(self.end, self.cleft.maxend)
  *             self.minend = imin2(self.end, self.cleft.minend)
  *             self.minstart = imin2(self.start, self.cleft.minstart)             # <<<<<<<<<<<<<<
- * 
- * 
+ *
+ *
  */
     __pyx_v_self->minstart = __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_imin2(__pyx_v_self->start, __pyx_v_self->cleft->minstart);
 
@@ -4918,7 +4918,7 @@ static CYTHON_INLINE void __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_1
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":244
  *         return croot
- * 
+ *
  *     cdef inline void set_ends(IntervalNodeUnique self):             # <<<<<<<<<<<<<<
  *         if self.cright is not EmptyNode and self.cleft is not EmptyNode:
  *             self.maxend = imax3(self.end, self.cright.maxend, self.cleft.maxend)
@@ -4929,8 +4929,8 @@ static CYTHON_INLINE void __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_1
 }
 
 /* "cupcake/tofu/branch/intersection_unique.pyx":259
- * 
- * 
+ *
+ *
  *     def intersect( self, int start, int end, sort=True ):             # <<<<<<<<<<<<<<
  *         """
  *         given a start and a end, return a list of features
@@ -5043,7 +5043,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
  *         cdef list results = []
  *         self._intersect( start, end, results )             # <<<<<<<<<<<<<<
  *         return results
- * 
+ *
  */
   ((struct __pyx_vtabstruct_7cupcake_4tofu_6branch_19intersection_unique_IntervalNodeUnique *)__pyx_v_self->__pyx_vtab)->_intersect(__pyx_v_self, __pyx_v_start, __pyx_v_end, __pyx_v_results);
 
@@ -5051,7 +5051,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
  *         cdef list results = []
  *         self._intersect( start, end, results )
  *         return results             # <<<<<<<<<<<<<<
- * 
+ *
  *     find = intersect
  */
   __Pyx_XDECREF(__pyx_r);
@@ -5060,8 +5060,8 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
   goto __pyx_L0;
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":259
- * 
- * 
+ *
+ *
  *     def intersect( self, int start, int end, sort=True ):             # <<<<<<<<<<<<<<
  *         """
  *         given a start and a end, return a list of features
@@ -5081,7 +5081,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
 
 /* "cupcake/tofu/branch/intersection_unique.pyx":270
  *     find = intersect
- * 
+ *
  *     cdef void _intersect( IntervalNodeUnique self, int start, int end, list results):             # <<<<<<<<<<<<<<
  *         # Left subtree
  *         if self.cleft is not EmptyNode and self.cleft.maxend > start:
@@ -5184,7 +5184,7 @@ static void __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_18IntervalNodeU
  *         # Right subtree
  *         if self.cright is not EmptyNode and self.start < end:             # <<<<<<<<<<<<<<
  *             self.cright._intersect( start, end, results )
- * 
+ *
  */
   __pyx_t_3 = (__pyx_v_self->cright != __pyx_v_7cupcake_4tofu_6branch_19intersection_unique_EmptyNode);
   __pyx_t_2 = (__pyx_t_3 != 0);
@@ -5202,8 +5202,8 @@ static void __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_18IntervalNodeU
  *         # Right subtree
  *         if self.cright is not EmptyNode and self.start < end:
  *             self.cright._intersect( start, end, results )             # <<<<<<<<<<<<<<
- * 
- * 
+ *
+ *
  */
     ((struct __pyx_vtabstruct_7cupcake_4tofu_6branch_19intersection_unique_IntervalNodeUnique *)__pyx_v_self->cright->__pyx_vtab)->_intersect(__pyx_v_self->cright, __pyx_v_start, __pyx_v_end, __pyx_v_results);
 
@@ -5212,13 +5212,13 @@ static void __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_18IntervalNodeU
  *         # Right subtree
  *         if self.cright is not EmptyNode and self.start < end:             # <<<<<<<<<<<<<<
  *             self.cright._intersect( start, end, results )
- * 
+ *
  */
   }
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":270
  *     find = intersect
- * 
+ *
  *     cdef void _intersect( IntervalNodeUnique self, int start, int end, list results):             # <<<<<<<<<<<<<<
  *         # Left subtree
  *         if self.cleft is not EmptyNode and self.cleft.maxend > start:
@@ -5234,8 +5234,8 @@ static void __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_18IntervalNodeU
 }
 
 /* "cupcake/tofu/branch/intersection_unique.pyx":282
- * 
- * 
+ *
+ *
  *     cdef void _seek_left(IntervalNodeUnique self, int position, list results, int n, int max_dist):             # <<<<<<<<<<<<<<
  *         # we know we can bail in these 2 cases.
  *         if self.maxend + max_dist < position:
@@ -5286,7 +5286,7 @@ static void __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_18IntervalNodeU
  *             return
  *         if self.minstart > position:             # <<<<<<<<<<<<<<
  *             return
- * 
+ *
  */
   __pyx_t_1 = ((__pyx_v_self->minstart > __pyx_v_position) != 0);
   if (__pyx_t_1) {
@@ -5295,7 +5295,7 @@ static void __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_18IntervalNodeU
  *             return
  *         if self.minstart > position:
  *             return             # <<<<<<<<<<<<<<
- * 
+ *
  *         # the ordering of these 3 blocks makes it so the results are
  */
     goto __pyx_L0;
@@ -5305,7 +5305,7 @@ static void __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_18IntervalNodeU
  *             return
  *         if self.minstart > position:             # <<<<<<<<<<<<<<
  *             return
- * 
+ *
  */
   }
 
@@ -5314,7 +5314,7 @@ static void __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_18IntervalNodeU
  *         # ordered nearest to farest from the query position
  *         if self.cright is not EmptyNode:             # <<<<<<<<<<<<<<
  *             self.cright._seek_left(position, results, n, max_dist)
- * 
+ *
  */
   __pyx_t_1 = (__pyx_v_self->cright != __pyx_v_7cupcake_4tofu_6branch_19intersection_unique_EmptyNode);
   __pyx_t_2 = (__pyx_t_1 != 0);
@@ -5324,7 +5324,7 @@ static void __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_18IntervalNodeU
  *         # ordered nearest to farest from the query position
  *         if self.cright is not EmptyNode:
  *             self.cright._seek_left(position, results, n, max_dist)             # <<<<<<<<<<<<<<
- * 
+ *
  *         if -1 < position - self.end < max_dist:
  */
     ((struct __pyx_vtabstruct_7cupcake_4tofu_6branch_19intersection_unique_IntervalNodeUnique *)__pyx_v_self->cright->__pyx_vtab)->_seek_left(__pyx_v_self->cright, __pyx_v_position, __pyx_v_results, __pyx_v_n, __pyx_v_max_dist);
@@ -5334,16 +5334,16 @@ static void __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_18IntervalNodeU
  *         # ordered nearest to farest from the query position
  *         if self.cright is not EmptyNode:             # <<<<<<<<<<<<<<
  *             self.cright._seek_left(position, results, n, max_dist)
- * 
+ *
  */
   }
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":294
  *             self.cright._seek_left(position, results, n, max_dist)
- * 
+ *
  *         if -1 < position - self.end < max_dist:             # <<<<<<<<<<<<<<
  *             results.append(self.interval)
- * 
+ *
  */
   __pyx_t_3 = (__pyx_v_position - __pyx_v_self->end);
   __pyx_t_2 = (-1L < __pyx_t_3);
@@ -5354,10 +5354,10 @@ static void __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_18IntervalNodeU
   if (__pyx_t_1) {
 
     /* "cupcake/tofu/branch/intersection_unique.pyx":295
- * 
+ *
  *         if -1 < position - self.end < max_dist:
  *             results.append(self.interval)             # <<<<<<<<<<<<<<
- * 
+ *
  *         # TODO: can these conditionals be more stringent?
  */
     if (unlikely(__pyx_v_results == Py_None)) {
@@ -5371,19 +5371,19 @@ static void __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_18IntervalNodeU
 
     /* "cupcake/tofu/branch/intersection_unique.pyx":294
  *             self.cright._seek_left(position, results, n, max_dist)
- * 
+ *
  *         if -1 < position - self.end < max_dist:             # <<<<<<<<<<<<<<
  *             results.append(self.interval)
- * 
+ *
  */
   }
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":298
- * 
+ *
  *         # TODO: can these conditionals be more stringent?
  *         if self.cleft is not EmptyNode:             # <<<<<<<<<<<<<<
  *                 self.cleft._seek_left(position, results, n, max_dist)
- * 
+ *
  */
   __pyx_t_1 = (__pyx_v_self->cleft != __pyx_v_7cupcake_4tofu_6branch_19intersection_unique_EmptyNode);
   __pyx_t_2 = (__pyx_t_1 != 0);
@@ -5393,23 +5393,23 @@ static void __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_18IntervalNodeU
  *         # TODO: can these conditionals be more stringent?
  *         if self.cleft is not EmptyNode:
  *                 self.cleft._seek_left(position, results, n, max_dist)             # <<<<<<<<<<<<<<
- * 
- * 
+ *
+ *
  */
     ((struct __pyx_vtabstruct_7cupcake_4tofu_6branch_19intersection_unique_IntervalNodeUnique *)__pyx_v_self->cleft->__pyx_vtab)->_seek_left(__pyx_v_self->cleft, __pyx_v_position, __pyx_v_results, __pyx_v_n, __pyx_v_max_dist);
 
     /* "cupcake/tofu/branch/intersection_unique.pyx":298
- * 
+ *
  *         # TODO: can these conditionals be more stringent?
  *         if self.cleft is not EmptyNode:             # <<<<<<<<<<<<<<
  *                 self.cleft._seek_left(position, results, n, max_dist)
- * 
+ *
  */
   }
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":282
- * 
- * 
+ *
+ *
  *     cdef void _seek_left(IntervalNodeUnique self, int position, list results, int n, int max_dist):             # <<<<<<<<<<<<<<
  *         # we know we can bail in these 2 cases.
  *         if self.maxend + max_dist < position:
@@ -5425,8 +5425,8 @@ static void __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_18IntervalNodeU
 }
 
 /* "cupcake/tofu/branch/intersection_unique.pyx":303
- * 
- * 
+ *
+ *
  *     cdef void _seek_right(IntervalNodeUnique self, int position, list results, int n, int max_dist):             # <<<<<<<<<<<<<<
  *         # we know we can bail in these 2 cases.
  *         if self.maxend < position: return
@@ -5449,7 +5449,7 @@ static void __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_18IntervalNodeU
  *         # we know we can bail in these 2 cases.
  *         if self.maxend < position: return             # <<<<<<<<<<<<<<
  *         if self.minstart - max_dist > position: return
- * 
+ *
  */
   __pyx_t_1 = ((__pyx_v_self->maxend < __pyx_v_position) != 0);
   if (__pyx_t_1) {
@@ -5460,7 +5460,7 @@ static void __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_18IntervalNodeU
  *         # we know we can bail in these 2 cases.
  *         if self.maxend < position: return
  *         if self.minstart - max_dist > position: return             # <<<<<<<<<<<<<<
- * 
+ *
  *         #print "SEEK_RIGHT:",self, self.cleft, self.maxend, self.minstart, position
  */
   __pyx_t_1 = (((__pyx_v_self->minstart - __pyx_v_max_dist) > __pyx_v_position) != 0);
@@ -5473,7 +5473,7 @@ static void __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_18IntervalNodeU
  *         # ordered nearest to farest from the query position
  *         if self.cleft is not EmptyNode:             # <<<<<<<<<<<<<<
  *                 self.cleft._seek_right(position, results, n, max_dist)
- * 
+ *
  */
   __pyx_t_1 = (__pyx_v_self->cleft != __pyx_v_7cupcake_4tofu_6branch_19intersection_unique_EmptyNode);
   __pyx_t_2 = (__pyx_t_1 != 0);
@@ -5483,7 +5483,7 @@ static void __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_18IntervalNodeU
  *         # ordered nearest to farest from the query position
  *         if self.cleft is not EmptyNode:
  *                 self.cleft._seek_right(position, results, n, max_dist)             # <<<<<<<<<<<<<<
- * 
+ *
  *         if -1 < self.start - position < max_dist:
  */
     ((struct __pyx_vtabstruct_7cupcake_4tofu_6branch_19intersection_unique_IntervalNodeUnique *)__pyx_v_self->cleft->__pyx_vtab)->_seek_right(__pyx_v_self->cleft, __pyx_v_position, __pyx_v_results, __pyx_v_n, __pyx_v_max_dist);
@@ -5493,16 +5493,16 @@ static void __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_18IntervalNodeU
  *         # ordered nearest to farest from the query position
  *         if self.cleft is not EmptyNode:             # <<<<<<<<<<<<<<
  *                 self.cleft._seek_right(position, results, n, max_dist)
- * 
+ *
  */
   }
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":315
  *                 self.cleft._seek_right(position, results, n, max_dist)
- * 
+ *
  *         if -1 < self.start - position < max_dist:             # <<<<<<<<<<<<<<
  *             results.append(self.interval)
- * 
+ *
  */
   __pyx_t_3 = (__pyx_v_self->start - __pyx_v_position);
   __pyx_t_2 = (-1L < __pyx_t_3);
@@ -5513,10 +5513,10 @@ static void __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_18IntervalNodeU
   if (__pyx_t_1) {
 
     /* "cupcake/tofu/branch/intersection_unique.pyx":316
- * 
+ *
  *         if -1 < self.start - position < max_dist:
  *             results.append(self.interval)             # <<<<<<<<<<<<<<
- * 
+ *
  *         if self.cright is not EmptyNode:
  */
     if (unlikely(__pyx_v_results == Py_None)) {
@@ -5530,45 +5530,45 @@ static void __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_18IntervalNodeU
 
     /* "cupcake/tofu/branch/intersection_unique.pyx":315
  *                 self.cleft._seek_right(position, results, n, max_dist)
- * 
+ *
  *         if -1 < self.start - position < max_dist:             # <<<<<<<<<<<<<<
  *             results.append(self.interval)
- * 
+ *
  */
   }
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":318
  *             results.append(self.interval)
- * 
+ *
  *         if self.cright is not EmptyNode:             # <<<<<<<<<<<<<<
  *                 self.cright._seek_right(position, results, n, max_dist)
- * 
+ *
  */
   __pyx_t_1 = (__pyx_v_self->cright != __pyx_v_7cupcake_4tofu_6branch_19intersection_unique_EmptyNode);
   __pyx_t_2 = (__pyx_t_1 != 0);
   if (__pyx_t_2) {
 
     /* "cupcake/tofu/branch/intersection_unique.pyx":319
- * 
+ *
  *         if self.cright is not EmptyNode:
  *                 self.cright._seek_right(position, results, n, max_dist)             # <<<<<<<<<<<<<<
- * 
- * 
+ *
+ *
  */
     ((struct __pyx_vtabstruct_7cupcake_4tofu_6branch_19intersection_unique_IntervalNodeUnique *)__pyx_v_self->cright->__pyx_vtab)->_seek_right(__pyx_v_self->cright, __pyx_v_position, __pyx_v_results, __pyx_v_n, __pyx_v_max_dist);
 
     /* "cupcake/tofu/branch/intersection_unique.pyx":318
  *             results.append(self.interval)
- * 
+ *
  *         if self.cright is not EmptyNode:             # <<<<<<<<<<<<<<
  *                 self.cright._seek_right(position, results, n, max_dist)
- * 
+ *
  */
   }
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":303
- * 
- * 
+ *
+ *
  *     cdef void _seek_right(IntervalNodeUnique self, int position, list results, int n, int max_dist):             # <<<<<<<<<<<<<<
  *         # we know we can bail in these 2 cases.
  *         if self.maxend < position: return
@@ -5584,8 +5584,8 @@ static void __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_18IntervalNodeU
 }
 
 /* "cupcake/tofu/branch/intersection_unique.pyx":322
- * 
- * 
+ *
+ *
  *     cpdef left(self, position, int n=1, int max_dist=2500):             # <<<<<<<<<<<<<<
  *         """
  *         find n features with a start > than `position`
@@ -5765,7 +5765,7 @@ static PyObject *__pyx_f_7cupcake_4tofu_6branch_19intersection_unique_18Interval
  *         r = results
  *         r.sort(key=operator.attrgetter('end'), reverse=True)             # <<<<<<<<<<<<<<
  *         return r[:n]
- * 
+ *
  */
   __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_r, __pyx_n_s_sort); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 334, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -5804,7 +5804,7 @@ static PyObject *__pyx_f_7cupcake_4tofu_6branch_19intersection_unique_18Interval
  *         r = results
  *         r.sort(key=operator.attrgetter('end'), reverse=True)
  *         return r[:n]             # <<<<<<<<<<<<<<
- * 
+ *
  *     cpdef right(self, position, int n=1, int max_dist=2500):
  */
   __Pyx_XDECREF(__pyx_r);
@@ -5815,8 +5815,8 @@ static PyObject *__pyx_f_7cupcake_4tofu_6branch_19intersection_unique_18Interval
   goto __pyx_L0;
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":322
- * 
- * 
+ *
+ *
  *     cpdef left(self, position, int n=1, int max_dist=2500):             # <<<<<<<<<<<<<<
  *         """
  *         find n features with a start > than `position`
@@ -5961,7 +5961,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
 
 /* "cupcake/tofu/branch/intersection_unique.pyx":337
  *         return r[:n]
- * 
+ *
  *     cpdef right(self, position, int n=1, int max_dist=2500):             # <<<<<<<<<<<<<<
  *         """
  *         find n features with a end < than position
@@ -6141,7 +6141,7 @@ static PyObject *__pyx_f_7cupcake_4tofu_6branch_19intersection_unique_18Interval
  *         r = results
  *         r.sort(key=operator.attrgetter('start'))             # <<<<<<<<<<<<<<
  *         return r[:n]
- * 
+ *
  */
   __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_r, __pyx_n_s_sort); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 349, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -6179,7 +6179,7 @@ static PyObject *__pyx_f_7cupcake_4tofu_6branch_19intersection_unique_18Interval
  *         r = results
  *         r.sort(key=operator.attrgetter('start'))
  *         return r[:n]             # <<<<<<<<<<<<<<
- * 
+ *
  *     def traverse(self, func):
  */
   __Pyx_XDECREF(__pyx_r);
@@ -6191,7 +6191,7 @@ static PyObject *__pyx_f_7cupcake_4tofu_6branch_19intersection_unique_18Interval
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":337
  *         return r[:n]
- * 
+ *
  *     cpdef right(self, position, int n=1, int max_dist=2500):             # <<<<<<<<<<<<<<
  *         """
  *         find n features with a end < than position
@@ -6336,10 +6336,10 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
 
 /* "cupcake/tofu/branch/intersection_unique.pyx":352
  *         return r[:n]
- * 
+ *
  *     def traverse(self, func):             # <<<<<<<<<<<<<<
  *         self._traverse(func)
- * 
+ *
  */
 
 /* Python wrapper */
@@ -6361,20 +6361,20 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
   __Pyx_RefNannySetupContext("traverse", 0);
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":353
- * 
+ *
  *     def traverse(self, func):
  *         self._traverse(func)             # <<<<<<<<<<<<<<
- * 
+ *
  *     cdef void _traverse(IntervalNodeUnique self, object func):
  */
   ((struct __pyx_vtabstruct_7cupcake_4tofu_6branch_19intersection_unique_IntervalNodeUnique *)__pyx_v_self->__pyx_vtab)->_traverse(__pyx_v_self, __pyx_v_func);
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":352
  *         return r[:n]
- * 
+ *
  *     def traverse(self, func):             # <<<<<<<<<<<<<<
  *         self._traverse(func)
- * 
+ *
  */
 
   /* function exit code */
@@ -6386,7 +6386,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
 
 /* "cupcake/tofu/branch/intersection_unique.pyx":355
  *         self._traverse(func)
- * 
+ *
  *     cdef void _traverse(IntervalNodeUnique self, object func):             # <<<<<<<<<<<<<<
  *         if self.cleft is not EmptyNode: self.cleft._traverse(func)
  *         func(self)
@@ -6405,7 +6405,7 @@ static void __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_18IntervalNodeU
   __Pyx_RefNannySetupContext("_traverse", 0);
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":356
- * 
+ *
  *     cdef void _traverse(IntervalNodeUnique self, object func):
  *         if self.cleft is not EmptyNode: self.cleft._traverse(func)             # <<<<<<<<<<<<<<
  *         func(self)
@@ -6422,7 +6422,7 @@ static void __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_18IntervalNodeU
  *         if self.cleft is not EmptyNode: self.cleft._traverse(func)
  *         func(self)             # <<<<<<<<<<<<<<
  *         if self.cright is not EmptyNode: self.cright._traverse(func)
- * 
+ *
  */
   __Pyx_INCREF(__pyx_v_func);
   __pyx_t_4 = __pyx_v_func; __pyx_t_5 = NULL;
@@ -6446,7 +6446,7 @@ static void __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_18IntervalNodeU
  *         if self.cleft is not EmptyNode: self.cleft._traverse(func)
  *         func(self)
  *         if self.cright is not EmptyNode: self.cright._traverse(func)             # <<<<<<<<<<<<<<
- * 
+ *
  *     cdef get_height(self, int height):
  */
   __pyx_t_2 = (__pyx_v_self->cright != __pyx_v_7cupcake_4tofu_6branch_19intersection_unique_EmptyNode);
@@ -6457,7 +6457,7 @@ static void __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_18IntervalNodeU
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":355
  *         self._traverse(func)
- * 
+ *
  *     cdef void _traverse(IntervalNodeUnique self, object func):             # <<<<<<<<<<<<<<
  *         if self.cleft is not EmptyNode: self.cleft._traverse(func)
  *         func(self)
@@ -6476,7 +6476,7 @@ static void __pyx_f_7cupcake_4tofu_6branch_19intersection_unique_18IntervalNodeU
 
 /* "cupcake/tofu/branch/intersection_unique.pyx":360
  *         if self.cright is not EmptyNode: self.cright._traverse(func)
- * 
+ *
  *     cdef get_height(self, int height):             # <<<<<<<<<<<<<<
  *         if self is EmptyNode:
  *             return height
@@ -6499,7 +6499,7 @@ static PyObject *__pyx_f_7cupcake_4tofu_6branch_19intersection_unique_18Interval
   __Pyx_RefNannySetupContext("get_height", 0);
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":361
- * 
+ *
  *     cdef get_height(self, int height):
  *         if self is EmptyNode:             # <<<<<<<<<<<<<<
  *             return height
@@ -6524,7 +6524,7 @@ static PyObject *__pyx_f_7cupcake_4tofu_6branch_19intersection_unique_18Interval
     goto __pyx_L0;
 
     /* "cupcake/tofu/branch/intersection_unique.pyx":361
- * 
+ *
  *     cdef get_height(self, int height):
  *         if self is EmptyNode:             # <<<<<<<<<<<<<<
  *             return height
@@ -6549,7 +6549,7 @@ static PyObject *__pyx_f_7cupcake_4tofu_6branch_19intersection_unique_18Interval
  *         lheight = self.cleft.get_height(height)
  *         rheight = self.cright.get_height(height)             # <<<<<<<<<<<<<<
  *         return max(lheight, rheight) + 1
- * 
+ *
  */
   __pyx_t_3 = ((struct __pyx_vtabstruct_7cupcake_4tofu_6branch_19intersection_unique_IntervalNodeUnique *)__pyx_v_self->cright->__pyx_vtab)->get_height(__pyx_v_self->cright, __pyx_v_height); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 364, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
@@ -6560,7 +6560,7 @@ static PyObject *__pyx_f_7cupcake_4tofu_6branch_19intersection_unique_18Interval
  *         lheight = self.cleft.get_height(height)
  *         rheight = self.cright.get_height(height)
  *         return max(lheight, rheight) + 1             # <<<<<<<<<<<<<<
- * 
+ *
  * cdef IntervalNodeUnique EmptyNode = IntervalNodeUnique( 0, 0, Interval(0, 0))
  */
   __Pyx_XDECREF(__pyx_r);
@@ -6589,7 +6589,7 @@ static PyObject *__pyx_f_7cupcake_4tofu_6branch_19intersection_unique_18Interval
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":360
  *         if self.cright is not EmptyNode: self.cright._traverse(func)
- * 
+ *
  *     cdef get_height(self, int height):             # <<<<<<<<<<<<<<
  *         if self is EmptyNode:
  *             return height
@@ -6977,7 +6977,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
 
 /* "cupcake/tofu/branch/intersection_unique.pyx":388
  *     cdef public object value, chrom, strand
- * 
+ *
  *     def __init__(self, int start, int end, object value=None, object chrom=None, object strand=None ):             # <<<<<<<<<<<<<<
  *         assert start <= end, "start must be less than end"
  *         self.start  = start
@@ -7097,7 +7097,7 @@ static int __pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_8Interval___ini
   __Pyx_RefNannySetupContext("__init__", 0);
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":389
- * 
+ *
  *     def __init__(self, int start, int end, object value=None, object chrom=None, object strand=None ):
  *         assert start <= end, "start must be less than end"             # <<<<<<<<<<<<<<
  *         self.start  = start
@@ -7148,7 +7148,7 @@ static int __pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_8Interval___ini
  *         self.value = value
  *         self.chrom = chrom             # <<<<<<<<<<<<<<
  *         self.strand = strand
- * 
+ *
  */
   __Pyx_INCREF(__pyx_v_chrom);
   __Pyx_GIVEREF(__pyx_v_chrom);
@@ -7160,7 +7160,7 @@ static int __pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_8Interval___ini
  *         self.value = value
  *         self.chrom = chrom
  *         self.strand = strand             # <<<<<<<<<<<<<<
- * 
+ *
  *     def __repr__(self):
  */
   __Pyx_INCREF(__pyx_v_strand);
@@ -7171,7 +7171,7 @@ static int __pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_8Interval___ini
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":388
  *     cdef public object value, chrom, strand
- * 
+ *
  *     def __init__(self, int start, int end, object value=None, object chrom=None, object strand=None ):             # <<<<<<<<<<<<<<
  *         assert start <= end, "start must be less than end"
  *         self.start  = start
@@ -7190,7 +7190,7 @@ static int __pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_8Interval___ini
 
 /* "cupcake/tofu/branch/intersection_unique.pyx":396
  *         self.strand = strand
- * 
+ *
  *     def __repr__(self):             # <<<<<<<<<<<<<<
  *         fstr = "Interval(%d, %d" % (self.start, self.end)
  *         if not self.value is None:
@@ -7225,7 +7225,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_8Interval
   __Pyx_RefNannySetupContext("__repr__", 0);
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":397
- * 
+ *
  *     def __repr__(self):
  *         fstr = "Interval(%d, %d" % (self.start, self.end)             # <<<<<<<<<<<<<<
  *         if not self.value is None:
@@ -7304,7 +7304,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_8Interval
  *             fstr += ", value=" + str(self.value)
  *         fstr += ")"             # <<<<<<<<<<<<<<
  *         return fstr
- * 
+ *
  */
   __pyx_t_4 = PyNumber_InPlaceAdd(__pyx_v_fstr, __pyx_kp_u__9); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 400, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
@@ -7315,7 +7315,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_8Interval
  *             fstr += ", value=" + str(self.value)
  *         fstr += ")"
  *         return fstr             # <<<<<<<<<<<<<<
- * 
+ *
  *     def __richcmp__(self, other, op):
  */
   __Pyx_XDECREF(__pyx_r);
@@ -7325,7 +7325,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_8Interval
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":396
  *         self.strand = strand
- * 
+ *
  *     def __repr__(self):             # <<<<<<<<<<<<<<
  *         fstr = "Interval(%d, %d" % (self.start, self.end)
  *         if not self.value is None:
@@ -7346,7 +7346,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_8Interval
 
 /* "cupcake/tofu/branch/intersection_unique.pyx":403
  *         return fstr
- * 
+ *
  *     def __richcmp__(self, other, op):             # <<<<<<<<<<<<<<
  *         if op == 0:
  *             # <
@@ -7392,7 +7392,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_8Interval
   __Pyx_RefNannySetupContext("__richcmp__", 0);
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":404
- * 
+ *
  *     def __richcmp__(self, other, op):
  *         if op == 0:             # <<<<<<<<<<<<<<
  *             # <
@@ -7444,7 +7444,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_8Interval
     goto __pyx_L0;
 
     /* "cupcake/tofu/branch/intersection_unique.pyx":404
- * 
+ *
  *     def __richcmp__(self, other, op):
  *         if op == 0:             # <<<<<<<<<<<<<<
  *             # <
@@ -7701,7 +7701,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_8Interval
  *         elif op == 5:
  *             # >=
  *             return self == other or self > other             # <<<<<<<<<<<<<<
- * 
+ *
  * cdef class IntervalTreeUnique:
  */
     __Pyx_XDECREF(__pyx_r);
@@ -7735,7 +7735,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_8Interval
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":403
  *         return fstr
- * 
+ *
  *     def __richcmp__(self, other, op):             # <<<<<<<<<<<<<<
  *         if op == 0:
  *             # <
@@ -7758,11 +7758,11 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_8Interval
 }
 
 /* "cupcake/tofu/branch/intersection_unique.pyx":385
- * 
+ *
  *     """
  *     cdef public int start, end             # <<<<<<<<<<<<<<
  *     cdef public object value, chrom, strand
- * 
+ *
  */
 
 /* Python wrapper */
@@ -7917,7 +7917,7 @@ static int __pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_8Interval_3end_
  *     """
  *     cdef public int start, end
  *     cdef public object value, chrom, strand             # <<<<<<<<<<<<<<
- * 
+ *
  *     def __init__(self, int start, int end, object value=None, object chrom=None, object strand=None ):
  */
 
@@ -8511,10 +8511,10 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_8Interval
 
 /* "cupcake/tofu/branch/intersection_unique.pyx":481
  *     cdef IntervalNodeUnique root
- * 
+ *
  *     def __cinit__( self ):             # <<<<<<<<<<<<<<
  *         root = None
- * 
+ *
  */
 
 /* Python wrapper */
@@ -8540,10 +8540,10 @@ static int __pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18IntervalTreeU
   __Pyx_RefNannySetupContext("__cinit__", 0);
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":482
- * 
+ *
  *     def __cinit__( self ):
  *         root = None             # <<<<<<<<<<<<<<
- * 
+ *
  *     # ---- Position based interfaces -----------------------------------------
  */
   __Pyx_INCREF(Py_None);
@@ -8551,10 +8551,10 @@ static int __pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18IntervalTreeU
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":481
  *     cdef IntervalNodeUnique root
- * 
+ *
  *     def __cinit__( self ):             # <<<<<<<<<<<<<<
  *         root = None
- * 
+ *
  */
 
   /* function exit code */
@@ -8566,7 +8566,7 @@ static int __pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18IntervalTreeU
 
 /* "cupcake/tofu/branch/intersection_unique.pyx":486
  *     # ---- Position based interfaces -----------------------------------------
- * 
+ *
  *     def insert( self, int start, int end, object value=None ):             # <<<<<<<<<<<<<<
  *         """
  *         Insert the interval [start,end) associated with value `value`.
@@ -8721,7 +8721,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
  *             self.root = IntervalNodeUnique( start, end, value )
  *         else:
  *             self.root = self.root.insert( start, end, value )             # <<<<<<<<<<<<<<
- * 
+ *
  *     add = insert
  */
   /*else*/ {
@@ -8737,7 +8737,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":486
  *     # ---- Position based interfaces -----------------------------------------
- * 
+ *
  *     def insert( self, int start, int end, object value=None ):             # <<<<<<<<<<<<<<
  *         """
  *         Insert the interval [start,end) associated with value `value`.
@@ -8760,10 +8760,10 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
 
 /* "cupcake/tofu/branch/intersection_unique.pyx":497
  *     add = insert
- * 
+ *
  *     def delete_node(self, node):             # <<<<<<<<<<<<<<
  *         self.delete_node_by_interval(node.start, node.end)
- * 
+ *
  */
 
 /* Python wrapper */
@@ -8795,10 +8795,10 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
   __Pyx_RefNannySetupContext("delete_node", 0);
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":498
- * 
+ *
  *     def delete_node(self, node):
  *         self.delete_node_by_interval(node.start, node.end)             # <<<<<<<<<<<<<<
- * 
+ *
  *     def delete_node_by_interval(self, start, end):
  */
   __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_delete_node_by_interval); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 498, __pyx_L1_error)
@@ -8860,10 +8860,10 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":497
  *     add = insert
- * 
+ *
  *     def delete_node(self, node):             # <<<<<<<<<<<<<<
  *         self.delete_node_by_interval(node.start, node.end)
- * 
+ *
  */
 
   /* function exit code */
@@ -8886,7 +8886,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
 
 /* "cupcake/tofu/branch/intersection_unique.pyx":500
  *         self.delete_node_by_interval(node.start, node.end)
- * 
+ *
  *     def delete_node_by_interval(self, start, end):             # <<<<<<<<<<<<<<
  *         self.root = self.root.delete_node(start, end)
  *         if self.root is EmptyNode:
@@ -8970,7 +8970,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
   __Pyx_RefNannySetupContext("delete_node_by_interval", 0);
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":501
- * 
+ *
  *     def delete_node_by_interval(self, start, end):
  *         self.root = self.root.delete_node(start, end)             # <<<<<<<<<<<<<<
  *         if self.root is EmptyNode:
@@ -8991,7 +8991,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
  *         self.root = self.root.delete_node(start, end)
  *         if self.root is EmptyNode:             # <<<<<<<<<<<<<<
  *             self.root = None
- * 
+ *
  */
   __pyx_t_4 = (__pyx_v_self->root == __pyx_v_7cupcake_4tofu_6branch_19intersection_unique_EmptyNode);
   __pyx_t_5 = (__pyx_t_4 != 0);
@@ -9001,7 +9001,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
  *         self.root = self.root.delete_node(start, end)
  *         if self.root is EmptyNode:
  *             self.root = None             # <<<<<<<<<<<<<<
- * 
+ *
  *     def print_balance(self):
  */
     __Pyx_INCREF(Py_None);
@@ -9015,13 +9015,13 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
  *         self.root = self.root.delete_node(start, end)
  *         if self.root is EmptyNode:             # <<<<<<<<<<<<<<
  *             self.root = None
- * 
+ *
  */
   }
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":500
  *         self.delete_node_by_interval(node.start, node.end)
- * 
+ *
  *     def delete_node_by_interval(self, start, end):             # <<<<<<<<<<<<<<
  *         self.root = self.root.delete_node(start, end)
  *         if self.root is EmptyNode:
@@ -9042,7 +9042,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
 
 /* "cupcake/tofu/branch/intersection_unique.pyx":505
  *             self.root = None
- * 
+ *
  *     def print_balance(self):             # <<<<<<<<<<<<<<
  *         print("FOR DEBUGGING ONLY")
  *         if self.root is not None:
@@ -9076,7 +9076,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
   __Pyx_RefNannySetupContext("print_balance", 0);
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":506
- * 
+ *
  *     def print_balance(self):
  *         print("FOR DEBUGGING ONLY")             # <<<<<<<<<<<<<<
  *         if self.root is not None:
@@ -9141,7 +9141,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
  *             print(f"Root node: {self.root.start}-{self.root.end}")
  *             print(f"left height: {self.root.cleft.get_height(0)}")             # <<<<<<<<<<<<<<
  *             print(f"right height: {self.root.cright.get_height(0)}")
- * 
+ *
  */
     __pyx_t_1 = ((struct __pyx_vtabstruct_7cupcake_4tofu_6branch_19intersection_unique_IntervalNodeUnique *)__pyx_v_self->root->cleft->__pyx_vtab)->get_height(__pyx_v_self->root->cleft, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 509, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
@@ -9160,8 +9160,8 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
  *             print(f"Root node: {self.root.start}-{self.root.end}")
  *             print(f"left height: {self.root.cleft.get_height(0)}")
  *             print(f"right height: {self.root.cright.get_height(0)}")             # <<<<<<<<<<<<<<
- * 
- * 
+ *
+ *
  */
     __pyx_t_6 = ((struct __pyx_vtabstruct_7cupcake_4tofu_6branch_19intersection_unique_IntervalNodeUnique *)__pyx_v_self->root->cright->__pyx_vtab)->get_height(__pyx_v_self->root->cright, 0); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 510, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
@@ -9187,7 +9187,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":505
  *             self.root = None
- * 
+ *
  *     def print_balance(self):             # <<<<<<<<<<<<<<
  *         print("FOR DEBUGGING ONLY")
  *         if self.root is not None:
@@ -9208,8 +9208,8 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
 }
 
 /* "cupcake/tofu/branch/intersection_unique.pyx":513
- * 
- * 
+ *
+ *
  *     def find( self, start, end ):             # <<<<<<<<<<<<<<
  *         """
  *         Return a sorted list of all intervals overlapping [start,end).
@@ -9311,7 +9311,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
  *         if self.root is None:
  *             return []             # <<<<<<<<<<<<<<
  *         return self.root.find( start, end )
- * 
+ *
  */
     __Pyx_XDECREF(__pyx_r);
     __pyx_t_3 = PyList_New(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 518, __pyx_L1_error)
@@ -9333,7 +9333,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
  *         if self.root is None:
  *             return []
  *         return self.root.find( start, end )             # <<<<<<<<<<<<<<
- * 
+ *
  *     def before( self, position, num_intervals=1, max_dist=2500 ):
  */
   __Pyx_XDECREF(__pyx_r);
@@ -9389,8 +9389,8 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
   goto __pyx_L0;
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":513
- * 
- * 
+ *
+ *
  *     def find( self, start, end ):             # <<<<<<<<<<<<<<
  *         """
  *         Return a sorted list of all intervals overlapping [start,end).
@@ -9412,7 +9412,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
 
 /* "cupcake/tofu/branch/intersection_unique.pyx":521
  *         return self.root.find( start, end )
- * 
+ *
  *     def before( self, position, num_intervals=1, max_dist=2500 ):             # <<<<<<<<<<<<<<
  *         """
  *         Find `num_intervals` intervals that lie before `position` and are no
@@ -9530,7 +9530,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
  *         if self.root is None:
  *             return []             # <<<<<<<<<<<<<<
  *         return self.root.left( position, num_intervals, max_dist )
- * 
+ *
  */
     __Pyx_XDECREF(__pyx_r);
     __pyx_t_3 = PyList_New(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 527, __pyx_L1_error)
@@ -9552,7 +9552,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
  *         if self.root is None:
  *             return []
  *         return self.root.left( position, num_intervals, max_dist )             # <<<<<<<<<<<<<<
- * 
+ *
  *     def after( self, position, num_intervals=1, max_dist=2500 ):
  */
   __Pyx_XDECREF(__pyx_r);
@@ -9569,7 +9569,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":521
  *         return self.root.find( start, end )
- * 
+ *
  *     def before( self, position, num_intervals=1, max_dist=2500 ):             # <<<<<<<<<<<<<<
  *         """
  *         Find `num_intervals` intervals that lie before `position` and are no
@@ -9588,7 +9588,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
 
 /* "cupcake/tofu/branch/intersection_unique.pyx":530
  *         return self.root.left( position, num_intervals, max_dist )
- * 
+ *
  *     def after( self, position, num_intervals=1, max_dist=2500 ):             # <<<<<<<<<<<<<<
  *         """
  *         Find `num_intervals` intervals that lie after `position` and are no
@@ -9706,7 +9706,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
  *         if self.root is None:
  *             return []             # <<<<<<<<<<<<<<
  *         return self.root.right( position, num_intervals, max_dist )
- * 
+ *
  */
     __Pyx_XDECREF(__pyx_r);
     __pyx_t_3 = PyList_New(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 536, __pyx_L1_error)
@@ -9728,7 +9728,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
  *         if self.root is None:
  *             return []
  *         return self.root.right( position, num_intervals, max_dist )             # <<<<<<<<<<<<<<
- * 
+ *
  *     # ---- Interval-like object based interfaces -----------------------------
  */
   __Pyx_XDECREF(__pyx_r);
@@ -9745,7 +9745,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":530
  *         return self.root.left( position, num_intervals, max_dist )
- * 
+ *
  *     def after( self, position, num_intervals=1, max_dist=2500 ):             # <<<<<<<<<<<<<<
  *         """
  *         Find `num_intervals` intervals that lie after `position` and are no
@@ -9764,7 +9764,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
 
 /* "cupcake/tofu/branch/intersection_unique.pyx":541
  *     # ---- Interval-like object based interfaces -----------------------------
- * 
+ *
  *     def insert_interval( self, interval ):             # <<<<<<<<<<<<<<
  *         """
  *         Insert an "interval" like object (one with at least start and end
@@ -9803,7 +9803,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
  *         attributes)
  *         """
  *         self.insert( interval.start, interval.end, interval )             # <<<<<<<<<<<<<<
- * 
+ *
  *     add_interval = insert_interval
  */
   __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_insert); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 546, __pyx_L1_error)
@@ -9868,7 +9868,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":541
  *     # ---- Interval-like object based interfaces -----------------------------
- * 
+ *
  *     def insert_interval( self, interval ):             # <<<<<<<<<<<<<<
  *         """
  *         Insert an "interval" like object (one with at least start and end
@@ -9894,7 +9894,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
 
 /* "cupcake/tofu/branch/intersection_unique.pyx":550
  *     add_interval = insert_interval
- * 
+ *
  *     def before_interval( self, interval, num_intervals=1, max_dist=2500 ):             # <<<<<<<<<<<<<<
  *         """
  *         Find `num_intervals` intervals that lie completely before `interval`
@@ -10013,7 +10013,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
  *         if self.root is None:
  *             return []             # <<<<<<<<<<<<<<
  *         return self.root.left( interval.start, num_intervals, max_dist )
- * 
+ *
  */
     __Pyx_XDECREF(__pyx_r);
     __pyx_t_3 = PyList_New(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 556, __pyx_L1_error)
@@ -10035,7 +10035,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
  *         if self.root is None:
  *             return []
  *         return self.root.left( interval.start, num_intervals, max_dist )             # <<<<<<<<<<<<<<
- * 
+ *
  *     def after_interval( self, interval, num_intervals=1, max_dist=2500 ):
  */
   __Pyx_XDECREF(__pyx_r);
@@ -10055,7 +10055,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":550
  *     add_interval = insert_interval
- * 
+ *
  *     def before_interval( self, interval, num_intervals=1, max_dist=2500 ):             # <<<<<<<<<<<<<<
  *         """
  *         Find `num_intervals` intervals that lie completely before `interval`
@@ -10075,7 +10075,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
 
 /* "cupcake/tofu/branch/intersection_unique.pyx":559
  *         return self.root.left( interval.start, num_intervals, max_dist )
- * 
+ *
  *     def after_interval( self, interval, num_intervals=1, max_dist=2500 ):             # <<<<<<<<<<<<<<
  *         """
  *         Find `num_intervals` intervals that lie completely after `interval` and
@@ -10194,7 +10194,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
  *         if self.root is None:
  *             return []             # <<<<<<<<<<<<<<
  *         return self.root.right( interval.end, num_intervals, max_dist )
- * 
+ *
  */
     __Pyx_XDECREF(__pyx_r);
     __pyx_t_3 = PyList_New(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 565, __pyx_L1_error)
@@ -10216,7 +10216,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
  *         if self.root is None:
  *             return []
  *         return self.root.right( interval.end, num_intervals, max_dist )             # <<<<<<<<<<<<<<
- * 
+ *
  *     def upstream_of_interval( self, interval, num_intervals=1, max_dist=2500 ):
  */
   __Pyx_XDECREF(__pyx_r);
@@ -10236,7 +10236,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":559
  *         return self.root.left( interval.start, num_intervals, max_dist )
- * 
+ *
  *     def after_interval( self, interval, num_intervals=1, max_dist=2500 ):             # <<<<<<<<<<<<<<
  *         """
  *         Find `num_intervals` intervals that lie completely after `interval` and
@@ -10256,7 +10256,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
 
 /* "cupcake/tofu/branch/intersection_unique.pyx":568
  *         return self.root.right( interval.end, num_intervals, max_dist )
- * 
+ *
  *     def upstream_of_interval( self, interval, num_intervals=1, max_dist=2500 ):             # <<<<<<<<<<<<<<
  *         """
  *         Find `num_intervals` intervals that lie completely upstream of
@@ -10456,7 +10456,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
  *             return self.root.right( interval.end, num_intervals, max_dist )
  *         else:
  *             return self.root.left( interval.start, num_intervals, max_dist )             # <<<<<<<<<<<<<<
- * 
+ *
  *     def downstream_of_interval( self, interval, num_intervals=1, max_dist=2500 ):
  */
   /*else*/ {
@@ -10478,7 +10478,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":568
  *         return self.root.right( interval.end, num_intervals, max_dist )
- * 
+ *
  *     def upstream_of_interval( self, interval, num_intervals=1, max_dist=2500 ):             # <<<<<<<<<<<<<<
  *         """
  *         Find `num_intervals` intervals that lie completely upstream of
@@ -10498,7 +10498,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
 
 /* "cupcake/tofu/branch/intersection_unique.pyx":580
  *             return self.root.left( interval.start, num_intervals, max_dist )
- * 
+ *
  *     def downstream_of_interval( self, interval, num_intervals=1, max_dist=2500 ):             # <<<<<<<<<<<<<<
  *         """
  *         Find `num_intervals` intervals that lie completely downstream of
@@ -10698,7 +10698,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
  *             return self.root.left( interval.start, num_intervals, max_dist )
  *         else:
  *             return self.root.right( interval.end, num_intervals, max_dist )             # <<<<<<<<<<<<<<
- * 
+ *
  *     def traverse(self, fn):
  */
   /*else*/ {
@@ -10720,7 +10720,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":580
  *             return self.root.left( interval.start, num_intervals, max_dist )
- * 
+ *
  *     def downstream_of_interval( self, interval, num_intervals=1, max_dist=2500 ):             # <<<<<<<<<<<<<<
  *         """
  *         Find `num_intervals` intervals that lie completely downstream of
@@ -10740,7 +10740,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
 
 /* "cupcake/tofu/branch/intersection_unique.pyx":592
  *             return self.root.right( interval.end, num_intervals, max_dist )
- * 
+ *
  *     def traverse(self, fn):             # <<<<<<<<<<<<<<
  *         """
  *         call fn for each element in the tree
@@ -10789,7 +10789,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
  *         if self.root is None:
  *             return None             # <<<<<<<<<<<<<<
  *         return self.root.traverse(fn)
- * 
+ *
  */
     __Pyx_XDECREF(__pyx_r);
     __pyx_r = Py_None; __Pyx_INCREF(Py_None);
@@ -10808,7 +10808,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
  *         if self.root is None:
  *             return None
  *         return self.root.traverse(fn)             # <<<<<<<<<<<<<<
- * 
+ *
  * # For backward compatibility
  */
   __Pyx_XDECREF(__pyx_r);
@@ -10835,7 +10835,7 @@ static PyObject *__pyx_pf_7cupcake_4tofu_6branch_19intersection_unique_18Interva
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":592
  *             return self.root.right( interval.end, num_intervals, max_dist )
- * 
+ *
  *     def traverse(self, fn):             # <<<<<<<<<<<<<<
  *         """
  *         call fn for each element in the tree
@@ -12169,7 +12169,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__7);
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":506
- * 
+ *
  *     def print_balance(self):
  *         print("FOR DEBUGGING ONLY")             # <<<<<<<<<<<<<<
  *         if self.root is not None:
@@ -12200,9 +12200,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":367
  *         return max(lheight, rheight) + 1
- * 
+ *
  * cdef IntervalNodeUnique EmptyNode = IntervalNodeUnique( 0, 0, Interval(0, 0))             # <<<<<<<<<<<<<<
- * 
+ *
  * ## ---- Wrappers that retain the old interface -------------------------------
  */
   __pyx_tuple__13 = PyTuple_Pack(2, __pyx_int_0, __pyx_int_0); if (unlikely(!__pyx_tuple__13)) __PYX_ERR(0, 367, __pyx_L1_error)
@@ -12564,10 +12564,10 @@ if (!__Pyx_RefNanny) {
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":22
  * #cython: cdivision=True
- * 
+ *
  * import operator             # <<<<<<<<<<<<<<
- * 
- * 
+ *
+ *
  */
   __pyx_t_1 = __Pyx_Import(__pyx_n_s_operator, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 22, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -12576,9 +12576,9 @@ if (!__Pyx_RefNanny) {
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":59
  *     return a
- * 
+ *
  * cdef float nlog = -1.0 / log(0.5)             # <<<<<<<<<<<<<<
- * 
+ *
  * cdef class IntervalNodeUnique:
  */
   __pyx_t_2 = log(0.5);
@@ -12590,9 +12590,9 @@ if (!__Pyx_RefNanny) {
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":268
  *         return results
- * 
+ *
  *     find = intersect             # <<<<<<<<<<<<<<
- * 
+ *
  *     cdef void _intersect( IntervalNodeUnique self, int start, int end, list results):
  */
   __Pyx_GetNameInClass(__pyx_t_1, (PyObject *)__pyx_ptype_7cupcake_4tofu_6branch_19intersection_unique_IntervalNodeUnique, __pyx_n_s_intersect); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 268, __pyx_L1_error)
@@ -12603,9 +12603,9 @@ if (!__Pyx_RefNanny) {
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":367
  *         return max(lheight, rheight) + 1
- * 
+ *
  * cdef IntervalNodeUnique EmptyNode = IntervalNodeUnique( 0, 0, Interval(0, 0))             # <<<<<<<<<<<<<<
- * 
+ *
  * ## ---- Wrappers that retain the old interface -------------------------------
  */
   __pyx_t_1 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_7cupcake_4tofu_6branch_19intersection_unique_Interval), __pyx_tuple__13, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 367, __pyx_L1_error)
@@ -12631,9 +12631,9 @@ if (!__Pyx_RefNanny) {
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":495
  *             self.root = self.root.insert( start, end, value )
- * 
+ *
  *     add = insert             # <<<<<<<<<<<<<<
- * 
+ *
  *     def delete_node(self, node):
  */
   __Pyx_GetNameInClass(__pyx_t_1, (PyObject *)__pyx_ptype_7cupcake_4tofu_6branch_19intersection_unique_IntervalTreeUnique, __pyx_n_s_insert); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 495, __pyx_L1_error)
@@ -12644,9 +12644,9 @@ if (!__Pyx_RefNanny) {
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":548
  *         self.insert( interval.start, interval.end, interval )
- * 
+ *
  *     add_interval = insert_interval             # <<<<<<<<<<<<<<
- * 
+ *
  *     def before_interval( self, interval, num_intervals=1, max_dist=2500 ):
  */
   __Pyx_GetNameInClass(__pyx_t_1, (PyObject *)__pyx_ptype_7cupcake_4tofu_6branch_19intersection_unique_IntervalTreeUnique, __pyx_n_s_insert_interval); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 548, __pyx_L1_error)
@@ -12656,7 +12656,7 @@ if (!__Pyx_RefNanny) {
   PyType_Modified(__pyx_ptype_7cupcake_4tofu_6branch_19intersection_unique_IntervalTreeUnique);
 
   /* "cupcake/tofu/branch/intersection_unique.pyx":601
- * 
+ *
  * # For backward compatibility
  * Intersecter = IntervalTreeUnique             # <<<<<<<<<<<<<<
  */
@@ -13629,8 +13629,8 @@ static PyObject* __Pyx_PyInt_SubtractObjC(PyObject *op1, PyObject *op2, CYTHON_U
                 llx = lla - llb;
             return PyLong_FromLongLong(llx);
 #endif
-        
-        
+
+
     }
     #endif
     if (PyFloat_CheckExact(op1)) {
@@ -13847,8 +13847,8 @@ static PyObject* __Pyx_PyInt_AddObjC(PyObject *op1, PyObject *op2, CYTHON_UNUSED
                 llx = lla + llb;
             return PyLong_FromLongLong(llx);
 #endif
-        
-        
+
+
     }
     #endif
     if (PyFloat_CheckExact(op1)) {

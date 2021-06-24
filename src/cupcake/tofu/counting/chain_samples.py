@@ -8,7 +8,7 @@ from csv import DictReader, DictWriter
 from enum import Enum
 from multiprocessing import Process
 from pathlib import Path
-from typing import List, Tuple, Union, Dict
+from typing import List, Tuple, Union, Dict, Optional
 
 from BCBio import GFF as bGFF
 
@@ -142,7 +142,7 @@ def read_config(
 
     # return signature is:
     # sample_dirs    = Dict[sample_name, Path(sample_path)]
-    # sample_names   = List[sample_name] 
+    # sample_names   = List[sample_name]
     # group_filename = str
     # gff_filename   = str
     # count_filename = str
@@ -150,7 +150,7 @@ def read_config(
 
     # so, for the test data, we get:
     # sample_dirs = {
-    #   'A': Path('tests/test_data/chaining/A'), 
+    #   'A': Path('tests/test_data/chaining/A'),
     #   'B': Path('tests/test_data/chaining/B')
     #   }
     # sample_names = ["A", "B"]
@@ -158,7 +158,7 @@ def read_config(
     # gff_filename   = touse.gff
     # count_filename = touse.count.txt
     # fastq_filename = touse.rep.fq
-    
+
     return (
         sample_dirs,
         sample_names,
@@ -185,7 +185,7 @@ def read_count_info(
             f.seek(cur)
             for r in DictReader(f, delimiter="\t"):
                 count_info[name, r["pbid"]] = r[field_to_use]
-    
+
     # count_info = {
     #   (sample_name, pbid): count,
     #   (sample_name, pbid): count,
@@ -195,11 +195,11 @@ def read_count_info(
 
 
 def chain_split_file(
-    ref_gff: Union[str, Path],
-    ref_group: Union[str, Path],
+    ref_gff: Path,
+    ref_group: Path,
     ref_name: str,
-    addon_gff: Union[str, Path],
-    addon_group: Union[str, Path],
+    addon_gff: Path,
+    addon_group: Path,
     addon_name: str,
     fuzzy_junction: int,
     allow_5merge: bool,
@@ -218,6 +218,8 @@ def chain_split_file(
     #   'PB.1.2': ["transcript/2", "transcript/3"]
     # }
     addon_group_info = sp.MegaPBTree.read_group(addon_group, None)
+    # with addon_group.open('r') as ag:
+    #     addon_group_info = {_.split('\t')[0]: _.split('\t')[1].split(",") for _ in ag.readlines()}
     recs = []
     tree = OrderedDict()
     i = 0
@@ -267,7 +269,7 @@ def chain_split_file(
     f_group = open(f"{addon_group}.split{str(i)}", "w")
     # this loop is going to reorder everything
     # so that we have a GFF with a transcript followed by all the exons that
-    # made up that transcript and a separate file with the matching 
+    # made up that transcript and a separate file with the matching
     # transcript_id transcript/read_group#
     # (see the sp.MegaPBTree above)
     for v1 in tree.values():
@@ -623,17 +625,17 @@ def chain_samples(
 
 
 def chain_samples_multithread(
-    dirs,
-    names,
-    group_filename,
-    gff_filename,
-    count_filename,
-    field_to_use="count_fl",
-    fuzzy_junction=0,
-    allow_5merge=False,
-    max_3_diff=100,
-    fastq_filename=None,
-    cpus=4,
+    dirs: Path,
+    names: List[str],
+    group_filename: str,
+    gff_filename: str,
+    count_filename: str,
+    field_to_use: str = "count_fl",
+    fuzzy_junction: int = 0,
+    allow_5merge: bool = False,
+    max_3_diff: int = 100,
+    fastq_filename: Optional[str] = None,
+    cpus: int = 4,
 ):
     for d in dirs.values():
         sample_sanity_check(
@@ -665,9 +667,12 @@ def chain_samples_multithread(
         first_add = True
 
     for addon_name in names[start_i:]:
-        assert not addon_name.startswith("tmp_") # TODO: get rid of this since asserts are not used in "compiled" python scripts
+        if addon_name.startswith("tmp_"):
+            raise NotImplementedError(
+                "Chaining intermediate with unchained files is currently not implemented"
+            )
         ref_name = chain[-1]
-        ref_d = Path(dirs[ref_name])
+        ref_d = dirs[ref_name]
         if first_add:
             ref_gff = ref_d.joinpath(gff_filename)
             ref_group = ref_d.joinpath(group_filename)
@@ -679,7 +684,7 @@ def chain_samples_multithread(
             ref_gff = f"{ref_name}.gff"
             ref_group = f"{ref_name}.group.txt"
             ref_fq = f"{ref_name}.rep.fq" if fastq_filename is not None else None
-        addon_d = Path(dirs[addon_name])
+        addon_d = dirs[addon_name]
         addon_gff = addon_d.joinpath(gff_filename)
         addon_group = addon_d.joinpath(group_filename)
         addon_fq = (

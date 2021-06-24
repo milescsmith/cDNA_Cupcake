@@ -7,8 +7,7 @@ import vcfpy
 from Bio import SeqIO
 from Bio.Seq import Seq
 
-from cupcake.phasing.io.coordinate_mapper import \
-    get_base_to_base_mapping_from_sam
+from cupcake.phasing.io.coordinate_mapper import get_base_to_base_mapping_from_sam
 from cupcake.sequence.BioReaders import GMAPSAMReader
 
 __VCF_EXAMPLE__ = """

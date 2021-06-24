@@ -74,7 +74,9 @@ def pick_rep(
           If pick_least_err_instead is True, pick the one w/ least number of expected base errors
           Else, pick the longest one
     """
-    fd = SeqIO.to_dict(SeqIO.parse(OpenFile(fa_fq_filename), "fastq" if is_fq else "fasta"))
+    fd = SeqIO.to_dict(
+        SeqIO.parse(OpenFile(fa_fq_filename), "fastq" if is_fq else "fasta")
+    )
 
     coords = {}
     for line in open(gff_filename):

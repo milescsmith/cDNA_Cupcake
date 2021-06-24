@@ -44,12 +44,19 @@ from pathlib import Path
 import typer
 
 from cupcake.logging import cupcake_logger as logger
+from cupcake.__about__ import __version__
 
 app = typer.Typer(
     name="get_abundance_post_collapse",
     add_completion=False,
     help="Get abundance/read stat information after running collapse script. Works for Iso-Seq1, 2, and 3 output.",
 )
+
+
+def version_callback(value: bool):
+    if value:
+        typer.echo(f"cupcake/get_abundance_post_collapse: {__version__}")
+        raise typer.Exit()
 
 
 def get_roi_len(seqid: str):
@@ -296,7 +303,7 @@ def get_abundance_post_collapse(
     :param restricted_movies:
     :return:
     """
-    
+
     if not group_file.exists():
         logger.error(f"File {group_file.name} does not exist. Abort!")
         sys.exit(-1)
@@ -325,7 +332,13 @@ def main(
         ..., help="Group file from collapse_isoforms_by_sam()"
     ),
     cluster_report: Path = typer.Argument(..., help="Cluster CSV report"),
-    output_prefix: Optional[str] = typer.Option(None, help="Name to use for output files.  By default, will use the prefix from the group file")
+    output_prefix: Optional[str] = typer.Option(
+        None,
+        help="Name to use for output files.  By default, will use the prefix from the group file",
+    ),
+    version: Optional[bool] = typer.Option(
+        None, "--version", callback=version_callback
+    ),
 ) -> None:
     """Get abundance/read stat information after running collapse script.
     Works for Iso-Seq1, 2, and 3 output."

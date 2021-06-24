@@ -15,6 +15,7 @@ class OpenFile(StringIO):
     Partially based on code from https://stackoverflow.com/a/52839332/15270148
     and https://stackoverflow.com/a/52839332/15270148
     """
+
     def __init__(self, input_file: Union[str, Path], mode: Optional[str] = None):
         self.filename = Path(input_file)
         if mode is None:
@@ -58,14 +59,14 @@ class OpenFile(StringIO):
             return self.file.read(n)
         else:
             return self.file.read(n)
-    
+
     def readlines(self):
         if self.file is None:
             self.__enter__()
             return [line for line in self.file]
         else:
             return [line for line in self.file]
-    
+
     def readline(self):
         if self.file is None:
             self.__enter__()

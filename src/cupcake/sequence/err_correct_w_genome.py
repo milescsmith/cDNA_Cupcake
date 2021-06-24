@@ -51,7 +51,7 @@ def err_correct(
             seq = consistute_genome_seq_from_exons(
                 genome_dict, r.sID, r.segments, r.flag.strand
             )
-            #logger.info(f">{r.qID}")
+            # logger.info(f">{r.qID}")
             f.write(f">{r.qID}\n{seq}\n")
 
     logger.info(f"output written to {output_err_corrected_fasta}")

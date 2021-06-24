@@ -103,7 +103,7 @@ def simulate_phasing_data(
                     fopen.write(f"+\n{cur_qv}\n")
                 else:
                     fopen.write(f">{cur_id}\n{cur_seq}\n")
-                working_dir.joinpath("fake.read_stat.txt").open("w+).write(
+                working_dir.joinpath("fake.read_stat.txt").open("w+").write(
                     f"{cur_id}\t{n}\tY\tunique\tPB.0.0\n"
                 )
 

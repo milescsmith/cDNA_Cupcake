@@ -23,6 +23,7 @@ from pathlib import Path
 from typing import Optional
 
 import typer
+
 # from gtfparse.write_gtf import df_to_gtf
 from BCBio import GFF as BCBio_GFF
 from Bio import SeqIO
