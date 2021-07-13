@@ -2,6 +2,7 @@ __author__ = "etseng@pacb.com"
 from pathlib import Path
 
 from Bio import SeqIO
+
 from cupcake.utils import OpenFile
 
 

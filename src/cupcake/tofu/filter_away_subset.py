@@ -25,7 +25,7 @@ import sys
 from collections import defaultdict
 from csv import DictReader, DictWriter
 from pathlib import Path
-from typing import Dict, Tuple, Optional
+from typing import Dict, Optional, Tuple
 
 import typer
 from Bio import SeqIO

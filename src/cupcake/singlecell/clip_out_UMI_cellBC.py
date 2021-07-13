@@ -139,7 +139,10 @@ def clip_out(
             f"{output_prefix}.trimmed.bam", "wb", header=reader.header
         ) as f2:
             writer1 = DictWriter(
-                f1, FIELDS, delimiter="\t", dialect="unix", quoting=QUOTE_NONE
+                f1,
+                FIELDS,
+                delimiter="\t",
+                dialect="unix",
             )
             writer1.writeheader()
 

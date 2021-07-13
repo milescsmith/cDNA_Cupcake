@@ -18,7 +18,6 @@ Suggested scripts to follow up with:
 """
 
 from collections import defaultdict
-from gzip import open as gzopen
 from pathlib import Path
 from typing import Optional, Union
 
@@ -26,13 +25,13 @@ import typer
 from Bio import SeqIO
 from bx.intervals import IntervalTree
 
+from cupcake import __version__
 from cupcake.logging import cupcake_logger as logger
 from cupcake.sequence import GFF
 from cupcake.tofu.branch import branch_simple2
 from cupcake.tofu.compare_junctions import compare_junctions
 from cupcake.tofu.utils import check_ids_unique
 from cupcake.utils import OpenFile
-from cupcake import __version__
 
 GFF_FIELDS = [
     "seqname",
@@ -236,7 +235,7 @@ def collapse_fuzzy_junctions(
 @app.command()
 def main(
     input_filename: str = typer.Option(..., "--input", help="Input FA/FQ filename"),
-    sam: str = typer.Option(..., help="Sorted GMAP SAM filename"),
+    sam: str = typer.Option(..., help="Sorted SAM filename"),
     fq: bool = typer.Option(False, "--fq", help="Input is a fastq file"),  # store_true
     prefix: str = typer.Option(..., "-p", "--prefix", help="Output filename prefix"),
     min_aln_coverage: float = typer.Option(

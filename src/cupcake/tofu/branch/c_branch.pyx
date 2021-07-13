@@ -3,12 +3,9 @@ import numpy as np
 cimport numpy as np
 from cpython cimport bool
 
-from cupcake.tofu.branch.intersection_unique import (
-    Interval,
-    IntervalTreeUnique
-    )
-
 from cupcake.logging import cupcake_logger as logger
+from cupcake.tofu.branch.intersection_unique import (Interval,
+                                                     IntervalTreeUnique)
 
 DTYPE = np.int64
 ctypedef np.int64_t DTYPE_t

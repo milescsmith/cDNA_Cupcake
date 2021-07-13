@@ -29,7 +29,7 @@ from Bio import SeqIO
 from bx.intervals import IntervalTree
 from bx.intervals.cluster import ClusterTree
 
-from cupcake.__about__ import __author__, __email__, __version__
+from cupcake import __version__
 from cupcake.logging import cupcake_logger as logger
 from cupcake.sequence import BioReaders
 
@@ -37,6 +37,13 @@ app = typer.Typer(
     name="cupcake.bacteria.match_w_annotation",
     help="Match alignment with annotation. Categorize and Report.",
 )
+
+
+def version_callback(value: bool):
+    """Prints the version of the package."""
+    if value:
+        print(f"cupcake version: {__version__}")
+        raise typer.Exit()
 
 
 AMatch = namedtuple("AMatch", "name strand start end record")
@@ -345,6 +352,13 @@ def main(
     min_gene_overlap: float = typer.Option(
         0.5,
         help="Minimum gene overlap, in ratio",
+    ),
+    version: bool = typer.Option(
+        None,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Prints the version of the SQANTI3 package.",
     ),
 ):
     categorize_aln_by_annotation(

@@ -3,7 +3,17 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
-## [21.4.0] - 2021-6-24
+## [21.6.0] - 2021-07-13
+
+### Fixed
+- Actually create the `good_ids` variable before it is referenced in
+  `cupcake.annotation.make_file_for_subsampling_from_collapsed.make_file_for_subsample()`
+
+## [21.5.0] - 2021-06-29
+
+Version bump for Docker container
+
+## [21.4.0] - 2021-06-24
 
 ### Changed
 - `cupcake.tofu.filter_away_subset.sanity_check_collapse_input()` now just checks

@@ -8,19 +8,28 @@ from csv import DictReader, DictWriter
 from enum import Enum
 from multiprocessing import Process
 from pathlib import Path
-from typing import List, Tuple, Union, Dict, Optional
-
-from BCBio import GFF as bGFF
+from typing import Dict, List, Optional, Tuple, Union
 
 import typer
 from Bio import SeqIO
 from bx.intervals.cluster import ClusterTree
 
+from cupcake import __version__
 from cupcake.logging import cupcake_logger as logger
 from cupcake.sequence import GFF
 from cupcake.tofu.counting import combine_abundance_across_samples as sp
 
+# from BCBio import GFF as bGFF
+
+
 app = typer.Typer(name="cupcake.tofu.counting.chain_samples")
+
+
+def version_callback(value: bool):
+    """Prints the version of the package."""
+    if value:
+        print(f"cupcake version: {__version__}")
+        raise typer.Exit()
 
 
 class fl_fields(str, Enum):
@@ -810,6 +819,13 @@ def main(
         8,
         show_default=False,
         help="Number of CPUs to use for multi-threading (default: 8)",
+    ),
+    version: bool = typer.Option(
+        None,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Prints the version of the SQANTI3 package.",
     ),
 ) -> None:
     (

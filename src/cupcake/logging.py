@@ -76,9 +76,10 @@
 # def print_memory_usage(msg="", newline=False):
 #     print(format_memory_usage(get_memory_usage(), msg, newline))
 
-import coloredlogs
 import logging
 from typing import Optional
+
+import coloredlogs
 
 
 def setup_logging(name: Optional[str] = None):

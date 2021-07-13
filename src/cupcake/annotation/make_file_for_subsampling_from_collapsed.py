@@ -64,10 +64,15 @@ def make_file_for_subsample(
 
         gff_filename = f"{input_prefix}.gff"
         logger.info(f"Reading {gff_filename} to exclude single exons...")
+        # good_ids = []
+        good_ids = [
+            r.seqid for r in collapseGFFReader(gff_filename) if len(r.ref_exons) >= 2
+        ]
+        # for r in collapseGFFReader(gff_filename):
+        #     if len(r.ref_exons) >= 2:
+        #         good_ids.append(r.seqid)
+    else:
         good_ids = []
-        for r in collapseGFFReader(gff_filename):
-            if len(r.ref_exons) >= 2:
-                good_ids.append(r.seqid)
 
     if demux_file is None and not Path(count_filename).exists():
         logger.error(f"Cannot find {count_filename}. Abort!")

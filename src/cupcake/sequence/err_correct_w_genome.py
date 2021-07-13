@@ -5,14 +5,14 @@ from typing import Dict
 
 import typer
 from Bio import SeqIO
+from tqdm import tqdm
 
-from cupcake.__about__ import __version__
+from cupcake import __version__
 from cupcake.logging import cupcake_logger as logger
 from cupcake.logging import setup_logging
 from cupcake.sequence import BioReaders
 from cupcake.sequence.coordinate_mapper import consistute_genome_seq_from_exons
 from cupcake.utils import OpenFile
-from tqdm import tqdm
 
 ###### MODIFY FILENAME BELOW #######
 # genome_file = 'hg38.fa'
@@ -27,6 +27,13 @@ app = typer.Typer(
     name="cupcake.sequence.err_correct_w_genome",
     help="Generate sequences using genome bases and SAM alignment file",
 )
+
+
+def version_callback(value: bool):
+    """Prints the version of the package."""
+    if value:
+        print(f"cupcake version: {__version__}")
+        raise typer.Exit()
 
 
 def err_correct(
@@ -62,6 +69,13 @@ def main(
     genome_file: str = typer.Argument(..., help="Genome Fasta File"),
     sam_file: str = typer.Argument(..., help="GMAP SAM File"),
     output_file: str = typer.Argument(..., help="Output Fasta File"),
+    version: bool = typer.Option(
+        None,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Prints the version of cDNA_Cupcake.",
+    ),
 ) -> None:
     err_correct(Path(genome_file), Path(sam_file), Path(output_file))
 

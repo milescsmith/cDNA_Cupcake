@@ -29,9 +29,9 @@ repos:
     entry: poetry run flake8
     language: python
     pass_filenames: false
-  - id: pyre
-    name: pyre
-    entry: poetry run pyre
-    language: python
-    pass_filenames: false
+  # - id: pyre
+  #   name: pyre
+  #   entry: pyre
+  #   language: python
+  #   pass_filenames: false
   repo: local

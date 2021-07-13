@@ -8,11 +8,11 @@ from Bio import SeqIO
 from bx.intervals.cluster import ClusterTree
 from bx.intervals.intersection import Interval, IntervalTree
 
-from cupcake.utils import OpenFile
 from cupcake.logging import cupcake_logger as logger
 from cupcake.sequence import BioReaders
 from cupcake.tofu.branch import c_branch
 from cupcake.tofu.branch.intersection_unique import IntervalTreeUnique
+from cupcake.utils import OpenFile
 
 # from cupcake.tofu.branch.intersection_unique import IntervalTreeUnique, Interval, IntervalNodeUnique
 
@@ -597,7 +597,7 @@ def trim_exon_left_to_right(
     node_d: Dict[Dict[str, Any], IntervalTreeUnique],
     max_distance: int,
 ) -> Tuple[bool, Optional[np.ndarray]]:
-    """"""
+    """ """
     l1 = m1.nonzero()[1]
     l2 = m2.nonzero()[1]
 

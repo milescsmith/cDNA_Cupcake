@@ -175,14 +175,14 @@ def summarize_junctions(
         writer.writeheader()
         keys = list(junc_by_chr_strand)
         keys.sort()
-        for _chr, _strand in keys:
-            v = junc_by_chr_strand[_chr, _strand]
+        for _seqname, _strand in keys:
+            v = junc_by_chr_strand[_seqname, _strand]
             v_keys = list(v)
             v_keys.sort()
             labels = cluster_junctions(v_keys)
             for i, (_donor, _accep) in enumerate(v_keys):
                 rec = {
-                    "seqname": _seqname,  # TODO: where is this supposed to come from?
+                    "seqname": _seqname,
                     "left": _donor,
                     "right": _accep,
                     "strand": _strand,
@@ -191,16 +191,16 @@ def summarize_junctions(
                 }
                 # f.write("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t".format(_chr, _donor, _accep, _strand, len(v[_donor,_accep]), len(set(v[_donor,_accep]))))
                 f1.write(
-                    f"{_chr}\t{_donor}\t{_accep + 1}\t{output_prefix}\t{len(v[_donor, _accep])}\t{_strand}\n"
+                    f"{_seqname}\t{_donor}\t{_accep + 1}\t{output_prefix}\t{len(v[_donor, _accep])}\t{_strand}\n"
                 )
                 # if genome is given, write acceptor-donor site
-                if genome_d is None or _chr not in genome_d:
+                if genome_d is None or _seqname not in genome_d:
                     rec["genome"] = "NA"
                     # f.write("NA\t")
                 else:
                     up, down = (
-                        genome_d[_chr][(_donor + 1) : (_donor + 3)],
-                        genome_d[_chr][(_accep - 2) : _accep],
+                        genome_d[_seqname][(_donor + 1) : (_donor + 3)],
+                        genome_d[_seqname][(_accep - 2) : _accep],
                     )
                     if _strand == "+":
                         rec["genome"] = f"{str(up.seq).upper()}-{str(down.seq).upper()}"
@@ -215,18 +215,18 @@ def summarize_junctions(
                     rec["annotation"] = "NA"
                     # f.write("NA\n")
                 else:
-                    if (_chr, _strand) in junction_known and (
+                    if (_seqname, _strand) in junction_known and (
                         _donor,
                         _accep,
-                    ) in junction_known[_chr, _strand]:
+                    ) in junction_known[_seqname, _strand]:
                         rec["annotation"] = "Y"
                         # f.write("Y\t")
                     else:
                         rec["annotation"] = "N"
                         # f.write("N\t")
-                rec["label"] = f"{_chr}_{_strand}_{labels[i]}"
+                rec["label"] = f"{_seqname}_{_strand}_{labels[i]}"
                 writer.writerow(rec)
-            # f.write("{c}_{s}_{lab}\n".format(c=_chr, s=_strand, lab=labels[i]))
+            # f.write("{c}_{s}_{lab}\n".format(c=_seqname, s=_strand, lab=labels[i]))
 
     return junc_by_chr_strand
 

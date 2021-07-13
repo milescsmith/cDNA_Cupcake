@@ -38,13 +38,13 @@ import re
 import sys
 from collections import Counter
 from csv import DictReader, DictWriter
-from typing import List, Optional
 from pathlib import Path
+from typing import List, Optional
 
 import typer
 
-from cupcake.logging import cupcake_logger as logger
 from cupcake.__about__ import __version__
+from cupcake.logging import cupcake_logger as logger
 
 app = typer.Typer(
     name="get_abundance_post_collapse",

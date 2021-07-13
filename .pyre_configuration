@@ -1,6 +1,9 @@
 {
   "source_directories": [
-    "."
+    {
+      "import_root": ".",
+      "source": "src/cupcake"
+    }
   ],
-  "taint_models_path": "/home/milo/.cache/pypoetry/virtualenvs/cupcake-g1Cd7gIf-py3.8/lib"
+  "strict": true
 }
