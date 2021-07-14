@@ -20,7 +20,8 @@ import typer
 from Bio import SeqIO
 from bx.intervals.cluster import ClusterTree
 
-from cupcake.logging import cupcake_logger as logger
+from cupcake import version_callback
+from cupcake.logger import cupcake_logger as logger
 from cupcake.sequence.GFF import collapseGFFReader
 from cupcake.sequence.SeqReaders import LazyFastqReader
 
@@ -274,6 +275,13 @@ def main(
         "--coverage",
         "-c",
         help="Minimum FLNC coverage required (default: 40)",
+    ),
+    version: bool = typer.Option(
+        None,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Prints the version of the SQANTI3 package.",
     ),
 ) -> None:
     if Path("by_loci").exists() and Path("by_loci").is_dir():

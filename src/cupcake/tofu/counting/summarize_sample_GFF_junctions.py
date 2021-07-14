@@ -23,7 +23,8 @@ from Bio import SeqIO
 from sklearn.cluster import Birch
 
 import cupcake.sequence.GFF as GFF
-from cupcake.logging import cupcake_logger as logger
+from cupcake import version_callback
+from cupcake.logger import cupcake_logger as logger
 
 app = typer.Typer(name="cupcake.tofu.counting.summarize_sample_GFF_junctions")
 
@@ -243,6 +244,13 @@ def cluster_junctions(juncs: List[int]) -> np.ndarray:
 def main(
     config: Union[str, Path] = typer.Argument(..., help="Config filename"),
     output_prefix: str = typer.Argument(..., help="Output prefix"),
+    version: bool = typer.Option(
+        None,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Prints the version of the SQANTI3 package.",
+    ),
 ):
 
     try:

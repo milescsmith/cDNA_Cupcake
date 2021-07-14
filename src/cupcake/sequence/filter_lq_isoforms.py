@@ -10,7 +10,8 @@ Sequence headers must have:
 import typer
 from Bio import SeqIO
 
-from cupcake.logging import cupcake_logger as logger
+from cupcake import version_callback
+from cupcake.logger import cupcake_logger as logger
 
 app = typer.Typer(name="cupcake.sequence.filter_lq_isoforms")
 
@@ -56,7 +57,7 @@ def filter_lq_isoforms(
 @app.command(name="")
 def main(
     fastq_filename: str = typer.Argument(
-        ..., help="LQ FASTQ filename (ex: lq_isoforms.fastq"
+        ..., help="LQ FASTQ filename (ex: lq_isoforms.fastq)"
     ),
     output_filename: str = typer.Argument(..., help="Output FASTQ filename"),
     min_fl_count: int = typer.Option(2, help="Minimum FL count (default: 2)."),
@@ -64,6 +65,13 @@ def main(
         0.99, help="Minimum predicted accuracy (default: 0.99)."
     ),
     is_flnc: bool = typer.Option(False, help="Input FASTQ is FLNC, not LQ"),
+    version: bool = typer.Option(
+        None,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Prints the version of the SQANTI3 package.",
+    ),
 ) -> None:
     if not 0 <= min_exp_acc <= 1:
         raise ValueError("min_exp_acc much be between 0 and 1")

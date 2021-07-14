@@ -12,7 +12,8 @@ from Bio import SeqIO
 from bx.intervals.cluster import ClusterTree
 
 import cupcake.sequence.BioReaders as BioReaders
-from cupcake.logging import cupcake_logger as logger
+from cupcake import version_callback
+from cupcake.logger import cupcake_logger as logger
 
 csv.field_size_limit(100000000)
 
@@ -395,6 +396,13 @@ def main(
         "tmp", "-d", "--out_dir", help="Cluster out directory (default: tmp/)"
     ),
     useBC: bool = typer.Option(False, help="Has single cell BC (default: off)"),
+    version: bool = typer.Option(
+        None,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Prints the version of the SQANTI3 package.",
+    ),
 ):
     print(f"Reading UMI-BC CSV {umi_bc_csv}...")
     umi_bc_dict = {r["id"]: r for r in DictReader(open(umi_bc_csv), delimiter="\t")}

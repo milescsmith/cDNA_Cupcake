@@ -8,7 +8,8 @@ from typing import List, Optional, Tuple, Union
 
 import typer
 
-from cupcake.logging import cupcake_logger as logger
+from cupcake import version_callback
+from cupcake.logger import cupcake_logger as logger
 
 app = typer.Typer(name="cupcake.annotation.subsample")
 
@@ -75,6 +76,13 @@ def main(
     ),
     min_fl_count: int = typer.Option(1, help="Minimum FL count"),
     step: int = typer.Option(10000, help="Step size (default: 10000)"),
+    version: bool = typer.Option(
+        None,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Prints the version of the SQANTI3 package.",
+    ),
 ):
     min_len, max_len = None, None
     if range is not None:

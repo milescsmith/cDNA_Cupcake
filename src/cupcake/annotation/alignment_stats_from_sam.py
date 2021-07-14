@@ -33,7 +33,8 @@ import typer
 from Bio import SeqIO
 from Bio.Seq import Seq
 
-from cupcake.logging import cupcake_logger as logger
+from cupcake import version_callback
+from cupcake.logger import cupcake_logger as logger
 from cupcake.sequence.BioReaders import GMAPSAMReader
 from cupcake.sequence.GFF import collapseGFFReader
 
@@ -248,6 +249,13 @@ def main(
         ..., "--output_prefix", "-o", help="Output prefix."
     ),
     gff: Optional[str] = typer.Option(None, "--gff", help="Annotation GFF."),
+    version: bool = typer.Option(
+        None,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Prints the version of the SQANTI3 package.",
+    ),
 ):
 
     # read genome

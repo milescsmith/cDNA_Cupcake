@@ -22,7 +22,8 @@ from typing import List, Optional, Tuple
 
 import typer
 
-from cupcake.logging import cupcake_logger as logger
+from cupcake import version_callback
+from cupcake.logger import cupcake_logger as logger
 
 app = typer.Typer(name="cupcake.tofu.get_counts_by_barcode")
 
@@ -95,6 +96,13 @@ def main(
     ),
     cluster_csv: str = typer.Argument(
         ..., help="Cluster output CSV (ex: cluster_report.csv)"
+    ),
+    version: bool = typer.Option(
+        None,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Prints the version of the SQANTI3 package.",
     ),
 ) -> None:
     get_fl_count_by_barcode(collapse_prefix, classify_csv, cluster_csv)

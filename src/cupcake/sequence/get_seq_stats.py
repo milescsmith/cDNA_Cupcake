@@ -6,7 +6,8 @@ import numpy as np
 import typer
 from Bio import SeqIO
 
-from cupcake.logging import cupcake_logger as logger
+from cupcake import version_callback
+from cupcake.logger import cupcake_logger as logger
 
 app = typer.Typer(
     name="cupcake.sequence.get_seq_stats",
@@ -60,6 +61,13 @@ def main(
         "--binwidth",
         "-b",
         help="Bin width, in bp (default: 1000 bp)",
+    ),
+    version: bool = typer.Option(
+        None,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Prints the version of the SQANTI3 package.",
     ),
 ) -> None:
 

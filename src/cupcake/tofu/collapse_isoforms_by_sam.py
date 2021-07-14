@@ -25,8 +25,8 @@ import typer
 from Bio import SeqIO
 from bx.intervals import IntervalTree
 
-from cupcake import __version__
-from cupcake.logging import cupcake_logger as logger
+from cupcake import version_callback
+from cupcake.logger import cupcake_logger as logger
 from cupcake.sequence import GFF
 from cupcake.tofu.branch import branch_simple2
 from cupcake.tofu.compare_junctions import compare_junctions
@@ -47,13 +47,6 @@ GFF_FIELDS = [
 
 
 app = typer.Typer(name="collapse_isoforms_by_sam", add_completion=False)
-
-
-def version_callback(value: bool):
-    """Prints the version of the package."""
-    if value:
-        print(f"cupcake version: {__version__}")
-        raise typer.Exit()
 
 
 def pick_rep(

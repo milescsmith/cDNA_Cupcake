@@ -8,7 +8,8 @@ from typing import Dict, Optional, Union
 import typer
 from Bio.Seq import Seq
 
-from cupcake.logging import cupcake_logger as logger
+from cupcake import version_callback
+from cupcake.logger import cupcake_logger as logger
 
 app = typer.Typer(name="cupcake.singlecell.UMI_BC_error_correct")
 
@@ -204,6 +205,13 @@ def main(
     dropseq_synthesis_report: str = typer.Option(
         ...,
         help="Output from running DetectBeadSynthesisErrors in DropSeq cookbook (ex: star_gene_exon_tagged_clean_substitution_clean2.bam_report.txt)",
+    ),
+    version: bool = typer.Option(
+        None,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Prints the version of the SQANTI3 package.",
     ),
 ) -> None:
     shortread_bc = {}  # dict of cell barcode -> "Y" for top ranked

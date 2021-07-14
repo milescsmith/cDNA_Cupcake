@@ -4,7 +4,8 @@ from pathlib import Path
 import typer
 from Bio import SeqIO
 
-from cupcake.logging import cupcake_logger as logger
+from cupcake import version_callback
+from cupcake.logger import cupcake_logger as logger
 
 app = typer.Typer(name="cupcake.sequence.fa2fq", help="Convert fasta to fastq")
 
@@ -32,7 +33,14 @@ def fa2fq(input_file):
 def main(
     fasta_filename: str = typer.Argument(
         ..., help="input fasta (must end with .fasta or .fa)"
-    )
+    ),
+    version: bool = typer.Option(
+        None,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Prints the version of the SQANTI3 package.",
+    ),
 ) -> None:
     fa2fq(fasta_filename)
 

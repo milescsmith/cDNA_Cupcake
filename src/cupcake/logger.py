@@ -82,42 +82,48 @@ from typing import Optional
 import coloredlogs
 
 
-def setup_logging(name: Optional[str] = None):
+def setup_logging(name: Optional[str] = None, level="DEBUG") -> logging.Logger:
     coloredlogs.DEFAULT_FIELD_STYLES = {
         "asctime": {"color": "green"},
         "levelname": {"bold": True, "color": "red"},
         "module": {"color": 73},
         "funcName": {"color": 74},
-        "lineno": {"bold": True, "color": 75},
+        "lineno": {"bold": True, "color": "green"},
         "message": {"color": "yellow"},
     }
-    coloredlogs.install(
-        level="DEBUG",
-        fmt="[%(asctime)s] {%(module)s:%(funcName)s():%(lineno)d} %(levelname)s - %(message)s",
-    )
-    logger = logging.getLogger(__name__)
-    logger.setLevel(logging.DEBUG)
+
+    if name is None:
+        name = __name__
+    logger = logging.getLogger(name)
     logger.propagate = True
 
-    if name:
-        fh = logging.FileHandler(filename=name)
-    else:
-        fh = logging.FileHandler(filename=f"{__name__}.log")
-    formatter = logging.Formatter(
-        "[%(asctime)s] {%(module)s:%(funcName)s:%(lineno)d} %(levelname)s - %(message)s"
+    if level == "DEBUG":
+        logger_level = logging.DEBUG
+    elif level == "INFO":
+        logger_level = logging.INFO
+    elif level == "WARNING":
+        logger_level = logging.WARNING
+    elif level == "ERROR":
+        logger_level = logging.ERROR
+    elif level == "CRITICAL":
+        logger_level = logging.CRITICAL
+
+    logger.setLevel(logger_level)
+    coloredlogs.install(
+        level=level,
+        fmt="[%(funcName)s(%(lineno)d)]: %(message)s",
+        logger=logger,
     )
-    fh.setLevel(logging.DEBUG)
+
+    if name:
+        fh = logging.FileHandler(f"{name}.log")
+    else:
+        fh = logging.FileHandler(f"{__name__}")
+    formatter = logging.Formatter(
+        "[%(asctime)s] {%(module)s:%(funcName)s():%(lineno)d} %(levelname)s - %(message)s"
+    )
+    fh.setLevel(logger_level)
     fh.setFormatter(formatter)
     logger.addHandler(fh)
 
-    # st = logging.StreamHandler()
-    # st.setLevel(logging.INFO)
-    # st.setFormatter(formatter)
-    # logger.addHandler(st)
-
-
-setup_logging("cupcake.log")
-cupcake_logger = logging.getLogger("cupcake")
-# Don’t pass log messages on to logging.root and its handler
-cupcake_logger.propagate = True
-cupcake_logger.setLevel("INFO")
+    return logger

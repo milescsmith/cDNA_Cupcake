@@ -6,7 +6,8 @@ from pathlib import Path
 import typer
 from Bio import SeqIO
 
-from cupcake.logging import cupcake_logger as logger
+from cupcake import version_callback
+from cupcake.logger import cupcake_logger as logger
 from cupcake.sequence import BioReaders
 
 app = typer.Typer(
@@ -58,6 +59,13 @@ def summarize_GMAP_sam(input_fa_or_fq, input_sam):
 def main(
     input_fa_or_fq: str = typer.Argument(..., help="Input fasta/fastq filename"),
     sam_file: str = typer.Argument(..., help="(GMAP) SAM filename"),
+    version: bool = typer.Option(
+        None,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Prints the version of the SQANTI3 package.",
+    ),
 ) -> None:
     summarize_GMAP_sam(input_fa_or_fq, sam_file)
 

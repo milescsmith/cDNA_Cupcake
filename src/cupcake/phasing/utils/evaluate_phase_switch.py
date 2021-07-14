@@ -30,7 +30,7 @@ from typing import Tuple
 # from collections import defaultdict
 import vcfpy
 
-from cupcake.logging import cupcake_logger as logger
+from cupcake.logger import cupcake_logger as logger
 
 
 def read_config(config_filename: Path) -> Tuple[str, str, str, str]:

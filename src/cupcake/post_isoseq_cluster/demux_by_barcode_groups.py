@@ -14,7 +14,8 @@ import typer
 from Bio import SeqIO
 
 import cupcake.sequence.GFF as GFF
-from cupcake.logging import cupcake_logger as logger
+from cupcake import version_callback
+from cupcake.logger import cupcake_logger as logger
 
 rex_pbid = re.compile(r"(PB.\d+.\d+)(|\S+)")
 
@@ -97,6 +98,13 @@ def main(
     pooled_fastx: Optional[str] = typer.Option(
         None,
         help="Pooled FASTA/FASTQ (optional, if given, will also output demux fa/fq)",
+    ),
+    version: bool = typer.Option(
+        None,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Prints the version of the SQANTI3 package.",
     ),
 ) -> None:
     tmp = eval(outgroup_dict)

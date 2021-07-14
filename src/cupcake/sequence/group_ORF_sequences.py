@@ -22,7 +22,8 @@ from collections import Counter, OrderedDict
 import typer
 from Bio import SeqIO
 
-from cupcake.logging import cupcake_logger as logger
+from cupcake import version_callback
+from cupcake.logger import cupcake_logger as logger
 
 rex_pbid = re.compile(r"(PB.\d+).(\d+)")
 
@@ -77,6 +78,13 @@ def main(
     is_pbid: bool = typer.Option(
         False,
         help="FAA IDs are in PB.X.Y format (default: off)",
+    ),
+    version: bool = typer.Option(
+        None,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Prints the version of the SQANTI3 package.",
     ),
 ) -> None:
 

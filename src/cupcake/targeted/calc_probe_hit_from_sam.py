@@ -10,6 +10,7 @@ import typer
 from Bio import SeqIO
 from bx.intervals import Interval, IntervalTree
 
+from cupcake import version_callback
 from cupcake.sequence import BED, BioReaders
 from cupcake.sequence.GFF import collapseGFFReader
 
@@ -132,6 +133,13 @@ def main(
     end_base: index_base = typer.Option(..., help="End base is 0 or 1-based index"),
     output: str = typer.Option(
         "stdout", "-o", "--output", help="Output filename (default: stdout)"
+    ),
+    version: bool = typer.Option(
+        None,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Prints the version of the SQANTI3 package.",
     ),
 ):
 

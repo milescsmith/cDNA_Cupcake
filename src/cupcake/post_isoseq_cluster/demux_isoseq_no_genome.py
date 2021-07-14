@@ -13,7 +13,8 @@ from typing import Dict, Optional, Set, Tuple, Union
 import typer
 from Bio import SeqIO
 
-from cupcake.logging import cupcake_logger as logger
+from cupcake import version_callback
+from cupcake.logger import cupcake_logger as logger
 
 """
 Demultiplex IsoSeq (SMRT Link 8.0) job output (without genome mapping)
@@ -170,6 +171,13 @@ def main(
     ),
     output: str = typer.Option(
         sys.stdout, "--output", "-o", help="Output count filename"
+    ),
+    version: bool = typer.Option(
+        None,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Prints the version of the SQANTI3 package.",
     ),
 ) -> None:
 

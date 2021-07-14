@@ -13,7 +13,8 @@ from Bio.SeqIO import SeqRecord
 from bx.intervals.cluster import ClusterTree
 from click.exceptions import BadArgumentUsage
 
-from cupcake.logging import cupcake_logger as logger
+from cupcake import version_callback
+from cupcake.logger import cupcake_logger as logger
 from cupcake.sequence import BioReaders
 from cupcake.sequence.SeqReaders import LazyFastaReader, LazyFastqReader
 from cupcake.tofu.branch import branch_simple2
@@ -555,6 +556,13 @@ def main(
         10000, "-d", help="Minimum distance between loci, in bp"
     ),
     min_identity: float = typer.Option(0.95, "-i", help="Minimum alignment identity"),
+    version: bool = typer.Option(
+        None,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Prints the version of the SQANTI3 package.",
+    ),
 ):
     assert 0 < min_identity <= 1
 

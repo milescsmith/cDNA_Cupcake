@@ -4,7 +4,8 @@ from collections import defaultdict
 import typer
 from Bio import SeqIO
 
-from cupcake.logging import cupcake_logger as logger
+from cupcake import version_callback
+from cupcake.logger import cupcake_logger as logger
 
 app = typer.Typer(
     name="cupcake.annotation.parse_matchAnnot", help="Parse MatchAnnot result"
@@ -87,6 +88,13 @@ def main(
     parse_FL_coverage: bool = typer.Option(
         False,
         help="Parse `full_length_coverage=` from sequence ID.",
+    ),
+    version: bool = typer.Option(
+        None,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Prints the version of the SQANTI3 package.",
     ),
 ) -> None:
     parse_matchAnnot(fa_or_fq, match_filename, not_pbid, parse_FL_coverage)

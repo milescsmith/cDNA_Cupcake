@@ -24,7 +24,8 @@ import typer
 from Bio import SeqIO
 
 import cupcake.sequence.GFF as GFF
-from cupcake.logging import cupcake_logger as logger
+from cupcake import version_callback
+from cupcake.logger import cupcake_logger as logger
 from cupcake.tofu.counting import combine_abundance_across_samples as sp
 from cupcake.tofu.counting.chain_samples import read_config, read_count_info
 
@@ -222,6 +223,13 @@ def main(
         5,
         show_default=False,
         help="Max allowed distance in junction to be considered identical",
+    ),
+    version: bool = typer.Option(
+        None,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Prints the version of the SQANTI3 package.",
     ),
 ) -> None:
     (

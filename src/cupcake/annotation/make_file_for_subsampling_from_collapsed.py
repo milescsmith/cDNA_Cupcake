@@ -7,7 +7,8 @@ from typing import Dict, Optional, Tuple
 import typer
 from Bio import SeqIO
 
-from cupcake.logging import cupcake_logger as logger
+from cupcake import cupcake_logger as logger
+from cupcake import set_verbosity, version_callback
 
 app = typer.Typer(
     name="cupcake.annotation.make_file_for_subsampling_from_collapsed",
@@ -144,8 +145,8 @@ def make_file_for_subsample(
             for pbid in to_write[sample]:
                 if matchAnnot_parsed is not None or sqanti_class is not None:
                     if pbid not in match_dict:
-                        logger.critical(
-                            f"Ignoring {pbid} because not on annotation (SQANTI/MatchAnnot) file."
+                        logger.warning(
+                            f"Ignoring {pbid} because not in annotation (SQANTI/MatchAnnot) file."
                         )
                         continue
                     m = match_dict[pbid]
@@ -154,24 +155,28 @@ def make_file_for_subsample(
                 else:
                     h.write(f'{pbid}\t{pbid.split(".")[1]}\t{seqlen_dict[pbid]}\t')
                 h.write(f"{to_write[sample][pbid]}\n")
-            logger.info(f"Output written to {h.absolute()}.")
+            logger.info(
+                f"Output written to {Path(f'{output_prefix}.{sample}.txt').resolve()}."
+            )
 
 
+@set_verbosity
 @app.command(name="")
 def main(
     input_prefix: str = typer.Option(
-        "hq_isoforms.fastq.no5merge.collapsed.min_fl_2.filtered",
+        None,
+        "--input",
         "-i",
         help="Collapsed prefix",
     ),
     output_prefix: str = typer.Option(
-        "output.for_subsampling", "-o", help="Output prefix"
+        "subsample", "--output", "-o", help="Output prefix"
     ),
     matchAnnot_parsed: Optional[str] = typer.Option(
-        None, "-m1", help="MatchAnnot parsed output"
+        None, "--matchannot", "-m1", help="MatchAnnot parsed output"
     ),
     sqanti_class: Optional[str] = typer.Option(
-        None, "-m2", help="SQANTI classification file"
+        None, "--sqanti_class", "-m2", help="SQANTI classification file"
     ),
     demux: Optional[str] = typer.Option(
         None,
@@ -180,7 +185,16 @@ def main(
     include_single_exons: bool = typer.Option(
         True, show_default=False, help="Include single exons [default: OFF]"
     ),
+    verbose: int = typer.Option(3, "--verbose", "-v", count=True),
+    version: bool = typer.Option(
+        None,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Prints the version of the SQANTI3 package.",
+    ),
 ) -> None:
+    set_verbosity(verbose)
     make_file_for_subsample(
         input_prefix,
         output_prefix,

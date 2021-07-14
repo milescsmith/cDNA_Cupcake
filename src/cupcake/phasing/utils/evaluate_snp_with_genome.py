@@ -8,7 +8,8 @@ import typer
 import vcfpy
 from bx.intervals import IntervalTree
 
-from cupcake.logging import cupcake_logger as logger
+from cupcake import version_callback
+from cupcake.logger import cupcake_logger as logger
 from cupcake.phasing.io.SAMMPileUpReader import MPileUpReader
 
 app = typer.Typer(name="cupcake.phasing.util.evaluate_snp_with_genome")
@@ -281,7 +282,15 @@ def main_maize(ki11_snps=None, dirs=None):
 
 @app.command(name="")
 def main(
-    vcf_filename: str = typer.Argument(...), out_filename: str = typer.Argument(...)
+    vcf_filename: str = typer.Argument(...),
+    out_filename: str = typer.Argument(...),
+    version: bool = typer.Option(
+        None,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Prints the version of the SQANTI3 package.",
+    ),
 ) -> None:
     brangus(vcf_filename, out_filename)
 

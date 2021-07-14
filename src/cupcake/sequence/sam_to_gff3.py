@@ -31,7 +31,8 @@ from Bio.Seq import Seq
 from Bio.SeqFeature import FeatureLocation, SeqFeature
 from Bio.SeqRecord import SeqRecord
 
-from cupcake.logging import cupcake_logger as logger
+from cupcake import version_callback
+from cupcake.logger import cupcake_logger as logger
 from cupcake.sequence.BioReaders import GMAPSAMReader
 
 app = typer.Typer(
@@ -120,6 +121,13 @@ def main(
     ),
     source: str = typer.Option(
         ..., "--source", "-s", help="source name (ex: hg38, mm10)"
+    ),
+    version: bool = typer.Option(
+        None,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Prints the version of the SQANTI3 package.",
     ),
 ):
     sam_filename = Path(sam_filename)

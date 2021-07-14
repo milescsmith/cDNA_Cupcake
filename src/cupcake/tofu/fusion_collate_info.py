@@ -10,7 +10,8 @@ from typing import Optional, Tuple
 import typer
 from Bio import SeqIO
 
-from cupcake.logging import cupcake_logger as logger
+from cupcake import version_callback
+from cupcake.logger import cupcake_logger as logger
 from cupcake.sequence.GFF import collapseGFFReader
 
 fusion_pbid = re.compile(r"PBfusion.(\d+).(\d+)")
@@ -287,9 +288,16 @@ def main(
     genome: Optional[str] = typer.Option(None, help="Reference genome"),
     min_fl_count: int = typer.Option(2, help="Minimum FL count"),
     min_breakpoint_dist_kb: int = typer.Option(
-        10, help="Minimum breakpoint distance, in kb)"
+        10, help="Minimum breakpoint distance, in kb"
     ),
     include_Mt_genes: bool = typer.Option(False, help="Include Mt genes"),
+    version: bool = typer.Option(
+        None,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Prints the version of the SQANTI3 package.",
+    ),
 ) -> None:
     if genome is not None:
         genome_dict = SeqIO.to_dict(SeqIO.parse(open(genome), "fasta"))

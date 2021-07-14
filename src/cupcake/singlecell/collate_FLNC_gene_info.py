@@ -19,7 +19,8 @@ from typing import Optional
 import typer
 from Bio.Seq import Seq
 
-from cupcake.logging import cupcake_logger as logger
+from cupcake import version_callback
+from cupcake.logger import cupcake_logger as logger
 
 app = typer.Typer(name="cupcake.singlecell.collate_FLNC_gene_info")
 
@@ -152,6 +153,13 @@ def main(
     ),
     is_clustered: bool = typer.Option(
         False, help="group.txt contains post-UMI clustering result"
+    ),
+    version: bool = typer.Option(
+        None,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Prints the version of the SQANTI3 package.",
     ),
 ):
     if Path(output_filename).exists():

@@ -43,20 +43,14 @@ from typing import List, Optional
 
 import typer
 
-from cupcake.__about__ import __version__
-from cupcake.logging import cupcake_logger as logger
+from cupcake import version_callback
+from cupcake.logger import cupcake_logger as logger
 
 app = typer.Typer(
     name="get_abundance_post_collapse",
     add_completion=False,
     help="Get abundance/read stat information after running collapse script. Works for Iso-Seq1, 2, and 3 output.",
 )
-
-
-def version_callback(value: bool):
-    if value:
-        typer.echo(f"cupcake/get_abundance_post_collapse: {__version__}")
-        raise typer.Exit()
 
 
 def get_roi_len(seqid: str):
@@ -336,8 +330,12 @@ def main(
         None,
         help="Name to use for output files.  By default, will use the prefix from the group file",
     ),
-    version: Optional[bool] = typer.Option(
-        None, "--version", callback=version_callback
+    version: bool = typer.Option(
+        None,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Prints the version of the SQANTI3 package.",
     ),
 ) -> None:
     """Get abundance/read stat information after running collapse script.

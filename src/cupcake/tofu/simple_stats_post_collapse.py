@@ -5,7 +5,8 @@ from pathlib import Path
 
 import typer
 
-from cupcake.logging import cupcake_logger as logger
+from cupcake import version_callback
+from cupcake.logger import cupcake_logger as logger
 from cupcake.sequence.GFF import collapseGFFReader
 
 app = typer.Typer(name="cupcake.tofu.simple_stats_post_collapse")
@@ -47,7 +48,14 @@ def simple_stats_post_collapse(input_prefix: str) -> None:
 def main(
     input_prefix: str = typer.Argument(
         ..., help="Input prefix, ex: hq.5merge.collapsed"
-    )
+    ),
+    version: bool = typer.Option(
+        None,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Prints the version of the SQANTI3 package.",
+    ),
 ) -> None:
     simple_stats_post_collapse(input_prefix)
 

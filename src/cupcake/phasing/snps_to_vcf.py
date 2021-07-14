@@ -5,7 +5,8 @@ from pathlib import Path
 
 import typer
 
-from cupcake.logging import cupcake_logger as logger
+from cupcake import version_callback
+from cupcake.logger import cupcake_logger as logger
 from cupcake.phasing.io.MummerSNPReader import write_snp_to_vcf
 from cupcake.sequence.SeqReaders import LazyFastaReader
 
@@ -22,6 +23,13 @@ def main(
     ),
     genome_filename: str = typer.Argument(
         ..., help="Genome fasta. Chromosome IDs must agree with .snps_files files!"
+    ),
+    version: bool = typer.Option(
+        None,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Prints the version of the SQANTI3 package.",
     ),
 ) -> None:
     snps_filename = Path(snps_filename)

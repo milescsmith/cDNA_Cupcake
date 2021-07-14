@@ -1,6 +1,5 @@
 r"""*Single-source version number for* ``cdna_cupcake``.
 """
-
 try:
     from importlib.metadata import metadata
 except ImportError:

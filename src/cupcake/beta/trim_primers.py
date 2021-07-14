@@ -12,7 +12,8 @@ import typer
 from Bio import SeqIO
 from Bio.SeqRecord import SeqRecord
 
-from cupcake.logging import cupcake_logger as logger
+from cupcake import version_callback
+from cupcake.logger import cupcake_logger as logger
 
 
 @dataclass
@@ -215,6 +216,13 @@ def main(
         "--chunks",
         "-n",
         help="Number of chunks (CPUs) to use, default 10",
+    ),
+    version: bool = typer.Option(
+        None,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Prints the version of the SQANTI3 package.",
     ),
 ):
     trim5p3p_multithreaded(fastq_filename, output_prefix, chunks)

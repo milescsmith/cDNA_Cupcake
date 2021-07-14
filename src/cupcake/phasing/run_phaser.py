@@ -10,7 +10,8 @@ from subprocess import check_output
 import typer
 from Bio import SeqIO
 
-from cupcake.logging import cupcake_logger as logger
+from cupcake import version_callback
+from cupcake.logger import cupcake_logger as logger
 from cupcake.phasing.io import VariantPhaseCleaner, VariantPhaser
 from cupcake.phasing.io.MPileUpVariantCaller import MPileUPVariant
 from cupcake.phasing.io.SAMMPileUpReader import MPileUpReader
@@ -176,6 +177,13 @@ def main(
         "-p",
     ),
     ploidy: int = typer.Option(2),
+    version: bool = typer.Option(
+        None,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Prints the version of the SQANTI3 package.",
+    ),
     # parser.add_argument("-e", "--err_sub", default=ERR_SUB, type=float, help="Estimated substitution error rate (default: 0.005)")
 ) -> None:
     set_to_kill(

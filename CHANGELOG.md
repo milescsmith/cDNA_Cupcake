@@ -3,6 +3,22 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
+## [21.7.0] - 2021-07-14
+
+### Fixed
+- Fix the final reporting of the output location by
+  `cupcake.annotation.make_file_for_subsampling_from_collapsed.make_file_for_subsample()`
+- Logging now works as originally intended
+- Fixed several instances of missing or extra parentheses being present in the
+  arguments for `main()`
+
+### Added
+- All `main()` functions have a `--version` argument, all of which call a
+  common `version_callback()` in `__init__.py`
+
+### Changed
+- Renamed "logging.py" submodule "logger.py"
+
 ## [21.6.0] - 2021-07-13
 
 ### Fixed
@@ -204,6 +220,9 @@ Version bump for Docker container
 - Reformmated to follow PEP517 - that is, replaced setup.py with pyproject.toml and build.py
 - Now using Poetry for dependency managment
 
+[21.2.8]: https://github.com/milescsmith/cDNA_Cupcake/compare/21.6.0...21.7.0
+[21.2.8]: https://github.com/milescsmith/cDNA_Cupcake/compare/21.5.0...21.6.0
+[21.2.8]: https://github.com/milescsmith/cDNA_Cupcake/compare/21.4.0...21.5.0
 [21.2.8]: https://github.com/milescsmith/cDNA_Cupcake/compare/21.3.0...21.4.0
 [21.2.8]: https://github.com/milescsmith/cDNA_Cupcake/compare/21.2.8...21.3.0
 [21.2.8]: https://github.com/milescsmith/cDNA_Cupcake/compare/21.2.7...21.2.8

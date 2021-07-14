@@ -13,6 +13,8 @@ from pathlib import Path
 
 import typer
 
+from cupcake import version_callback
+
 app = typer.Typer(name="cupcake.sequence.STARwrapper", help="Wrapper for running STAR")
 
 
@@ -40,6 +42,13 @@ def main(
     in_fasta: str = typer.Argument(...),
     out_sam: str = typer.Argument(...),
     cpus: int = typer.Option(10, help="Number of threads (default: 10)"),
+    version: bool = typer.Option(
+        None,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Prints the version of the SQANTI3 package.",
+    ),
 ) -> None:
 
     run_STAR(in_fasta, out_sam, genome_dir, cpus)

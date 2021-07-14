@@ -8,7 +8,8 @@ from csv import DictReader, DictWriter
 import typer
 from Bio import SeqIO
 
-from cupcake.logging import cupcake_logger as logger
+from cupcake import version_callback
+from cupcake.logger import cupcake_logger as logger
 from cupcake.sequence import GFF
 
 """
@@ -151,6 +152,13 @@ def main(
         True,
         "--dun_use-group_count",
         help="Turn off more stringent min count",
+    ),
+    version: bool = typer.Option(
+        None,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Prints the version of the SQANTI3 package.",
     ),
 ) -> None:
 

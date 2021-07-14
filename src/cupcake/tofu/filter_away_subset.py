@@ -30,7 +30,8 @@ from typing import Dict, Optional, Tuple
 import typer
 from Bio import SeqIO
 
-from cupcake.logging import cupcake_logger as logger
+from cupcake import version_callback
+from cupcake.logger import cupcake_logger as logger
 from cupcake.sequence import GFF
 from cupcake.tofu import compare_junctions
 
@@ -178,6 +179,13 @@ def main(
     ),
     output_prefix: Optional[str] = typer.Option(
         None, help="Prefix to use when naming the filtered files"
+    ),
+    version: bool = typer.Option(
+        None,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Prints the version of the SQANTI3 package.",
     ),
 ) -> None:
 

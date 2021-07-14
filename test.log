@@ -1,0 +1,4 @@
+[2021-07-14 11:24:42,113] {<ipython-input-5-84db539d2f3e>:<module>():1} DEBUG - debug
+[2021-07-14 11:24:50,227] {<ipython-input-6-722c666ed4ca>:<module>():1} INFO - debug
+[2021-07-14 11:24:58,068] {<ipython-input-7-b19a6c41049e>:<module>():1} CRITICAL - debug
+[2021-07-14 11:25:24,791] {<ipython-input-10-b19a6c41049e>:<module>():1} CRITICAL - debug

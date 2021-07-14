@@ -25,7 +25,8 @@ from bx.intervals import Interval, IntervalTree
 
 import cupcake.sequence.GFF as GFF
 import cupcake.tofu.counting.chain_samples as sp
-from cupcake.logging import cupcake_logger as logger
+from cupcake import version_callback
+from cupcake.logger import cupcake_logger as logger
 
 fields_to_add = [
     "count_fl",
@@ -356,6 +357,13 @@ def main(
     # parser.add_argument("-C", "--accept_all_canonical", action="store_true", default=False, help="Accept all canonical jucntions (default: false)")
     scrubbed_junction_file: Optional[Union[str, Path]] = typer.Option(
         None, help="Scrubbed junction bed --- if given, directly use it to scrub GFFs."
+    ),
+    version: bool = typer.Option(
+        None,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Prints the version of the SQANTI3 package.",
     ),
 ):
     (

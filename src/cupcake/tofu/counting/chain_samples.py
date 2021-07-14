@@ -14,8 +14,8 @@ import typer
 from Bio import SeqIO
 from bx.intervals.cluster import ClusterTree
 
-from cupcake import __version__
-from cupcake.logging import cupcake_logger as logger
+from cupcake import version_callback
+from cupcake.logger import cupcake_logger as logger
 from cupcake.sequence import GFF
 from cupcake.tofu.counting import combine_abundance_across_samples as sp
 
@@ -23,13 +23,6 @@ from cupcake.tofu.counting import combine_abundance_across_samples as sp
 
 
 app = typer.Typer(name="cupcake.tofu.counting.chain_samples")
-
-
-def version_callback(value: bool):
-    """Prints the version of the package."""
-    if value:
-        print(f"cupcake version: {__version__}")
-        raise typer.Exit()
 
 
 class fl_fields(str, Enum):

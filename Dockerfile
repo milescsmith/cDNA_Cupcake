@@ -23,6 +23,6 @@ RUN apt-get update --fix-missing && \
     rm -rf /tmp/downloaded_packages/* && \
     rm -rf /var/lib/apt/lists/*
 WORKDIR /opt
-COPY --from=builder /opt/cupcake-21.6.0-cp38-cp38-manylinux_2_28_x86_64.whl .
-RUN pip install --no-cache-dir /opt/cupcake-21.6.0-cp38-cp38-manylinux_2_28_x86_64.whl && \
-  rm /opt/cupcake-21.6.0-cp38-cp38-manylinux_2_28_x86_64.whl
+COPY --from=builder /opt/cupcake-21.7.0-cp38-cp38-manylinux_2_28_x86_64.whl .
+RUN pip install --no-cache-dir /opt/cupcake-21.7.0-cp38-cp38-manylinux_2_28_x86_64.whl && \
+  rm /opt/cupcake-21.7.0-cp38-cp38-manylinux_2_28_x86_64.whl

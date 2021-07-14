@@ -6,6 +6,8 @@ from pathlib import Path
 import typer
 from Bio import SeqIO
 
+from cupcake import version_callback
+
 app = typer.Typer(
     name="cupcake.sequence.get_seqs_from_list",
     help="Get sequences from a fasta/fastq file from a list",
@@ -40,6 +42,13 @@ def main(
     exclude: bool = typer.Option(
         False,
         help="Output sequences NOT in the list, default OFF",
+    ),
+    version: bool = typer.Option(
+        None,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Prints the version of the SQANTI3 package.",
     ),
 ) -> None:
 

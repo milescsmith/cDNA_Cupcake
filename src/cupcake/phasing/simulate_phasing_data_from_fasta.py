@@ -19,7 +19,8 @@ from typing import List
 import typer
 from Bio import SeqIO
 
-from cupcake.logging import cupcake_logger as logger
+from cupcake import version_callback
+from cupcake.logger import cupcake_logger as logger
 from cupcake.phasing.io.VariantPhaser import Haplotypes
 from cupcake.simulate.simulate import sim_seq
 
@@ -126,6 +127,13 @@ def main(
     err_sub: float = typer.Option(...),
     copies: str = typer.Option(...),
     write_fastq: bool = typer.Option(False),
+    version: bool = typer.Option(
+        None,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Prints the version of the SQANTI3 package.",
+    ),
 ) -> None:
 
     assert 2 <= ploidity <= 6

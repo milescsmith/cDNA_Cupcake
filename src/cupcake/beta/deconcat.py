@@ -9,7 +9,8 @@ import typer
 from Bio import SeqIO
 from Bio.Seq import Seq
 
-from cupcake.logging import cupcake_logger as logger
+from cupcake import version_callback
+from cupcake.logger import cupcake_logger as logger
 
 SCOREMAT = parasail.matrix_create("ACGT", 2, -5)
 MIN_SCORE = 80
@@ -116,6 +117,13 @@ def main(
     input_prefix: str = typer.Argument(...),
     output_prefix: str = typer.Argument(...),
     cpus: int = typer.Option(10, "--cpus", "-n", help="Number of CPUS"),
+    version: bool = typer.Option(
+        None,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Prints the version of the SQANTI3 package.",
+    ),
 ) -> None:
 
     info = {}

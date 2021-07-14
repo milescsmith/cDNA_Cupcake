@@ -3,7 +3,7 @@ import numpy as np
 cimport numpy as np
 from cpython cimport bool
 
-from cupcake.logging import cupcake_logger as logger
+from cupcake.logger import cupcake_logger as logger
 from cupcake.tofu.branch.intersection_unique import (Interval,
                                                      IntervalTreeUnique)
 

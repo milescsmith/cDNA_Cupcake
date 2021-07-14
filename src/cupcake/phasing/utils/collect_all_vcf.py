@@ -7,7 +7,8 @@ from typing import Optional
 import typer
 import vcfpy
 
-from cupcake.logging import cupcake_logger as logger
+from cupcake import version_callback
+from cupcake.logger import cupcake_logger as logger
 
 
 class vcf_phasing(str, Enum):
@@ -97,6 +98,13 @@ def main(
         "--select_dirs",
         "-s",
         help="Comma separate list of directories to tally - if this is used, <dir> is ignored",
+    ),
+    version: bool = typer.Option(
+        None,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Prints the version of the SQANTI3 package.",
     ),
 ) -> None:
 

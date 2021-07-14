@@ -9,7 +9,8 @@ from typing import Dict, List, Union
 
 import typer
 
-from cupcake.logging import cupcake_logger as logger
+from cupcake import version_callback
+from cupcake.logger import cupcake_logger as logger
 
 """
 Based on the script by Gloria Sheynkman for creating a BED12 file where
@@ -152,6 +153,13 @@ def main(
     output_prefix: str = typer.Argument(...),
     ok_to_ignore: bool = typer.Option(
         False, help="OK to ignore entries missing in bed file"
+    ),
+    version: bool = typer.Option(
+        None,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Prints the version of the SQANTI3 package.",
     ),
 ):
     fl_fieldnames = []

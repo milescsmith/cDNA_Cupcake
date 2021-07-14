@@ -40,7 +40,8 @@ from typing import Optional
 import typer
 from Bio import SeqIO
 
-from cupcake.logging import cupcake_logger as logger
+from cupcake import version_callback
+from cupcake.logger import cupcake_logger as logger
 
 hq1_id_rex = re.compile(r"i\d+_HQ_\S+\|(\S+)\/f\d+p\d+\/\d+")
 hq2_id_rex = re.compile(r"HQ_\S+\|(\S+)\/f\d+p\d+\/\d+")
@@ -205,6 +206,13 @@ def main(
     ),
     output: Optional[str] = typer.Option(
         None, "--output", "-o", help="Output count filename"
+    ),
+    version: bool = typer.Option(
+        None,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Prints the version of the SQANTI3 package.",
     ),
 ):
 

@@ -1,5 +1,3 @@
-__author__ = "etseng@pacb.com"
-
 """
 For parsing the .snps_files results from running Mummer dnadiff into VCF
 https://github.com/mummer4/mummer/blob/master/MANUAL.md#dnadiff
@@ -53,7 +51,8 @@ from pathlib import Path
 import typer
 import vcfpy
 
-from cupcake.logging import cupcake_logger as logger
+from cupcake import version_callback
+from cupcake.logger import cupcake_logger as logger
 from cupcake.sequence.SeqReaders import LazyFastaReader
 
 
@@ -225,6 +224,13 @@ def main(
     genome_filename: str = typer.Argument(
         ...,
         help="Genome fasta. Chromosome IDs must agree with .snps_files files!",
+    ),
+    version: bool = typer.Option(
+        None,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Prints the version of the SQANTI3 package.",
     ),
 ):
     snps_filename = Path(snps_filename)

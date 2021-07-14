@@ -3,7 +3,8 @@ from pathlib import Path
 
 import typer
 
-from cupcake.logging import cupcake_logger as logger
+from cupcake import version_callback
+from cupcake.logger import cupcake_logger as logger
 from cupcake.sequence.BioReaders import GMAPSAMReader
 from cupcake.sequence.GFF import write_collapseGFF_format
 
@@ -14,7 +15,16 @@ app = typer.Typer(
 
 
 @app.command(name="")
-def main(sam_filename: str = typer.Argument(...)) -> None:
+def main(
+    sam_filename: str = typer.Argument(...),
+    version: bool = typer.Option(
+        None,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Prints the version of the SQANTI3 package.",
+    ),
+) -> None:
     sam_filename = Path(sam_filename)
     if sam_filename.suffix != ".sam":
         raise RuntimeError("Only accepts files ending in .sam. Abort!")

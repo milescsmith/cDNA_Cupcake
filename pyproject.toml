@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cupcake"
-version = "21.6.0"
+version = "21.7.0"
 description = "Miscellaneous collection of Python and R scripts for processing Iso-Seq data"
 authors = ["Elizabeth Tseng <etseng@pacb.com>"]
 license = "BSD3"
@@ -60,6 +60,8 @@ tqdm = "^4.60.0"
 pyre-check = "^0.9.3"
 watchman = "^0.0.8"
 pre-commit = "^2.13.0"
+isort = "^5.9.2"
+flake8 = "^3.9.2"
 
 [build-system]
 requires = ["poetry-core>=1.0.0", "cython", "numpy", "toml", "setuptools"]

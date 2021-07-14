@@ -11,6 +11,8 @@ i0_LQ_sample32f89e|c32/f1p0/929 isoform=c32;full_length_coverage=1;non_full_leng
 import typer
 from Bio import SeqIO
 
+from cupcake import version_callback
+
 app = typer.Typer(name="cupcake.sequence.calc_expected_accuracy_from_fastq")
 
 
@@ -49,7 +51,7 @@ def cal_expected_accuracy_from_fastq(
 @app.command(name="")
 def main(
     fastq_filename: str = typer.Argument(
-        ..., help="FASTQ filename (ex: lq_isoforms.fastq"
+        ..., help="FASTQ filename (ex: lq_isoforms.fastq)"
     ),
     output_filename: str = typer.Argument(..., help="Output FASTQ filename"),
     qv_trim_5: int = typer.Option(
@@ -59,6 +61,13 @@ def main(
     qv_trim_3: int = typer.Option(
         30,
         help="Ignore length on 3' for QV calculation (default: 30 bp)",
+    ),
+    version: bool = typer.Option(
+        None,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Prints the version of the SQANTI3 package.",
     ),
 ) -> None:
     cal_expected_accuracy_from_fastq(

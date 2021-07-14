@@ -8,7 +8,8 @@ import pysam
 import typer
 from Bio.Seq import Seq
 
-from cupcake.logging import cupcake_logger as logger
+from cupcake import version_callback
+from cupcake.logger import cupcake_logger as logger
 
 VALID_CIGAR_SYMBOL = ["I", "D"]
 
@@ -450,6 +451,13 @@ def main(
     ),
     bc_rank_file: Optional[str] = typer.Option(
         None, help="(Optional) cell barcode rank file from short read data"
+    ),
+    version: bool = typer.Option(
+        None,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Prints the version of the SQANTI3 package.",
     ),
 ):
     if bc_len < 0:

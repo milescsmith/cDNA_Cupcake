@@ -29,21 +29,14 @@ from Bio import SeqIO
 from bx.intervals import IntervalTree
 from bx.intervals.cluster import ClusterTree
 
-from cupcake import __version__
-from cupcake.logging import cupcake_logger as logger
+from cupcake import version_callback
+from cupcake.logger import cupcake_logger as logger
 from cupcake.sequence import BioReaders
 
 app = typer.Typer(
     name="cupcake.bacteria.match_w_annotation",
     help="Match alignment with annotation. Categorize and Report.",
 )
-
-
-def version_callback(value: bool):
-    """Prints the version of the package."""
-    if value:
-        print(f"cupcake version: {__version__}")
-        raise typer.Exit()
 
 
 AMatch = namedtuple("AMatch", "name strand start end record")

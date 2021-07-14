@@ -7,9 +7,9 @@ import typer
 from Bio import SeqIO
 from tqdm import tqdm
 
-from cupcake import __version__
-from cupcake.logging import cupcake_logger as logger
-from cupcake.logging import setup_logging
+from cupcake import version_callback
+from cupcake.logger import cupcake_logger as logger
+from cupcake.logger import setup_logging
 from cupcake.sequence import BioReaders
 from cupcake.sequence.coordinate_mapper import consistute_genome_seq_from_exons
 from cupcake.utils import OpenFile
@@ -27,13 +27,6 @@ app = typer.Typer(
     name="cupcake.sequence.err_correct_w_genome",
     help="Generate sequences using genome bases and SAM alignment file",
 )
-
-
-def version_callback(value: bool):
-    """Prints the version of the package."""
-    if value:
-        print(f"cupcake version: {__version__}")
-        raise typer.Exit()
 
 
 def err_correct(

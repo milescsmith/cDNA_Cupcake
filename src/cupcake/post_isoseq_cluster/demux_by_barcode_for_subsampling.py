@@ -10,7 +10,8 @@ from typing import Tuple
 import typer
 from Bio import SeqIO
 
-from cupcake.logging import cupcake_logger as logger
+from cupcake import version_callback
+from cupcake.logger import cupcake_logger as logger
 
 FIELDNAMES = ["pbid", "pbgene", "length", "refisoform", "refgene", "fl_count"]
 pbid_rex = re.compile(r"PB.(\d+).\d+")
@@ -103,6 +104,13 @@ def main(
     ignore_novel: bool = typer.Option(
         False,
         help="Ignore novel genes/transcripts (default: off)",
+    ),
+    version: bool = typer.Option(
+        None,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Prints the version of the SQANTI3 package.",
     ),
 ) -> None:
     out_group_dict = dict(eval(outgroup_dict))

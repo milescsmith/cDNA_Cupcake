@@ -11,7 +11,8 @@ from Bio import SeqIO
 from bx.intervals.cluster import ClusterTree
 
 import cupcake.sequence.GFF as GFF
-from cupcake.logging import cupcake_logger as logger
+from cupcake import version_callback
+from cupcake.logger import cupcake_logger as logger
 
 """
 Given a GFF file and selected loci (ex: PB.45),
@@ -113,6 +114,13 @@ def main(
         ..., "--output_prefix", "-o", help="Output prefix"
     ),
     output_name: Optional[str] = typer.Option(None, help="Output genome name"),
+    version: bool = typer.Option(
+        None,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Prints the version of the SQANTI3 package.",
+    ),
 ) -> None:
 
     rex = re.compile(r"(\S+):(\d+)-(\d+)")

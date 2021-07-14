@@ -30,6 +30,7 @@ from pathlib import Path
 import typer
 from Bio import SeqIO
 
+from cupcake import version_callback
 from cupcake.sequence.GFF import collapseGFFReader, write_collapseGFF_format
 
 app = typer.Typer(name="cupcake.singlecell.dedup_FLNC_per_cluster")
@@ -164,6 +165,13 @@ def main(
     ),
     gff: str = typer.Argument(..., help="(Optional) GFF file (IDs should be PB.X.Y)"),
     faa: str = typer.Argument(..., help="(Optional) Faa file (IDs should be PB.X.Y)"),
+    version: bool = typer.Option(
+        None,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Prints the version of the SQANTI3 package.",
+    ),
 ):
 
     if not Path(corrected_csv).exists():

@@ -64,9 +64,9 @@ class OpenFile(StringIO):
     def readlines(self):
         if self.file is None:
             self.__enter__()
-            return [line for line in self.file]
+            return list(self.file)
         else:
-            return [line for line in self.file]
+            return list(self.file)
 
     def readline(self):
         if self.file is None:

@@ -5,7 +5,8 @@ import random
 import typer
 from Bio import SeqIO
 
-from cupcake.logging import cupcake_logger as logger
+from cupcake import version_callback
+from cupcake.logger import cupcake_logger as logger
 
 app = typer.Typer(
     name="cupcake.sequence.randomly_select_sequences",
@@ -47,6 +48,13 @@ def main(
     filename: str = typer.Argument(..., help="Input fasta/fastq filename"),
     output_prefix: str = typer.Argument(..., help="Output file prefix"),
     sample_size: int = typer.Argument(..., help="Subsample size"),
+    version: bool = typer.Option(
+        None,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Prints the version of the SQANTI3 package.",
+    ),
 ) -> None:
 
     sep_by_primer(filename, output_prefix, sample_size)

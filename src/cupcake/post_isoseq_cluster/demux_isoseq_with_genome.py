@@ -15,7 +15,8 @@ from typing import Dict, Optional, Set, Tuple
 import typer
 from Bio import SeqIO
 
-from cupcake.logging import cupcake_logger as logger
+from cupcake import version_callback
+from cupcake.logger import cupcake_logger as logger
 
 mapped_id_rex = re.compile(r"(PB.\d+.\d+)")
 
@@ -165,6 +166,13 @@ def main(
         help="Text file showing primer sample names (default: None)",
     ),
     output: str = typer.Option(..., "--output", "-o", help="Output count filename"),
+    version: bool = typer.Option(
+        None,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Prints the version of the SQANTI3 package.",
+    ),
 ):
     if primer_names is not None:
         primer_names = {}
