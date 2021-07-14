@@ -34,7 +34,7 @@ from Bio import SeqIO
 from Bio.Seq import Seq
 
 from cupcake import version_callback
-from cupcake.logger import cupcake_logger as logger
+from cupcake import cupcake_logger as logger
 from cupcake.sequence.BioReaders import GMAPSAMReader
 from cupcake.sequence.GFF import collapseGFFReader
 

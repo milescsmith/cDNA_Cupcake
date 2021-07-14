@@ -11,7 +11,7 @@ import typer
 from Bio import SeqIO
 
 from cupcake import version_callback
-from cupcake.logger import cupcake_logger as logger
+from cupcake import cupcake_logger as logger
 
 FIELDNAMES = ["pbid", "pbgene", "length", "refisoform", "refgene", "fl_count"]
 pbid_rex = re.compile(r"PB.(\d+).\d+")

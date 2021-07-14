@@ -9,7 +9,7 @@ import typer
 from Bio.Seq import Seq
 
 from cupcake import version_callback
-from cupcake.logger import cupcake_logger as logger
+from cupcake import cupcake_logger as logger
 
 VALID_CIGAR_SYMBOL = ["I", "D"]
 

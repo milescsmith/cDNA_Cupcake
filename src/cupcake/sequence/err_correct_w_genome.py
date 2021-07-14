@@ -8,7 +8,7 @@ from Bio import SeqIO
 from tqdm import tqdm
 
 from cupcake import version_callback
-from cupcake.logger import cupcake_logger as logger
+from cupcake import cupcake_logger as logger
 from cupcake.logger import setup_logging
 from cupcake.sequence import BioReaders
 from cupcake.sequence.coordinate_mapper import consistute_genome_seq_from_exons

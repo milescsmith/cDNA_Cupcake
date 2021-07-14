@@ -6,7 +6,7 @@ from pathlib import Path
 import typer
 
 from cupcake import version_callback
-from cupcake.logger import cupcake_logger as logger
+from cupcake import cupcake_logger as logger
 from cupcake.sequence.GFF import collapseGFFReader
 
 app = typer.Typer(name="cupcake.tofu.simple_stats_post_collapse")

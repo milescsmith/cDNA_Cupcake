@@ -8,7 +8,7 @@ import typer
 import vcfpy
 
 from cupcake import version_callback
-from cupcake.logger import cupcake_logger as logger
+from cupcake import cupcake_logger as logger
 
 
 class vcf_phasing(str, Enum):

@@ -5,7 +5,7 @@ import typer
 from Bio import SeqIO
 
 from cupcake import version_callback
-from cupcake.logger import cupcake_logger as logger
+from cupcake import cupcake_logger as logger
 
 app = typer.Typer(name="cupcake.sequence.fa2fq", help="Convert fasta to fastq")
 

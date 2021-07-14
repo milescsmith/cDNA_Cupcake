@@ -9,7 +9,7 @@ from typing import List, Optional, Tuple, Union
 import typer
 
 from cupcake import version_callback
-from cupcake.logger import cupcake_logger as logger
+from cupcake import cupcake_logger as logger
 
 app = typer.Typer(name="cupcake.annotation.subsample")
 

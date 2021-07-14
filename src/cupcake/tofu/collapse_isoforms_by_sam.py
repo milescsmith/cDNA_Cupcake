@@ -26,7 +26,7 @@ from Bio import SeqIO
 from bx.intervals import IntervalTree
 
 from cupcake import version_callback
-from cupcake.logger import cupcake_logger as logger
+from cupcake import cupcake_logger as logger
 from cupcake.sequence import GFF
 from cupcake.tofu.branch import branch_simple2
 from cupcake.tofu.compare_junctions import compare_junctions

@@ -3,6 +3,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
+## [21.7.1] - 2021-07-14
+### Fixed
+- Correctly import the logger
+
+
 ## [21.7.0] - 2021-07-14
 
 ### Fixed
@@ -220,11 +225,12 @@ Version bump for Docker container
 - Reformmated to follow PEP517 - that is, replaced setup.py with pyproject.toml and build.py
 - Now using Poetry for dependency managment
 
-[21.2.8]: https://github.com/milescsmith/cDNA_Cupcake/compare/21.6.0...21.7.0
-[21.2.8]: https://github.com/milescsmith/cDNA_Cupcake/compare/21.5.0...21.6.0
-[21.2.8]: https://github.com/milescsmith/cDNA_Cupcake/compare/21.4.0...21.5.0
-[21.2.8]: https://github.com/milescsmith/cDNA_Cupcake/compare/21.3.0...21.4.0
-[21.2.8]: https://github.com/milescsmith/cDNA_Cupcake/compare/21.2.8...21.3.0
+[21.7.1]: https://github.com/milescsmith/cDNA_Cupcake/compare/21.7.0...21.7.1
+[21.7.0]: https://github.com/milescsmith/cDNA_Cupcake/compare/21.6.0...21.7.0
+[21.6.0]: https://github.com/milescsmith/cDNA_Cupcake/compare/21.5.0...21.6.0
+[21.5.0]: https://github.com/milescsmith/cDNA_Cupcake/compare/21.4.0...21.5.0
+[21.4.0]: https://github.com/milescsmith/cDNA_Cupcake/compare/21.3.0...21.4.0
+[21.3.0]: https://github.com/milescsmith/cDNA_Cupcake/compare/21.2.8...21.3.0
 [21.2.8]: https://github.com/milescsmith/cDNA_Cupcake/compare/21.2.7...21.2.8
 [21.2.7]: https://github.com/milescsmith/cDNA_Cupcake/compare/21.2.6...21.2.7
 [21.2.6]: https://github.com/milescsmith/cDNA_Cupcake/compare/21.2.5...21.2.6

@@ -26,7 +26,7 @@ from bx.intervals import Interval, IntervalTree
 import cupcake.sequence.GFF as GFF
 import cupcake.tofu.counting.chain_samples as sp
 from cupcake import version_callback
-from cupcake.logger import cupcake_logger as logger
+from cupcake import cupcake_logger as logger
 
 fields_to_add = [
     "count_fl",

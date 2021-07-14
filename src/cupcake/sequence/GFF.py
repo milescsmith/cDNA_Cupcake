@@ -6,7 +6,7 @@ from pathlib import Path
 
 from bx.intervals.intersection import Interval, IntervalTree
 
-from cupcake.logger import cupcake_logger as logger
+from cupcake import cupcake_logger as logger
 
 
 class GTF:

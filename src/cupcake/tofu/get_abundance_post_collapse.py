@@ -44,7 +44,7 @@ from typing import List, Optional
 import typer
 
 from cupcake import version_callback
-from cupcake.logger import cupcake_logger as logger
+from cupcake import cupcake_logger as logger
 
 app = typer.Typer(
     name="get_abundance_post_collapse",

@@ -32,7 +32,7 @@ from Bio.SeqFeature import FeatureLocation, SeqFeature
 from Bio.SeqRecord import SeqRecord
 
 from cupcake import version_callback
-from cupcake.logger import cupcake_logger as logger
+from cupcake import cupcake_logger as logger
 from cupcake.sequence.BioReaders import GMAPSAMReader
 
 app = typer.Typer(

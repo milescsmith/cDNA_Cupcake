@@ -20,7 +20,7 @@ import typer
 from Bio import SeqIO
 
 from cupcake import version_callback
-from cupcake.logger import cupcake_logger as logger
+from cupcake import cupcake_logger as logger
 from cupcake.phasing.io.VariantPhaser import Haplotypes
 from cupcake.simulate.simulate import sim_seq
 

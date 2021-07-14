@@ -13,7 +13,7 @@ from Bio import SeqIO
 from Bio.SeqRecord import SeqRecord
 
 from cupcake import version_callback
-from cupcake.logger import cupcake_logger as logger
+from cupcake import cupcake_logger as logger
 
 
 @dataclass

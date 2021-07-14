@@ -14,7 +14,7 @@ from bx.intervals.cluster import ClusterTree
 from click.exceptions import BadArgumentUsage
 
 from cupcake import version_callback
-from cupcake.logger import cupcake_logger as logger
+from cupcake import cupcake_logger as logger
 from cupcake.sequence import BioReaders
 from cupcake.sequence.SeqReaders import LazyFastaReader, LazyFastqReader
 from cupcake.tofu.branch import branch_simple2

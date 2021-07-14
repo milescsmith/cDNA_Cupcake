@@ -11,7 +11,7 @@ import typer
 from Bio import SeqIO
 
 from cupcake import version_callback
-from cupcake.logger import cupcake_logger as logger
+from cupcake import cupcake_logger as logger
 from cupcake.sequence.GFF import collapseGFFReader
 
 fusion_pbid = re.compile(r"PBfusion.(\d+).(\d+)")

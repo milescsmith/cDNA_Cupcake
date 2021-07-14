@@ -15,7 +15,7 @@ from Bio import SeqIO
 from bx.intervals.cluster import ClusterTree
 
 from cupcake import version_callback
-from cupcake.logger import cupcake_logger as logger
+from cupcake import cupcake_logger as logger
 from cupcake.sequence import GFF
 from cupcake.tofu.counting import combine_abundance_across_samples as sp
 

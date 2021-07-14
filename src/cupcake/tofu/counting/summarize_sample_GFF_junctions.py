@@ -24,7 +24,7 @@ from sklearn.cluster import Birch
 
 import cupcake.sequence.GFF as GFF
 from cupcake import version_callback
-from cupcake.logger import cupcake_logger as logger
+from cupcake import cupcake_logger as logger
 
 app = typer.Typer(name="cupcake.tofu.counting.summarize_sample_GFF_junctions")
 

@@ -5,7 +5,7 @@ from pathlib import Path
 import vcfpy
 from Bio import SeqIO
 
-from cupcake.logger import cupcake_logger as logger
+from cupcake import cupcake_logger as logger
 
 FIELDS = ["locus", "size", "num_snp", "num_hap_nopartial", "num_hap_withpartial"]
 

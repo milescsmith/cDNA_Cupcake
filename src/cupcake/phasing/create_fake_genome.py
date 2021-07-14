@@ -12,7 +12,7 @@ from bx.intervals.cluster import ClusterTree
 
 import cupcake.sequence.GFF as GFF
 from cupcake import version_callback
-from cupcake.logger import cupcake_logger as logger
+from cupcake import cupcake_logger as logger
 
 """
 Given a GFF file and selected loci (ex: PB.45),

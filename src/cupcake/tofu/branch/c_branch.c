@@ -5123,7 +5123,7 @@ if (!__Pyx_RefNanny) {
   /* "cupcake/tofu/branch/c_branch.pyx":6
  * from cpython cimport bool
  *
- * from cupcake.logger import cupcake_logger as logger             # <<<<<<<<<<<<<<
+ * from cupcake import cupcake_logger as logger             # <<<<<<<<<<<<<<
  * from cupcake.tofu.branch.intersection_unique import (Interval,
  *                                                      IntervalTreeUnique)
  */
@@ -5143,7 +5143,7 @@ if (!__Pyx_RefNanny) {
 
   /* "cupcake/tofu/branch/c_branch.pyx":7
  *
- * from cupcake.logger import cupcake_logger as logger
+ * from cupcake import cupcake_logger as logger
  * from cupcake.tofu.branch.intersection_unique import (Interval,             # <<<<<<<<<<<<<<
  *                                                      IntervalTreeUnique)
  *

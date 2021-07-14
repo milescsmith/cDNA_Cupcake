@@ -10,7 +10,7 @@ from Bio import SeqIO
 from Bio.Seq import Seq
 
 from cupcake import version_callback
-from cupcake.logger import cupcake_logger as logger
+from cupcake import cupcake_logger as logger
 
 SCOREMAT = parasail.matrix_create("ACGT", 2, -5)
 MIN_SCORE = 80

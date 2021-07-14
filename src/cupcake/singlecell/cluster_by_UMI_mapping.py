@@ -13,7 +13,7 @@ from bx.intervals.cluster import ClusterTree
 
 import cupcake.sequence.BioReaders as BioReaders
 from cupcake import version_callback
-from cupcake.logger import cupcake_logger as logger
+from cupcake import cupcake_logger as logger
 
 csv.field_size_limit(100000000)
 

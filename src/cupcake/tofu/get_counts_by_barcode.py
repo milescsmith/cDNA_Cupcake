@@ -23,7 +23,7 @@ from typing import List, Optional, Tuple
 import typer
 
 from cupcake import version_callback
-from cupcake.logger import cupcake_logger as logger
+from cupcake import cupcake_logger as logger
 
 app = typer.Typer(name="cupcake.tofu.get_counts_by_barcode")
 

@@ -11,7 +11,7 @@ import typer
 from Bio import SeqIO
 
 from cupcake import version_callback
-from cupcake.logger import cupcake_logger as logger
+from cupcake import cupcake_logger as logger
 from cupcake.phasing.io import VariantPhaseCleaner, VariantPhaser
 from cupcake.phasing.io.MPileUpVariantCaller import MPileUPVariant
 from cupcake.phasing.io.SAMMPileUpReader import MPileUpReader

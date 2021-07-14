@@ -25,7 +25,7 @@ from Bio import SeqIO
 
 import cupcake.sequence.GFF as GFF
 from cupcake import version_callback
-from cupcake.logger import cupcake_logger as logger
+from cupcake import cupcake_logger as logger
 from cupcake.tofu.counting import combine_abundance_across_samples as sp
 from cupcake.tofu.counting.chain_samples import read_config, read_count_info
 

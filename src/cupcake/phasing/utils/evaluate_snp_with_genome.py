@@ -9,7 +9,7 @@ import vcfpy
 from bx.intervals import IntervalTree
 
 from cupcake import version_callback
-from cupcake.logger import cupcake_logger as logger
+from cupcake import cupcake_logger as logger
 from cupcake.phasing.io.SAMMPileUpReader import MPileUpReader
 
 app = typer.Typer(name="cupcake.phasing.util.evaluate_snp_with_genome")

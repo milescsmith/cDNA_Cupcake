@@ -10,7 +10,7 @@ from typing import Dict, List, Union
 import typer
 
 from cupcake import version_callback
-from cupcake.logger import cupcake_logger as logger
+from cupcake import cupcake_logger as logger
 
 """
 Based on the script by Gloria Sheynkman for creating a BED12 file where

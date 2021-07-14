@@ -8,7 +8,7 @@ from typing import List, Tuple
 import typer
 
 from cupcake import version_callback
-from cupcake.logger import cupcake_logger as logger
+from cupcake import cupcake_logger as logger
 
 app = typer.Typer(name="cupcake.annotation.subsample_with_category")
 
